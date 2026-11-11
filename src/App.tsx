@@ -1,0 +1,161 @@
+import React, { useState } from 'react';
+import { StoreProvider } from './db/store';
+import { LandingPage } from './components/landing/LandingPage';
+import { Navbar } from './components/Navbar';
+import { Sidebar, ActiveTab } from './components/Sidebar';
+import { DashboardView } from './components/views/DashboardView';
+import { PacientesView } from './components/views/PacientesView';
+import { CitasView } from './components/views/CitasView';
+import { ConsultasView } from './components/views/ConsultasView';
+import { VacunacionView } from './components/views/VacunacionView';
+import { FichasIAView } from './components/views/FichasIAView';
+import { FacturacionPOSView } from './components/views/FacturacionPOSView';
+import { InventarioView } from './components/views/InventarioView';
+import { ReportesIAView } from './components/views/ReportesIAView';
+import { AsistenteClinicoView } from './components/views/AsistenteClinicoView';
+import { AuditoriaSRSView } from './components/views/AuditoriaSRSView';
+import { SecurityModal } from './components/modals/SecurityModal';
+import { TraceabilityModal } from './components/modals/TraceabilityModal';
+import { SkeletonKPI, SkeletonCard, SkeletonTable } from './components/common/Skeleton';
+
+export default function App() {
+  // Navigation mode: Landing Page first, with seamless access to ERP
+  const [appMode, setAppMode] = useState<'landing' | 'erp'>('landing');
+  const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [showTraceability, setShowTraceability] = useState(false);
+  const [showSecurityModal, setShowSecurityModal] = useState(false);
+
+  // Skeleton loading state (persisted or toggleable anytime)
+  const [isSkeletonLoading, setIsSkeletonLoading] = useState(false);
+
+  // Shared entity state across views
+  const [selectedPetForCard, setSelectedPetForCard] = useState<number | null>(null);
+  const [selectedCitaForConsulta, setSelectedCitaForConsulta] = useState<number | null>(null);
+  const [selectedConsultaForAI, setSelectedConsultaForAI] = useState<number | null>(null);
+
+  const handleEnterERP = () => {
+    setIsSkeletonLoading(true);
+    setAppMode('erp');
+    // Brief natural skeleton transition to showcase skeleton architecture
+    setTimeout(() => {
+      setIsSkeletonLoading(false);
+    }, 450);
+  };
+
+  const handleReturnToLanding = () => {
+    setAppMode('landing');
+  };
+
+  return (
+    <StoreProvider>
+      {appMode === 'landing' ? (
+        <LandingPage onEnterERP={handleEnterERP} />
+      ) : (
+        <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
+          {/* Top Navbar */}
+          <Navbar
+            onOpenTraceability={() => setShowTraceability(true)}
+            onOpenSecurityModal={() => setShowSecurityModal(true)}
+            onReturnToLanding={handleReturnToLanding}
+            isSkeletonLoading={isSkeletonLoading}
+            onToggleSkeleton={() => setIsSkeletonLoading(!isSkeletonLoading)}
+          />
+
+          {/* App Body */}
+          <div className="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto">
+            {/* Left Sidebar */}
+            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+
+            {/* Main View Area */}
+            <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+              {isSkeletonLoading ? (
+                /* Skeleton Presentation Mode */
+                <div className="space-y-6 animate-pulse">
+                  <div className="p-6 rounded-2xl bg-slate-200 h-28" />
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <SkeletonKPI />
+                    <SkeletonKPI />
+                    <SkeletonKPI />
+                    <SkeletonKPI />
+                  </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2">
+                      <SkeletonTable rows={4} />
+                    </div>
+                    <div>
+                      <SkeletonCard />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {activeTab === 'dashboard' && <DashboardView onNavigateTab={setActiveTab} />}
+
+                  {activeTab === 'pacientes' && (
+                    <PacientesView
+                      onNavigateTab={setActiveTab}
+                      onSelectPetForCard={(id) => {
+                        setSelectedPetForCard(id);
+                        setActiveTab('vacunacion');
+                      }}
+                    />
+                  )}
+
+                  {activeTab === 'citas' && (
+                    <CitasView
+                      onNavigateTab={setActiveTab}
+                      onStartConsultationForCita={(idCita) => {
+                        setSelectedCitaForConsulta(idCita);
+                        setActiveTab('consultas');
+                      }}
+                    />
+                  )}
+
+                  {activeTab === 'consultas' && (
+                    <ConsultasView
+                      onNavigateTab={setActiveTab}
+                      onSelectConsultaForAI={(idConsulta) => {
+                        setSelectedConsultaForAI(idConsulta);
+                        setActiveTab('fichas-ia');
+                      }}
+                      selectedCitaIdForNewConsulta={selectedCitaForConsulta}
+                    />
+                  )}
+
+                  {activeTab === 'vacunacion' && <VacunacionView initialPetId={selectedPetForCard} />}
+
+                  {activeTab === 'fichas-ia' && <FichasIAView initialConsultaId={selectedConsultaForAI} />}
+
+                  {activeTab === 'facturacion' && <FacturacionPOSView />}
+
+                  {activeTab === 'inventario' && <InventarioView />}
+
+                  {activeTab === 'reportes-ia' && <ReportesIAView />}
+
+                  {activeTab === 'asistente-ia' && <AsistenteClinicoView />}
+
+                  {activeTab === 'auditoria' && <AuditoriaSRSView />}
+                </>
+              )}
+            </main>
+          </div>
+
+          {/* Interactive Modals */}
+          <TraceabilityModal
+            isOpen={showTraceability}
+            onClose={() => setShowTraceability(false)}
+            onNavigateTab={(tab) => {
+              setActiveTab(tab);
+              setShowTraceability(false);
+            }}
+          />
+
+          <SecurityModal
+            isOpen={showSecurityModal}
+            onClose={() => setShowSecurityModal(false)}
+          />
+        </div>
+      )}
+    </StoreProvider>
+  );
+}

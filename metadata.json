@@ -1,0 +1,6 @@
+{
+  "name": "VETSOFT - Gestión Veterinaria e IA",
+  "description": "Sistema integral de gestión clínica veterinaria con historias clínicas, carné de vacunación, facturación e inventario con lotes, auditoría y análisis clínico y gerencial con Gemini 3.8 Flash.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
