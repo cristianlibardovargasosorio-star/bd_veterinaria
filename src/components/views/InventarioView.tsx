@@ -275,7 +275,7 @@ export const InventarioView: React.FC = () => {
                                 Próximo a vencer
                               </span>
                             ) : (
-                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#fbe1d1] text-[#5d2a1a] border border-[#5d2a1a]/25">
+                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F0FDFA] text-[#0D9488] border border-[#0D9488]/25">
                                 Vigente
                               </span>
                             )}

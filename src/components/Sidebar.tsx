@@ -186,13 +186,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
         })}
       </nav>
 
-      {/* Footer status — Estado Exitoso / Activo (#5d2a1a sobre #fbe1d1) */}
-      <div className="hidden md:flex mt-4 px-4 py-3 rounded-[20px] bg-[#fbe1d1] border border-[#5d2a1a]/20 text-[11px] text-[#5d2a1a] font-medium items-center justify-between">
+      {/* Footer status — Estado Exitoso / Activo (#0D9488 sobre #F0FDFA) */}
+      <div className="hidden md:flex mt-4 px-4 py-3 rounded-[20px] bg-[#F0FDFA] border border-[#0D9488]/25 text-[11px] text-[#0D9488] font-medium items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-[#5d2a1a]"></span>
+          <span className="w-2 h-2 rounded-full bg-[#0D9488]"></span>
           <span>Motor IA · BD Activa</span>
         </div>
-        <span className="text-[10px] text-[#5d2a1a]/80">Activo</span>
+        <span className="text-[10px] text-[#0D9488]/80">Activo</span>
       </div>
     </aside>
   );

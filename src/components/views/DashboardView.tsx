@@ -208,8 +208,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
                 const statusColors: Record<string, string> = {
                   PENDIENTE: 'bg-[#FFFBEB] text-[#D97706] border-[#D97706]/25',
-                  CONFIRMADA: 'bg-[#fbe1d1] text-[#5d2a1a] border-[#5d2a1a]/25',
-                  ATENDIDA: 'bg-[#fbe1d1] text-[#5d2a1a] border-[#5d2a1a]/25',
+                  CONFIRMADA: 'bg-[#F0FDFA] text-[#0D9488] border-[#0D9488]/25',
+                  ATENDIDA: 'bg-[#F0FDFA] text-[#0D9488] border-[#0D9488]/25',
                   CANCELADA: 'bg-[#FEF2F2] text-[#DC2626] border-[#DC2626]/25',
                 };
 
@@ -260,18 +260,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             </div>
           </div>
 
-          {/* Quick AI Spotlight (RF10 & RF11) */}
-          <div className="p-5 rounded-[20px] bg-[#fbe1d1] border border-[#5d2a1a]/20 space-y-3">
+          {/* Quick AI Spotlight (RF10 & RF11) — Estado Exitoso / Activo (#0D9488 sobre #F0FDFA) */}
+          <div className="p-5 rounded-[20px] bg-[#F0FDFA] border border-[#0D9488]/25 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#5d2a1a]" />
-                <h3 className="font-bold text-sm text-emerald-950">Motor de Inteligencia Artificial (Gemini 3.8 Flash)</h3>
+                <Sparkles className="w-5 h-5 text-[#0D9488]" />
+                <h3 className="font-bold text-sm text-[#1E293B]">Motor de Inteligencia Artificial (Gemini 3.8 Flash)</h3>
               </div>
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-200 text-emerald-900">
-                RF10 & RF11 Activos
+              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#ffffff] text-[#0D9488] border border-[#0D9488]/25 whitespace-nowrap">
+                RF10 &amp; RF11 Activos
               </span>
             </div>
-            <p className="text-xs text-emerald-900/80 leading-relaxed">
+            <p className="text-xs text-[#64748B] leading-relaxed">
               VETSOFT integra el modelo Gemini 3.8 Flash de Google para la generación dual de fichas clínicas
               (resumen comprensible para propietarios y síntesis médica interna con aprobación médica), además de
               reportes ejecutivos de inteligencia gerencial en tiempo real.
@@ -279,7 +279,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <button
                 onClick={() => onNavigateTab('fichas-ia')}
-                className="px-3 py-1.5 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5"
+                className="px-3.5 py-1.5 bg-[#0D9488] hover:bg-[#0f766e] text-[#ffffff] text-xs font-semibold rounded-full transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Generar Ficha Médica IA (RF10)</span>
@@ -287,9 +287,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
               {currentRole === 'ADMINISTRADOR' && (
                 <button
                   onClick={() => onNavigateTab('reportes-ia')}
-                  className="px-3 py-1.5 bg-[#ffffff] hover:bg-[#fbe1d1] text-[#5d2a1a] text-emerald-900 text-xs font-semibold rounded-lg border border-[#ececec] transition-colors flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 bg-[#ffffff] hover:bg-[#F0FDFA] text-[#0D9488] text-xs font-semibold rounded-full border border-[#0D9488]/30 transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
-                  <TrendingUp className="w-3.5 h-3.5 text-[#5d2a1a]" />
+                  <TrendingUp className="w-3.5 h-3.5 text-[#0D9488]" />
                   <span>Reporte Ejecutivo IA (RF11)</span>
                 </button>
               )}
@@ -321,17 +321,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                 {vwAlertasStock.map((prod) => (
                   <div
                     key={prod.id_producto}
-                    className="p-3 rounded-xl border border-amber-200 bg-amber-50/50 flex items-center justify-between text-xs"
+                    className="p-3 rounded-xl border border-[#D97706]/25 bg-[#FFFBEB] flex items-center justify-between text-xs gap-2"
                   >
-                    <div>
-                      <div className="font-bold text-[#1E293B]">{prod.nombre}</div>
+                    <div className="min-w-0">
+                      <div className="font-bold text-[#1E293B] truncate">{prod.nombre}</div>
                       <div className="text-[10px] text-[#64748B] font-mono">SKU: {prod.sku}</div>
                     </div>
-                    <div className="text-right">
-                      <div className="font-extrabold text-amber-700 text-sm">
+                    <div className="text-right shrink-0">
+                      <div className="font-extrabold text-[#D97706] text-sm whitespace-nowrap">
                         {prod.stock_vendible} / {prod.stock_minimo} min
                       </div>
-                      <span className="text-[9px] uppercase font-bold text-red-600">Crítico</span>
+                      <span className="text-[9px] uppercase font-bold text-[#DC2626]">Crítico</span>
                     </div>
                   </div>
                 ))}

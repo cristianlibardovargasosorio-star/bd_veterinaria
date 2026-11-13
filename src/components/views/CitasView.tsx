@@ -105,8 +105,8 @@ export const CitasView: React.FC<CitasViewProps> = ({
 
   const statusBadgeConfig: Record<EstadoCita, { label: string; bg: string; text: string; border: string }> = {
     PENDIENTE: { label: 'Pendiente', bg: 'bg-[#FFFBEB]', text: 'text-[#D97706]', border: 'border-[#D97706]/25' },
-    CONFIRMADA: { label: 'Confirmada', bg: 'bg-[#fbe1d1]', text: 'text-[#5d2a1a]', border: 'border-[#5d2a1a]/25' },
-    ATENDIDA: { label: 'Atendida', bg: 'bg-[#fbe1d1]', text: 'text-[#5d2a1a]', border: 'border-[#5d2a1a]/25' },
+    CONFIRMADA: { label: 'Confirmada', bg: 'bg-[#F0FDFA]', text: 'text-[#0D9488]', border: 'border-[#0D9488]/25' },
+    ATENDIDA: { label: 'Atendida', bg: 'bg-[#F0FDFA]', text: 'text-[#0D9488]', border: 'border-[#0D9488]/25' },
     CANCELADA: { label: 'Cancelada', bg: 'bg-[#FEF2F2]', text: 'text-[#DC2626]', border: 'border-[#DC2626]/25' },
   };
 
