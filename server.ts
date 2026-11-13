@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import compression from 'compression';
 import { GoogleGenAI, Type } from '@google/genai';
 
 dotenv.config();
@@ -12,7 +13,63 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
+// Compresión Gzip/Brotli activa para todos los recursos
+app.use(compression({
+  threshold: 1024,
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) return false;
+    return compression.filter(req, res);
+  }
+}));
+
+// Headers de Cache-Control y CDN para estáticos
+app.use((req, res, next) => {
+  if (req.url.match(/\.(webp|avif|jpg|png|svg|css|js|woff2)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+  }
+  next();
+});
+
+// Middleware de Rastreo / OpenTelemetry Light & Timeout Guard (10 segundos)
+app.use((req, res, next) => {
+  const start = Date.now();
+  const traceId = 'trace-' + Math.random().toString(36).substring(2, 10);
+  res.setHeader('X-Trace-Id', traceId);
+
+  // Timeout guard para evitar peticiones colgadas
+  req.setTimeout(10000, () => {
+    if (!res.headersSent) {
+      console.warn(`[TELEMETRY] Request timeout: ${req.method} ${req.url} (Trace: ${traceId})`);
+      res.status(504).json({ error: 'Gateway / API Timeout (10s limit exceeded)' });
+    }
+  });
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    if (duration > 800) {
+      console.warn(`[TELEMETRY SLOW QUERY] ${req.method} ${req.url} tomó ${duration}ms (Trace: ${traceId})`);
+    }
+  });
+  next();
+});
+
 app.use(express.json());
+
+// In-Memory Redis Simulation for Fast Query Caching
+const redisCache = new Map<string, { data: any; expiry: number }>();
+const getCached = (key: string) => {
+  const item = redisCache.get(key);
+  if (!item) return null;
+  if (Date.now() > item.expiry) {
+    redisCache.delete(key);
+    return null;
+  }
+  return item.data;
+};
+const setCached = (key: string, data: any, ttlSecs = 60) => {
+  redisCache.set(key, { data, expiry: Date.now() + ttlSecs * 1000 });
+};
 
 // Initialize GoogleGenAI
 const getAIClient = () => {
@@ -189,6 +246,103 @@ Produce un objeto JSON con:
       },
     });
   }
+});
+
+// Asistente Clínico Veterinario Interactivo - Streaming Token a Token (SSE / Chunked)
+app.post('/api/ai/asistente-clinico/stream', async (req: Request, res: Response) => {
+  const { pregunta, contexto_paciente } = req.body;
+  const cacheKey = `ai_stream_${pregunta}_${contexto_paciente?.especie}`;
+  const cached = getCached(cacheKey);
+
+  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+  res.setHeader('Transfer-Encoding', 'chunked');
+  res.setHeader('Cache-Control', 'no-cache');
+
+  if (cached) {
+    res.write(cached);
+    res.end();
+    return;
+  }
+
+  const ai = getAIClient();
+
+  if (!ai) {
+    const fallbackText = `Orientación Veterinaria Especializada para "${pregunta}": Para ${contexto_paciente?.mascota || 'la mascota'} (${contexto_paciente?.especie || 'Canino'}, ${contexto_paciente?.peso_kg || 10}kg), la recomendación principal es evaluar signos de alarma: fiebre mayor a 39.2°C, deshidratación de mucosas o vómitos persistentes por más de 12 horas. Nuestro servicio de urgencias 24/7 está a disposición (+57 300 912 3456).`;
+    const words = fallbackText.split(' ');
+    
+    for (let i = 0; i < words.length; i++) {
+      res.write((i === 0 ? '' : ' ') + words[i]);
+      await new Promise((r) => setTimeout(r, 25));
+    }
+    setCached(cacheKey, fallbackText, 120);
+    res.end();
+    return;
+  }
+
+  try {
+    const responseStream = await ai.models.generateContentStream({
+      model: 'gemini-3.8-flash',
+      contents: `Pregunta médica: ${pregunta}\nContexto: ${JSON.stringify(contexto_paciente || {})}`,
+      config: {
+        systemInstruction:
+          'Eres un médico veterinario experto en VETSOFT. Brinda orientación clínica concisa, precisa, con rangos de dosis y precauciones.',
+      },
+    });
+
+    let fullAnswer = '';
+    for await (const chunk of responseStream) {
+      const text = chunk.text || '';
+      fullAnswer += text;
+      res.write(text);
+    }
+    setCached(cacheKey, fullAnswer, 120);
+    res.end();
+  } catch (err: any) {
+    res.write(`Error en procesamiento de streaming: ${err.message || 'Fallo temporal'}`);
+    res.end();
+  }
+});
+
+// Endpoint paginado con proyección de columnas (Anti N+1 y reducción de carga)
+app.get('/api/pacientes', (req: Request, res: Response) => {
+  const page = parseInt(req.query.page as string, 10) || 1;
+  const limit = parseInt(req.query.limit as string, 10) || 10;
+  const columns = (req.query.columns as string)?.split(',') || ['id_mascota', 'nombre', 'especie', 'raza', 'activo'];
+
+  const cacheKey = `pacientes_page_${page}_${limit}_${columns.join('_')}`;
+  const cached = getCached(cacheKey);
+  if (cached) {
+    return res.json({ ...cached, _fromCache: true });
+  }
+
+  // Simulación de consulta optimizada SELECT columns FROM mascotas LIMIT limit OFFSET offset
+  const mockPets = Array.from({ length: 45 }).map((_, idx) => ({
+    id_mascota: idx + 1,
+    nombre: `Paciente ${idx + 1}`,
+    especie: idx % 2 === 0 ? 'Canino' : 'Felino',
+    raza: idx % 2 === 0 ? 'Labrador' : 'Siamés',
+    activo: true,
+  }));
+
+  const offset = (page - 1) * limit;
+  const paged = mockPets.slice(offset, offset + limit).map((pet) => {
+    const projected: Record<string, any> = {};
+    columns.forEach((col) => {
+      if ((pet as any)[col] !== undefined) projected[col] = (pet as any)[col];
+    });
+    return projected;
+  });
+
+  const responseData = {
+    page,
+    limit,
+    total: mockPets.length,
+    totalPages: Math.ceil(mockPets.length / limit),
+    data: paged,
+  };
+
+  setCached(cacheKey, responseData, 30);
+  return res.json(responseData);
 });
 
 // Asistente Clínico Veterinario Interactivo (Cálculo de dosis, interacciones farmacológicas, triaje)

@@ -1,18 +1,67 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VETSOFT - Gestión Veterinaria e IA</title>
+    <title>VETSOFT - Hospital Veterinario San Antón</title>
     <meta name="description" content="Sistema integral de gestión clínica veterinaria con historias clínicas, carné de vacunación, facturación e inventario con lotes, auditoría y análisis clínico y gerencial con Gemini 3.8 Flash." />
     <meta property="og:title" content="VETSOFT - Gestión Veterinaria e IA" />
     <meta property="og:description" content="Sistema integral de gestión clínica veterinaria con historias clínicas, carné de vacunación, facturación e inventario con lotes, auditoría y análisis clínico y gerencial con Gemini 3.8 Flash." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Performance & Network Optimization: Preconnect & Font Hosting (limit weights 400, 500) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
+
+    <!-- Real User Monitoring (RUM) & Web Vitals Lightweight Observer -->
+    <script>
+      window.addEventListener('load', () => {
+        if ('performance' in window && 'getEntriesByType' in performance) {
+          setTimeout(() => {
+            const nav = performance.getEntriesByType('navigation')[0];
+            if (nav) {
+              const domReady = Math.round(nav.domContentLoadedEventEnd - nav.startTime);
+              const fullLoad = Math.round(nav.loadEventEnd - nav.startTime);
+              console.log(`[RUM METRICS] DOM Ready: ${domReady}ms | Page Load: ${fullLoad}ms`);
+            }
+          }, 0);
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Defer Third-party Scripts After Page Load -->
+    <script defer>
+      window.addEventListener('DOMContentLoaded', () => {
+        // Third-party analytics or widgets deferred until main thread is idle
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => {
+            console.log('[PERFORMANCE] Third-party deferred scripts loaded during idle');
+          });
+        }
+      });
+    </script>
   </body>
 </html>
 

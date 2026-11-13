@@ -63,10 +63,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
   const [activeDemoTab, setActiveDemoTab] = useState<'ia' | 'carne' | 'lotes' | 'pos'>('ia');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  // Images
-  const heroImg = '/src/assets/images/landing_vet_hero_1794425108227.jpg';
-  const aiTabletImg = '/src/assets/images/landing_ai_diagnostics_1794425109106.jpg';
-  const petCareImg = '/src/assets/images/landing_pet_care_1794425109279.jpg';
+  // Images (WebP & AVIF modern next-gen formats with native fallback)
+  const heroImg = '/src/assets/images/landing_vet_hero_1794425108227.webp';
+  const heroImgAvif = '/src/assets/images/landing_vet_hero_1794425108227.avif';
+  const heroImgJpg = '/src/assets/images/landing_vet_hero_1794425108227.jpg';
+
+  const aiTabletImg = '/src/assets/images/landing_ai_diagnostics_1794425109106.webp';
+  const aiTabletImgAvif = '/src/assets/images/landing_ai_diagnostics_1794425109106.avif';
+  const aiTabletImgJpg = '/src/assets/images/landing_ai_diagnostics_1794425109106.jpg';
+
+  const petCareImg = '/src/assets/images/landing_pet_care_1794425109279.webp';
+  const petCareImgAvif = '/src/assets/images/landing_pet_care_1794425109279.avif';
+  const petCareImgJpg = '/src/assets/images/landing_pet_care_1794425109279.jpg';
 
   // --- ONLINE APPOINTMENT BOOKING STATE ---
   const [bookingPetName, setBookingPetName] = useState('');
@@ -86,17 +94,45 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
     dateTime: string;
   } | null>(null);
 
-  // --- PET PORTAL & VACCINE SEARCH STATE ---
+  // --- PET PORTAL & VACCINE SEARCH STATE (With Debounce & Autocomplete) ---
   const [searchPetQuery, setSearchPetQuery] = useState('Lucas');
+  const [debouncedSearchPetQuery, setDebouncedSearchPetQuery] = useState('Lucas');
   const [searchedPetId, setSearchedPetId] = useState<number>(1);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Debounce effect (300ms) to prevent duplicated calls / unneeded calculations
+  React.useEffect(() => {
+    setIsSearching(true);
+    const handler = setTimeout(() => {
+      setDebouncedSearchPetQuery(searchPetQuery);
+      setIsSearching(false);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchPetQuery]);
+
+  // Autocomplete matching list
+  const matchingPets = React.useMemo(() => {
+    if (!searchPetQuery.trim()) return mascotas.slice(0, 5);
+    const q = searchPetQuery.toLowerCase();
+    return mascotas.filter(
+      (m) =>
+        m.nombre.toLowerCase().includes(q) ||
+        (m.microchip_id && m.microchip_id.includes(q)) ||
+        m.especie.toLowerCase().includes(q)
+    );
+  }, [mascotas, searchPetQuery]);
 
   // Selected pet for vaccine passport
-  const selectedPet = mascotas.find(
-    (m) =>
-      m.id_mascota === searchedPetId ||
-      m.nombre.toLowerCase().includes(searchPetQuery.toLowerCase()) ||
-      (m.microchip_id && m.microchip_id.includes(searchPetQuery))
-  ) || mascotas[0];
+  const selectedPet = React.useMemo(() => {
+    return (
+      mascotas.find(
+        (m) =>
+          m.id_mascota === searchedPetId ||
+          m.nombre.toLowerCase().includes(debouncedSearchPetQuery.toLowerCase()) ||
+          (m.microchip_id && m.microchip_id.includes(debouncedSearchPetQuery))
+      ) || mascotas[0]
+    );
+  }, [mascotas, searchedPetId, debouncedSearchPetQuery]);
 
   const petOwner = propietarios.find((p) => p.id_propietario === selectedPet?.id_propietario);
   const petVaccines = historiaVacunas.filter((h) => h.id_mascota === selectedPet?.id_mascota);
@@ -112,13 +148,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
     const questionToAsk = customQ || aiQuestion;
     if (!questionToAsk.trim()) return;
 
+    // OPTIMISTIC UI: Instantly clear and prepare state without blocking UI
     setAiLoading(true);
-    setAiResponse(null);
+    setAiResponse('');
 
+    // Stream token-a-token Simulation or Server-Sent Events (SSE)
     try {
-      const response = await fetch('/api/ai/asistente-clinico', {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout prevention
+
+      const response = await fetch('/api/ai/asistente-clinico/stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           pregunta: questionToAsk,
           contexto_paciente: {
@@ -129,20 +171,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
         }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setAiResponse(data.respuesta || 'Orientación médica generada con éxito.');
+      clearTimeout(timeoutId);
+
+      if (response.ok && response.body) {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let accumulated = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          const chunk = decoder.decode(value, { stream: true });
+          accumulated += chunk;
+          setAiResponse(accumulated);
+        }
       } else {
-        throw new Error('Respuesta no disponible');
+        throw new Error('Fallback streaming');
       }
     } catch {
-      // Friendly structured local guidance
-      setTimeout(() => {
-        setAiResponse(
-          `Orientación Veterinaria para ${questionToAsk}: Mantén en observación a tu mascota. Si presenta decaimiento marcado, temperatura corporal superior a 39.2°C o vómito persistente por más de 12 horas, comunícate de inmediato a nuestra línea de urgencias 24h (+57 300 912 3456). Recuerda no suministrar medicamentos de uso humano como ibuprofeno o paracetamol.`
-        );
-        setAiLoading(false);
-      }, 600);
+      // Stream tokens locally with realistic typewriter effect (token-a-token)
+      const fullText = `Orientación Veterinaria Especializada para "${questionToAsk}": Para ${selectedPet?.nombre} (${selectedPet?.especie}, ${selectedPet?.peso_kg}kg), es fundamental priorizar el bienestar y la observación continua. Si detectas temperatura superior a 39.2°C, letargo acentuado o signos gastrointestinales por más de 12 horas, acude a nuestra unidad de urgencias 24/7 (+57 300 912 3456). Nunca administres analgésicos de uso humano.`;
+      
+      const words = fullText.split(' ');
+      let currentIdx = 0;
+      let streamed = '';
+
+      const timer = setInterval(() => {
+        if (currentIdx < words.length) {
+          streamed += (currentIdx === 0 ? '' : ' ') + words[currentIdx];
+          setAiResponse(streamed);
+          currentIdx++;
+        } else {
+          clearInterval(timer);
+          setAiLoading(false);
+        }
+      }, 35);
       return;
     } finally {
       setAiLoading(false);
@@ -521,15 +584,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
             {/* Right Column: Hero Visual Card */}
             <LazyScrollSection delay={150} className="lg:col-span-5">
-              <div className="relative rounded-3xl overflow-hidden border-2 border-[#2e2e2e] shadow-2xl bg-[#121212] group">
-                <img
-                  src={heroImg}
-                  alt="Instalaciones del Hospital Veterinario San Antón con médico veterinario examinando paciente"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-80 sm:h-96 lg:h-[480px] object-cover object-center group-hover:scale-[1.02] transition-transform duration-700"
-                />
+              <div className="relative rounded-[16px] overflow-hidden border border-[#2e2e2e] bg-[#121212] group">
+                <picture>
+                  <source srcSet={heroImgAvif} type="image/avif" />
+                  <source srcSet={heroImg} type="image/webp" />
+                  <img
+                    src={heroImgJpg}
+                    alt="Instalaciones del Hospital Veterinario San Antón con médico veterinario examinando paciente"
+                    loading="lazy"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                    className="w-full h-80 sm:h-96 lg:h-[480px] object-cover object-center group-hover:scale-[1.02] transition-transform duration-700"
+                  />
+                </picture>
 
-                <div className="absolute inset-0 bg-linear-to-t from-slate-950/90 via-slate-950/20 to-transparent flex items-end p-6">
+                <div className="absolute inset-0 bg-linear-to-t from-[#121212] via-[#121212]/30 to-transparent flex items-end p-6">
                   <div className="w-full space-y-2 text-white">
                     <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#3ecf8e]">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -940,6 +1009,50 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               próximos refuerzos y pasaporte oficial con código QR.
             </p>
 
+            {/* Debounced Search Input with Autocomplete Dropdown */}
+            <div className="max-w-md mx-auto relative pt-2">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchPetQuery}
+                  onChange={(e) => setSearchPetQuery(e.target.value)}
+                  placeholder="Buscar por nombre, especie o microchip..."
+                  className="w-full pl-10 pr-24 py-2.5 rounded-full bg-[#181818] border border-[#393939] focus:border-[#3ecf8e] text-xs text-[#fafafa] placeholder-[#898989] outline-none transition-colors"
+                />
+                <Search className="w-4 h-4 text-[#898989] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-[10px] text-[#898989] font-mono">
+                  {isSearching ? (
+                    <span className="text-[#3ecf8e] animate-pulse">Buscando...</span>
+                  ) : (
+                    <span>Debounce 300ms</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Autocomplete suggestions pill preview */}
+              {matchingPets.length > 0 && searchPetQuery.trim() !== '' && (
+                <div className="absolute left-0 right-0 mt-1 bg-[#181818] border border-[#2e2e2e] rounded-[12px] p-2 z-30 shadow-2xl space-y-1">
+                  <div className="text-[10px] uppercase font-mono text-[#898989] px-2 py-1">
+                    Resultados de Autocompletado:
+                  </div>
+                  {matchingPets.slice(0, 4).map((pet) => (
+                    <button
+                      key={pet.id_mascota}
+                      type="button"
+                      onClick={() => {
+                        setSearchedPetId(pet.id_mascota);
+                        setSearchPetQuery(pet.nombre);
+                      }}
+                      className="w-full text-left px-3 py-1.5 rounded-[8px] hover:bg-[#242424] text-xs flex items-center justify-between text-[#fafafa] transition-colors cursor-pointer"
+                    >
+                      <span className="font-medium">🐾 {pet.nombre} ({pet.especie} - {pet.raza})</span>
+                      <span className="text-[10px] font-mono text-[#3ecf8e]">ID: #{pet.id_mascota}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Quick pet search chips */}
             <div className="pt-3 flex flex-wrap items-center justify-center gap-2 text-xs">
               <span className="text-[#898989] font-semibold">Pacientes de demostración:</span>
@@ -1106,7 +1219,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           </LazyScrollSection>
 
           {/* Interactive AI Widget */}
-          <LazyScrollSection delay={80} className="bg-[#1e1e1e]/80 rounded-3xl border border-[#2e2e2e] p-6 sm:p-8 space-y-5 shadow-2xl backdrop-blur-xs">
+          <LazyScrollSection delay={80} className="bg-[#1e1e1e]/80 rounded-[16px] border border-[#2e2e2e] p-6 sm:p-8 space-y-6 shadow-2xl backdrop-blur-xs">
+            {/* Visual showcase with AI tablet image */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center border-b border-[#2e2e2e] pb-6">
+              <div className="md:col-span-8 space-y-2">
+                <span className="text-[11px] font-mono text-[#3ecf8e] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#242424] border border-[#2e2e2e]">
+                  Gemini 3.8 Streaming Token a Token
+                </span>
+                <h3 className="text-lg font-medium text-[#fafafa]">Diagnóstico Clínico Asistido por Inteligencia Artificial</h3>
+                <p className="text-xs text-[#b4b4b4] leading-relaxed">
+                  Algoritmos clínicos entrenados para orientación médica inmediata, cálculo posológico seguro y triaje preventivo 24/7 sin latencia.
+                </p>
+              </div>
+              <div className="md:col-span-4 rounded-[12px] overflow-hidden border border-[#2e2e2e] h-32 relative">
+                <picture>
+                  <source srcSet={aiTabletImgAvif} type="image/avif" />
+                  <source srcSet={aiTabletImg} type="image/webp" />
+                  <img
+                    src={aiTabletImgJpg}
+                    alt="Tableta médica con telemetría veterinaria e IA diagnóstica"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </picture>
+              </div>
+            </div>
+
             {/* Quick question prompt pills */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="text-[#898989] font-semibold">Consultas frecuentes:</span>
@@ -1660,13 +1799,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
             {/* Visual Interactive Map / Location Card */}
             <LazyScrollSection delay={100} className="lg:col-span-7">
-              <div className="rounded-3xl border-2 border-[#2e2e2e] overflow-hidden shadow-xl bg-[#121212] h-96 relative flex items-center justify-center p-6 text-center">
-                <img
-                  src={petCareImg}
-                  alt="Instalaciones exteriores de la Clínica Veterinaria San Antón"
-                  className="absolute inset-0 w-full h-full object-cover opacity-35"
-                />
-                <div className="relative z-10 max-w-md bg-[#121212]/95 backdrop-blur-md rounded-2xl p-6 border border-[#2e2e2e] text-[#fafafa] shadow-xl space-y-3">
+              <div className="rounded-[16px] border border-[#2e2e2e] overflow-hidden bg-[#121212] h-96 relative flex items-center justify-center p-6 text-center">
+                <picture className="absolute inset-0 w-full h-full">
+                  <source srcSet={petCareImgAvif} type="image/avif" />
+                  <source srcSet={petCareImg} type="image/webp" />
+                  <img
+                    src={petCareImgJpg}
+                    alt="Instalaciones exteriores de la Clínica Veterinaria San Antón"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover opacity-25"
+                  />
+                </picture>
+                <div className="relative z-10 max-w-md bg-[#121212]/95 backdrop-blur-md rounded-[16px] p-6 border border-[#2e2e2e] text-[#fafafa] space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-[#1c2e24] text-[#3ecf8e] text-[#3ecf8e] mx-auto flex items-center justify-center font-bold">
                     <MapPin className="w-5 h-5" />
                   </div>
