@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Brand */}
         <div className="flex items-center gap-3 shrink-0">
           <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
-            <Stethoscope className="w-4 h-4 text-[#ffffff]" strokeWidth={2} />
+            <Stethoscope size={18} className="w-[18px] h-[18px] text-[#ffffff] shrink-0" strokeWidth={2} />
           </div>
           <div className="whitespace-nowrap">
             <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Clinical Suite
               </span>
             </div>
-            <p className="text-[11px] text-[#777b86] hidden md:block leading-tight">Hospital Clínico San Antón</p>
+            <p className="text-[11px] text-[#777b86] hidden md:block leading-tight">Hospital Clínico Veterinario VetSoft</p>
           </div>
         </div>
 

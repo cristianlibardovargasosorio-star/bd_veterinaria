@@ -145,7 +145,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
   const [aiQuestion, setAiQuestion] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
   const [aiResponse, setAiResponse] = useState<string | null>(
-    '¡Hola! Soy el Asistente Clínico Inteligente de la Clínica Veterinaria San Antón. Puedes consultarme dudas sobre el cuidado de tu mascota, síntomas habituales, calendario de vacunación o nutrición preventiva.'
+    '¡Hola! Soy el Asistente Clínico Inteligente de la Clínica Veterinaria VetSoft. Puedes consultarme dudas sobre el cuidado de tu mascota, síntomas habituales, calendario de vacunación o nutrición preventiva.'
   );
 
   const handleAskAI = async (customQ?: string) => {
@@ -411,14 +411,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           {/* Brand Identity */}
           <a href="#" className="flex items-center gap-2.5 shrink-0 group">
             <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
-              <Stethoscope className="w-4 h-4 text-[#ffffff]" strokeWidth={2} />
+              <Stethoscope size={18} className="w-[18px] h-[18px] text-[#ffffff] shrink-0" strokeWidth={2} />
             </div>
             <div className="flex items-baseline gap-2 whitespace-nowrap">
               <span className="font-serif-editorial text-[22px] tracking-tight text-[#17191c] leading-none">
-                San Antón
+                VetSoft
               </span>
               <span className="text-[11px] text-[#979799] font-normal hidden sm:inline">
-                VetSoft
+                Clínica Veterinaria
               </span>
             </div>
           </a>
@@ -543,7 +543,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               </h1>
 
               <p className="text-[17px] text-[#777b86] max-w-xl leading-[1.45]">
-                En la Clínica Veterinaria San Antón integramos medicina especializada, carné digital de vacunación con validación QR y síntesis clínica asistida por inteligencia artificial.
+                En la Clínica Veterinaria VetSoft integramos medicina especializada, carné digital de vacunación con validación QR y síntesis clínica asistida por inteligencia artificial.
               </p>
 
               {/* Matched Pill Button Pair (Filled #17191c + Ghost #17191c border) */}
@@ -600,7 +600,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     <source srcSet={heroImg} type="image/webp" />
                     <img
                       src={heroImgJpg}
-                      alt="Instalaciones del Hospital Veterinario San Antón"
+                      alt="Instalaciones del Hospital Veterinario VetSoft"
                       loading="lazy"
                       decoding="async"
                       referrerPolicy="no-referrer"
@@ -803,7 +803,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       </div>
                       <div className="flex justify-between">
                         <span className="text-[#979799]">Sede:</span>
-                        <span className="font-bold text-[#17191c]">Hospital San Antón Bogotá</span>
+                        <span className="font-bold text-[#17191c]">Hospital VetSoft Bogotá</span>
                       </div>
                     </div>
 
@@ -998,7 +998,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               Carné Digital de Vacunación & Historial Médico
             </h2>
             <p className="text-sm text-[#979799]">
-              ¿Tu mascota ya es paciente de la Clínica San Antón? Consulta al instante su estado vacunal,
+              ¿Tu mascota ya es paciente de la Clínica VetSoft? Consulta al instante su estado vacunal,
               próximos refuerzos y pasaporte oficial con código QR.
             </p>
 
@@ -1798,7 +1798,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   <source srcSet={petCareImg} type="image/webp" />
                   <img
                     src={petCareImgJpg}
-                    alt="Instalaciones exteriores de la Clínica Veterinaria San Antón"
+                    alt="Instalaciones exteriores de la Clínica Veterinaria VetSoft"
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover opacity-25"
@@ -1808,7 +1808,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   <div className="w-10 h-10 rounded-xl bg-[#fbe1d1] text-[#5d2a1a] mx-auto flex items-center justify-center font-bold">
                     <MapPin className="w-5 h-5" />
                   </div>
-                  <h4 className="text-base font-bold text-[#17191c]">Hospital Clínico Veterinario San Antón</h4>
+                  <h4 className="text-base font-bold text-[#17191c]">Hospital Clínico Veterinario VetSoft</h4>
                   <p className="text-xs text-[#979799]">
                     Fácil acceso vial por la Autopista Norte y Calle 127. Contamos con bahía de parqueo y
                     recepción de urgencias independiente.
@@ -1871,7 +1871,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               <Stethoscope className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-[#17191c]">Clínica Veterinaria San Antón</span>
+              <span className="font-bold text-[#17191c]">Clínica Veterinaria VetSoft</span>
               <span className="text-[#979799] block text-[10px]">
                 Impulsado por el Sistema de Gestión VETSOFT & Gemini 3.8 Flash
               </span>
@@ -1900,7 +1900,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           </div>
 
           <div className="text-center md:text-right">
-            <span>© {new Date().getFullYear()} Clínica Veterinaria San Antón · Todos los derechos reservados.</span>
+            <span>© {new Date().getFullYear()} Clínica Veterinaria VetSoft · Todos los derechos reservados.</span>
           </div>
         </div>
       </footer>
