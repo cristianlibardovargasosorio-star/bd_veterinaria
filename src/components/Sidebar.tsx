@@ -130,16 +130,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
   const visibleItems = navigationItems.filter((item) => item.roles.includes(currentRole));
 
   return (
-    <aside className="w-64 bg-[#ffffff] text-[#17191c] flex flex-col shrink-0 min-h-[calc(100vh-5rem)] py-4 pr-4">
-      <div className="px-4 py-3 mb-2 rounded-[20px] bg-[#f2f2f3]">
+    <aside className="w-full md:w-64 md:min-w-[256px] bg-[#ffffff] text-[#17191c] flex flex-col shrink-0 md:min-h-[calc(100vh-4.5rem)] p-4 border-b md:border-b-0 md:border-r border-[#ececec]">
+      <div className="px-4 py-3 mb-3 rounded-[20px] bg-[#f2f2f3]">
         <p className="text-[11px] uppercase tracking-wider text-[#979799]">Navegación Clínica</p>
-        <div className="mt-1 flex items-center justify-between text-xs text-[#17191c]">
-          <span className="text-[#777b86]">Vista activa:</span>
-          <span className="font-medium text-[#5d2a1a] bg-[#fbe1d1] px-2.5 py-0.5 rounded-full text-[11px]">{currentRole}</span>
+        <div className="mt-1.5 flex items-center justify-between gap-2 text-xs text-[#17191c]">
+          <span className="text-[#777b86] shrink-0">Vista:</span>
+          <span className="font-medium text-[#5d2a1a] bg-[#fbe1d1] px-2.5 py-0.5 rounded-full text-[11px] truncate">
+            {currentRole}
+          </span>
         </div>
       </div>
 
-      <nav className="flex-1 space-y-1.5 overflow-y-auto">
+      <nav className="flex md:flex-col gap-1.5 overflow-x-auto md:overflow-x-visible md:overflow-y-auto pb-2 md:pb-0 flex-1">
         {visibleItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -148,7 +150,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center justify-between px-4 py-3 rounded-[20px] text-left transition-all cursor-pointer ${
+              className={`shrink-0 md:shrink md:w-full flex items-center justify-between px-3.5 py-2.5 rounded-[16px] text-left transition-all cursor-pointer ${
                 isActive
                   ? 'bg-[#17191c] text-[#ffffff]'
                   : 'bg-transparent text-[#17191c] hover:bg-[#f2f2f3]'
@@ -160,10 +162,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
                     isActive ? 'text-[#fbe1d1]' : 'text-[#777b86]'
                   }`}
                 />
-                <div className="truncate">
-                  <div className="text-xs font-medium leading-none">{item.label}</div>
+                <div className="min-w-0">
+                  <div className="text-xs font-medium leading-tight whitespace-nowrap md:whitespace-normal">
+                    {item.label}
+                  </div>
                   <div
-                    className={`text-[10px] mt-1 leading-none ${
+                    className={`hidden md:block text-[10px] mt-0.5 leading-tight truncate ${
                       isActive ? 'text-[#a3a6af]' : 'text-[#979799]'
                     }`}
                   >
@@ -183,7 +187,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       </nav>
 
       {/* Footer status */}
-      <div className="mt-4 px-4 py-3 rounded-[20px] bg-[#f2f2f3] text-[11px] text-[#777b86] flex items-center justify-between">
+      <div className="hidden md:flex mt-4 px-4 py-3 rounded-[20px] bg-[#f2f2f3] text-[11px] text-[#777b86] items-center justify-between">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-[#5d2a1a]"></span>
           <span>PostgreSQL Activo</span>

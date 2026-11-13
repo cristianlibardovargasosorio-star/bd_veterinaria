@@ -48,24 +48,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
   return (
     <div className="space-y-6">
-      {/* Welcome Banner */}
-      <div className="p-6 rounded-[20px] bg-linear-to-r from-slate-900 via-emerald-950 to-slate-900 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1">
+      {/* Welcome Banner (Steep Editorial Card) */}
+      <div className="p-6 rounded-[24px] bg-[#f2f2f3] text-[#17191c] flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-[#5d2a1a] border border-[#17191c]/30">
+            <span className="text-[11px] font-medium uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#fbe1d1] text-[#5d2a1a]">
               {currentRole}
             </span>
-            <span className="text-xs text-[#979799] font-mono">VETSOFT v2.4 ACID</span>
+            <span className="text-xs text-[#979799]">VETSOFT v2.4 ACID</span>
           </div>
-          <h1 className="text-2xl font-black tracking-tight text-white">
+          <h1 className="font-serif-editorial text-2xl sm:text-3xl tracking-tight text-[#17191c]">
             {currentRole === 'PROPIETARIO'
-              ? `¡Hola, ${ownerRecord?.nombres || 'Tutor'}!`
+              ? `Hola, ${ownerRecord?.nombres || 'Tutor'}`
               : `Panel de Control Veterinario`}
           </h1>
           <p className="text-sm text-[#777b86] max-w-xl">
             {currentRole === 'PROPIETARIO'
               ? 'Consulta el estado de salud, carné de vacunas e historial clínico con explicaciones claras con IA.'
-              : 'Sistema unificado de historias clínicas, control estricto de inventario con lotes y motor de IA con Gemini 3.8 Flash.'}
+              : 'Sistema unificado de historias clínicas, control estricto de inventario con lotes y motor clínico asistido.'}
           </p>
         </div>
 
@@ -74,16 +74,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             <>
               <button
                 onClick={() => onNavigateTab('consultas')}
-                className="px-4 py-2.5 bg-[#17191c] text-[#ffffff] hover:bg-emerald-500 text-white text-xs font-bold rounded-xl flex items-center gap-2 transition-all shadow-md "
+                className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:opacity-90 text-xs font-normal rounded-full flex items-center gap-2 transition-opacity cursor-pointer"
               >
-                <Stethoscope className="w-4 h-4" />
+                <Stethoscope className="w-3.5 h-3.5" />
                 <span>Nueva Consulta</span>
               </button>
               <button
                 onClick={() => onNavigateTab('facturacion')}
-                className="px-4 py-2.5 bg-[#ffffff]/10 hover:bg-[#ffffff]/20 text-white text-xs font-bold rounded-xl flex items-center gap-2 transition-all backdrop-blur-xs"
+                className="px-4 py-2 bg-transparent hover:bg-[#e5e5e7] text-[#17191c] border border-[#17191c] text-xs font-normal rounded-full flex items-center gap-2 transition-colors cursor-pointer"
               >
-                <Receipt className="w-4 h-4" />
+                <Receipt className="w-3.5 h-3.5" />
                 <span>Facturación POS</span>
               </button>
             </>

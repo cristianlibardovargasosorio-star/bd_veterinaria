@@ -76,20 +76,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="bg-[#ffffff]/95 backdrop-blur-md sticky top-0 z-40 border-b border-[#ececec]">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3 shrink-0">
           <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
-            <Stethoscope className="w-4 h-4" />
+            <Stethoscope className="w-4 h-4 text-[#ffffff]" strokeWidth={2} />
           </div>
           <div className="whitespace-nowrap">
             <div className="flex items-center gap-2">
-              <span className="font-serif-editorial text-2xl tracking-tight text-[#17191c]">VetSoft</span>
-              <span className="text-[12px] text-[#979799] font-normal hidden xl:inline">
-                Editorial Clinical Suite
+              <span className="font-serif-editorial text-[22px] tracking-tight text-[#17191c] leading-none">VetSoft</span>
+              <span className="text-[11px] text-[#979799] font-normal hidden xl:inline">
+                Clinical Suite
               </span>
             </div>
-            <p className="text-[11px] text-[#777b86] hidden md:block">Hospital Clínico San Antón</p>
+            <p className="text-[11px] text-[#777b86] hidden md:block leading-tight">Hospital Clínico San Antón</p>
           </div>
         </div>
 

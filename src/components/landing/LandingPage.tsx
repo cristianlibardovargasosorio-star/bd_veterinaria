@@ -385,90 +385,75 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       <BackgroundThreeCanvas />
 
       <div className="relative z-10">
-      {/* TOP EMERGENCY AND CONTACT TICKER (Quiet Editorial Strip) */}
-      <div className="bg-[#fafafb] text-[#777b86] text-xs py-2.5 px-4 border-b border-[#ececec]">
-        <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 font-medium text-[#5d2a1a] bg-[#fbe1d1] px-2.5 py-0.5 rounded-full">
+      {/* TOP EMERGENCY STRIP (Quiet Editorial Strip, sin botones duplicados) */}
+      <div className="bg-[#fafafb] text-[#777b86] text-xs py-2 px-4 border-b border-[#ececec]">
+        <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5">
+            <span className="inline-flex items-center gap-1.5 font-medium text-[#5d2a1a] bg-[#fbe1d1] px-2.5 py-0.5 rounded-full text-[11px]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#5d2a1a]" />
               Urgencias 24 Horas
             </span>
             <span className="text-[#a3a6af] hidden sm:inline">·</span>
-            <span className="hidden sm:inline text-[#777b86]">
-              Sede Principal: Cra. 45 # 128-22, Bogotá
+            <span className="hidden sm:inline text-[#777b86] text-[12px]">
+              Cra. 45 # 128-22, Bogotá
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs">
-            <a
-              href="tel:+573009123456"
-              className="flex items-center gap-1.5 text-[#17191c] hover:underline transition-colors"
-            >
-              <Phone className="w-3.5 h-3.5" />
-              <span>+57 (300) 912-3456</span>
-            </a>
-            <span className="text-[#a3a6af]">·</span>
-            <button
-              onClick={onOpenLogin}
-              className="text-[#17191c] hover:underline flex items-center gap-1 font-normal transition-colors cursor-pointer"
-              title="Módulo 1: Autenticación y Acceso (/login)"
-            >
-              <span>Iniciar sesión (/login) →</span>
-            </button>
-            <span className="text-[#a3a6af]">·</span>
-            <button
-              onClick={onEnterERP}
-              className="text-[#777b86] hover:text-[#17191c] flex items-center gap-1 font-normal transition-colors cursor-pointer"
-            >
-              <span>Suite ERP →</span>
-            </button>
-          </div>
+          <a
+            href="tel:+573009123456"
+            className="flex items-center gap-1.5 text-[#17191c] hover:underline transition-colors text-[12px] whitespace-nowrap"
+          >
+            <Phone className="w-3.5 h-3.5 text-[#5d2a1a]" />
+            <span>+57 (300) 912-3456</span>
+          </a>
         </div>
       </div>
 
-      {/* MAIN NAVIGATION BAR — Steep Whisper-quiet Top Bar */}
-      <header className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md border-b border-[#ececec]/70">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      {/* MAIN NAVIGATION BAR — Steep Editorial Top Bar */}
+      <header className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md border-b border-[#ececec]">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Brand Identity */}
-          <a href="#" className="flex items-center gap-3 shrink-0 group">
+          <a href="#" className="flex items-center gap-2.5 shrink-0 group">
             <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
-              <Stethoscope className="w-4 h-4" />
+              <Stethoscope className="w-4 h-4 text-[#ffffff]" strokeWidth={2} />
             </div>
             <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <span className="font-serif-editorial text-2xl tracking-tight text-[#17191c]">San Antón</span>
-              <span className="text-xs text-[#979799] font-normal hidden sm:inline">
+              <span className="font-serif-editorial text-[22px] tracking-tight text-[#17191c] leading-none">
+                San Antón
+              </span>
+              <span className="text-[11px] text-[#979799] font-normal hidden sm:inline">
                 VetSoft
               </span>
             </div>
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-[15px] font-normal text-[#17191c]">
-            <a href="#servicios" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+          <nav className="hidden lg:flex items-center gap-6 text-[14px] font-normal text-[#17191c]">
+            <a href="#servicios" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
               Servicios
             </a>
-            <a href="#agendar" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+            <a href="#agendar" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
               Agendar cita
             </a>
-            <a href="#carne" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+            <a href="#carne" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
               Carné digital
             </a>
-            <a href="#equipo" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+            <a href="#equipo" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
               Especialistas
             </a>
-            <a href="#asistente-ia" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+            <a href="#asistente-ia" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
               Asistente IA
             </a>
-            <a href="#planes" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+            <a href="#planes" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
               Planes
             </a>
           </nav>
 
-          {/* Primary Action Buttons: Ghost Pill + Filled Pill + Mobile Menu Toggle */}
+          {/* Primary Action Buttons: Compact Proportional Pill Controls */}
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={onOpenLogin}
-              className="hidden sm:inline-flex items-center px-4 py-2 rounded-full text-sm font-normal text-[#17191c] bg-transparent hover:bg-[#f2f2f3] border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal text-[#17191c] bg-transparent hover:bg-[#f2f2f3] border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
               title="Ir al Módulo 1: Login de Usuarios (/login)"
             >
               Iniciar sesión
@@ -476,14 +461,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
             <a
               href="#agendar"
-              className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-normal bg-[#17191c] text-[#ffffff] hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal bg-[#17191c] text-[#ffffff] hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
             >
-              <span>Reservar cita</span>
+              Reservar cita
             </a>
 
             <button
               onClick={onEnterERP}
-              className="px-4 py-2 rounded-full text-sm font-normal bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap"
+              className="inline-flex items-center justify-center h-9 px-3.5 rounded-full text-[13px] font-normal bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] transition-colors gap-1 cursor-pointer whitespace-nowrap"
               title="Abrir el software integral de gestión clínica"
             >
               <span>ERP →</span>
@@ -493,7 +478,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-full text-[#17191c] hover:bg-[#f2f2f3] transition-colors cursor-pointer"
+              className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-full text-[#17191c] hover:bg-[#f2f2f3] transition-colors cursor-pointer"
               aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={mobileMenuOpen}
             >

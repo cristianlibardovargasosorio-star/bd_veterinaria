@@ -103,12 +103,12 @@ export default function App() {
           />
 
           {/* App Body */}
-          <div className="flex-1 flex flex-col md:flex-row max-w-[1200px] w-full mx-auto">
+          <div className="flex-1 flex flex-col md:flex-row max-w-[1360px] w-full mx-auto">
             {/* Left Sidebar */}
             <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
             {/* Main View Area */}
-            <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
               {isSkeletonLoading ? (
                 /* Skeleton Presentation Mode */
                 <div className="space-y-6 animate-pulse">
