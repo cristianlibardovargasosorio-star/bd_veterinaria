@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStore } from '../../db/store';
 import { LazyScrollSection } from '../common/LazyScrollSection';
 import { SkeletonCard, SkeletonKPI, SkeletonTable } from '../common/Skeleton';
+import { HeroThreeScene } from './HeroThreeScene';
 import confetti from 'canvas-confetti';
 import {
   Stethoscope,
@@ -545,37 +546,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               </div>
             </LazyScrollSection>
 
-            {/* Right Column: Floating Product Artifact Collage */}
-            <LazyScrollSection delay={150} className="lg:col-span-5 relative">
-              <div className="rounded-[20px] overflow-hidden bg-[#ffffff] p-3 steep-floating-artifact">
-                <div className="rounded-[12px] overflow-hidden relative">
+            {/* Right Column: Interactive Three.js 3D WebGL Floating Artifact + Clinical Image Preview */}
+            <LazyScrollSection delay={150} className="lg:col-span-5 relative space-y-4">
+              <HeroThreeScene onOpenERP={onEnterERP} />
+
+              {/* Compact Secondary Floating Artifact with WebP/AVIF clinical snapshot */}
+              <div className="rounded-[20px] bg-[#ffffff] p-3 steep-floating-artifact flex items-center gap-3.5">
+                <div className="w-16 h-16 rounded-[12px] overflow-hidden shrink-0">
                   <picture>
                     <source srcSet={heroImgAvif} type="image/avif" />
                     <source srcSet={heroImg} type="image/webp" />
                     <img
                       src={heroImgJpg}
-                      alt="Instalaciones del Hospital Veterinario San Antón con médico veterinario examinando paciente"
+                      alt="Instalaciones del Hospital Veterinario San Antón"
                       loading="lazy"
                       decoding="async"
                       referrerPolicy="no-referrer"
-                      className="w-full h-80 sm:h-96 object-cover object-center"
+                      className="w-full h-full object-cover object-center"
                     />
                   </picture>
                 </div>
-
-                <div className="pt-4 pb-2 px-2 flex items-center justify-between">
-                  <div>
-                    <div className="text-xs text-[#979799]">Monitor Clínico en Tiempo Real</div>
-                    <div className="text-sm font-medium text-[#17191c] mt-0.5">
-                      Expediente activo · EXP-2026-001 (Lucas)
-                    </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[11px] text-[#979799]">Quirófano & Diagnóstico por Imagen</div>
+                  <div className="text-xs font-medium text-[#17191c] truncate">
+                    Monitoreo multiparamétrico 24/7 en sede principal
                   </div>
-                  <button
-                    onClick={onEnterERP}
-                    className="text-xs px-4 py-2 bg-[#17191c] text-[#ffffff] rounded-full font-normal hover:opacity-90 transition-opacity cursor-pointer"
-                  >
-                    Abrir ERP →
-                  </button>
                 </div>
               </div>
             </LazyScrollSection>
