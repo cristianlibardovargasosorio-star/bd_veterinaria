@@ -162,11 +162,11 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#fafafa] tracking-tight flex items-center gap-2">
-            <PawPrint className="w-6 h-6 text-[#3ecf8e]" />
+          <h2 className="text-xl font-black text-[#17191c] tracking-tight flex items-center gap-2">
+            <PawPrint className="w-6 h-6 text-[#5d2a1a]" />
             <span>Gestión de Pacientes y Expedientes (RF05 & RF06)</span>
           </h2>
-          <p className="text-xs text-[#898989] mt-0.5">
+          <p className="text-xs text-[#979799] mt-0.5">
             Registro unificado con código único de expediente, microchip y vinculación a tutor legal.
           </p>
         </div>
@@ -175,15 +175,15 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowNewOwnerModal(true)}
-              className="px-3.5 py-2 rounded-xl border border-[#393939] bg-[#121212] hover:bg-[#121212] text-[#b4b4b4] text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
+              className="px-3.5 py-2 rounded-xl border border-[#e2e2e5] bg-[#ffffff] hover:bg-[#ffffff] text-[#777b86] text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
             >
-              <UserPlus className="w-4 h-4 text-[#898989]" />
+              <UserPlus className="w-4 h-4 text-[#979799]" />
               <span>Nuevo Tutor (RF06)</span>
             </button>
 
             <button
               onClick={() => setShowNewPetModal(true)}
-              className="px-4 py-2 rounded-xl bg-[#3ecf8e] text-[#121212] hover:bg-[#00c573] text-[#121212] text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all"
+              className="px-4 py-2 rounded-xl bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
             >
               <Plus className="w-4 h-4" />
               <span>Nuevo Paciente (RF05)</span>
@@ -193,28 +193,28 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 bg-[#121212] rounded-2xl border border-[#2e2e2e] shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between">
+      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#ececec] shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between">
         <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-[#898989] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#979799] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar por nombre, expediente, microchip o cédula..."
-            className="w-full pl-9 pr-3 py-2 rounded-xl border border-[#2e2e2e] text-xs focus:outline-hidden focus:border-[#3ecf8e] focus:ring-1 focus:ring-emerald-500"
+            className="w-full pl-9 pr-3 py-2 rounded-xl border border-[#ececec] text-xs focus:outline-hidden focus:border-[#17191c] focus:ring-1 focus:ring-emerald-500"
           />
         </div>
 
         <div className="flex items-center gap-2 w-full md:w-auto">
-          <span className="text-xs text-[#898989] font-semibold shrink-0">Especie:</span>
+          <span className="text-xs text-[#979799] font-semibold shrink-0">Especie:</span>
           {['TODAS', 'Canino', 'Felino'].map((esp) => (
             <button
               key={esp}
               onClick={() => setFilterEspecie(esp)}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 filterEspecie === esp
-                  ? 'bg-[#121212] text-white'
-                  : 'bg-[#181818] text-[#898989] hover:bg-[#242424]'
+                  ? 'bg-[#17191c] text-[#ffffff]'
+                  : 'bg-[#f2f2f3] text-[#979799] hover:bg-[#f2f2f3]'
               }`}
             >
               {esp}
@@ -234,19 +234,19 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
             <div
               key={pet.id_mascota}
               onClick={() => setSelectedPet(pet)}
-              className="bg-[#121212] rounded-2xl border border-[#2e2e2e] hover:border-emerald-400 p-5 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group"
+              className="bg-[#ffffff] rounded-[20px] border border-[#ececec] hover:border-emerald-400 p-5 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-linear-to-tr from-emerald-100 to-teal-50 border border-[#1f4b37] text-[#3ecf8e] flex items-center justify-center font-black text-lg">
+                    <div className="w-12 h-12 rounded-xl bg-linear-to-tr from-emerald-100 to-teal-50 border border-[#ececec] text-[#5d2a1a] flex items-center justify-center font-black text-lg">
                       {pet.especie === 'Canino' ? '🐶' : pet.especie === 'Felino' ? '🐱' : '🐾'}
                     </div>
                     <div>
-                      <h3 className="font-bold text-base text-[#fafafa] group-hover:text-[#3ecf8e] transition-colors">
+                      <h3 className="font-bold text-base text-[#17191c] group-hover:text-[#5d2a1a] transition-colors">
                         {pet.nombre}
                       </h3>
-                      <div className="flex items-center gap-1.5 text-xs text-[#898989]">
+                      <div className="flex items-center gap-1.5 text-xs text-[#979799]">
                         <span>{pet.especie}</span>
                         <span>•</span>
                         <span>{pet.raza}</span>
@@ -254,43 +254,43 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     </div>
                   </div>
 
-                  <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#121212] text-[#3ecf8e]">
+                  <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#ffffff] text-[#5d2a1a]">
                     {pet.codigo_expediente}
                   </span>
                 </div>
 
-                <div className="p-3 bg-[#121212] rounded-xl space-y-1.5 text-xs text-[#898989]">
+                <div className="p-3 bg-[#ffffff] rounded-xl space-y-1.5 text-xs text-[#979799]">
                   <div className="flex justify-between">
-                    <span className="text-[#898989]">Tutor:</span>
-                    <span className="font-bold text-[#fafafa]">
+                    <span className="text-[#979799]">Tutor:</span>
+                    <span className="font-bold text-[#17191c]">
                       {owner ? `${owner.nombres} ${owner.apellidos}` : 'No asignado'}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#898989]">Microchip:</span>
-                    <span className="font-mono font-medium text-[#b4b4b4]">
+                    <span className="text-[#979799]">Microchip:</span>
+                    <span className="font-mono font-medium text-[#777b86]">
                       {pet.microchip_id || 'Sin microchip'}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#898989]">Peso actual:</span>
-                    <span className="font-bold text-[#fafafa]">{pet.peso_kg} kg</span>
+                    <span className="text-[#979799]">Peso actual:</span>
+                    <span className="font-bold text-[#17191c]">{pet.peso_kg} kg</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[#898989]">Estado de salud:</span>
-                    <span className="px-1.5 py-0.2 rounded font-bold text-[10px] bg-[#1c2e24] text-[#3ecf8e] text-[#3ecf8e]">
+                    <span className="text-[#979799]">Estado de salud:</span>
+                    <span className="px-1.5 py-0.2 rounded font-bold text-[10px] bg-[#fbe1d1] text-[#5d2a1a]">
                       {pet.estado_salud}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#898989]">
+              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#979799]">
                 <div className="flex items-center gap-3">
                   <span title="Consultas registradas">🩺 {petConsultas.length}</span>
                   <span title="Dosis de vacunas aplicadas">💉 {petVacunas.length}</span>
                 </div>
-                <span className="text-[#3ecf8e] font-bold flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+                <span className="text-[#5d2a1a] font-bold flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
                   Ver expediente <ChevronRight className="w-3.5 h-3.5" />
                 </span>
               </div>
@@ -300,32 +300,32 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       </div>
 
       {displayedPets.length === 0 && (
-        <div className="p-12 text-center bg-[#121212] rounded-2xl border border-[#2e2e2e]">
-          <PawPrint className="w-12 h-12 text-[#b4b4b4] mx-auto mb-2" />
-          <h3 className="font-bold text-[#b4b4b4]">No se encontraron pacientes</h3>
-          <p className="text-xs text-[#898989] mt-1">Prueba con otro término de búsqueda o registra uno nuevo.</p>
+        <div className="p-12 text-center bg-[#ffffff] rounded-[20px] border border-[#ececec]">
+          <PawPrint className="w-12 h-12 text-[#777b86] mx-auto mb-2" />
+          <h3 className="font-bold text-[#777b86]">No se encontraron pacientes</h3>
+          <p className="text-xs text-[#979799] mt-1">Prueba con otro término de búsqueda o registra uno nuevo.</p>
         </div>
       )}
 
       {/* Selected Pet Drawer / Modal */}
       {selectedPet && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#121212]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#121212] rounded-2xl shadow-2xl max-w-2xl w-full border border-[#2e2e2e] overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="px-6 py-4 bg-[#121212] text-white flex items-center justify-between shrink-0">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
+          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#ececec] overflow-hidden max-h-[90vh] flex flex-col">
+            <div className="px-6 py-4 bg-[#17191c] text-[#ffffff] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">
                   {selectedPet.especie === 'Canino' ? '🐶' : '🐱'}
                 </span>
                 <div>
                   <h3 className="font-black text-lg">{selectedPet.nombre}</h3>
-                  <p className="text-xs text-[#3ecf8e] font-mono">
+                  <p className="text-xs text-[#5d2a1a] font-mono">
                     Expediente {selectedPet.codigo_expediente} • Microchip: {selectedPet.microchip_id || 'N/A'}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedPet(null)}
-                className="text-[#898989] hover:text-white p-1 rounded-lg"
+                className="text-[#979799] hover:text-white p-1 rounded-lg"
               >
                 ✕
               </button>
@@ -334,21 +334,21 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
             <div className="p-6 overflow-y-auto space-y-6">
               {/* Pet Details */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                <div className="p-3 bg-[#121212] rounded-xl border border-[#2e2e2e]">
-                  <span className="text-[#898989] block text-[10px]">Especie / Raza</span>
-                  <span className="font-bold text-[#fafafa]">{selectedPet.especie} - {selectedPet.raza}</span>
+                <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
+                  <span className="text-[#979799] block text-[10px]">Especie / Raza</span>
+                  <span className="font-bold text-[#17191c]">{selectedPet.especie} - {selectedPet.raza}</span>
                 </div>
-                <div className="p-3 bg-[#121212] rounded-xl border border-[#2e2e2e]">
-                  <span className="text-[#898989] block text-[10px]">Género</span>
-                  <span className="font-bold text-[#fafafa]">{selectedPet.genero}</span>
+                <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
+                  <span className="text-[#979799] block text-[10px]">Género</span>
+                  <span className="font-bold text-[#17191c]">{selectedPet.genero}</span>
                 </div>
-                <div className="p-3 bg-[#121212] rounded-xl border border-[#2e2e2e]">
-                  <span className="text-[#898989] block text-[10px]">Peso Actual</span>
-                  <span className="font-bold text-[#fafafa]">{selectedPet.peso_kg} kg</span>
+                <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
+                  <span className="text-[#979799] block text-[10px]">Peso Actual</span>
+                  <span className="font-bold text-[#17191c]">{selectedPet.peso_kg} kg</span>
                 </div>
-                <div className="p-3 bg-[#121212] rounded-xl border border-[#2e2e2e]">
-                  <span className="text-[#898989] block text-[10px]">Nacimiento</span>
-                  <span className="font-bold text-[#fafafa]">{selectedPet.fecha_nacimiento}</span>
+                <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
+                  <span className="text-[#979799] block text-[10px]">Nacimiento</span>
+                  <span className="font-bold text-[#17191c]">{selectedPet.fecha_nacimiento}</span>
                 </div>
               </div>
 
@@ -356,27 +356,27 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
               {(() => {
                 const owner = propietarios.find((p) => p.id_propietario === selectedPet.id_propietario);
                 return (
-                  <div className="p-4 rounded-xl border border-[#2e2e2e] bg-[#121212]/50 space-y-2">
-                    <div className="text-xs font-bold text-[#b4b4b4] uppercase tracking-wider flex items-center gap-1.5">
-                      <IdCard className="w-4 h-4 text-[#3ecf8e]" />
+                  <div className="p-4 rounded-xl border border-[#ececec] bg-[#ffffff]/50 space-y-2">
+                    <div className="text-xs font-bold text-[#777b86] uppercase tracking-wider flex items-center gap-1.5">
+                      <IdCard className="w-4 h-4 text-[#5d2a1a]" />
                       <span>Datos del Tutor Legal (RF06)</span>
                     </div>
                     {owner ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                         <div>
-                          <span className="text-[#898989]">Nombre: </span>
-                          <strong className="text-[#fafafa]">{owner.nombres} {owner.apellidos}</strong>
+                          <span className="text-[#979799]">Nombre: </span>
+                          <strong className="text-[#17191c]">{owner.nombres} {owner.apellidos}</strong>
                         </div>
                         <div>
-                          <span className="text-[#898989]">Cédula/Documento: </span>
-                          <strong className="text-[#fafafa] font-mono">{owner.cedula_documento}</strong>
+                          <span className="text-[#979799]">Cédula/Documento: </span>
+                          <strong className="text-[#17191c] font-mono">{owner.cedula_documento}</strong>
                         </div>
-                        <div className="flex items-center gap-1 text-[#898989]">
-                          <Phone className="w-3.5 h-3.5 text-[#898989]" />
+                        <div className="flex items-center gap-1 text-[#979799]">
+                          <Phone className="w-3.5 h-3.5 text-[#979799]" />
                           <span>{owner.telefono}</span>
                         </div>
-                        <div className="flex items-center gap-1 text-[#898989]">
-                          <MapPin className="w-3.5 h-3.5 text-[#898989]" />
+                        <div className="flex items-center gap-1 text-[#979799]">
+                          <MapPin className="w-3.5 h-3.5 text-[#979799]" />
                           <span className="truncate">{owner.direccion}</span>
                         </div>
                       </div>
@@ -389,11 +389,11 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
 
               {/* Quick Clinical History */}
               <div className="space-y-3">
-                <div className="text-xs font-bold text-[#b4b4b4] uppercase tracking-wider">
+                <div className="text-xs font-bold text-[#777b86] uppercase tracking-wider">
                   Historial de Consultas Médicas
                 </div>
                 {consultas.filter((c) => c.id_mascota === selectedPet.id_mascota).length === 0 ? (
-                  <div className="p-4 text-center bg-[#121212] rounded-xl text-xs text-[#898989]">
+                  <div className="p-4 text-center bg-[#ffffff] rounded-xl text-xs text-[#979799]">
                     No registra consultas médicas previas.
                   </div>
                 ) : (
@@ -402,29 +402,29 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     .map((con) => (
                       <div
                         key={con.id_consulta}
-                        className="p-3.5 rounded-xl border border-[#2e2e2e] bg-[#121212] space-y-1.5 text-xs"
+                        className="p-3.5 rounded-xl border border-[#ececec] bg-[#ffffff] space-y-1.5 text-xs"
                       >
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="font-bold text-[#3ecf8e]">Consulta #{con.id_consulta}</span>
-                          <span className="text-[#898989]">{new Date(con.fecha_consulta).toLocaleDateString()}</span>
+                          <span className="font-bold text-[#5d2a1a]">Consulta #{con.id_consulta}</span>
+                          <span className="text-[#979799]">{new Date(con.fecha_consulta).toLocaleDateString()}</span>
                         </div>
-                        <p className="font-semibold text-[#fafafa]">Dx: {con.diagnostico}</p>
-                        <p className="text-[#898989] text-[11px]">Tx: {con.tratamiento_recetado}</p>
+                        <p className="font-semibold text-[#17191c]">Dx: {con.diagnostico}</p>
+                        <p className="text-[#979799] text-[11px]">Tx: {con.tratamiento_recetado}</p>
                       </div>
                     ))
                 )}
               </div>
             </div>
 
-            <div className="px-6 py-3 bg-[#181818] border-t border-[#2e2e2e] flex flex-wrap items-center justify-between gap-2 shrink-0">
+            <div className="px-6 py-3 bg-[#f2f2f3] border-t border-[#ececec] flex flex-wrap items-center justify-between gap-2 shrink-0">
               <button
                 onClick={() => {
                   if (onSelectPetForCard) onSelectPetForCard(selectedPet.id_mascota);
                   onNavigateTab('vacunacion');
                 }}
-                className="px-3 py-1.5 bg-[#121212] hover:bg-[#242424] text-[#fafafa] rounded-lg text-xs font-bold border border-[#393939] flex items-center gap-1.5"
+                className="px-3 py-1.5 bg-[#ffffff] hover:bg-[#f2f2f3] text-[#17191c] rounded-lg text-xs font-bold border border-[#e2e2e5] flex items-center gap-1.5"
               >
-                <Syringe className="w-3.5 h-3.5 text-[#3ecf8e]" />
+                <Syringe className="w-3.5 h-3.5 text-[#5d2a1a]" />
                 <span>Ver Carné de Vacunas (RF09)</span>
               </button>
 
@@ -434,7 +434,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     onClick={() => {
                       onNavigateTab('citas');
                     }}
-                    className="px-3 py-1.5 bg-[#1e1e1e] hover:bg-[#121212] text-white rounded-lg text-xs font-semibold"
+                    className="px-3 py-1.5 bg-[#fafafb] hover:bg-[#17191c] text-[#ffffff] rounded-lg text-xs font-semibold"
                   >
                     Agendar Cita
                   </button>
@@ -442,7 +442,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     onClick={() => {
                       onNavigateTab('consultas');
                     }}
-                    className="px-3 py-1.5 bg-[#3ecf8e] text-[#121212] hover:bg-[#00c573] text-[#121212] text-white rounded-lg text-xs font-bold"
+                    className="px-3 py-1.5 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-lg text-xs font-bold"
                   >
                     Iniciar Consulta
                   </button>
@@ -455,16 +455,16 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
 
       {/* Modal: Registrar Paciente (RF05) */}
       {showNewPetModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#121212]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#121212] rounded-2xl shadow-2xl max-w-xl w-full border border-[#2e2e2e] overflow-hidden">
-            <div className="px-6 py-4 bg-[#121212] text-white flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
+          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-xl w-full border border-[#ececec] overflow-hidden">
+            <div className="px-6 py-4 bg-[#17191c] text-[#ffffff] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <PawPrint className="w-5 h-5 text-[#3ecf8e]" />
+                <PawPrint className="w-5 h-5 text-[#5d2a1a]" />
                 <h3 className="font-bold text-base">RF05: Registrar Nuevo Paciente</h3>
               </div>
               <button
                 onClick={() => setShowNewPetModal(false)}
-                className="text-[#898989] hover:text-white"
+                className="text-[#979799] hover:text-white"
               >
                 ✕
               </button>
@@ -473,7 +473,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
             <form onSubmit={handleCreatePet} className="p-6 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">
+                  <label className="block font-semibold text-[#777b86] mb-1">
                     Código de Expediente (Único)
                   </label>
                   <input
@@ -481,16 +481,16 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     required
                     value={petForm.codigo_expediente}
                     onChange={(e) => setPetForm({ ...petForm, codigo_expediente: e.target.value })}
-                    className="w-full p-2 border border-[#393939] rounded-lg font-mono font-bold uppercase"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg font-mono font-bold uppercase"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Tutor / Propietario (FK)</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Tutor / Propietario (FK)</label>
                   <select
                     value={petForm.id_propietario}
                     onChange={(e) => setPetForm({ ...petForm, id_propietario: Number(e.target.value) })}
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   >
                     {propietarios.map((p) => (
                       <option key={p.id_propietario} value={p.id_propietario}>
@@ -501,23 +501,23 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Nombre del Paciente</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Nombre del Paciente</label>
                   <input
                     type="text"
                     required
                     value={petForm.nombre}
                     onChange={(e) => setPetForm({ ...petForm, nombre: e.target.value })}
                     placeholder="ej. Bruno"
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Especie</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Especie</label>
                   <select
                     value={petForm.especie}
                     onChange={(e) => setPetForm({ ...petForm, especie: e.target.value })}
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   >
                     <option value="Canino">Canino</option>
                     <option value="Felino">Felino</option>
@@ -527,23 +527,23 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Raza</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Raza</label>
                   <input
                     type="text"
                     required
                     value={petForm.raza}
                     onChange={(e) => setPetForm({ ...petForm, raza: e.target.value })}
                     placeholder="ej. Labrador, Mestizo, etc."
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Género</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Género</label>
                   <select
                     value={petForm.genero}
                     onChange={(e) => setPetForm({ ...petForm, genero: e.target.value as any })}
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   >
                     <option value="MACHO">MACHO</option>
                     <option value="HEMBRA">HEMBRA</option>
@@ -551,36 +551,36 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Peso (kg)</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Peso (kg)</label>
                   <input
                     type="number"
                     step="0.1"
                     required
                     value={petForm.peso_kg}
                     onChange={(e) => setPetForm({ ...petForm, peso_kg: parseFloat(e.target.value) || 0 })}
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Fecha de Nacimiento</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Fecha de Nacimiento</label>
                   <input
                     type="date"
                     required
                     value={petForm.fecha_nacimiento}
                     onChange={(e) => setPetForm({ ...petForm, fecha_nacimiento: e.target.value })}
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Microchip ID (Opcional)</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Microchip ID (Opcional)</label>
                   <input
                     type="text"
                     value={petForm.microchip_id}
                     onChange={(e) => setPetForm({ ...petForm, microchip_id: e.target.value })}
                     placeholder="ej. 985141002948123"
-                    className="w-full p-2 border border-[#393939] rounded-lg font-mono"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg font-mono"
                   />
                 </div>
               </div>
@@ -590,13 +590,13 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                   className={`p-3 rounded-lg text-xs font-semibold flex items-center gap-2 ${
                     modalFeedback.isError
                       ? 'bg-red-50 text-red-800 border border-red-200'
-                      : 'bg-[#1c2e24] text-[#3ecf8e] text-[#3ecf8e] border border-[#1f4b37]'
+                      : 'bg-[#fbe1d1] text-[#5d2a1a] border border-[#ececec]'
                   }`}
                 >
                   {modalFeedback.isError ? (
                     <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
                   ) : (
-                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#3ecf8e]" />
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#5d2a1a]" />
                   )}
                   <span>{modalFeedback.text}</span>
                 </div>
@@ -606,13 +606,13 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowNewPetModal(false)}
-                  className="px-4 py-2 border border-[#393939] text-[#b4b4b4] rounded-lg text-xs font-bold"
+                  className="px-4 py-2 border border-[#e2e2e5] text-[#777b86] rounded-lg text-xs font-bold"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#3ecf8e] text-[#121212] hover:bg-[#00c573] text-[#121212] text-white rounded-lg text-xs font-bold"
+                  className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-lg text-xs font-bold"
                 >
                   Guardar Paciente
                 </button>
@@ -624,16 +624,16 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
 
       {/* Modal: Registrar Tutor (RF06) */}
       {showNewOwnerModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#121212]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#121212] rounded-2xl shadow-2xl max-w-lg w-full border border-[#2e2e2e] overflow-hidden">
-            <div className="px-6 py-4 bg-[#121212] text-white flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
+          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-lg w-full border border-[#ececec] overflow-hidden">
+            <div className="px-6 py-4 bg-[#17191c] text-[#ffffff] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-[#3ecf8e]" />
+                <UserPlus className="w-5 h-5 text-[#5d2a1a]" />
                 <h3 className="font-bold text-base">RF06: Registrar Propietario / Tutor Legal</h3>
               </div>
               <button
                 onClick={() => setShowNewOwnerModal(false)}
-                className="text-[#898989] hover:text-white"
+                className="text-[#979799] hover:text-white"
               >
                 ✕
               </button>
@@ -642,7 +642,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
             <form onSubmit={handleCreateOwner} className="p-6 space-y-4">
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">
+                  <label className="block font-semibold text-[#777b86] mb-1">
                     Cédula / Documento de Identidad (Único)
                   </label>
                   <input
@@ -651,56 +651,56 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     value={ownerForm.cedula_documento}
                     onChange={(e) => setOwnerForm({ ...ownerForm, cedula_documento: e.target.value })}
                     placeholder="ej. 1098472910"
-                    className="w-full p-2 border border-[#393939] rounded-lg font-mono font-bold"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg font-mono font-bold"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label className="block font-semibold text-[#b4b4b4] mb-1">Nombres</label>
+                    <label className="block font-semibold text-[#777b86] mb-1">Nombres</label>
                     <input
                       type="text"
                       required
                       value={ownerForm.nombres}
                       onChange={(e) => setOwnerForm({ ...ownerForm, nombres: e.target.value })}
                       placeholder="ej. María José"
-                      className="w-full p-2 border border-[#393939] rounded-lg"
+                      className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                     />
                   </div>
                   <div>
-                    <label className="block font-semibold text-[#b4b4b4] mb-1">Apellidos</label>
+                    <label className="block font-semibold text-[#777b86] mb-1">Apellidos</label>
                     <input
                       type="text"
                       required
                       value={ownerForm.apellidos}
                       onChange={(e) => setOwnerForm({ ...ownerForm, apellidos: e.target.value })}
                       placeholder="ej. Rojas Gómez"
-                      className="w-full p-2 border border-[#393939] rounded-lg"
+                      className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Teléfono de Contacto</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Teléfono de Contacto</label>
                   <input
                     type="tel"
                     required
                     value={ownerForm.telefono}
                     onChange={(e) => setOwnerForm({ ...ownerForm, telefono: e.target.value })}
                     placeholder="ej. +57 312 900 1234"
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#b4b4b4] mb-1">Dirección de Residencia</label>
+                  <label className="block font-semibold text-[#777b86] mb-1">Dirección de Residencia</label>
                   <input
                     type="text"
                     required
                     value={ownerForm.direccion}
                     onChange={(e) => setOwnerForm({ ...ownerForm, direccion: e.target.value })}
                     placeholder="ej. Carrera 15 # 85 - 20"
-                    className="w-full p-2 border border-[#393939] rounded-lg"
+                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
                   />
                 </div>
               </div>
@@ -710,13 +710,13 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                   className={`p-3 rounded-lg text-xs font-semibold flex items-center gap-2 ${
                     modalFeedback.isError
                       ? 'bg-red-50 text-red-800 border border-red-200'
-                      : 'bg-[#1c2e24] text-[#3ecf8e] text-[#3ecf8e] border border-[#1f4b37]'
+                      : 'bg-[#fbe1d1] text-[#5d2a1a] border border-[#ececec]'
                   }`}
                 >
                   {modalFeedback.isError ? (
                     <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
                   ) : (
-                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#3ecf8e]" />
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#5d2a1a]" />
                   )}
                   <span>{modalFeedback.text}</span>
                 </div>
@@ -726,13 +726,13 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowNewOwnerModal(false)}
-                  className="px-4 py-2 border border-[#393939] text-[#b4b4b4] rounded-lg text-xs font-bold"
+                  className="px-4 py-2 border border-[#e2e2e5] text-[#777b86] rounded-lg text-xs font-bold"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#3ecf8e] text-[#121212] hover:bg-[#00c573] text-[#121212] text-white rounded-lg text-xs font-bold"
+                  className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-lg text-xs font-bold"
                 >
                   Guardar Propietario
                 </button>

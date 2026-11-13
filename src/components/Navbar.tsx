@@ -5,7 +5,6 @@ import {
   Shield,
   Stethoscope,
   Users,
-  AlertTriangle,
   FileCheck2,
   RotateCcw,
   Sparkles,
@@ -76,33 +75,33 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="bg-[#121212] border-b border-[#2e2e2e] sticky top-0 z-40">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header className="bg-[#ffffff]/95 backdrop-blur-md sticky top-0 z-40">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#121212] border border-[#2e2e2e] flex items-center justify-center text-[#3ecf8e]">
+          <div className="w-10 h-10 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff]">
             <Stethoscope className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-medium text-lg tracking-tight text-[#fafafa]">VETSOFT</span>
-              <span className="text-[11px] font-mono tracking-wider px-2 py-0.5 rounded-full bg-[#242424] text-[#3ecf8e] border border-[#2e2e2e]">
-                ERP + Gemini 3.8
+            <div className="flex items-center gap-2.5">
+              <span className="font-serif-editorial text-2xl tracking-tight text-[#17191c]">VetSoft</span>
+              <span className="text-[12px] text-[#979799] font-normal">
+                Editorial Clinical Suite
               </span>
             </div>
-            <p className="text-[12px] text-[#898989] hidden sm:block">Gestión Veterinaria e Inteligencia Clínica</p>
+            <p className="text-[12px] text-[#777b86] hidden sm:block">Hospital Clínico Veterinario San Antón</p>
           </div>
         </div>
 
         {/* Center / Right controls */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           {/* Return to Landing Button */}
           {onReturnToLanding && (
             <button
               onClick={onReturnToLanding}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-[#242424] text-[#fafafa] text-xs font-normal border border-[#393939] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#898989]" />
+              <ArrowLeft className="w-3.5 h-3.5 text-[#17191c]" />
               <span className="hidden sm:inline">Sitio Web</span>
             </button>
           )}
@@ -111,10 +110,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenLogin && (
             <button
               onClick={onOpenLogin}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-[#242424] text-[#fafafa] text-xs font-normal border border-[#393939] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer"
               title="Ir al Módulo 1: Login de Usuarios (/login)"
             >
-              <Lock className="w-3.5 h-3.5 text-[#3ecf8e]" />
+              <Lock className="w-3.5 h-3.5 text-[#17191c]" />
               <span className="hidden sm:inline">Login (/login)</span>
             </button>
           )}
@@ -123,10 +122,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onToggleSkeleton && (
             <button
               onClick={onToggleSkeleton}
-              className={`px-3 py-1.5 rounded-full text-xs transition-colors cursor-pointer border ${
+              className={`px-3.5 py-2 rounded-full text-xs transition-colors cursor-pointer ${
                 isSkeletonLoading
-                  ? 'bg-[#1f4b37] text-[#3ecf8e] border-[#3ecf8e]'
-                  : 'bg-transparent text-[#b4b4b4] border-[#393939] hover:border-[#4d4d4d]'
+                  ? 'bg-[#fbe1d1] text-[#5d2a1a] font-medium'
+                  : 'bg-[#f2f2f3] text-[#777b86] hover:text-[#17191c]'
               }`}
               title="Alternar diseño Skeleton para ver placeholders de carga"
             >
@@ -137,10 +136,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Alertas de Stock badge */}
           {vwAlertasStock.length > 0 && (
             <div
-              title={`${vwAlertasStock.length} producto(s) en stock crítico o agotado (vw_alertas_stock)`}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#242424] text-[#b4b4b4] border border-[#2e2e2e] text-xs"
+              title={`${vwAlertasStock.length} producto(s) en stock crítico o agotado`}
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#fbe1d1] text-[#5d2a1a] text-xs font-medium"
             >
-              <span className="w-2 h-2 rounded-full bg-[#3ecf8e]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#5d2a1a]" />
               <span>{vwAlertasStock.length} Alertas</span>
             </div>
           )}
@@ -148,116 +147,71 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Traceability Matrix Button */}
           <button
             onClick={onOpenTraceability}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-[#242424] text-[#b4b4b4] hover:text-[#fafafa] text-xs border border-[#393939] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] text-xs transition-colors cursor-pointer"
           >
-            <FileCheck2 className="w-3.5 h-3.5 text-[#3ecf8e]" />
+            <FileCheck2 className="w-3.5 h-3.5 text-[#5d2a1a]" />
             <span className="hidden md:inline">Matriz SRS</span>
           </button>
 
           {/* 2FA & Security Demo */}
           <button
             onClick={onOpenSecurityModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-[#242424] text-[#898989] hover:text-[#fafafa] text-xs border border-[#393939] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#777b86] hover:text-[#17191c] text-xs transition-colors cursor-pointer"
             title="Prueba de Autenticación, BCrypt, 3 Intentos y OTP (RF01)"
           >
             <Lock className="w-3.5 h-3.5" />
             <span className="hidden lg:inline">Seguridad RF01</span>
           </button>
 
-          {/* Role Switcher */}
+          {/* Role Switcher (Filled Pill) */}
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#2e2e2e] bg-[#242424] text-[#fafafa] text-xs font-medium hover:border-[#4d4d4d] transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#17191c] text-[#ffffff] text-xs font-normal hover:opacity-90 transition-all cursor-pointer"
             >
-              <RoleIcon className="w-3.5 h-3.5 text-[#3ecf8e]" />
-              <span>Rol: {currentBadge.label}</span>
-              <ChevronDown className="w-3 h-3 text-[#898989]" />
+              <RoleIcon className="w-3.5 h-3.5 text-[#fbe1d1]" />
+              <span>{currentBadge.label}</span>
+              <ChevronDown className="w-3 h-3 text-[#a3a6af]" />
             </button>
 
             {showRoleMenu && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#121212] rounded-[16px] border border-[#2e2e2e] p-2 z-50 shadow-2xl">
-                <div className="px-3 py-2 border-b border-[#2e2e2e] mb-1">
-                  <p className="text-[11px] uppercase tracking-wider text-[#898989]">
+              <div className="absolute right-0 mt-2 w-72 bg-[#ffffff] rounded-[20px] p-3 z-50 steep-floating-artifact">
+                <div className="px-3 py-2 border-b border-[#ececec] mb-2">
+                  <p className="text-[11px] uppercase tracking-wider text-[#979799]">
                     Cambio Rápido de Rol (RBAC)
                   </p>
-                  <p className="text-xs text-[#b4b4b4] mt-0.5 truncate">
-                    Usuario: <strong className="text-[#fafafa]">{currentUser.correo}</strong>
+                  <p className="text-xs text-[#777b86] mt-0.5 truncate">
+                    Usuario: <strong className="text-[#17191c]">{currentUser.correo}</strong>
                   </p>
                 </div>
 
                 <div className="space-y-1">
-                  <button
-                    onClick={() => handleRoleChange('ADMINISTRADOR')}
-                    className={`w-full text-left px-3 py-2 rounded-[8px] text-xs transition-colors flex items-center justify-between cursor-pointer ${
-                      currentRole === 'ADMINISTRADOR'
-                        ? 'bg-[#242424] text-[#3ecf8e]'
-                        : 'text-[#b4b4b4] hover:bg-[#1a1a1a] hover:text-[#fafafa]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-[#3ecf8e]" />
-                      <div>
-                        <div className="font-medium">Administrador General</div>
-                        <span className="text-[10px] text-[#898989]">admin@vetsoft.com (Acceso total)</span>
-                      </div>
-                    </div>
-                    {currentRole === 'ADMINISTRADOR' && <CheckCircle2 className="w-4 h-4 text-[#3ecf8e]" />}
-                  </button>
-
-                  <button
-                    onClick={() => handleRoleChange('VETERINARIO')}
-                    className={`w-full text-left px-3 py-2 rounded-[8px] text-xs transition-colors flex items-center justify-between cursor-pointer ${
-                      currentRole === 'VETERINARIO'
-                        ? 'bg-[#242424] text-[#3ecf8e]'
-                        : 'text-[#b4b4b4] hover:bg-[#1a1a1a] hover:text-[#fafafa]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Stethoscope className="w-4 h-4 text-[#3ecf8e]" />
-                      <div>
-                        <div className="font-medium">Médico Veterinario</div>
-                        <span className="text-[10px] text-[#898989]">Dr. Camilo Restrepo (TP 19823-VET)</span>
-                      </div>
-                    </div>
-                    {currentRole === 'VETERINARIO' && <CheckCircle2 className="w-4 h-4 text-[#3ecf8e]" />}
-                  </button>
-
-                  <button
-                    onClick={() => handleRoleChange('RECEPCIONISTA')}
-                    className={`w-full text-left px-3 py-2 rounded-[8px] text-xs transition-colors flex items-center justify-between cursor-pointer ${
-                      currentRole === 'RECEPCIONISTA'
-                        ? 'bg-[#242424] text-[#3ecf8e]'
-                        : 'text-[#b4b4b4] hover:bg-[#1a1a1a] hover:text-[#fafafa]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-[#3ecf8e]" />
-                      <div>
-                        <div className="font-medium">Recepción & Caja</div>
-                        <span className="text-[10px] text-[#898989]">Laura Gómez (Citas y POS Facturación)</span>
-                      </div>
-                    </div>
-                    {currentRole === 'RECEPCIONISTA' && <CheckCircle2 className="w-4 h-4 text-[#3ecf8e]" />}
-                  </button>
-
-                  <button
-                    onClick={() => handleRoleChange('PROPIETARIO')}
-                    className={`w-full text-left px-3 py-2 rounded-[8px] text-xs transition-colors flex items-center justify-between cursor-pointer ${
-                      currentRole === 'PROPIETARIO'
-                        ? 'bg-[#242424] text-[#3ecf8e]'
-                        : 'text-[#b4b4b4] hover:bg-[#1a1a1a] hover:text-[#fafafa]'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-[#3ecf8e]" />
-                      <div>
-                        <div className="font-medium">Portal Propietario</div>
-                        <span className="text-[10px] text-[#898989]">Carlos Mendoza (Tutor de Lucas y Luna)</span>
-                      </div>
-                    </div>
-                    {currentRole === 'PROPIETARIO' && <CheckCircle2 className="w-4 h-4 text-[#3ecf8e]" />}
-                  </button>
+                  {(['ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA', 'PROPIETARIO'] as UserRole[]).map((r) => {
+                    const BIcon = roleBadges[r].icon;
+                    const active = currentRole === r;
+                    return (
+                      <button
+                        key={r}
+                        onClick={() => handleRoleChange(r)}
+                        className={`w-full text-left px-3 py-2.5 rounded-[16px] text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                          active
+                            ? 'bg-[#fbe1d1] text-[#5d2a1a] font-medium'
+                            : 'text-[#17191c] hover:bg-[#f2f2f3]'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <BIcon className={`w-4 h-4 ${active ? 'text-[#5d2a1a]' : 'text-[#777b86]'}`} />
+                          <div>
+                            <div className="font-medium">{roleBadges[r].label}</div>
+                            <span className={`text-[10px] ${active ? 'text-[#5d2a1a]/80' : 'text-[#979799]'}`}>
+                              Vista {r.toLowerCase()}
+                            </span>
+                          </div>
+                        </div>
+                        {active && <CheckCircle2 className="w-4 h-4 text-[#5d2a1a]" />}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -266,16 +220,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Reset button */}
           <div className="relative">
             {resetConfirm ? (
-              <div className="flex items-center gap-1 bg-[#242424] p-1 rounded-full border border-[#393939]">
+              <div className="flex items-center gap-1 bg-[#f2f2f3] p-1 rounded-full">
                 <button
                   onClick={handleReset}
-                  className="px-2.5 py-0.5 bg-[#121212] text-[#3ecf8e] border border-[#3ecf8e] rounded-full text-[11px] font-medium transition-colors cursor-pointer"
+                  className="px-3 py-1 bg-[#17191c] text-[#ffffff] rounded-full text-[11px] font-normal transition-colors cursor-pointer"
                 >
                   Confirmar
                 </button>
                 <button
                   onClick={() => setResetConfirm(false)}
-                  className="px-1.5 py-0.5 text-[#898989] hover:text-[#fafafa] text-[11px] cursor-pointer"
+                  className="px-2 py-1 text-[#777b86] hover:text-[#17191c] text-[11px] cursor-pointer"
                 >
                   ✕
                 </button>
@@ -284,7 +238,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setResetConfirm(true)}
                 title="Reiniciar base de datos a datos iniciales de fábrica"
-                className="p-1.5 text-[#898989] hover:text-[#fafafa] hover:bg-[#242424] rounded-full transition-colors cursor-pointer"
+                className="p-2 text-[#777b86] hover:text-[#17191c] hover:bg-[#f2f2f3] rounded-full transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>

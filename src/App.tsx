@@ -91,7 +91,7 @@ export default function App() {
           onOpenLogin={handleOpenLogin}
         />
       ) : (
-        <div className="min-h-screen bg-[#121212] flex flex-col font-sans text-[#fafafa] antialiased selection:bg-[#3ecf8e] selection:text-[#121212]">
+        <div className="min-h-screen bg-[#ffffff] flex flex-col font-sans text-[#17191c] antialiased selection:bg-[#fbe1d1] selection:text-[#5d2a1a]">
           {/* Top Navbar */}
           <Navbar
             onOpenTraceability={() => setShowTraceability(true)}
@@ -103,7 +103,7 @@ export default function App() {
           />
 
           {/* App Body */}
-          <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] w-full mx-auto">
+          <div className="flex-1 flex flex-col md:flex-row max-w-[1200px] w-full mx-auto">
             {/* Left Sidebar */}
             <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -112,7 +112,7 @@ export default function App() {
               {isSkeletonLoading ? (
                 /* Skeleton Presentation Mode */
                 <div className="space-y-6 animate-pulse">
-                  <div className="p-6 rounded-[16px] bg-[#1a1a1a] border border-[#2e2e2e] h-28" />
+                  <div className="p-6 rounded-[24px] bg-[#f2f2f3] h-28" />
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <SkeletonKPI />
                     <SkeletonKPI />

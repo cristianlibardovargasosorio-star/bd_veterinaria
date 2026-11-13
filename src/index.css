@@ -1,233 +1,191 @@
 @import "tailwindcss";
 
 @theme {
-  /* Supabase Design Tokens */
-  --color-phosphor-green: #3ecf8e;
-  --color-mint-pulse: #00c573;
-  --color-forest-depth: #1f4b37;
-  --color-midnight-emerald: #006239;
-  --color-snow: #fafafa;
-  --color-silver-mist: #b4b4b4;
-  --color-smoke: #898989;
-  --color-graphite: #4d4d4d;
-  --color-slate: #393939;
-  --color-charcoal: #2e2e2e;
-  --color-ash: #242424;
-  --color-obsidian: #121212;
+  /* Steep Design System — Colors */
+  --color-ink-black: #17191c;
+  --color-paper-white: #ffffff;
+  --color-mist-gray: #f2f2f3;
+  --color-fog-white: #fafafb;
+  --color-slate-gray: #777b86;
+  --color-ash-gray: #979799;
+  --color-smoke-gray: #a3a6af;
+  --color-blush-peach: #fbe1d1;
+  --color-sienna-brown: #5d2a1a;
 
-  /* Typography */
-  --font-circular: 'Circular', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-source-code-pro: 'Source Code Pro', 'JetBrains Mono', Consolas, monospace;
+  /* Typography — Font Families */
+  --font-signifier: 'Signifier', 'Source Serif 4', Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-sohne: 'Sohne', 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Type Scale */
-  --text-caption: 12px;
+  /* Typography — Scale */
+  --text-caption: 15px;
   --leading-caption: 1.5;
-  --tracking-caption: -0.084px;
-  --text-body-sm: 14px;
-  --leading-body-sm: 1.43;
-  --tracking-body-sm: -0.098px;
-  --text-body: 16px;
-  --leading-body: 1.5;
-  --tracking-body: -0.112px;
-  --text-subheading: 18px;
-  --leading-subheading: 1.38;
-  --tracking-subheading: -0.126px;
-  --text-heading-sm: 24px;
-  --leading-heading-sm: 1.33;
-  --tracking-heading-sm: -0.168px;
-  --text-heading: 36px;
-  --leading-heading: 1.2;
-  --tracking-heading: -0.252px;
-  --text-display: 72px;
-  --leading-display: 1;
-  --tracking-display: -0.504px;
+  --text-body: 17px;
+  --leading-body: 1.35;
+  --text-body-lg: 20px;
+  --leading-body-lg: 1.35;
+  --text-subheading: 22px;
+  --leading-subheading: 1.5;
+  --text-heading-sm: 26px;
+  --leading-heading-sm: 1.18;
+  --tracking-heading-sm: -0.23px;
+  --text-heading: 44px;
+  --leading-heading: 1.3;
+  --tracking-heading: -0.66px;
+  --text-heading-lg: 64px;
+  --leading-heading-lg: 1.3;
+  --tracking-heading-lg: -0.96px;
+  --text-display: 90px;
+  --leading-display: 1.3;
+  --tracking-display: -2.25px;
 
-  /* Spacing */
+  /* Spacing (4px base unit) */
+  --spacing-4: 4px;
   --spacing-8: 8px;
+  --spacing-12: 12px;
   --spacing-16: 16px;
+  --spacing-20: 20px;
   --spacing-24: 24px;
+  --spacing-28: 28px;
   --spacing-32: 32px;
   --spacing-40: 40px;
-  --spacing-48: 48px;
   --spacing-64: 64px;
   --spacing-80: 80px;
   --spacing-96: 96px;
-  --spacing-112: 112px;
+  --spacing-124: 124px;
   --spacing-128: 128px;
-  --spacing-224: 224px;
+  --spacing-160: 160px;
 
-  /* Border Radii */
-  --radius-lg: 8px;
-  --radius-cards: 16px;
-  --radius-buttons: 9999px;
-  --radius-tags: 9999px;
-  --radius-inputs: 8px;
+  /* Border Radius */
+  --radius-sm: 0.01px;
+  --radius-xl: 12px;
   --radius-2xl: 16px;
-  --radius-full: 9999px;
+  --radius-2xl-2: 20px;
+  --radius-3xl: 24px;
+
+  /* Shadows */
+  --shadow-subtle: oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.08) 0px 4px 24px 0px;
+  --shadow-subtle-2: oklab(0 0 0 / 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 8px 40px 0px;
+  --shadow-subtle-3: rgba(4, 23, 43, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
 }
 
 :root {
-  --color-phosphor-green: #3ecf8e;
-  --color-mint-pulse: #00c573;
-  --color-forest-depth: #1f4b37;
-  --color-midnight-emerald: #006239;
-  --color-snow: #fafafa;
-  --color-silver-mist: #b4b4b4;
-  --color-smoke: #898989;
-  --color-graphite: #4d4d4d;
-  --color-slate: #393939;
-  --color-charcoal: #2e2e2e;
-  --color-ash: #242424;
-  --color-obsidian: #121212;
+  --color-ink-black: #17191c;
+  --color-paper-white: #ffffff;
+  --color-mist-gray: #f2f2f3;
+  --color-fog-white: #fafafb;
+  --color-slate-gray: #777b86;
+  --color-ash-gray: #979799;
+  --color-smoke-gray: #a3a6af;
+  --color-blush-peach: #fbe1d1;
+  --color-sienna-brown: #5d2a1a;
 
-  --surface-obsidian-canvas: #121212;
-  --surface-ash-card: #242424;
-  --surface-charcoal-border: #2e2e2e;
+  --surface-canvas: #ffffff;
+  --surface-card-mist: #f2f2f3;
+  --surface-section-fog: #fafafb;
+  --surface-accent-blush: #fbe1d1;
+  --surface-elevated-white: #ffffff;
 
-  background-color: #121212;
-  color: #fafafa;
-  font-family: 'Circular', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  letter-spacing: -0.007em;
+  --radius-cards: 24px;
+  --radius-images: 12px;
+  --radius-inputs: 16px;
+  --radius-buttons: 9999px;
+  --radius-smallcards: 16px;
+  --radius-elevatedcards: 20px;
+
+  background-color: #ffffff;
+  color: #17191c;
+  font-family: var(--font-sohne);
 }
 
 body {
-  background-color: #121212;
-  color: #fafafa;
+  background-color: #ffffff;
+  color: #17191c;
+  font-family: var(--font-sohne);
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Custom scrollbars for dark terminal feel */
+/* Signifier Editorial Headlines: Always Weight 400 (Regular), Never Bold */
+h1, h2, .font-serif-editorial {
+  font-family: var(--font-signifier);
+  font-weight: 400 !important;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Scrollbar — Warm Editorial Light */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #121212;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2e2e2e;
+  background: #e2e2e5;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4d4d4d;
+  background: #979799;
 }
 
-/* Supabase Utilities */
-.bg-obsidian {
-  background-color: #121212;
-}
-
-.bg-ash {
-  background-color: #242424;
-}
-
-.border-charcoal {
-  border-color: #2e2e2e;
-}
-
-.border-slate-custom {
-  border-color: #393939;
-}
-
-.text-snow {
-  color: #fafafa;
-}
-
-.text-silver {
-  color: #b4b4b4;
-}
-
-.text-smoke {
-  color: #898989;
-}
-
-.text-phosphor {
-  color: #3ecf8e;
-}
-
-.bg-phosphor {
-  background-color: #3ecf8e;
-}
-
-/* Pill CTA Primary */
-.btn-supabase-primary {
-  background-color: #3ecf8e;
-  color: #121212;
-  font-weight: 500;
-  font-size: 14px;
-  padding: 8px 18px;
+/* Steep Component Classes */
+.steep-pill-filled {
+  background-color: #17191c;
+  color: #ffffff;
+  border: 1px solid #17191c;
   border-radius: 9999px;
-  border: 1px solid #3ecf8e;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-
-.btn-supabase-primary:hover {
-  background-color: #00c573;
-  border-color: #1f4b37;
-  color: #fafafa;
-}
-
-/* Pill CTA Ghost / Secondary */
-.btn-supabase-ghost {
-  background-color: transparent;
-  color: #fafafa;
+  padding: 10px 22px;
+  font-family: var(--font-sohne);
   font-weight: 400;
-  font-size: 14px;
-  padding: 8px 18px;
-  border-radius: 9999px;
-  border: 1px solid #393939;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.15s ease;
+  font-size: 15px;
+  transition: opacity 0.15s ease;
   cursor: pointer;
 }
 
-.btn-supabase-ghost:hover {
-  border-color: #4d4d4d;
-  background-color: rgba(255, 255, 255, 0.04);
+.steep-pill-filled:hover {
+  opacity: 0.88;
 }
 
-/* Supabase Card */
-.supabase-card {
-  background-color: #121212;
-  border: 1px solid #2e2e2e;
-  border-radius: 16px;
-  padding: 24px;
-  transition: border-color 0.15s ease;
+.steep-pill-ghost {
+  background-color: transparent;
+  color: #17191c;
+  border: 1px solid #17191c;
+  border-radius: 9999px;
+  padding: 10px 22px;
+  font-family: var(--font-sohne);
+  font-weight: 400;
+  font-size: 15px;
+  transition: background-color 0.15s ease;
+  cursor: pointer;
 }
 
-.supabase-card:hover {
-  border-color: #393939;
+.steep-pill-ghost:hover {
+  background-color: #f2f2f3;
 }
 
-/* Supabase Input */
-.supabase-input {
-  background-color: #121212;
-  border: 1px solid #393939;
-  border-radius: 8px;
-  padding: 8px 12px;
-  color: #fafafa;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.15s ease;
+.steep-neutral-card {
+  background-color: #f2f2f3;
+  border-radius: 24px;
+  border: none;
+  box-shadow: none;
 }
 
-.supabase-input::placeholder {
-  color: #898989;
+.steep-peach-card {
+  background-color: #fbe1d1;
+  color: #5d2a1a;
+  border-radius: 24px;
+  border: none;
+  box-shadow: none;
 }
 
-.supabase-input:focus {
-  border-color: #3ecf8e;
+.steep-floating-artifact {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: rgba(4, 23, 43, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
 }

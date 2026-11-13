@@ -12,12 +12,10 @@ import {
   CheckCircle2,
   AlertCircle,
   ArrowRight,
-  Database,
   ArrowLeft,
   ShieldCheck,
   Stethoscope,
   Shield,
-  Clock,
   Sparkles,
 } from 'lucide-react';
 
@@ -54,7 +52,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
     if (!val.trim()) {
       setEmailError(null);
     } else if (!validateEmailFormat(val)) {
-      setEmailError('Formato de correo inválido. Debe incluir "@" y un dominio válido.');
+      setEmailError('El formato del correo electrónico no es válido.');
     } else {
       setEmailError(null);
     }
@@ -73,7 +71,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
     // Criterio 1: Validar que el formato del correo sea válido antes de enviar
     if (!validateEmailFormat(email)) {
-      setEmailError('Error de validación: El formato del correo electrónico es inválido.');
+      setEmailError('El formato del correo electrónico no es válido.');
       return;
     }
 
@@ -99,20 +97,20 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
       const role: UserRole = targetUser?.rol_nombre || 'ADMINISTRADOR';
 
       let targetTab: ActiveTab = 'dashboard';
-      let panelName = 'Panel General de Control';
+      let panelName = 'Panel General de Control (/admin/dashboard)';
 
       if (role === 'ADMINISTRADOR') {
         targetTab = 'dashboard';
-        panelName = 'Panel de Administración y Métricas';
+        panelName = 'Panel de Administración (/admin/dashboard)';
       } else if (role === 'VETERINARIO') {
         targetTab = 'consultas';
-        panelName = 'Panel de Consultas Médicas & Fichas Clínicas';
+        panelName = 'Panel Clínico Veterinario (/veterinario/panel)';
       } else if (role === 'PROPIETARIO') {
         targetTab = 'vacunacion';
-        panelName = 'Portal de Pacientes & Carné de Vacunación';
+        panelName = 'Portal de Propietario (/propietario/portal)';
       } else if (role === 'RECEPCIONISTA') {
         targetTab = 'citas';
-        panelName = 'Recepción, Agenda de Citas & Facturación POS';
+        panelName = 'Recepción y Agenda de Citas';
       }
 
       setSuccessInfo({
@@ -124,10 +122,10 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
       try {
         confetti({
-          particleCount: 50,
-          spread: 60,
+          particleCount: 45,
+          spread: 55,
           origin: { y: 0.6 },
-          colors: ['#3ecf8e', '#00c573', '#1f4b37', '#fafafa'],
+          colors: ['#17191c', '#fbe1d1', '#5d2a1a'],
         });
       } catch (e) {
         // ignore confetti errors
@@ -136,174 +134,145 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
       setTimeout(() => {
         setIsSubmitting(false);
         onLoginSuccess(role, targetTab);
-      }, 1500);
-    }, 550);
+      }, 1400);
+    }, 500);
   };
 
   return (
-    <div className="min-h-screen bg-[#121212] text-[#fafafa] flex flex-col justify-between selection:bg-[#3ecf8e] selection:text-[#121212]">
-      {/* Top Banner Navigation */}
-      <div className="border-b border-[#2e2e2e] bg-[#121212] px-4 sm:px-8 py-3.5 flex items-center justify-between">
+    <div className="min-h-screen bg-[#ffffff] text-[#17191c] flex flex-col justify-between selection:bg-[#fbe1d1] selection:text-[#5d2a1a]">
+      {/* Whisper-quiet Editorial Top Navigation */}
+      <div className="max-w-[1200px] w-full mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full border border-[#2e2e2e] bg-[#242424] flex items-center justify-center text-[#3ecf8e]">
+          <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff]">
             <Lock className="w-4 h-4" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-medium text-sm tracking-tight text-[#fafafa]">VETSOFT</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#242424] text-[#3ecf8e] border border-[#2e2e2e]">
-                MÓDULO 1: AUTENTICACIÓN (RF-01)
+            <div className="flex items-center gap-2.5">
+              <span className="font-serif-editorial text-xl tracking-tight text-[#17191c]">VetSoft</span>
+              <span className="text-[13px] text-[#979799] font-normal">
+                Módulo 1 · Autenticación RF-01
               </span>
             </div>
-            <span className="text-[11px] text-[#898989] font-mono">
-              /login · Spring Security + PostgreSQL
-            </span>
           </div>
         </div>
 
         <button
           onClick={onReturnToLanding}
-          className="flex items-center gap-1.5 text-xs text-[#b4b4b4] hover:text-[#fafafa] bg-transparent hover:bg-[#242424] px-3.5 py-1.5 rounded-full border border-[#393939] transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-sm text-[#17191c] bg-transparent hover:bg-[#f2f2f3] px-5 py-2 rounded-full border border-[#17191c] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver al Sitio</span>
         </button>
       </div>
 
-      {/* Main Container */}
-      <div className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Left Column: SRS Architecture Context */}
+      {/* Main Editorial Spread Container */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="max-w-[1100px] w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column: Editorial Headline + Peach Callout */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-[#3ecf8e] bg-[#121212] border border-[#2e2e2e] px-3 py-1 rounded-full">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#3ecf8e]" />
-              <span>RF-01 Certificado</span>
+            <div className="text-[14px] text-[#979799] font-normal">
+              Seguridad & Control RBAC · Spring Security 6
             </div>
 
-            <div>
-              <h1 className="text-3xl font-normal text-[#fafafa] tracking-tight leading-tight">
-                Control de Acceso Seguro <br />
-                <span className="text-[#3ecf8e]">por Roles (RBAC)</span>
-              </h1>
-              <p className="text-xs text-[#b4b4b4] mt-3 leading-relaxed">
-                Autenticación centralizada con verificación criptográfica en PostgreSQL y validación de hash
-                BCrypt mediante Spring Security.
-              </p>
-            </div>
+            <h1 className="font-serif-editorial text-4xl sm:text-5xl text-[#17191c] tracking-tight leading-[1.18]">
+              Acceso clínico con <span className="italic">integridad</span> criptográfica.
+            </h1>
 
-            {/* Acceptance criteria verification list */}
-            <div className="space-y-3 pt-2">
-              <div className="p-4 bg-[#121212] rounded-[16px] border border-[#2e2e2e] text-xs space-y-1">
-                <div className="flex items-center gap-2 font-medium text-[#fafafa]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e]" />
-                  <span>Criterio 1: Validación Sintáctica RFC</span>
-                </div>
-                <p className="text-[11px] text-[#898989] pl-3.5">
-                  Valida la estructura del correo electrónico antes de emitir la petición al backend.
-                </p>
-              </div>
+            <p className="text-[16px] text-[#777b86] leading-relaxed">
+              Autenticación respaldada por PostgreSQL y comparación de hash BCrypt mediante Spring Security, con redirección automática según el rol.
+            </p>
 
-              <div className="p-4 bg-[#121212] rounded-[16px] border border-[#2e2e2e] text-xs space-y-1">
-                <div className="flex items-center gap-2 font-medium text-[#fafafa]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e]" />
-                  <span>Criterio 2: PostgreSQL & BCrypt</span>
-                </div>
-                <p className="text-[11px] text-[#898989] pl-3.5 font-mono">
-                  Comparación contra hash seguro ($2a$12$...) con bloqueo preventivo tras 3 intentos.
-                </p>
+            {/* Rare Accent Peach Card (1 per page max as per Steep rules) */}
+            <div className="p-6 rounded-[24px] bg-[#fbe1d1] text-[#5d2a1a] space-y-3">
+              <div className="flex items-center gap-2 text-sm font-medium text-[#5d2a1a]">
+                <ShieldCheck className="w-4 h-4 text-[#5d2a1a]" />
+                <span>Criterios de Aceptación RF-01</span>
               </div>
-
-              <div className="p-4 bg-[#121212] rounded-[16px] border border-[#2e2e2e] text-xs space-y-1">
-                <div className="flex items-center gap-2 font-medium text-[#fafafa]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e]" />
-                  <span>Criterio 3: Redirección por Rol ENUM</span>
-                </div>
-                <div className="text-[11px] text-[#898989] pl-3.5 space-y-0.5">
-                  <div>• Administrador → Panel KPIs y Finanzas</div>
-                  <div>• Veterinario → Consultas y Fichas Médicas</div>
-                  <div>• Propietario → Carné de Vacunación</div>
-                </div>
-              </div>
+              <ul className="text-xs text-[#5d2a1a] space-y-1.5 leading-relaxed">
+                <li>1. Validación previa de formato de correo electrónico (RFC 5322).</li>
+                <li>2. Verificación de hash BCrypt en PostgreSQL sin exponer contraseñas.</li>
+                <li>3. Redirección automática según rol ENUM (Administrador, Veterinario, Propietario).</li>
+              </ul>
             </div>
           </div>
 
-          {/* Right Column: Interactive Login Card */}
+          {/* Right Column: Floating Product Artifact Login Card */}
           <div className="lg:col-span-7">
-            <div className="bg-[#121212] rounded-[16px] border border-[#2e2e2e] p-6 sm:p-8 relative overflow-hidden">
+            <div className="bg-[#ffffff] rounded-[20px] p-8 sm:p-10 relative overflow-hidden steep-floating-artifact">
               {/* SUCCESS OVERLAY */}
               {successInfo && (
-                <div className="absolute inset-0 z-20 bg-[#121212]/95 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-in fade-in duration-200">
-                  <div className="w-12 h-12 rounded-full bg-[#242424] text-[#3ecf8e] border border-[#3ecf8e] flex items-center justify-center">
+                <div className="absolute inset-0 z-20 bg-[#ffffff]/98 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-in fade-in duration-200">
+                  <div className="w-12 h-12 rounded-full bg-[#fbe1d1] text-[#5d2a1a] flex items-center justify-center">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div className="space-y-1">
-                    <span className="text-[11px] font-mono text-[#3ecf8e] bg-[#242424] px-3 py-1 rounded-full border border-[#2e2e2e]">
-                      AUTENTICACIÓN EXITOSA
+                    <span className="text-[12px] text-[#979799]">
+                      Sesión verificada en PostgreSQL
                     </span>
-                    <h3 className="text-lg font-medium text-[#fafafa] pt-2">
-                      ¡Bienvenido, {successInfo.email}!
+                    <h3 className="font-serif-editorial text-2xl text-[#17191c] pt-1">
+                      Bienvenido, {successInfo.email}
                     </h3>
-                    <p className="text-xs text-[#b4b4b4]">
-                      Rol verificado: <strong className="text-[#3ecf8e]">{successInfo.role}</strong>
+                    <p className="text-xs text-[#777b86]">
+                      Rol autenticado: <strong className="text-[#17191c]">{successInfo.role}</strong>
                     </p>
                   </div>
-                  <div className="p-3 rounded-[8px] bg-[#242424] border border-[#2e2e2e] text-xs text-[#b4b4b4] w-full max-w-sm">
-                    <span>Redirigiendo a:</span>
-                    <strong className="block text-[#fafafa] mt-0.5">{successInfo.panelName}</strong>
+                  <div className="p-4 rounded-[16px] bg-[#f2f2f3] text-xs text-[#777b86] w-full max-w-sm">
+                    <span>Redirigiendo al panel asignado:</span>
+                    <strong className="block text-[#17191c] mt-1">{successInfo.panelName}</strong>
                   </div>
                 </div>
               )}
 
-              <div className="flex items-center justify-between pb-4 mb-4 border-b border-[#2e2e2e]">
+              <div className="flex items-center justify-between pb-5 mb-6 border-b border-[#ececec]">
                 <div>
-                  <h2 className="text-lg font-medium text-[#fafafa]">Iniciar Sesión</h2>
-                  <p className="text-xs text-[#898989] mt-0.5">Ingrese credenciales registradas en la base de datos</p>
+                  <h2 className="font-serif-editorial text-2xl text-[#17191c]">Iniciar Sesión</h2>
+                  <p className="text-xs text-[#777b86] mt-1">Ingrese su correo electrónico y contraseña</p>
                 </div>
-                <div className="px-2.5 py-1 rounded-full bg-[#242424] border border-[#2e2e2e] text-[10px] font-mono text-[#898989]">
-                  POST /api/auth/login
-                </div>
+                <span className="text-xs text-[#979799] font-mono">
+                  /login
+                </span>
               </div>
 
-              {/* Demo Account Pills */}
-              <div className="mb-5 space-y-2">
-                <span className="text-[11px] uppercase tracking-wider text-[#898989]">
-                  Cuentas Demo Preconfiguradas:
+              {/* Demo Account Neutral Cards */}
+              <div className="mb-6 space-y-2">
+                <span className="text-[12px] text-[#979799]">
+                  Cuentas de prueba rápida (Contraseña: vetsoft123):
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('admin@vetsoft.com', 'vetsoft123')}
-                    className="p-2.5 rounded-[8px] text-left bg-[#242424] border border-[#2e2e2e] hover:border-[#4d4d4d] transition-colors cursor-pointer group"
+                    className="p-3 rounded-[16px] text-left bg-[#f2f2f3] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-mono text-[#3ecf8e]">Admin</span>
-                      <Shield className="w-3 h-3 text-[#898989]" />
+                    <div className="flex items-center justify-between text-[#777b86]">
+                      <span className="text-[11px] font-medium text-[#17191c]">ADMINISTRADOR</span>
+                      <Shield className="w-3.5 h-3.5" />
                     </div>
-                    <div className="text-xs text-[#fafafa] truncate mt-1">admin@vetsoft.com</div>
+                    <div className="text-xs text-[#777b86] truncate mt-1">admin@vetsoft.com</div>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('camilo.vet@vetsoft.com', 'vetsoft123')}
-                    className="p-2.5 rounded-[8px] text-left bg-[#242424] border border-[#2e2e2e] hover:border-[#4d4d4d] transition-colors cursor-pointer group"
+                    className="p-3 rounded-[16px] text-left bg-[#f2f2f3] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-mono text-[#3ecf8e]">Veterinario</span>
-                      <Stethoscope className="w-3 h-3 text-[#898989]" />
+                    <div className="flex items-center justify-between text-[#777b86]">
+                      <span className="text-[11px] font-medium text-[#17191c]">VETERINARIO</span>
+                      <Stethoscope className="w-3.5 h-3.5" />
                     </div>
-                    <div className="text-xs text-[#fafafa] truncate mt-1">camilo.vet@vetsoft.com</div>
+                    <div className="text-xs text-[#777b86] truncate mt-1">camilo.vet@vetsoft.com</div>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('carlos.mendoza@email.com', 'vetsoft123')}
-                    className="p-2.5 rounded-[8px] text-left bg-[#242424] border border-[#2e2e2e] hover:border-[#4d4d4d] transition-colors cursor-pointer group"
+                    className="p-3 rounded-[16px] text-left bg-[#f2f2f3] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-mono text-[#3ecf8e]">Propietario</span>
-                      <Sparkles className="w-3 h-3 text-[#898989]" />
+                    <div className="flex items-center justify-between text-[#777b86]">
+                      <span className="text-[11px] font-medium text-[#17191c]">PROPIETARIO</span>
+                      <Sparkles className="w-3.5 h-3.5" />
                     </div>
-                    <div className="text-xs text-[#fafafa] truncate mt-1">carlos.mendoza...</div>
+                    <div className="text-xs text-[#777b86] truncate mt-1">carlos.mendoza...</div>
                   </button>
                 </div>
               </div>
@@ -313,29 +282,27 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                 {/* Email Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-normal text-[#b4b4b4] flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-[#898989]" />
-                      <span>Correo Electrónico *</span>
+                    <label className="text-xs font-medium text-[#17191c] flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-[#777b86]" />
+                      <span>Correo Electrónico</span>
                     </label>
-                    <span className="text-[10px] font-mono text-[#898989]">Formato RFC 5322</span>
+                    <span className="text-[11px] text-[#979799]">Validación previa de formato</span>
                   </div>
 
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={email}
-                      onChange={(e) => handleEmailChange(e.target.value)}
-                      placeholder="usuario@dominio.com"
-                      className={`w-full px-3 py-2 rounded-[8px] bg-[#121212] border text-[#fafafa] placeholder-[#898989] text-xs outline-none transition-colors ${
-                        emailError
-                          ? 'border-red-500 focus:border-red-400'
-                          : 'border-[#393939] focus:border-[#3ecf8e]'
-                      }`}
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    value={email}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    placeholder="nombre@clinica.com"
+                    className={`w-full px-4 py-3 rounded-[16px] bg-[#ffffff] border text-[#17191c] placeholder-[#a3a6af] text-sm outline-none transition-colors ${
+                      emailError
+                        ? 'border-[#5d2a1a] bg-[#fbe1d1]/20'
+                        : 'border-[#ececec] focus:border-[#17191c]'
+                    }`}
+                  />
 
                   {emailError && (
-                    <div className="mt-1.5 flex items-center gap-1.5 text-red-400 text-[11px]">
+                    <div className="mt-1.5 flex items-center gap-1.5 text-[#5d2a1a] text-xs">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       <span>{emailError}</span>
                     </div>
@@ -345,11 +312,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                 {/* Password Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-normal text-[#b4b4b4] flex items-center gap-1.5">
-                      <KeyRound className="w-3.5 h-3.5 text-[#898989]" />
-                      <span>Contraseña *</span>
+                    <label className="text-xs font-medium text-[#17191c] flex items-center gap-1.5">
+                      <KeyRound className="w-3.5 h-3.5 text-[#777b86]" />
+                      <span>Contraseña</span>
                     </label>
-                    <span className="text-[10px] font-mono text-[#898989]">BCrypt en PostgreSQL</span>
+                    <span className="text-[11px] text-[#979799]">Hash BCrypt en PostgreSQL</span>
                   </div>
 
                   <div className="relative">
@@ -361,13 +328,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                         setLoginError(null);
                       }}
                       placeholder="••••••••••••"
-                      className="w-full pl-3 pr-10 py-2 rounded-[8px] bg-[#121212] border border-[#393939] focus:border-[#3ecf8e] text-[#fafafa] placeholder-[#898989] outline-none text-xs transition-colors"
+                      className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-[#ffffff] border border-[#ececec] focus:border-[#17191c] text-[#17191c] placeholder-[#a3a6af] outline-none text-sm transition-colors"
                     />
 
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#898989] hover:text-[#fafafa] transition-colors cursor-pointer"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#777b86] hover:text-[#17191c] transition-colors cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -376,40 +343,49 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
                 {/* Error Banner */}
                 {loginError && (
-                  <div className="p-3 rounded-[8px] bg-[#242424] border border-red-800 text-red-300 text-xs flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0 text-red-400 mt-0.5" />
+                  <div className="p-3.5 rounded-[16px] bg-[#fbe1d1] text-[#5d2a1a] text-xs flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-[#5d2a1a] mt-0.5" />
                     <div>
-                      <strong className="block">Error de Autenticación:</strong>
+                      <strong className="block font-medium">Aviso de Autenticación:</strong>
                       <span>{loginError}</span>
                     </div>
                   </div>
                 )}
 
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !!emailError || !email.trim() || !password.trim()}
-                  className="w-full py-2.5 bg-[#3ecf8e] hover:bg-[#00c573] hover:border-[#1f4b37] border border-[#3ecf8e] disabled:opacity-40 disabled:cursor-not-allowed text-[#121212] font-medium text-xs rounded-full transition-colors flex items-center justify-center gap-2 cursor-pointer mt-2"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-3.5 h-3.5 border-2 border-[#121212] border-t-transparent rounded-full animate-spin" />
-                      <span>Verificando credenciales en PostgreSQL...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="w-3.5 h-3.5" />
-                      <span>Autenticar y Acceder</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </>
-                  )}
-                </button>
+                {/* Submit Pill Button Pair */}
+                <div className="pt-2 flex flex-wrap items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !!emailError || !email.trim() || !password.trim()}
+                    className="flex-1 py-3 px-6 bg-[#17191c] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-3.5 h-3.5 border-2 border-[#ffffff] border-t-transparent rounded-full animate-spin" />
+                        <span>Verificando en PostgreSQL...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Iniciar sesión</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={onReturnToLanding}
+                    className="py-3 px-6 bg-transparent hover:bg-[#f2f2f3] text-[#17191c] border border-[#17191c] font-normal text-sm rounded-full transition-colors cursor-pointer"
+                  >
+                    Cancelar
+                  </button>
+                </div>
               </form>
 
               {/* Tech Architecture Footnote */}
-              <div className="mt-6 pt-4 border-t border-[#2e2e2e] text-[11px] text-[#898989] flex flex-wrap items-center justify-between gap-2 font-mono">
-                <span>PostgreSQL 16 · Spring Security</span>
-                <span className="text-[#3ecf8e]">BCrypt (rounds: 12)</span>
+              <div className="mt-6 pt-4 border-t border-[#ececec] text-[12px] text-[#979799] flex flex-wrap items-center justify-between gap-2">
+                <span>PostgreSQL · Spring Security 6</span>
+                <span>BCryptPasswordEncoder (strength 12)</span>
               </div>
             </div>
           </div>
@@ -417,8 +393,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
       </div>
 
       {/* Footer */}
-      <div className="border-t border-[#2e2e2e] bg-[#121212] px-4 py-3 text-center text-xs text-[#898989]">
-        <span>VETSOFT ERP · Sistema Hospitalario Veterinario con Cumplimiento SRS RF-01</span>
+      <div className="px-6 py-6 text-center text-xs text-[#777b86]">
+        <span>VetSoft · Especificación IEEE 830 RF-01</span>
       </div>
     </div>
   );
