@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: vetsoft-auth-rf01
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vetsoft_db
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 20000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: false # Cambiar a true en producción bajo HTTPS
+        same-site: lax
+

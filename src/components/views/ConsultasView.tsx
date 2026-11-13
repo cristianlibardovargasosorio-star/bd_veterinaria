@@ -113,11 +113,11 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#17191c] tracking-tight flex items-center gap-2">
+          <h2 className="text-xl font-black text-[#1E293B] tracking-tight flex items-center gap-2">
             <Stethoscope className="w-6 h-6 text-[#5d2a1a]" />
             <span>Consultas Médicas Clínicas (RF08)</span>
           </h2>
-          <p className="text-xs text-[#777b86] mt-0.5">
+          <p className="text-xs text-[#64748B] mt-0.5">
             Registro de constantes vitales, anamnesis, diagnóstico y tratamiento con enlace al motor de IA.
           </p>
         </div>
@@ -128,7 +128,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
             setFormFeedback(null);
             setShowModal(true);
           }}
-          className="px-4 py-2 rounded-xl bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
+          className="px-4 py-2 rounded-xl bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Registrar Consulta Médica</span>
@@ -154,28 +154,28 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-base text-[#17191c]">
+                      <h3 className="font-bold text-base text-[#1E293B]">
                         {pet?.nombre} ({pet?.especie} - {pet?.raza})
                       </h3>
-                      <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#f2f2f3] text-[#777b86]">
+                      <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#f2f2f3] text-[#64748B]">
                         {pet?.codigo_expediente}
                       </span>
                     </div>
-                    <p className="text-xs text-[#777b86]">
-                      Atendido por: <strong className="text-[#777b86]">{vet?.nombres || 'Dr. Médico'}</strong> • Cita vinculada #{cons.id_cita}
+                    <p className="text-xs text-[#64748B]">
+                      Atendido por: <strong className="text-[#64748B]">{vet?.nombres || 'Dr. Médico'}</strong> • Cita vinculada #{cons.id_cita}
                     </p>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-xs font-semibold text-[#777b86]">
+                  <span className="text-xs font-semibold text-[#64748B]">
                     {new Date(cons.fecha_consulta).toLocaleDateString([], {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric',
                     })}
                   </span>
-                  <div className="text-[10px] text-[#777b86]">
+                  <div className="text-[10px] text-[#64748B]">
                     {new Date(cons.fecha_consulta).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
@@ -186,22 +186,22 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                 <div className="flex items-center gap-2 text-xs">
                   <Heart className="w-4 h-4 text-rose-500" />
                   <div>
-                    <span className="text-[#777b86] block text-[10px]">Frec. Cardíaca</span>
-                    <strong className="text-[#17191c]">{cons.frecuencia_cardiaca || '--'} lpm</strong>
+                    <span className="text-[#64748B] block text-[10px]">Frec. Cardíaca</span>
+                    <strong className="text-[#1E293B]">{cons.frecuencia_cardiaca || '--'} lpm</strong>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <Thermometer className="w-4 h-4 text-amber-500" />
                   <div>
-                    <span className="text-[#777b86] block text-[10px]">Temperatura</span>
-                    <strong className="text-[#17191c]">{cons.temperatura_c || '--'} °C</strong>
+                    <span className="text-[#64748B] block text-[10px]">Temperatura</span>
+                    <strong className="text-[#1E293B]">{cons.temperatura_c || '--'} °C</strong>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <Scale className="w-4 h-4 text-teal-600" />
                   <div>
-                    <span className="text-[#777b86] block text-[10px]">Peso Paciente</span>
-                    <strong className="text-[#17191c]">{cons.peso_actual} kg</strong>
+                    <span className="text-[#64748B] block text-[10px]">Peso Paciente</span>
+                    <strong className="text-[#1E293B]">{cons.peso_actual} kg</strong>
                   </div>
                 </div>
               </div>
@@ -209,10 +209,10 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
               {/* Anamnesis & Diagnosis */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
                 <div className="space-y-1">
-                  <span className="font-bold text-[#777b86] uppercase text-[10px]">
+                  <span className="font-bold text-[#64748B] uppercase text-[10px]">
                     Anamnesis y Síntomas
                   </span>
-                  <p className="text-[#777b86] bg-[#ffffff] p-2.5 rounded-lg border border-slate-100">
+                  <p className="text-[#64748B] bg-[#ffffff] p-2.5 rounded-lg border border-slate-100">
                     {cons.anamnesis_sintomas}
                   </p>
                 </div>
@@ -220,17 +220,17 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   <span className="font-bold text-[#5d2a1a] uppercase text-[10px]">
                     Diagnóstico Definitivo
                   </span>
-                  <p className="text-[#17191c] font-semibold bg-[#fbe1d1] text-[#5d2a1a]/50 p-2.5 rounded-lg border border-emerald-100">
+                  <p className="text-[#1E293B] font-semibold bg-[#fbe1d1] text-[#5d2a1a]/50 p-2.5 rounded-lg border border-emerald-100">
                     {cons.diagnostico}
                   </p>
                 </div>
               </div>
 
               <div className="text-xs space-y-1">
-                <span className="font-bold text-[#777b86] uppercase text-[10px]">
+                <span className="font-bold text-[#64748B] uppercase text-[10px]">
                   Tratamiento Recetado & Posología
                 </span>
-                <p className="text-[#777b86] bg-[#ffffff] p-2.5 rounded-lg border border-slate-100">
+                <p className="text-[#64748B] bg-[#ffffff] p-2.5 rounded-lg border border-slate-100">
                   {cons.tratamiento_recetado}
                 </p>
               </div>
@@ -250,7 +250,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     )}
                   </div>
                 ) : (
-                  <span className="text-xs text-[#777b86]">Sin ficha IA generada aún</span>
+                  <span className="text-xs text-[#64748B]">Sin ficha IA generada aún</span>
                 )}
 
                 <button
@@ -271,14 +271,14 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
           <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#ececec] overflow-hidden max-h-[92vh] flex flex-col">
-            <div className="px-6 py-4 bg-[#17191c] text-[#ffffff] flex items-center justify-between shrink-0">
+            <div className="px-6 py-4 bg-[#1E293B] text-[#ffffff] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <Stethoscope className="w-5 h-5 text-[#5d2a1a]" />
                 <h3 className="font-bold text-base">RF08: Registro de Consulta Médica</h3>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-[#777b86] hover:text-white"
+                className="text-[#64748B] hover:text-white"
               >
                 ✕
               </button>
@@ -290,7 +290,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   {/* Cita select */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block font-semibold text-[#777b86] mb-1">Cita Vinculada</label>
+                      <label className="block font-semibold text-[#64748B] mb-1">Cita Vinculada</label>
                       <select
                         value={form.id_cita}
                         onChange={(e) => handleCitaSelect(Number(e.target.value))}
@@ -308,7 +308,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     </div>
 
                     <div>
-                      <label className="block font-semibold text-[#777b86] mb-1">Médico Veterinario</label>
+                      <label className="block font-semibold text-[#64748B] mb-1">Médico Veterinario</label>
                       <select
                         value={form.id_veterinario}
                         onChange={(e) => setForm({ ...form, id_veterinario: Number(e.target.value) })}
@@ -325,12 +325,12 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
 
                   {/* Constantes Vitales */}
                   <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
-                    <span className="block font-bold text-[#777b86] uppercase tracking-wider text-[11px] mb-2">
+                    <span className="block font-bold text-[#64748B] uppercase tracking-wider text-[11px] mb-2">
                       Constantes Vitales del Paciente
                     </span>
                     <div className="grid grid-cols-3 gap-3">
                       <div>
-                        <label className="block text-[#777b86] mb-1">FC (lpm)</label>
+                        <label className="block text-[#64748B] mb-1">FC (lpm)</label>
                         <input
                           type="number"
                           value={form.frecuencia_cardiaca}
@@ -340,7 +340,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                         />
                       </div>
                       <div>
-                        <label className="block text-[#777b86] mb-1">Temp (°C)</label>
+                        <label className="block text-[#64748B] mb-1">Temp (°C)</label>
                         <input
                           type="number"
                           step="0.1"
@@ -351,7 +351,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                         />
                       </div>
                       <div>
-                        <label className="block text-[#777b86] mb-1">Peso Actual (kg)</label>
+                        <label className="block text-[#64748B] mb-1">Peso Actual (kg)</label>
                         <input
                           type="number"
                           step="0.1"
@@ -367,7 +367,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
 
                   {/* Anamnesis */}
                   <div>
-                    <label className="block font-semibold text-[#777b86] mb-1">
+                    <label className="block font-semibold text-[#64748B] mb-1">
                       Anamnesis y Síntomas de Evolución
                     </label>
                     <textarea
@@ -382,7 +382,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
 
                   {/* Diagnóstico */}
                   <div>
-                    <label className="block font-semibold text-[#777b86] mb-1">
+                    <label className="block font-semibold text-[#64748B] mb-1">
                       Diagnóstico Clínico Definitivo (RF08)
                     </label>
                     <input
@@ -397,7 +397,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
 
                   {/* Tratamiento */}
                   <div>
-                    <label className="block font-semibold text-[#777b86] mb-1">
+                    <label className="block font-semibold text-[#64748B] mb-1">
                       Tratamiento Recetado, Dosis y Recomendaciones
                     </label>
                     <textarea
@@ -411,7 +411,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-[#777b86] mb-1">Observaciones / Pruebas</label>
+                    <label className="block font-semibold text-[#64748B] mb-1">Observaciones / Pruebas</label>
                     <input
                       type="text"
                       value={form.observaciones}
@@ -442,13 +442,13 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowModal(false)}
-                      className="px-4 py-2 border border-[#e2e2e5] text-[#777b86] rounded-lg text-xs font-bold"
+                      className="px-4 py-2 border border-[#e2e2e5] text-[#64748B] rounded-lg text-xs font-bold"
                     >
                       Cancelar
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-lg text-xs font-bold"
+                      className="px-4 py-2 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] rounded-lg text-xs font-bold"
                     >
                       Guardar Consulta
                     </button>
@@ -461,10 +461,10 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-black text-[#17191c]">
+                    <h4 className="text-lg font-black text-[#1E293B]">
                       ¡Consulta Médica #{createdConsultaId} Registrada!
                     </h4>
-                    <p className="text-xs text-[#777b86] max-w-md mx-auto mt-1">
+                    <p className="text-xs text-[#64748B] max-w-md mx-auto mt-1">
                       Las constantes vitales y el tratamiento quedaron registrados de manera inmutable en la base de datos (RF08).
                     </p>
                   </div>
@@ -482,13 +482,13 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   <div className="flex items-center justify-center gap-3 pt-2">
                     <button
                       onClick={() => setShowModal(false)}
-                      className="px-4 py-2 text-xs font-semibold text-[#777b86] hover:bg-[#f2f2f3] rounded-lg"
+                      className="px-4 py-2 text-xs font-semibold text-[#64748B] hover:bg-[#f2f2f3] rounded-lg"
                     >
                       Cerrar y volver
                     </button>
                     <button
                       onClick={() => handleProceedToAI(createdConsultaId)}
-                      className="px-5 py-2.5 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] text-xs font-bold rounded-xl flex items-center gap-2 shadow-md "
+                      className="px-5 py-2.5 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] text-xs font-bold rounded-xl flex items-center gap-2 shadow-md "
                     >
                       <Sparkles className="w-4 h-4" />
                       <span>Generar Ficha con Gemini 3.8 Flash</span>

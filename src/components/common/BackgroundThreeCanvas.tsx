@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 /**
- * Fondo 3D disperso en Three.js (WebGL) exclusivo para la Landing Page.
- * Renderiza motivos veterinarios dispersos (huellas, cruces clínicas, cápsulas,
- * hélices ADN y anillos orgánicos) con animación continua, parallax por scroll
- * y reacción física suave al movimiento del cursor.
+ * Fondo 3D veterinario en Three.js (WebGL) para todo el sitio.
+ * Posiciona motivos 3D temáticos (huellas, cruces clínicas, cápsula y hélice ADN)
+ * exclusivamente en los márgenes laterales para no cubrir el texto central,
+ * con animación continua e interacción suave con el cursor.
  */
 export const BackgroundThreeCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -19,8 +19,8 @@ export const BackgroundThreeCanvas: React.FC = () => {
 
     const scene = new THREE.Scene();
 
-    const fov = 45;
-    const camZ = 15;
+    const fov = 42;
+    const camZ = 16;
     const camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 100);
     camera.position.set(0, 0, camZ);
 
@@ -36,112 +36,105 @@ export const BackgroundThreeCanvas: React.FC = () => {
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    // Iluminación editorial limpia
-    const ambientLight = new THREE.AmbientLight('#ffffff', 1.6);
+    // Iluminación editorial suave
+    const ambientLight = new THREE.AmbientLight('#ffffff', 1.65);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight('#ffffff', 1.15);
+    const dirLight = new THREE.DirectionalLight('#ffffff', 1.1);
     dirLight.position.set(6, 10, 10);
     scene.add(dirLight);
 
-    const emeraldLight = new THREE.PointLight('#fbe1d1', 1.6, 32);
-    emeraldLight.position.set(-8, 5, 6);
-    scene.add(emeraldLight);
-
-    const peachLight = new THREE.PointLight('#ffffff', 1.4, 32);
-    peachLight.position.set(8, -4, 6);
+    const peachLight = new THREE.PointLight('#fbe1d1', 1.8, 35);
+    peachLight.position.set(-10, 4, 8);
     scene.add(peachLight);
 
-    // Materiales en la paleta editorial Steep (Blush Peach, Mist Gray, Slate Gray & Sienna Brown)
-    const matEmeraldSoft = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#e6d3c7'),
-      roughness: 0.45,
-      metalness: 0.05,
-      transparent: true,
-      opacity: 0.42,
-    });
+    const emeraldLight = new THREE.PointLight('#F0FDFA', 1.4, 35);
+    emeraldLight.position.set(10, -4, 8);
+    scene.add(emeraldLight);
 
-    const matPeachSoft = new THREE.MeshStandardMaterial({
+    // Materiales suaves en armonía con la paleta del sitio
+    const matPeach = new THREE.MeshStandardMaterial({
       color: new THREE.Color('#fbe1d1'),
       roughness: 0.45,
       metalness: 0.04,
       transparent: true,
-      opacity: 0.52,
+      opacity: 0.62,
     });
 
-    const matSlateMist = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#e2e2e6'),
-      roughness: 0.5,
-      metalness: 0.06,
+    const matMist = new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#e2e8f0'),
+      roughness: 0.55,
+      metalness: 0.05,
       transparent: true,
-      opacity: 0.48,
+      opacity: 0.58,
     });
 
-    const matWireSlate = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#777b86'),
+    const matTerracottaSoft = new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#d9a78c'),
+      roughness: 0.45,
+      metalness: 0.05,
+      transparent: true,
+      opacity: 0.38,
+    });
+
+    const matSiennaWire = new THREE.MeshBasicMaterial({
+      color: new THREE.Color('#64748B'),
       wireframe: true,
       transparent: true,
-      opacity: 0.14,
-    });
-
-    const matWireEmerald = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#5d2a1a'),
-      wireframe: true,
-      transparent: true,
-      opacity: 0.14,
+      opacity: 0.16,
     });
 
     // Constructores de motivos 3D veterinarios
     const createPawGroup = (material: THREE.Material) => {
       const group = new THREE.Group();
-      const padGeo = new THREE.SphereGeometry(0.42, 18, 18);
+      const padGeo = new THREE.SphereGeometry(0.46, 20, 20);
       const pad = new THREE.Mesh(padGeo, material);
-      pad.scale.set(1.15, 0.92, 0.4);
-      pad.position.set(0, -0.16, 0);
+      pad.scale.set(1.15, 0.95, 0.42);
+      pad.position.set(0, -0.18, 0);
       group.add(pad);
 
-      const toeGeo = new THREE.SphereGeometry(0.16, 14, 14);
-      const offsets: [number, number][] = [
-        [-0.48, 0.32],
-        [-0.17, 0.52],
-        [0.17, 0.52],
-        [0.48, 0.32],
+      const toeGeo = new THREE.SphereGeometry(0.18, 16, 16);
+      const toeOffsets: [number, number][] = [
+        [-0.52, 0.36],
+        [-0.18, 0.58],
+        [0.18, 0.58],
+        [0.52, 0.36],
       ];
-      offsets.forEach(([tx, ty]) => {
+      toeOffsets.forEach(([tx, ty]) => {
         const toe = new THREE.Mesh(toeGeo, material);
-        toe.scale.set(0.9, 1.1, 0.45);
+        toe.scale.set(0.92, 1.12, 0.48);
         toe.position.set(tx, ty, 0);
         group.add(toe);
       });
       return group;
     };
 
-    const createVetCrossGroup = (material: THREE.Material, ringMat: THREE.Material) => {
+    const createVetCrossGroup = (material: THREE.Material, wireMat: THREE.Material) => {
       const group = new THREE.Group();
-      const vGeo = new THREE.BoxGeometry(0.32, 0.98, 0.2);
-      const hGeo = new THREE.BoxGeometry(0.98, 0.32, 0.2);
+      const vGeo = new THREE.BoxGeometry(0.38, 1.18, 0.24);
+      const hGeo = new THREE.BoxGeometry(1.18, 0.38, 0.24);
       group.add(new THREE.Mesh(vGeo, material));
       group.add(new THREE.Mesh(hGeo, material));
 
-      const ringGeo = new THREE.TorusGeometry(0.74, 0.025, 10, 36);
-      group.add(new THREE.Mesh(ringGeo, ringMat));
+      const ringGeo = new THREE.TorusGeometry(0.86, 0.028, 12, 42);
+      group.add(new THREE.Mesh(ringGeo, wireMat));
       return group;
     };
 
     const createCapsuleGroup = (matTop: THREE.Material, matBottom: THREE.Material) => {
       const group = new THREE.Group();
-      const halfGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.4, 18);
-      const capGeo = new THREE.SphereGeometry(0.2, 18, 14);
+      const halfGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.48, 20);
+      const capGeo = new THREE.SphereGeometry(0.24, 20, 16);
 
       const top = new THREE.Mesh(halfGeo, matTop);
-      top.position.y = 0.2;
+      top.position.y = 0.24;
       const topCap = new THREE.Mesh(capGeo, matTop);
-      topCap.position.y = 0.4;
+      topCap.position.y = 0.48;
 
       const bottom = new THREE.Mesh(halfGeo, matBottom);
-      bottom.position.y = -0.2;
+      bottom.position.y = -0.24;
       const bottomCap = new THREE.Mesh(capGeo, matBottom);
-      bottomCap.position.y = -0.4;
+      bottomCap.position.y = -0.48;
 
       group.add(top, topCap, bottom, bottomCap);
       group.rotation.z = Math.PI / 5;
@@ -150,15 +143,16 @@ export const BackgroundThreeCanvas: React.FC = () => {
 
     const createMiniDnaGroup = (matA: THREE.Material, matB: THREE.Material, rungMat: THREE.Material) => {
       const group = new THREE.Group();
-      const nodeGeo = new THREE.SphereGeometry(0.085, 10, 10);
-      const rungGeo = new THREE.CylinderGeometry(0.02, 0.02, 0.48, 8);
+      const nodeGeo = new THREE.SphereGeometry(0.095, 12, 12);
+      const rungGeo = new THREE.CylinderGeometry(0.022, 0.022, 0.56, 8);
       rungGeo.rotateZ(Math.PI / 2);
 
-      for (let i = 0; i < 6; i++) {
-        const y = (i - 2.5) * 0.28;
-        const angle = i * 0.78;
-        const x = Math.cos(angle) * 0.24;
-        const z = Math.sin(angle) * 0.24;
+      const steps = 7;
+      for (let i = 0; i < steps; i++) {
+        const y = (i - (steps - 1) / 2) * 0.32;
+        const angle = i * 0.72;
+        const x = Math.cos(angle) * 0.28;
+        const z = Math.sin(angle) * 0.28;
 
         const a = new THREE.Mesh(nodeGeo, matA);
         a.position.set(x, y, z);
@@ -168,103 +162,201 @@ export const BackgroundThreeCanvas: React.FC = () => {
         const rung = new THREE.Mesh(rungGeo, rungMat);
         rung.position.set(0, y, 0);
         rung.rotation.y = -angle;
+
         group.add(a, b, rung);
       }
       return group;
     };
 
-    const createOrbitalRingGroup = (ringMat: THREE.Material, coreMat: THREE.Material) => {
-      const group = new THREE.Group();
-      const ringGeo = new THREE.TorusGeometry(0.68, 0.03, 12, 42);
-      const coreGeo = new THREE.IcosahedronGeometry(0.28, 0);
-      group.add(new THREE.Mesh(ringGeo, ringMat));
-      group.add(new THREE.Mesh(coreGeo, coreMat));
-      return group;
-    };
-
-    interface ScatteredItem {
+    interface SideItem {
       group: THREE.Group;
-      basePos: THREE.Vector3;
-      offset: THREE.Vector3;
+      side: -1 | 1;
+      edgeFactor: number;
+      baseX: number;
+      baseY: number;
+      baseZ: number;
+      offset: THREE.Vector2;
       speed: number;
       amp: number;
       rotSpeed: { x: number; y: number; z: number };
       baseScale: number;
+      responsiveScale: number;
       currentScale: number;
     }
 
-    const items: ScatteredItem[] = [];
-
-    const scatteredConfigs: Array<{
-      group: THREE.Group;
-      pos: [number, number, number];
-      speed: number;
-      amp: number;
-      scale: number;
-    }> = [
-      { group: createPawGroup(matPeachSoft), pos: [-8.2, 3.8, -2.5], speed: 0.65, amp: 0.35, scale: 0.9 },
-      { group: createVetCrossGroup(matEmeraldSoft, matWireEmerald), pos: [8.4, 3.4, -3.2], speed: 0.55, amp: 0.32, scale: 0.85 },
-      { group: createCapsuleGroup(matEmeraldSoft, matSlateMist), pos: [-6.8, -0.8, -3.8], speed: 0.75, amp: 0.3, scale: 0.88 },
-      { group: createMiniDnaGroup(matEmeraldSoft, matPeachSoft, matSlateMist), pos: [7.6, -0.4, -2.4], speed: 0.68, amp: 0.34, scale: 0.92 },
-      { group: createOrbitalRingGroup(matWireSlate, matPeachSoft), pos: [-2.4, 4.4, -5.5], speed: 0.5, amp: 0.28, scale: 0.95 },
-      { group: createPawGroup(matSlateMist), pos: [2.8, -4.1, -4.8], speed: 0.72, amp: 0.3, scale: 0.82 },
-      { group: createVetCrossGroup(matPeachSoft, matWireSlate), pos: [-7.8, -3.9, -2.8], speed: 0.6, amp: 0.28, scale: 0.78 },
-      { group: createCapsuleGroup(matPeachSoft, matEmeraldSoft), pos: [8.6, -3.5, -3.4], speed: 0.78, amp: 0.32, scale: 0.82 },
-      { group: createOrbitalRingGroup(matWireEmerald, matSlateMist), pos: [0.6, 0.8, -6.8], speed: 0.48, amp: 0.25, scale: 0.9 },
-      { group: createPawGroup(matEmeraldSoft), pos: [-3.8, -3.2, -5.8], speed: 0.64, amp: 0.26, scale: 0.72 },
+    const items: SideItem[] = [
+      // Lado izquierdo
+      {
+        group: createPawGroup(matPeach),
+        side: -1,
+        edgeFactor: 0.85,
+        baseX: -8,
+        baseY: 2.9,
+        baseZ: -1.5,
+        offset: new THREE.Vector2(0, 0),
+        speed: 0.65,
+        amp: 0.28,
+        rotSpeed: { x: 0.0008, y: 0.0022, z: 0.0006 },
+        baseScale: 0.95,
+        responsiveScale: 0.95,
+        currentScale: 0.95,
+      },
+      {
+        group: createCapsuleGroup(matTerracottaSoft, matMist),
+        side: -1,
+        edgeFactor: 0.88,
+        baseX: -8.5,
+        baseY: -0.2,
+        baseZ: -2.2,
+        offset: new THREE.Vector2(0, 0),
+        speed: 0.75,
+        amp: 0.24,
+        rotSpeed: { x: 0.0018, y: 0.002, z: 0.001 },
+        baseScale: 0.9,
+        responsiveScale: 0.9,
+        currentScale: 0.9,
+      },
+      {
+        group: createVetCrossGroup(matMist, matSiennaWire),
+        side: -1,
+        edgeFactor: 0.83,
+        baseX: -8,
+        baseY: -3.2,
+        baseZ: -2.5,
+        offset: new THREE.Vector2(0, 0),
+        speed: 0.55,
+        amp: 0.22,
+        rotSpeed: { x: 0.0012, y: 0.0018, z: 0.0008 },
+        baseScale: 0.82,
+        responsiveScale: 0.82,
+        currentScale: 0.82,
+      },
+      // Lado derecho
+      {
+        group: createVetCrossGroup(matPeach, matSiennaWire),
+        side: 1,
+        edgeFactor: 0.85,
+        baseX: 8,
+        baseY: 3.0,
+        baseZ: -1.8,
+        offset: new THREE.Vector2(0, 0),
+        speed: 0.6,
+        amp: 0.26,
+        rotSpeed: { x: 0.001, y: -0.002, z: 0.0007 },
+        baseScale: 0.88,
+        responsiveScale: 0.88,
+        currentScale: 0.88,
+      },
+      {
+        group: createMiniDnaGroup(matPeach, matTerracottaSoft, matMist),
+        side: 1,
+        edgeFactor: 0.88,
+        baseX: 8.5,
+        baseY: -0.1,
+        baseZ: -1.5,
+        offset: new THREE.Vector2(0, 0),
+        speed: 0.7,
+        amp: 0.25,
+        rotSpeed: { x: 0.0004, y: 0.0035, z: 0.0004 },
+        baseScale: 0.95,
+        responsiveScale: 0.95,
+        currentScale: 0.95,
+      },
+      {
+        group: createPawGroup(matMist),
+        side: 1,
+        edgeFactor: 0.84,
+        baseX: 8,
+        baseY: -3.1,
+        baseZ: -2.0,
+        offset: new THREE.Vector2(0, 0),
+        speed: 0.68,
+        amp: 0.24,
+        rotSpeed: { x: 0.001, y: -0.0022, z: 0.0005 },
+        baseScale: 0.88,
+        responsiveScale: 0.88,
+        currentScale: 0.88,
+      },
     ];
 
-    scatteredConfigs.forEach((cfg) => {
-      cfg.group.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
-      cfg.group.scale.setScalar(cfg.scale);
-      scene.add(cfg.group);
-      items.push({
-        group: cfg.group,
-        basePos: new THREE.Vector3(cfg.pos[0], cfg.pos[1], cfg.pos[2]),
-        offset: new THREE.Vector3(0, 0, 0),
-        speed: cfg.speed,
-        amp: cfg.amp,
-        rotSpeed: {
-          x: (Math.random() - 0.5) * 0.004 + 0.001,
-          y: (Math.random() - 0.5) * 0.005 + 0.002,
-          z: (Math.random() - 0.5) * 0.002,
-        },
-        baseScale: cfg.scale,
-        currentScale: cfg.scale,
-      });
+    items.forEach((item) => {
+      scene.add(item.group);
     });
 
-    // Partículas dispersas que reaccionan suavemente al cursor
-    const particleCount = 65;
+    // Partículas sutiles únicamente en los bordes laterales
+    const particleCount = 36;
     const pPositions = new Float32Array(particleCount * 3);
+    const pSides: (-1 | 1)[] = [];
+    const pFactors: number[] = [];
+
     for (let i = 0; i < particleCount; i++) {
-      pPositions[i * 3] = (Math.random() - 0.5) * 24;
-      pPositions[i * 3 + 1] = (Math.random() - 0.5) * 14;
-      pPositions[i * 3 + 2] = -1 - Math.random() * 7;
+      const side: -1 | 1 = i % 2 === 0 ? -1 : 1;
+      const factor = 0.76 + Math.random() * 0.2;
+      const y = (Math.random() - 0.5) * 11;
+      const z = -1 - Math.random() * 4;
+      pSides.push(side);
+      pFactors.push(factor);
+      pPositions[i * 3] = side * 8 * factor;
+      pPositions[i * 3 + 1] = y;
+      pPositions[i * 3 + 2] = z;
     }
+
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
     const pMat = new THREE.PointsMaterial({
-      color: '#5d2a1a',
-      size: 0.07,
+      color: '#64748B',
+      size: 0.055,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.2,
     });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
 
-    // Estado del cursor en coordenadas normalizadas (-1 a 1) y mundo 3D
+    const updateSideLayout = () => {
+      const aspect = width / height;
+      const halfVisibleHeight = Math.tan(THREE.MathUtils.degToRad(fov / 2)) * camZ;
+      const halfVisibleWidth = halfVisibleHeight * aspect;
+      const isNarrow = width < 1024;
+      const isMobile = width < 640;
+
+      items.forEach((item) => {
+        const scaleFactor = isMobile ? 0.5 : isNarrow ? 0.72 : 1;
+        item.responsiveScale = item.baseScale * scaleFactor;
+        item.currentScale = item.responsiveScale;
+        item.group.scale.setScalar(item.responsiveScale);
+
+        const edge = isMobile ? 0.94 : isNarrow ? 0.9 : item.edgeFactor;
+        const depthScale = (camZ - item.baseZ) / camZ;
+        item.baseX = item.side * halfVisibleWidth * edge * depthScale;
+        item.group.position.set(item.baseX, item.baseY, item.baseZ);
+      });
+
+      const posAttr = pGeo.attributes.position as THREE.BufferAttribute;
+      for (let i = 0; i < particleCount; i++) {
+        posAttr.setX(i, pSides[i] * halfVisibleWidth * pFactors[i]);
+      }
+      posAttr.needsUpdate = true;
+
+      matPeach.opacity = isMobile ? 0.32 : 0.62;
+      matMist.opacity = isMobile ? 0.3 : 0.58;
+      matTerracottaSoft.opacity = isMobile ? 0.22 : 0.38;
+      pMat.opacity = isMobile ? 0.1 : 0.2;
+    };
+
+    updateSideLayout();
+
+    // Cursor interactivo + Parallax suave
     let mouseNdcX = 0;
     let mouseNdcY = 0;
     let cursorActive = false;
     let scrollY = window.scrollY || 0;
-    const cursorWorld = new THREE.Vector3(999, 999, 0);
+    const cursorWorld = new THREE.Vector2(999, 999);
 
     const updateCursorWorld = () => {
       if (!cursorActive) return;
       const halfH = Math.tan(THREE.MathUtils.degToRad(fov / 2)) * camZ;
       const halfW = halfH * (width / height);
-      cursorWorld.set(mouseNdcX * halfW, mouseNdcY * halfH, 0);
+      cursorWorld.set(mouseNdcX * halfW, mouseNdcY * halfH);
     };
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -276,7 +368,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
 
     const handleMouseLeave = () => {
       cursorActive = false;
-      cursorWorld.set(999, 999, 0);
+      cursorWorld.set(999, 999);
     };
 
     const handleScroll = () => {
@@ -289,6 +381,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
+      updateSideLayout();
       updateCursorWorld();
     };
 
@@ -305,37 +398,35 @@ export const BackgroundThreeCanvas: React.FC = () => {
       const t = clock.getElapsedTime();
 
       items.forEach((item, idx) => {
-        // Flotación orgánica continua
         const floatY = Math.sin(t * item.speed + idx * 1.1) * item.amp;
-        const floatX = Math.cos(t * item.speed * 0.7 + idx) * (item.amp * 0.4);
 
-        // Interacción física con el cursor (repulsión suave + rotación + pulso de escala)
-        let targetOffsetX = 0;
-        let targetOffsetY = 0;
-        let targetScale = item.baseScale;
+        let targetOffX = 0;
+        let targetOffY = 0;
+        let targetScale = item.responsiveScale;
         let boostRot = 1;
 
         if (cursorActive) {
-          const dx = item.basePos.x + floatX - cursorWorld.x;
-          const dy = item.basePos.y + floatY - cursorWorld.y;
+          const dx = item.baseX - cursorWorld.x;
+          const dy = item.baseY + floatY - cursorWorld.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const radius = 4.8;
+          const radius = 4.2;
 
           if (dist < radius && dist > 0.001) {
-            const strength = (1 - dist / radius);
-            targetOffsetX = (dx / dist) * strength * 1.35;
-            targetOffsetY = (dy / dist) * strength * 1.35;
-            targetScale = item.baseScale * (1 + strength * 0.22);
-            boostRot = 1 + strength * 3.2;
+            const strength = 1 - dist / radius;
+            // Empuje suave hacia afuera del borde lateral para no invadir el centro
+            targetOffX = item.side * Math.abs(dx / dist) * strength * 0.65;
+            targetOffY = (dy / dist) * strength * 0.75;
+            targetScale = item.responsiveScale * (1 + strength * 0.18);
+            boostRot = 1 + strength * 3.0;
           }
         }
 
-        item.offset.x += (targetOffsetX - item.offset.x) * 0.08;
-        item.offset.y += (targetOffsetY - item.offset.y) * 0.08;
+        item.offset.x += (targetOffX - item.offset.x) * 0.08;
+        item.offset.y += (targetOffY - item.offset.y) * 0.08;
         item.currentScale += (targetScale - item.currentScale) * 0.1;
 
-        item.group.position.x = item.basePos.x + floatX + item.offset.x;
-        item.group.position.y = item.basePos.y + floatY + item.offset.y;
+        item.group.position.x = item.baseX + item.offset.x;
+        item.group.position.y = item.baseY + floatY + item.offset.y;
         item.group.scale.setScalar(item.currentScale);
 
         item.group.rotation.x += item.rotSpeed.x * boostRot;
@@ -343,15 +434,13 @@ export const BackgroundThreeCanvas: React.FC = () => {
         item.group.rotation.z += item.rotSpeed.z * boostRot;
       });
 
-      // Parallax de cámara siguiendo suavemente el cursor y el scroll
-      const targetCamX = mouseNdcX * 0.65;
-      const targetCamY = mouseNdcY * 0.45 - (scrollY % 1600) * 0.0008;
-      camera.position.x += (targetCamX - camera.position.x) * 0.05;
-      camera.position.y += (targetCamY - camera.position.y) * 0.05;
-      camera.lookAt(0, camera.position.y * 0.25, -3);
+      const targetCamX = mouseNdcX * 0.22;
+      const targetCamY = mouseNdcY * 0.2 - (scrollY % 1200) * 0.0005;
+      camera.position.x += (targetCamX - camera.position.x) * 0.04;
+      camera.position.y += (targetCamY - camera.position.y) * 0.04;
+      camera.lookAt(0, camera.position.y * 0.3, -2);
 
-      particles.rotation.y = t * 0.025 + mouseNdcX * 0.08;
-      particles.rotation.x = mouseNdcY * 0.05;
+      particles.position.y = Math.sin(t * 0.35) * 0.15;
 
       renderer.render(scene, camera);
     };
@@ -366,11 +455,10 @@ export const BackgroundThreeCanvas: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       pGeo.dispose();
       pMat.dispose();
-      matEmeraldSoft.dispose();
-      matPeachSoft.dispose();
-      matSlateMist.dispose();
-      matWireSlate.dispose();
-      matWireEmerald.dispose();
+      matPeach.dispose();
+      matMist.dispose();
+      matTerracottaSoft.dispose();
+      matSiennaWire.dispose();
       renderer.dispose();
     };
   }, []);
@@ -383,4 +471,3 @@ export const BackgroundThreeCanvas: React.FC = () => {
     />
   );
 };
-
