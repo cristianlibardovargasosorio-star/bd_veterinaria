@@ -44,21 +44,21 @@ export const BackgroundThreeCanvas: React.FC = () => {
     dirLight.position.set(6, 10, 10);
     scene.add(dirLight);
 
-    const emeraldLight = new THREE.PointLight('#0D9488', 1.4, 32);
+    const emeraldLight = new THREE.PointLight('#fbe1d1', 1.6, 32);
     emeraldLight.position.set(-8, 5, 6);
     scene.add(emeraldLight);
 
-    const peachLight = new THREE.PointLight('#fbe1d1', 1.6, 32);
+    const peachLight = new THREE.PointLight('#ffffff', 1.4, 32);
     peachLight.position.set(8, -4, 6);
     scene.add(peachLight);
 
-    // Materiales en la paleta clínica de VetSoft (opacidad sutil para respetar la lectura)
+    // Materiales en la paleta editorial Steep (Blush Peach, Mist Gray, Slate Gray & Sienna Brown)
     const matEmeraldSoft = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#0D9488'),
-      roughness: 0.4,
-      metalness: 0.08,
+      color: new THREE.Color('#e6d3c7'),
+      roughness: 0.45,
+      metalness: 0.05,
       transparent: true,
-      opacity: 0.24,
+      opacity: 0.42,
     });
 
     const matPeachSoft = new THREE.MeshStandardMaterial({
@@ -66,29 +66,29 @@ export const BackgroundThreeCanvas: React.FC = () => {
       roughness: 0.45,
       metalness: 0.04,
       transparent: true,
-      opacity: 0.42,
+      opacity: 0.52,
     });
 
     const matSlateMist = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#cbd5e1'),
+      color: new THREE.Color('#e2e2e6'),
       roughness: 0.5,
       metalness: 0.06,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.48,
     });
 
     const matWireSlate = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#64748B'),
+      color: new THREE.Color('#777b86'),
       wireframe: true,
       transparent: true,
       opacity: 0.14,
     });
 
     const matWireEmerald = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#0D9488'),
+      color: new THREE.Color('#5d2a1a'),
       wireframe: true,
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.14,
     });
 
     // Constructores de motivos 3D veterinarios
@@ -245,10 +245,10 @@ export const BackgroundThreeCanvas: React.FC = () => {
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
     const pMat = new THREE.PointsMaterial({
-      color: '#0D9488',
+      color: '#5d2a1a',
       size: 0.07,
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.22,
     });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
