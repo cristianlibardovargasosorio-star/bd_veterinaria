@@ -810,3 +810,4 @@ classDiagram
 * Institute of Electrical and Electronics Engineers. (1998). *IEEE recommended practice for software requirements specifications (IEEE Std 830-1998)*. IEEE.
 * Object Management Group (OMG). (2017). *Unified Modeling Language (UML) Specification, Version 2.5.1*.
 * Spring Framework Documentation. (2026). *Spring Boot & Spring Security Reference Guide*.
+

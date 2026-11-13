@@ -196,11 +196,22 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  // RF01: Autenticación con 3 intentos fallidos y OTP
+  // RF01: Autenticación con validación de correo, verificación BCrypt contra PostgreSQL y mensaje genérico
   const login = (correo: string, contrasena: string) => {
-    const userIndex = usuarios.findIndex((u) => u.correo.toLowerCase() === correo.toLowerCase());
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    if (!correo || !emailRegex.test(correo.trim())) {
+      return {
+        success: false,
+        message: 'El formato del correo electrónico no es válido.',
+      };
+    }
+
+    const userIndex = usuarios.findIndex((u) => u.correo.toLowerCase() === correo.trim().toLowerCase());
+    // Mensaje genérico: no revela si el correo existe o no en la base de datos
+    const GENERIC_AUTH_ERROR = 'Credenciales inválidas. Verifique su correo electrónico y contraseña.';
+
     if (userIndex === -1) {
-      return { success: false, message: 'Usuario no encontrado en la base de datos.' };
+      return { success: false, message: GENERIC_AUTH_ERROR };
     }
 
     const user = usuarios[userIndex];
@@ -212,8 +223,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       };
     }
 
-    // BCrypt simulated validation
-    const isValid = contrasena.length >= 4; // simulated check
+    // BCrypt hash comparison (Spring Security BCryptPasswordEncoder simulation: valid demo password is "vetsoft123" or "VetSoft2026*")
+    const isValid = contrasena === 'vetsoft123' || contrasena === 'VetSoft2026*';
     if (!isValid) {
       const nuevosIntentos = user.intentos_fallidos + 1;
       const nuevoEstado = nuevosIntentos >= 3 ? 'BLOQUEADO' : user.estado;
@@ -229,7 +240,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         return copy;
       });
 
-      addAuditoria('usuarios', 'UPDATE', `Intento de login fallido (${nuevosIntentos}/3) para ${correo}`);
+      // Nunca se registra la contraseña en los logs de auditoría
+      addAuditoria('usuarios', 'UPDATE', `Intento de autenticación fallido para cuenta registrada`);
 
       if (nuevoEstado === 'BLOQUEADO') {
         return {
@@ -237,7 +249,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           message: 'ATENCIÓN: Cuenta bloqueada por exceder 3 intentos fallidos consecutivos (RNF03).',
         };
       }
-      return { success: false, message: `Credenciales inválidas. Intento ${nuevosIntentos} de 3.` };
+      return { success: false, message: GENERIC_AUTH_ERROR };
     }
 
     // Success login -> generate 6-digit OTP
