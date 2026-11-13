@@ -90,28 +90,28 @@ export const AsistenteClinicoView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-            <BotMessageSquare className="w-6 h-6 text-emerald-600" />
+          <h2 className="text-xl font-black text-[#fafafa] tracking-tight flex items-center gap-2">
+            <BotMessageSquare className="w-6 h-6 text-[#3ecf8e]" />
             <span>Asistente Clínico Veterinario Interactivo (Gemini 3.8 Flash)</span>
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs text-[#898989] mt-0.5">
             Cálculo de posología en mg/kg, interacciones farmacológicas y triaje médico por especie y peso.
           </p>
         </div>
       </div>
 
       {/* Patient Context Selector */}
-      <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+      <div className="p-4 bg-[#121212] rounded-2xl border border-[#2e2e2e] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
-          <Stethoscope className="w-4 h-4 text-emerald-600" />
-          <span className="font-bold text-slate-700">Contexto de Paciente Activo:</span>
+          <Stethoscope className="w-4 h-4 text-[#3ecf8e]" />
+          <span className="font-bold text-[#b4b4b4]">Contexto de Paciente Activo:</span>
         </div>
 
         <div className="flex items-center gap-3">
           <select
             value={selectedPetId}
             onChange={(e) => setSelectedPetId(Number(e.target.value))}
-            className="p-2 border border-slate-300 rounded-xl bg-white font-medium"
+            className="p-2 border border-[#393939] rounded-xl bg-[#121212] font-medium"
           >
             {mascotas.map((m) => (
               <option key={m.id_mascota} value={m.id_mascota}>
@@ -120,14 +120,14 @@ export const AsistenteClinicoView: React.FC = () => {
             ))}
           </select>
 
-          <span className="px-3 py-1 bg-emerald-50 text-emerald-800 rounded-lg border border-emerald-200 font-bold">
+          <span className="px-3 py-1 bg-[#1c2e24] text-[#3ecf8e] text-[#3ecf8e] rounded-lg border border-[#1f4b37] font-bold">
             Peso: {activePet?.peso_kg} kg
           </span>
         </div>
       </div>
 
       {/* Chat Window */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden flex flex-col h-[520px]">
+      <div className="bg-[#121212] rounded-2xl border border-[#2e2e2e] shadow-xs overflow-hidden flex flex-col h-[520px]">
         {/* Messages */}
         <div className="flex-1 p-5 overflow-y-auto space-y-4">
           {chatLog.map((msg, i) => (
@@ -138,7 +138,7 @@ export const AsistenteClinicoView: React.FC = () => {
               }`}
             >
               {msg.sender === 'ia' && (
-                <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-[#3ecf8e] text-[#121212] text-white flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles className="w-4 h-4" />
                 </div>
               )}
@@ -146,14 +146,14 @@ export const AsistenteClinicoView: React.FC = () => {
               <div
                 className={`p-4 rounded-2xl max-w-xl leading-relaxed ${
                   msg.sender === 'user'
-                    ? 'bg-slate-900 text-white rounded-tr-xs'
-                    : 'bg-slate-50 text-slate-800 rounded-tl-xs border border-slate-200 shadow-2xs'
+                    ? 'bg-[#121212] text-white rounded-tr-xs'
+                    : 'bg-[#121212] text-[#fafafa] rounded-tl-xs border border-[#2e2e2e] shadow-2xs'
                 }`}
               >
                 <p className="whitespace-pre-line">{msg.text}</p>
                 <span
                   className={`block text-[10px] mt-1.5 text-right ${
-                    msg.sender === 'user' ? 'text-slate-400' : 'text-slate-400'
+                    msg.sender === 'user' ? 'text-[#898989]' : 'text-[#898989]'
                   }`}
                 >
                   {msg.time}
@@ -163,21 +163,21 @@ export const AsistenteClinicoView: React.FC = () => {
           ))}
 
           {loading && (
-            <div className="flex items-center gap-2 text-xs text-slate-400 italic">
-              <RotateCw className="w-3.5 h-3.5 animate-spin text-emerald-600" />
+            <div className="flex items-center gap-2 text-xs text-[#898989] italic">
+              <RotateCw className="w-3.5 h-3.5 animate-spin text-[#3ecf8e]" />
               <span>Gemini 3.8 Flash está consultando la literatura veterinaria...</span>
             </div>
           )}
         </div>
 
         {/* Quick Prompts */}
-        <div className="px-4 py-2 border-t border-slate-100 bg-slate-50 flex items-center gap-2 overflow-x-auto">
-          <span className="text-[11px] font-bold text-slate-500 shrink-0">Sugerencias:</span>
+        <div className="px-4 py-2 border-t border-slate-100 bg-[#121212] flex items-center gap-2 overflow-x-auto">
+          <span className="text-[11px] font-bold text-[#898989] shrink-0">Sugerencias:</span>
           {quickPrompts.map((p, idx) => (
             <button
               key={idx}
               onClick={() => setPregunta(p)}
-              className="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 rounded-lg border border-slate-200 text-[11px] font-medium shrink-0 transition-colors"
+              className="px-2.5 py-1 bg-[#121212] hover:bg-[#181818] text-[#b4b4b4] rounded-lg border border-[#2e2e2e] text-[11px] font-medium shrink-0 transition-colors"
             >
               {p}
             </button>
@@ -185,18 +185,18 @@ export const AsistenteClinicoView: React.FC = () => {
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSend} className="p-3 border-t border-slate-200 bg-white flex items-center gap-2">
+        <form onSubmit={handleSend} className="p-3 border-t border-[#2e2e2e] bg-[#121212] flex items-center gap-2">
           <input
             type="text"
             value={pregunta}
             onChange={(e) => setPregunta(e.target.value)}
             placeholder={`Consulta clínica para ${activePet?.nombre || 'el paciente'} (ej. dosis de Meloxicam, fluidos...)`}
-            className="flex-1 text-xs p-2.5 border border-slate-300 rounded-xl focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            className="flex-1 text-xs p-2.5 border border-[#393939] rounded-xl focus:outline-hidden focus:border-[#3ecf8e] focus:ring-1 focus:ring-emerald-500"
           />
           <button
             type="submit"
             disabled={loading || !pregunta.trim()}
-            className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-4 py-2.5 bg-[#3ecf8e] text-[#121212] hover:bg-[#00c573] text-[#121212] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Send className="w-4 h-4" />
             <span>Enviar</span>

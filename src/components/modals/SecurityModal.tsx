@@ -40,16 +40,16 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-xs p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-        <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#121212]/60 backdrop-blur-xs p-4">
+      <div className="bg-[#121212] rounded-2xl shadow-2xl max-w-2xl w-full border border-[#2e2e2e] overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="px-6 py-4 bg-[#121212] text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Lock className="w-5 h-5 text-emerald-400" />
+            <Lock className="w-5 h-5 text-[#3ecf8e]" />
             <h3 className="font-bold text-base">RF01: Demostrador de Autenticación, BCrypt y OTP</h3>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors"
+            className="text-[#898989] hover:text-white p-1 rounded-lg transition-colors"
           >
             ✕
           </button>
@@ -57,9 +57,9 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
 
         <div className="p-6 space-y-6 max-h-[85vh] overflow-y-auto">
           {/* Theory & SRS Spec */}
-          <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-950 space-y-1">
+          <div className="p-3 bg-[#1c2e24] text-[#3ecf8e] rounded-xl border border-[#1f4b37] text-xs text-emerald-950 space-y-1">
             <div className="font-bold flex items-center gap-1.5 text-emerald-900">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <ShieldCheck className="w-4 h-4 text-[#3ecf8e]" />
               Garantía Tecnológica RF01 & RNF03 (Seguridad):
             </div>
             <p>
@@ -74,21 +74,21 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           </div>
 
           {/* Test form */}
-          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
-            <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+          <div className="bg-[#121212] p-4 rounded-xl border border-[#2e2e2e] space-y-4">
+            <div className="text-xs font-bold text-[#b4b4b4] uppercase tracking-wider">
               Simulador de Inicio de Sesión
             </div>
 
             <form onSubmit={handleTestLogin} className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Usuario / Correo</label>
+                <label className="block text-xs font-semibold text-[#b4b4b4] mb-1">Usuario / Correo</label>
                 <select
                   value={selectedEmail}
                   onChange={(e) => {
                     setSelectedEmail(e.target.value);
                     setLoginMessage(null);
                   }}
-                  className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
+                  className="w-full text-xs p-2 rounded-lg border border-[#393939] bg-[#121212]"
                 >
                   {usuarios.map((u) => (
                     <option key={u.id_usuario} value={u.correo}>
@@ -99,7 +99,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-[#b4b4b4] mb-1">
                   Contraseña (Prueba errónea &lt; 4 letras)
                 </label>
                 <input
@@ -107,14 +107,14 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                   value={testPassword}
                   onChange={(e) => setTestPassword(e.target.value)}
                   placeholder="ej. vetsoft123 o 'mal'"
-                  className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
+                  className="w-full text-xs p-2 rounded-lg border border-[#393939] bg-[#121212]"
                 />
               </div>
 
               <div className="md:col-span-2 flex items-center gap-2">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors"
+                  className="px-4 py-2 bg-[#3ecf8e] text-[#121212] hover:bg-[#00c573] text-[#121212] text-white rounded-lg text-xs font-bold transition-colors"
                 >
                   Simular Verificación
                 </button>
@@ -128,7 +128,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                 <button
                   type="button"
                   onClick={() => setTestPassword('vetsoft2026')}
-                  className="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-xs font-medium"
+                  className="px-3 py-2 bg-[#242424] hover:bg-slate-300 text-[#b4b4b4] rounded-lg text-xs font-medium"
                 >
                   Probar válida
                 </button>
@@ -140,13 +140,13 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                 className={`p-3 rounded-lg text-xs font-medium flex items-center gap-2 ${
                   loginMessage.isError
                     ? 'bg-red-50 text-red-800 border border-red-200'
-                    : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                    : 'bg-[#1c2e24] text-[#3ecf8e] text-[#3ecf8e] border border-[#1f4b37]'
                 }`}
               >
                 {loginMessage.isError ? (
                   <AlertTriangle className="w-4 h-4 shrink-0 text-red-600" />
                 ) : (
-                  <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                  <CheckCircle2 className="w-4 h-4 shrink-0 text-[#3ecf8e]" />
                 )}
                 <span>{loginMessage.text}</span>
               </div>
@@ -154,16 +154,16 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           </div>
 
           {/* User state in DB */}
-          <div className="border border-slate-200 rounded-xl p-4 bg-white space-y-3">
-            <div className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center justify-between">
+          <div className="border border-[#2e2e2e] rounded-xl p-4 bg-[#121212] space-y-3">
+            <div className="text-xs font-bold text-[#b4b4b4] uppercase tracking-wider flex items-center justify-between">
               <span>Estado en Base de Datos (Tabla usuarios)</span>
               <span
                 className={`px-2 py-0.5 rounded text-[11px] font-bold ${
                   targetUser.estado === 'ACTIVO'
-                    ? 'bg-emerald-100 text-emerald-800'
+                    ? 'bg-[#1c2e24] text-[#3ecf8e] text-[#3ecf8e]'
                     : targetUser.estado === 'BLOQUEADO'
                     ? 'bg-red-100 text-red-800 animate-pulse'
-                    : 'bg-slate-100 text-slate-800'
+                    : 'bg-[#181818] text-[#fafafa]'
                 }`}
               >
                 {targetUser.estado}
@@ -171,27 +171,27 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-              <div className="p-2 bg-slate-50 rounded border border-slate-200">
-                <span className="text-slate-500 block text-[10px]">Intentos fallidos:</span>
-                <span className="font-bold text-slate-800 text-sm">
+              <div className="p-2 bg-[#121212] rounded border border-[#2e2e2e]">
+                <span className="text-[#898989] block text-[10px]">Intentos fallidos:</span>
+                <span className="font-bold text-[#fafafa] text-sm">
                   {targetUser.intentos_fallidos} / 3
                 </span>
               </div>
-              <div className="p-2 bg-slate-50 rounded border border-slate-200">
-                <span className="text-slate-500 block text-[10px]">Código OTP Activo:</span>
-                <span className="font-mono font-bold text-emerald-700 text-sm">
+              <div className="p-2 bg-[#121212] rounded border border-[#2e2e2e]">
+                <span className="text-[#898989] block text-[10px]">Código OTP Activo:</span>
+                <span className="font-mono font-bold text-[#3ecf8e] text-sm">
                   {targetUser.otp_code || 'Ninguno'}
                 </span>
               </div>
-              <div className="p-2 bg-slate-50 rounded border border-slate-200 col-span-2 sm:col-span-1">
-                <span className="text-slate-500 block text-[10px]">Rol Asignado:</span>
+              <div className="p-2 bg-[#121212] rounded border border-[#2e2e2e] col-span-2 sm:col-span-1">
+                <span className="text-[#898989] block text-[10px]">Rol Asignado:</span>
                 <span className="font-bold text-purple-700">{targetUser.rol_nombre}</span>
               </div>
             </div>
 
             <div>
-              <span className="text-slate-500 block text-[10px] mb-1">Hash BCrypt (RNF03):</span>
-              <code className="block p-2 bg-slate-900 text-emerald-400 font-mono text-[11px] rounded break-all">
+              <span className="text-[#898989] block text-[10px] mb-1">Hash BCrypt (RNF03):</span>
+              <code className="block p-2 bg-[#121212] text-[#3ecf8e] font-mono text-[11px] rounded break-all">
                 {targetUser.contrasena}
               </code>
             </div>
@@ -199,7 +199,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
             {/* OTP verification */}
             {targetUser.otp_code && (
               <form onSubmit={handleVerifyOtp} className="pt-2 border-t border-slate-100 space-y-2">
-                <label className="block text-xs font-bold text-slate-700">
+                <label className="block text-xs font-bold text-[#b4b4b4]">
                   Validar Código OTP (Doble Factor)
                 </label>
                 <div className="flex gap-2">
@@ -209,7 +209,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                     value={otpInput}
                     onChange={(e) => setOtpInput(e.target.value)}
                     placeholder="6 dígitos"
-                    className="w-36 text-center font-mono font-bold tracking-widest text-base p-1.5 border border-slate-300 rounded-lg"
+                    className="w-36 text-center font-mono font-bold tracking-widest text-base p-1.5 border border-[#393939] rounded-lg"
                   />
                   <button
                     type="submit"
@@ -221,7 +221,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                 {otpVerified !== null && (
                   <p
                     className={`text-xs font-medium ${
-                      otpVerified ? 'text-emerald-600' : 'text-red-600'
+                      otpVerified ? 'text-[#3ecf8e]' : 'text-red-600'
                     }`}
                   >
                     {otpVerified
@@ -234,10 +234,10 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           </div>
         </div>
 
-        <div className="px-6 py-3 bg-slate-100 border-t border-slate-200 flex justify-end">
+        <div className="px-6 py-3 bg-[#181818] border-t border-[#2e2e2e] flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-bold transition-colors"
+            className="px-4 py-2 bg-[#1e1e1e] hover:bg-[#121212] text-white rounded-lg text-xs font-bold transition-colors"
           >
             Cerrar Demostrador
           </button>

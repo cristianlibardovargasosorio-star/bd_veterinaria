@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StoreProvider } from './db/store';
+import { UserRole } from './types';
 import { LandingPage } from './components/landing/LandingPage';
+import { LoginView } from './components/views/LoginView';
 import { Navbar } from './components/Navbar';
 import { Sidebar, ActiveTab } from './components/Sidebar';
 import { DashboardView } from './components/views/DashboardView';
@@ -19,8 +21,8 @@ import { TraceabilityModal } from './components/modals/TraceabilityModal';
 import { SkeletonKPI, SkeletonCard, SkeletonTable } from './components/common/Skeleton';
 
 export default function App() {
-  // Navigation mode: Landing Page first, with seamless access to ERP
-  const [appMode, setAppMode] = useState<'landing' | 'erp'>('landing');
+  // Navigation mode: Landing Page first, with dedicated /login and seamless access to ERP
+  const [appMode, setAppMode] = useState<'landing' | 'erp' | 'login'>('landing');
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [showTraceability, setShowTraceability] = useState(false);
   const [showSecurityModal, setShowSecurityModal] = useState(false);
@@ -33,36 +35,75 @@ export default function App() {
   const [selectedCitaForConsulta, setSelectedCitaForConsulta] = useState<number | null>(null);
   const [selectedConsultaForAI, setSelectedConsultaForAI] = useState<number | null>(null);
 
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === '#login') {
+        setAppMode('login');
+      } else if (window.location.hash === '#erp') {
+        setAppMode('erp');
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
   const handleEnterERP = () => {
     setIsSkeletonLoading(true);
     setAppMode('erp');
+    window.location.hash = '#erp';
     // Brief natural skeleton transition to showcase skeleton architecture
     setTimeout(() => {
       setIsSkeletonLoading(false);
     }, 450);
   };
 
+  const handleOpenLogin = () => {
+    setAppMode('login');
+    window.location.hash = '#login';
+  };
+
+  const handleLoginSuccess = (role: UserRole, targetTab: ActiveTab) => {
+    setActiveTab(targetTab);
+    setIsSkeletonLoading(true);
+    setAppMode('erp');
+    window.location.hash = '#erp';
+    setTimeout(() => {
+      setIsSkeletonLoading(false);
+    }, 350);
+  };
+
   const handleReturnToLanding = () => {
     setAppMode('landing');
+    window.location.hash = '';
   };
 
   return (
     <StoreProvider>
-      {appMode === 'landing' ? (
-        <LandingPage onEnterERP={handleEnterERP} />
+      {appMode === 'login' ? (
+        <LoginView
+          onLoginSuccess={handleLoginSuccess}
+          onReturnToLanding={handleReturnToLanding}
+        />
+      ) : appMode === 'landing' ? (
+        <LandingPage
+          onEnterERP={handleEnterERP}
+          onOpenLogin={handleOpenLogin}
+        />
       ) : (
-        <div className="min-h-screen bg-slate-100 flex flex-col font-sans text-slate-800 antialiased selection:bg-emerald-500 selection:text-white">
+        <div className="min-h-screen bg-[#121212] flex flex-col font-sans text-[#fafafa] antialiased selection:bg-[#3ecf8e] selection:text-[#121212]">
           {/* Top Navbar */}
           <Navbar
             onOpenTraceability={() => setShowTraceability(true)}
             onOpenSecurityModal={() => setShowSecurityModal(true)}
             onReturnToLanding={handleReturnToLanding}
+            onOpenLogin={handleOpenLogin}
             isSkeletonLoading={isSkeletonLoading}
             onToggleSkeleton={() => setIsSkeletonLoading(!isSkeletonLoading)}
           />
 
           {/* App Body */}
-          <div className="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto">
+          <div className="flex-1 flex flex-col md:flex-row max-w-[1400px] w-full mx-auto">
             {/* Left Sidebar */}
             <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -71,7 +112,7 @@ export default function App() {
               {isSkeletonLoading ? (
                 /* Skeleton Presentation Mode */
                 <div className="space-y-6 animate-pulse">
-                  <div className="p-6 rounded-2xl bg-slate-200 h-28" />
+                  <div className="p-6 rounded-[16px] bg-[#1a1a1a] border border-[#2e2e2e] h-28" />
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <SkeletonKPI />
                     <SkeletonKPI />
