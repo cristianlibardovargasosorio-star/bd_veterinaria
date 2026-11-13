@@ -383,3 +383,4 @@ export const BackgroundThreeCanvas: React.FC = () => {
     />
   );
 };
+
