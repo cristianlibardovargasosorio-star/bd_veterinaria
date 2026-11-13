@@ -171,3 +171,4 @@ class AuthIntegrationTest {
                 .andExpect(jsonPath("$.mensaje").value(CustomAuthFailureHandler.INVALID_EMAIL_FORMAT_ERROR));
     }
 }
+

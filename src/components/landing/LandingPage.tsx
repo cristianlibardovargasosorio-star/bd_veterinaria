@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useStore } from '../../db/store';
 import { LazyScrollSection } from '../common/LazyScrollSection';
 import { SkeletonCard, SkeletonKPI, SkeletonTable } from '../common/Skeleton';
-import { HeroThreeScene } from './HeroThreeScene';
 import confetti from 'canvas-confetti';
 import {
   Stethoscope,
@@ -379,10 +378,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
   ];
 
   return (
-    <div className="min-h-screen relative bg-transparent text-[#17191c] font-sans selection:bg-[#fbe1d1] selection:text-[#5d2a1a] scroll-smooth">
+    <div className="min-h-screen relative bg-transparent text-[#1E293B] font-sans selection:bg-[#fbe1d1] selection:text-[#5d2a1a] scroll-smooth">
       <div className="relative z-10">
       {/* TOP EMERGENCY STRIP (Quiet Editorial Strip, sin botones duplicados) */}
-      <div className="bg-[#fafafb] text-[#777b86] text-xs py-2 px-4 border-b border-[#ececec]">
+      <div className="bg-[#fafafb] text-[#64748B] text-xs py-2 px-4 border-b border-[#ececec]">
         <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
             <span className="inline-flex items-center gap-1.5 font-medium text-[#5d2a1a] bg-[#fbe1d1] px-2.5 py-0.5 rounded-full text-[11px]">
@@ -390,14 +389,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               Urgencias 24 Horas
             </span>
             <span className="text-[#a3a6af] hidden sm:inline">·</span>
-            <span className="hidden sm:inline text-[#777b86] text-[12px]">
+            <span className="hidden sm:inline text-[#64748B] text-[12px]">
               Cra. 45 # 128-22, Bogotá
             </span>
           </div>
 
           <a
             href="tel:+573009123456"
-            className="flex items-center gap-1.5 text-[#17191c] hover:underline transition-colors text-[12px] whitespace-nowrap"
+            className="flex items-center gap-1.5 text-[#1E293B] hover:underline transition-colors text-[12px] whitespace-nowrap"
           >
             <Phone className="w-3.5 h-3.5 text-[#5d2a1a]" />
             <span>+57 (300) 912-3456</span>
@@ -410,37 +409,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Brand Identity */}
           <a href="#" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
+            <div className="w-9 h-9 rounded-full bg-[#1E293B] flex items-center justify-center text-[#ffffff] shrink-0">
               <Stethoscope size={18} className="w-[18px] h-[18px] text-[#ffffff] shrink-0" strokeWidth={2} />
             </div>
             <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <span className="font-serif-editorial text-[22px] tracking-tight text-[#17191c] leading-none">
+              <span className="font-serif-editorial text-[22px] tracking-tight text-[#1E293B] leading-none">
                 VetSoft
               </span>
-              <span className="text-[11px] text-[#979799] font-normal hidden sm:inline">
+              <span className="text-[11px] text-[#64748B] font-normal hidden sm:inline">
                 Clínica Veterinaria
               </span>
             </div>
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-[14px] font-normal text-[#17191c]">
-            <a href="#servicios" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
+          <nav className="hidden lg:flex items-center gap-6 text-[14px] font-normal text-[#1E293B]">
+            <a href="#servicios" className="whitespace-nowrap hover:text-[#64748B] transition-colors py-1">
               Servicios
             </a>
-            <a href="#agendar" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
+            <a href="#agendar" className="whitespace-nowrap hover:text-[#64748B] transition-colors py-1">
               Agendar cita
             </a>
-            <a href="#carne" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
+            <a href="#carne" className="whitespace-nowrap hover:text-[#64748B] transition-colors py-1">
               Carné digital
             </a>
-            <a href="#equipo" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
+            <a href="#equipo" className="whitespace-nowrap hover:text-[#64748B] transition-colors py-1">
               Especialistas
             </a>
-            <a href="#asistente-ia" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
+            <a href="#asistente-ia" className="whitespace-nowrap hover:text-[#64748B] transition-colors py-1">
               Asistente IA
             </a>
-            <a href="#planes" className="whitespace-nowrap hover:text-[#777b86] transition-colors py-1">
+            <a href="#planes" className="whitespace-nowrap hover:text-[#64748B] transition-colors py-1">
               Planes
             </a>
           </nav>
@@ -449,7 +448,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={onOpenLogin}
-              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal text-[#17191c] bg-transparent hover:bg-[#f2f2f3] border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal text-[#1E293B] bg-transparent hover:bg-[#f2f2f3] border border-[#1E293B] transition-colors cursor-pointer whitespace-nowrap"
               title="Ir al Módulo 1: Login de Usuarios (/login)"
             >
               Iniciar sesión
@@ -457,14 +456,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
             <a
               href="#agendar"
-              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal bg-[#17191c] text-[#ffffff] hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal bg-[#1E293B] text-[#ffffff] hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
             >
               Reservar cita
             </a>
 
             <button
               onClick={onEnterERP}
-              className="inline-flex items-center justify-center h-9 px-3.5 rounded-full text-[13px] font-normal bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] transition-colors gap-1 cursor-pointer whitespace-nowrap"
+              className="inline-flex items-center justify-center h-9 px-3.5 rounded-full text-[13px] font-normal bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#1E293B] transition-colors gap-1 cursor-pointer whitespace-nowrap"
               title="Abrir el software integral de gestión clínica"
             >
               <span>ERP →</span>
@@ -474,7 +473,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-full text-[#17191c] hover:bg-[#f2f2f3] transition-colors cursor-pointer"
+              className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-full text-[#1E293B] hover:bg-[#f2f2f3] transition-colors cursor-pointer"
               aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={mobileMenuOpen}
             >
@@ -486,7 +485,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
         {/* Mobile / Tablet Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden px-4 pb-5 pt-2 bg-[#ffffff] border-t border-[#ececec]">
-            <nav className="flex flex-col space-y-1 text-[15px] text-[#17191c]">
+            <nav className="flex flex-col space-y-1 text-[15px] text-[#1E293B]">
               {[
                 { href: '#servicios', label: 'Servicios' },
                 { href: '#agendar', label: 'Agendar cita' },
@@ -512,14 +511,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   setMobileMenuOpen(false);
                   onOpenLogin();
                 }}
-                className="w-full py-2.5 px-5 rounded-full text-sm text-[#17191c] border border-[#17191c] text-center cursor-pointer"
+                className="w-full py-2.5 px-5 rounded-full text-sm text-[#1E293B] border border-[#1E293B] text-center cursor-pointer"
               >
                 Iniciar sesión
               </button>
               <a
                 href="#agendar"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-2.5 px-5 rounded-full text-sm bg-[#17191c] text-[#ffffff] text-center"
+                className="w-full py-2.5 px-5 rounded-full text-sm bg-[#1E293B] text-[#ffffff] text-center"
               >
                 Reservar cita
               </a>
@@ -534,30 +533,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Column: Signifier Editorial Headline and Matched Pill Buttons */}
             <LazyScrollSection className="lg:col-span-7 space-y-6">
-              <div className="text-[14px] text-[#979799] font-normal">
+              <div className="text-[14px] text-[#64748B] font-normal">
                 Medicina Veterinaria · Diagnóstico Asistido · Urgencias 24/7
               </div>
 
-              <h1 className="font-serif-editorial text-5xl sm:text-6xl lg:text-[72px] text-[#17191c] tracking-[-1.5px] leading-[1.12] text-balance">
+              <h1 className="font-serif-editorial text-5xl sm:text-6xl lg:text-[72px] text-[#1E293B] tracking-[-1.5px] leading-[1.12] text-balance">
                 Cuidado clínico para tu mascota con <span className="italic">ciencia, calidez</span> y precisión.
               </h1>
 
-              <p className="text-[17px] text-[#777b86] max-w-xl leading-[1.45]">
+              <p className="text-[17px] text-[#64748B] max-w-xl leading-[1.45]">
                 En la Clínica Veterinaria VetSoft integramos medicina especializada, carné digital de vacunación con validación QR y síntesis clínica asistida por inteligencia artificial.
               </p>
 
-              {/* Matched Pill Button Pair (Filled #17191c + Ghost #17191c border) */}
+              {/* Matched Pill Button Pair (Filled #1E293B + Ghost #1E293B border) */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
                   href="#agendar"
-                  className="px-6 py-3 bg-[#17191c] text-[#ffffff] hover:opacity-90 font-normal text-[16px] rounded-full flex items-center gap-2 transition-opacity cursor-pointer"
+                  className="px-6 py-3 bg-[#1E293B] text-[#ffffff] hover:opacity-90 font-normal text-[16px] rounded-full flex items-center gap-2 transition-opacity cursor-pointer"
                 >
                   <span>Agendar cita en línea</span>
                 </a>
 
                 <button
                   onClick={onOpenLogin}
-                  className="px-6 py-3 bg-transparent hover:bg-[#f2f2f3] text-[#17191c] border border-[#17191c] font-normal text-[16px] rounded-full flex items-center gap-2 transition-colors cursor-pointer"
+                  className="px-6 py-3 bg-transparent hover:bg-[#f2f2f3] text-[#1E293B] border border-[#1E293B] font-normal text-[16px] rounded-full flex items-center gap-2 transition-colors cursor-pointer"
                   title="Acceso RF-01: Login con Spring Security y PostgreSQL"
                 >
                   <span>Iniciar sesión (/login)</span>
@@ -565,7 +564,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
                 <a
                   href="#carne"
-                  className="px-4 py-3 text-[#17191c] hover:underline font-normal text-[16px] flex items-center gap-1.5 transition-all"
+                  className="px-4 py-3 text-[#1E293B] hover:underline font-normal text-[16px] flex items-center gap-1.5 transition-all"
                 >
                   <span>Consultar carné digital →</span>
                 </a>
@@ -574,12 +573,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               {/* Floating Stat Artifact Row */}
               <div className="pt-6 grid grid-cols-3 gap-4 max-w-lg">
                 <div className="p-4 rounded-[20px] bg-[#ffffff] steep-floating-artifact">
-                  <div className="text-xl font-medium text-[#17191c]">2,540+</div>
-                  <div className="text-xs text-[#777b86] mt-0.5">↑ 18% pacientes activos</div>
+                  <div className="text-xl font-medium text-[#1E293B]">2,540+</div>
+                  <div className="text-xs text-[#64748B] mt-0.5">↑ 18% pacientes activos</div>
                 </div>
                 <div className="p-4 rounded-[20px] bg-[#ffffff] steep-floating-artifact">
-                  <div className="text-xl font-medium text-[#17191c]">99.4%</div>
-                  <div className="text-xs text-[#777b86] mt-0.5">Trazabilidad vacunal</div>
+                  <div className="text-xl font-medium text-[#1E293B]">99.4%</div>
+                  <div className="text-xs text-[#64748B] mt-0.5">Trazabilidad vacunal</div>
                 </div>
                 <div className="p-4 rounded-[20px] bg-[#fbe1d1] text-[#5d2a1a]">
                   <div className="text-xl font-medium text-[#5d2a1a]">24 / 7</div>
@@ -588,13 +587,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               </div>
             </LazyScrollSection>
 
-            {/* Right Column: Interactive Three.js 3D WebGL Floating Artifact + Clinical Image Preview */}
+            {/* Right Column: Clean Editorial Clinical Showcase Card */}
             <LazyScrollSection delay={150} className="lg:col-span-5 relative space-y-4">
-              <HeroThreeScene onOpenERP={onEnterERP} />
-
-              {/* Compact Secondary Floating Artifact with WebP/AVIF clinical snapshot */}
-              <div className="rounded-[20px] bg-[#ffffff] p-3 steep-floating-artifact flex items-center gap-3.5">
-                <div className="w-16 h-16 rounded-[12px] overflow-hidden shrink-0">
+              <div className="rounded-[24px] overflow-hidden bg-[#ffffff] border border-[#e2e8f0] shadow-sm">
+                <div className="aspect-4/3 w-full overflow-hidden">
                   <picture>
                     <source srcSet={heroImgAvif} type="image/avif" />
                     <source srcSet={heroImg} type="image/webp" />
@@ -608,11 +604,22 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     />
                   </picture>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <div className="text-[11px] text-[#979799]">Quirófano & Diagnóstico por Imagen</div>
-                  <div className="text-xs font-medium text-[#17191c] truncate">
-                    Monitoreo multiparamétrico 24/7 en sede principal
+                <div className="p-5 flex items-center justify-between gap-4 bg-[#ffffff]">
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-[#0D9488]">
+                      Quirófano &amp; Diagnóstico por Imagen
+                    </div>
+                    <div className="text-sm font-semibold text-[#1E293B] truncate mt-0.5">
+                      Monitoreo multiparamétrico 24/7 en sede principal
+                    </div>
                   </div>
+                  <button
+                    onClick={onEnterERP}
+                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#1E293B] text-[#ffffff] text-xs font-medium hover:bg-[#334155] transition-colors cursor-pointer"
+                  >
+                    <span>Abrir ERP</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             </LazyScrollSection>
@@ -621,26 +628,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           {/* KEY PROOF STATS BAR */}
           <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#ececec] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#17191c] font-mono tabular-nums">+14,200</span>
-              <span className="block text-xs font-semibold text-[#979799] mt-1">
+              <span className="text-3xl font-black text-[#1E293B] font-mono tabular-nums">+14,200</span>
+              <span className="block text-xs font-semibold text-[#64748B] mt-1">
                 Pacientes Atendidos con Éxito
               </span>
             </div>
             <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#ececec] shadow-xs text-center">
               <span className="text-3xl font-black text-[#5d2a1a] font-mono tabular-nums">24 / 7</span>
-              <span className="block text-xs font-semibold text-[#979799] mt-1">
+              <span className="block text-xs font-semibold text-[#64748B] mt-1">
                 Urgencias & Cuidados Críticos
               </span>
             </div>
             <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#ececec] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#17191c] font-mono tabular-nums">100%</span>
-              <span className="block text-xs font-semibold text-[#979799] mt-1">
+              <span className="text-3xl font-black text-[#1E293B] font-mono tabular-nums">100%</span>
+              <span className="block text-xs font-semibold text-[#64748B] mt-1">
                 Vacunas con Lote Trazable
               </span>
             </div>
             <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#ececec] shadow-xs text-center">
               <span className="text-3xl font-black text-[#5d2a1a] font-mono tabular-nums">IA Dual</span>
-              <span className="block text-xs font-semibold text-[#979799] mt-1">
+              <span className="block text-xs font-semibold text-[#64748B] mt-1">
                 Fichas Claras para Tutores
               </span>
             </div>
@@ -655,10 +662,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
               Especialidades y Procedimientos
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#17191c] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1E293B] tracking-tight">
               Servicios Clínicos de Alta Calidad para tu Mascota
             </h2>
-            <p className="text-sm text-[#979799] leading-relaxed">
+            <p className="text-sm text-[#64748B] leading-relaxed">
               Equipamiento hospitalario moderno y médicos veterinarios dedicados a cada etapa del ciclo de vida
               de perros, gatos y animales de compañía.
             </p>
@@ -680,16 +687,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       >
                         <Icon className="w-6 h-6" />
                       </div>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f2f2f3] text-[#777b86] font-mono">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f2f2f3] text-[#64748B] font-mono">
                         {svc.badge}
                       </span>
                     </div>
 
-                    <h3 className="text-base font-bold text-[#17191c] leading-snug group-hover:text-[#5d2a1a] transition-colors">
+                    <h3 className="text-base font-bold text-[#1E293B] leading-snug group-hover:text-[#5d2a1a] transition-colors">
                       {svc.title}
                     </h3>
 
-                    <p className="text-xs text-[#979799] leading-relaxed">{svc.desc}</p>
+                    <p className="text-xs text-[#64748B] leading-relaxed">{svc.desc}</p>
                   </div>
 
                   <a
@@ -715,10 +722,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
                 Agendamiento Online Inmediato
               </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-[#17191c] tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-black text-[#1E293B] tracking-tight">
                 Reserva la Cita Médica de tu Mascota en Minutos
               </h2>
-              <p className="text-sm text-[#979799] leading-relaxed">
+              <p className="text-sm text-[#64748B] leading-relaxed">
                 Selecciona la especialidad médica, el veterinario tratante, la fecha y la hora de tu
                 preferencia. Tu cita quedará registrada automáticamente en el sistema clínico del hospital.
               </p>
@@ -729,8 +736,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     <Check className="w-4 h-4 font-bold" />
                   </div>
                   <div className="text-xs">
-                    <strong className="text-[#17191c] block">Confirmación en Tiempo Real</strong>
-                    <span className="text-[#979799]">
+                    <strong className="text-[#1E293B] block">Confirmación en Tiempo Real</strong>
+                    <span className="text-[#64748B]">
                       Sin tiempos de espera telefónicos. Recibes tu número de radicado al instante.
                     </span>
                   </div>
@@ -741,8 +748,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     <ShieldCheck className="w-4 h-4 font-bold" />
                   </div>
                   <div className="text-xs">
-                    <strong className="text-[#17191c] block">Historial Clínico Digital</strong>
-                    <span className="text-[#979799]">
+                    <strong className="text-[#1E293B] block">Historial Clínico Digital</strong>
+                    <span className="text-[#64748B]">
                       Todos los datos de la consulta se asocian de por vida al expediente de tu mascota.
                     </span>
                   </div>
@@ -753,8 +760,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     <Phone className="w-4 h-4 font-bold" />
                   </div>
                   <div className="text-xs">
-                    <strong className="text-[#17191c] block">¿Es una Emergencia Grave?</strong>
-                    <span className="text-[#979799]">
+                    <strong className="text-[#1E293B] block">¿Es una Emergencia Grave?</strong>
+                    <span className="text-[#64748B]">
                       Si tu mascota está inconsciente o convulsionando, tráela de inmediato sin cita previa a
                       Urgencias 24h.
                     </span>
@@ -775,10 +782,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       <span className="text-xs font-mono font-bold text-[#5d2a1a] bg-[#fbe1d1] text-[#5d2a1a] px-3 py-1 rounded-full">
                         CITA AGENDADA CON ÉXITO #RAD-{bookingSuccess.idCita}
                       </span>
-                      <h3 className="text-2xl font-black text-[#17191c] pt-2">
+                      <h3 className="text-2xl font-black text-[#1E293B] pt-2">
                         ¡Cita Confirmada para {bookingSuccess.pet}!
                       </h3>
-                      <p className="text-sm text-[#979799] max-w-md mx-auto">
+                      <p className="text-sm text-[#64748B] max-w-md mx-auto">
                         Hemos registrado tu cita con el <strong>{bookingSuccess.vet}</strong> para el día{' '}
                         <strong>{bookingSuccess.dateTime}</strong>.
                       </p>
@@ -786,38 +793,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
                     <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#ececec] max-w-md mx-auto text-xs text-left space-y-2 font-mono">
                       <div className="flex justify-between">
-                        <span className="text-[#979799]">Paciente:</span>
-                        <span className="font-bold text-[#17191c]">{bookingSuccess.pet}</span>
+                        <span className="text-[#64748B]">Paciente:</span>
+                        <span className="font-bold text-[#1E293B]">{bookingSuccess.pet}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#979799]">Tutor:</span>
-                        <span className="font-bold text-[#17191c]">{bookingSuccess.owner}</span>
+                        <span className="text-[#64748B]">Tutor:</span>
+                        <span className="font-bold text-[#1E293B]">{bookingSuccess.owner}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#979799]">Veterinario Asignado:</span>
+                        <span className="text-[#64748B]">Veterinario Asignado:</span>
                         <span className="font-bold text-[#5d2a1a]">{bookingSuccess.vet}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#979799]">Fecha y Hora:</span>
-                        <span className="font-bold text-[#17191c]">{bookingSuccess.dateTime}</span>
+                        <span className="text-[#64748B]">Fecha y Hora:</span>
+                        <span className="font-bold text-[#1E293B]">{bookingSuccess.dateTime}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#979799]">Sede:</span>
-                        <span className="font-bold text-[#17191c]">Hospital VetSoft Bogotá</span>
+                        <span className="text-[#64748B]">Sede:</span>
+                        <span className="font-bold text-[#1E293B]">Hospital VetSoft Bogotá</span>
                       </div>
                     </div>
 
                     <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                       <button
                         onClick={() => setBookingSuccess(null)}
-                        className="px-5 py-2.5 bg-[#f2f2f3] hover:bg-[#f2f2f3] text-[#17191c] text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                        className="px-5 py-2.5 bg-[#f2f2f3] hover:bg-[#f2f2f3] text-[#1E293B] text-xs font-bold rounded-xl transition-colors cursor-pointer"
                       >
                         Agendar otra cita
                       </button>
 
                       <button
                         onClick={onEnterERP}
-                        className="px-5 py-2.5 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] text-xs font-bold rounded-xl shadow-md transition-colors cursor-pointer"
+                        className="px-5 py-2.5 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] text-xs font-bold rounded-xl shadow-md transition-colors cursor-pointer"
                       >
                         Ver cita en el Sistema ERP →
                       </button>
@@ -826,15 +833,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 ) : (
                   <form onSubmit={handleBookAppointment} className="space-y-4 text-xs">
                     <div className="border-b border-slate-100 pb-3">
-                      <h3 className="text-base font-bold text-[#17191c]">Formulario de Reserva Médica</h3>
-                      <p className="text-[#979799] text-[11px]">
+                      <h3 className="text-base font-bold text-[#1E293B]">Formulario de Reserva Médica</h3>
+                      <p className="text-[#64748B] text-[11px]">
                         Ingresa los datos para apartar el turno médico de tu mascota.
                       </p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">
+                        <label className="font-bold text-[#64748B] block mb-1">
                           Nombre del Tutor / Propietario *
                         </label>
                         <input
@@ -848,7 +855,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       </div>
 
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">
+                        <label className="font-bold text-[#64748B] block mb-1">
                           Teléfono de Contacto (WhatsApp) *
                         </label>
                         <input
@@ -864,7 +871,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">
+                        <label className="font-bold text-[#64748B] block mb-1">
                           Nombre de la Mascota *
                         </label>
                         <input
@@ -878,7 +885,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       </div>
 
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">Especie</label>
+                        <label className="font-bold text-[#64748B] block mb-1">Especie</label>
                         <select
                           value={bookingEspecie}
                           onChange={(e) => setBookingEspecie(e.target.value)}
@@ -895,7 +902,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">
+                        <label className="font-bold text-[#64748B] block mb-1">
                           Tipo de Servicio / Cita
                         </label>
                         <select
@@ -911,7 +918,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       </div>
 
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">
+                        <label className="font-bold text-[#64748B] block mb-1">
                           Médico Veterinario Especialista
                         </label>
                         <select
@@ -930,7 +937,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">Fecha Deseada</label>
+                        <label className="font-bold text-[#64748B] block mb-1">Fecha Deseada</label>
                         <input
                           type="date"
                           required
@@ -941,7 +948,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       </div>
 
                       <div>
-                        <label className="font-bold text-[#777b86] block mb-1">Hora Estimada</label>
+                        <label className="font-bold text-[#64748B] block mb-1">Hora Estimada</label>
                         <select
                           value={bookingTime}
                           onChange={(e) => setBookingTime(e.target.value)}
@@ -960,7 +967,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     </div>
 
                     <div>
-                      <label className="font-bold text-[#777b86] block mb-1">
+                      <label className="font-bold text-[#64748B] block mb-1">
                         Motivo de la Consulta o Síntomas Notados
                       </label>
                       <textarea
@@ -974,7 +981,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] font-black text-sm rounded-xl shadow-lg  transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
+                      className="w-full py-3.5 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] font-black text-sm rounded-xl shadow-lg  transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
                     >
                       <Calendar className="w-4 h-4" />
                       <span>Confirmar y Agendar Cita Ahora</span>
@@ -994,10 +1001,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
               Portal del Paciente
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#17191c] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1E293B] tracking-tight">
               Carné Digital de Vacunación & Historial Médico
             </h2>
-            <p className="text-sm text-[#979799]">
+            <p className="text-sm text-[#64748B]">
               ¿Tu mascota ya es paciente de la Clínica VetSoft? Consulta al instante su estado vacunal,
               próximos refuerzos y pasaporte oficial con código QR.
             </p>
@@ -1010,10 +1017,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   value={searchPetQuery}
                   onChange={(e) => setSearchPetQuery(e.target.value)}
                   placeholder="Buscar por nombre, especie o microchip..."
-                  className="w-full pl-10 pr-24 py-2.5 rounded-full bg-[#f2f2f3] border border-[#e2e2e5] focus:border-[#17191c] text-xs text-[#17191c] placeholder-[#898989] outline-none transition-colors"
+                  className="w-full pl-10 pr-24 py-2.5 rounded-full bg-[#f2f2f3] border border-[#e2e2e5] focus:border-[#1E293B] text-xs text-[#1E293B] placeholder-[#898989] outline-none transition-colors"
                 />
-                <Search className="w-4 h-4 text-[#979799] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-[10px] text-[#979799] font-mono">
+                <Search className="w-4 h-4 text-[#64748B] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-[10px] text-[#64748B] font-mono">
                   {isSearching ? (
                     <span className="text-[#5d2a1a] animate-pulse">Buscando...</span>
                   ) : (
@@ -1025,7 +1032,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               {/* Autocomplete suggestions pill preview */}
               {matchingPets.length > 0 && searchPetQuery.trim() !== '' && (
                 <div className="absolute left-0 right-0 mt-1 bg-[#f2f2f3] border border-[#ececec] rounded-[12px] p-2 z-30 shadow-2xl space-y-1">
-                  <div className="text-[10px] uppercase font-mono text-[#979799] px-2 py-1">
+                  <div className="text-[10px] uppercase font-mono text-[#64748B] px-2 py-1">
                     Resultados de Autocompletado:
                   </div>
                   {matchingPets.slice(0, 4).map((pet) => (
@@ -1036,7 +1043,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                         setSearchedPetId(pet.id_mascota);
                         setSearchPetQuery(pet.nombre);
                       }}
-                      className="w-full text-left px-3 py-1.5 rounded-[8px] hover:bg-[#f2f2f3] text-xs flex items-center justify-between text-[#17191c] transition-colors cursor-pointer"
+                      className="w-full text-left px-3 py-1.5 rounded-[8px] hover:bg-[#f2f2f3] text-xs flex items-center justify-between text-[#1E293B] transition-colors cursor-pointer"
                     >
                       <span className="font-medium">🐾 {pet.nombre} ({pet.especie} - {pet.raza})</span>
                       <span className="text-[10px] font-mono text-[#5d2a1a]">ID: #{pet.id_mascota}</span>
@@ -1048,7 +1055,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
             {/* Quick pet search chips */}
             <div className="pt-3 flex flex-wrap items-center justify-center gap-2 text-xs">
-              <span className="text-[#979799] font-semibold">Pacientes de demostración:</span>
+              <span className="text-[#64748B] font-semibold">Pacientes de demostración:</span>
               {mascotas.slice(0, 5).map((m) => (
                 <button
                   key={m.id_mascota}
@@ -1058,8 +1065,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   }}
                   className={`px-3 py-1 rounded-full font-bold border transition-all cursor-pointer ${
                     selectedPet?.id_mascota === m.id_mascota
-                      ? 'bg-[#17191c] text-[#ffffff] border-emerald-600 shadow-sm'
-                      : 'bg-[#f2f2f3] text-[#777b86] border-[#ececec] hover:bg-[#f2f2f3]'
+                      ? 'bg-[#1E293B] text-[#ffffff] border-emerald-600 shadow-sm'
+                      : 'bg-[#f2f2f3] text-[#64748B] border-[#ececec] hover:bg-[#f2f2f3]'
                   }`}
                 >
                   🐾 {m.nombre} ({m.especie})
@@ -1079,16 +1086,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-2xl font-black text-[#17191c]">{selectedPet?.nombre}</h3>
+                      <h3 className="text-2xl font-black text-[#1E293B]">{selectedPet?.nombre}</h3>
                       <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#fbe1d1] text-[#5d2a1a]">
                         {selectedPet?.estado_salud}
                       </span>
                     </div>
-                    <p className="text-xs text-[#979799] font-mono">
+                    <p className="text-xs text-[#64748B] font-mono">
                       Expediente: {selectedPet?.codigo_expediente} · Microchip:{' '}
                       {selectedPet?.microchip_id || '941000028192'}
                     </p>
-                    <p className="text-xs text-[#979799] mt-0.5">
+                    <p className="text-xs text-[#64748B] mt-0.5">
                       Raza: <strong>{selectedPet?.raza}</strong> · Peso: <strong>{selectedPet?.peso_kg} kg</strong> ·
                       Tutor:{' '}
                       <strong>
@@ -1099,8 +1106,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 </div>
 
                 <div className="p-3 bg-[#ffffff] rounded-[20px] border border-[#ececec] text-center shrink-0 self-start sm:self-auto shadow-xs">
-                  <QrCode className="w-16 h-16 mx-auto text-[#17191c]" />
-                  <span className="text-[10px] font-mono text-[#979799] block mt-1 font-bold">
+                  <QrCode className="w-16 h-16 mx-auto text-[#1E293B]" />
+                  <span className="text-[10px] font-mono text-[#64748B] block mt-1 font-bold">
                     VALIDACIÓN QR OFICIAL
                   </span>
                 </div>
@@ -1109,24 +1116,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               {/* Vaccine records table */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-bold text-[#17191c] flex items-center gap-2">
+                  <h4 className="text-sm font-bold text-[#1E293B] flex items-center gap-2">
                     <Syringe className="w-4 h-4 text-[#5d2a1a]" />
                     <span>Inmunizaciones Registradas en la Clínica</span>
                   </h4>
-                  <span className="text-xs text-[#979799] font-mono">
+                  <span className="text-xs text-[#64748B] font-mono">
                     {petVaccines.length} Dosis Aplicadas
                   </span>
                 </div>
 
                 {petVaccines.length === 0 ? (
-                  <div className="p-6 bg-[#ffffff] rounded-[20px] text-center text-xs text-[#979799] border border-[#ececec]">
+                  <div className="p-6 bg-[#ffffff] rounded-[20px] text-center text-xs text-[#64748B] border border-[#ececec]">
                     No hay dosis registradas en este expediente clínico.
                   </div>
                 ) : (
                   <div className="overflow-x-auto text-xs">
                     <table className="w-full text-left">
                       <thead>
-                        <tr className="border-b border-[#ececec] text-[#979799] font-mono">
+                        <tr className="border-b border-[#ececec] text-[#64748B] font-mono">
                           <th className="py-2.5 font-bold">Biológico / Vacuna</th>
                           <th className="py-2.5">Lote Oficial</th>
                           <th className="py-2.5">Fecha Aplicación</th>
@@ -1139,14 +1146,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                           const catVac = vacunas.find((vac) => vac.id_vacuna === v.id_vacuna);
                           return (
                             <tr key={i} className="hover:bg-[#fbe1d1] text-[#5d2a1a]/40 transition-colors">
-                              <td className="py-3 font-bold text-[#17191c]">
+                              <td className="py-3 font-bold text-[#1E293B]">
                                 {catVac?.nombre || 'Vacuna Inmunizante'}
-                                <span className="block text-[10px] font-normal text-[#979799] font-mono">
+                                <span className="block text-[10px] font-normal text-[#64748B] font-mono">
                                   {catVac?.marca || 'Marca Certificada'}
                                 </span>
                               </td>
-                              <td className="py-3 font-mono text-[#777b86]">{v.lote}</td>
-                              <td className="py-3 font-mono text-[#979799]">{v.fecha_aplicacion}</td>
+                              <td className="py-3 font-mono text-[#64748B]">{v.lote}</td>
+                              <td className="py-3 font-mono text-[#64748B]">{v.fecha_aplicacion}</td>
                               <td className="py-3 font-mono font-bold text-[#5d2a1a]">
                                 {v.fecha_refuerzo || 'Anual'}
                               </td>
@@ -1167,7 +1174,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               {/* Footer card action */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#ececec] text-xs">
-                <span className="text-[#979799] text-center sm:text-left">
+                <span className="text-[#64748B] text-center sm:text-left">
                   Certificado bajo estándar médico veterinario nacional y normas de sanidad animal.
                 </span>
                 <div className="flex items-center gap-2">
@@ -1177,13 +1184,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                         `Descargando pasaporte sanitario oficial de ${selectedPet?.nombre} en formato PDF.`
                       );
                     }}
-                    className="px-4 py-2 bg-[#f2f2f3] hover:bg-[#f2f2f3] text-[#17191c] font-bold rounded-xl transition-colors cursor-pointer"
+                    className="px-4 py-2 bg-[#f2f2f3] hover:bg-[#f2f2f3] text-[#1E293B] font-bold rounded-xl transition-colors cursor-pointer"
                   >
                     Descargar Certificado PDF
                   </button>
                   <button
                     onClick={onEnterERP}
-                    className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+                    className="px-4 py-2 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
                   >
                     Abrir Carné en el ERP →
                   </button>
@@ -1198,14 +1205,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       <section id="asistente-ia" className="py-20 bg-linear-to-b from-slate-900 to-slate-950 text-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <LazyScrollSection className="text-center space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-[#17191c]/30">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-[#1E293B]/30">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Tecnología Gemini 3.8 Flash para Familias</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
               Asistente Clínico Inteligente para Dudas de Salud
             </h2>
-            <p className="text-sm text-[#777b86] max-w-2xl mx-auto">
+            <p className="text-sm text-[#64748B] max-w-2xl mx-auto">
               ¿Notas un comportamiento inusual o tienes dudas sobre la nutrición o calendario preventivo de tu
               mascota? Consulta a nuestro asistente entrenado en medicina veterinaria.
             </p>
@@ -1219,8 +1226,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 <span className="text-[11px] font-mono text-[#5d2a1a] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#f2f2f3] border border-[#ececec]">
                   Gemini 3.8 Streaming Token a Token
                 </span>
-                <h3 className="text-lg font-medium text-[#17191c]">Diagnóstico Clínico Asistido por Inteligencia Artificial</h3>
-                <p className="text-xs text-[#777b86] leading-relaxed">
+                <h3 className="text-lg font-medium text-[#1E293B]">Diagnóstico Clínico Asistido por Inteligencia Artificial</h3>
+                <p className="text-xs text-[#64748B] leading-relaxed">
                   Algoritmos clínicos entrenados para orientación médica inmediata, cálculo posológico seguro y triaje preventivo 24/7 sin latencia.
                 </p>
               </div>
@@ -1241,7 +1248,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
             {/* Quick question prompt pills */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-[#979799] font-semibold">Consultas frecuentes:</span>
+              <span className="text-[#64748B] font-semibold">Consultas frecuentes:</span>
               {[
                 '¿A qué edad se aplica la primera vacuna a un cachorro?',
                 '¿Qué alimentos son estrictamente tóxicos para un gato?',
@@ -1254,7 +1261,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     setAiQuestion(pill);
                     handleAskAI(pill);
                   }}
-                  className="px-3 py-1.5 rounded-full bg-[#f2f2f3] hover:bg-[#17191c] text-[#ffffff]/30 hover:border-emerald-400 border border-[#e2e2e5] text-[#17191c] text-xs font-medium transition-all text-left cursor-pointer"
+                  className="px-3 py-1.5 rounded-full bg-[#f2f2f3] hover:bg-[#1E293B] text-[#ffffff]/30 hover:border-emerald-400 border border-[#e2e2e5] text-[#1E293B] text-xs font-medium transition-all text-left cursor-pointer"
                 >
                   {pill}
                 </button>
@@ -1268,21 +1275,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   <Sparkles className="w-4 h-4" />
                   <span>Respuesta del Asistente Clínico VETSOFT</span>
                 </div>
-                <span className="text-[#979799] font-mono text-[11px]">Motor Gemini 3.8 Flash</span>
+                <span className="text-[#64748B] font-mono text-[11px]">Motor Gemini 3.8 Flash</span>
               </div>
 
               {aiLoading ? (
-                <div className="py-6 flex items-center justify-center gap-3 text-[#979799] text-xs animate-pulse">
+                <div className="py-6 flex items-center justify-center gap-3 text-[#64748B] text-xs animate-pulse">
                   <div className="w-4 h-4 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
                   <span>Analizando consulta y literatura veterinaria...</span>
                 </div>
               ) : (
-                <p className="text-sm text-[#17191c] leading-relaxed whitespace-pre-line">
+                <p className="text-sm text-[#1E293B] leading-relaxed whitespace-pre-line">
                   {aiResponse}
                 </p>
               )}
 
-              <div className="pt-2 flex items-center justify-between text-[11px] text-[#979799]">
+              <div className="pt-2 flex items-center justify-between text-[11px] text-[#64748B]">
                 <span className="flex items-center gap-1 text-amber-400/90">
                   <Info className="w-3.5 h-3.5 shrink-0" />
                   La orientación virtual complementa, pero no sustituye el examen clínico presencial.
@@ -1308,7 +1315,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               <button
                 onClick={() => handleAskAI()}
                 disabled={aiLoading}
-                className="px-5 py-3 bg-[#17191c] text-[#ffffff] hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                className="px-5 py-3 bg-[#1E293B] text-[#ffffff] hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Consultar</span>
@@ -1325,10 +1332,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
               Cuerpo Médico Especialista
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#17191c] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1E293B] tracking-tight">
               Veterinarios con Vocación, Rigor y Experiencia
             </h2>
-            <p className="text-sm text-[#979799]">
+            <p className="text-sm text-[#64748B]">
               Nuestro equipo cuenta con especializaciones médico-quirúrgicas avaladas y continua formación
               clínica.
             </p>
@@ -1338,29 +1345,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             {/* Vet 1: Dr. Camilo */}
             <LazyScrollSection delay={50} className="p-6 rounded-[24px] border border-[#ececec] bg-[#ffffff]/50 hover:bg-[#ffffff] hover:border-[#ececec] hover:shadow-xl transition-all space-y-4">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-[20px] bg-[#17191c] text-[#ffffff] flex items-center justify-center text-xl font-bold shadow-md">
+                <div className="w-16 h-16 rounded-[20px] bg-[#1E293B] text-[#ffffff] flex items-center justify-center text-xl font-bold shadow-md">
                   👨‍⚕️
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[#17191c]">Dr. Camilo Restrepo</h3>
+                  <h3 className="text-lg font-bold text-[#1E293B]">Dr. Camilo Restrepo</h3>
                   <span className="text-xs font-bold text-[#5d2a1a] block">
                     Cirugía de Tejidos Blandos & Urgencias
                   </span>
-                  <span className="text-[11px] font-mono text-[#979799]">TP: 19823-VET · 12 Años Exp.</span>
+                  <span className="text-[11px] font-mono text-[#64748B]">TP: 19823-VET · 12 Años Exp.</span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#979799] leading-relaxed">
+              <p className="text-xs text-[#64748B] leading-relaxed">
                 Director médico del hospital. Especialista en intervenciones quirúrgicas complejas, manejo de
                 pacientes politraumatizados y medicina interna avanzada.
               </p>
 
               <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec] text-xs space-y-1">
-                <div className="flex justify-between text-[#777b86]">
+                <div className="flex justify-between text-[#64748B]">
                   <span>Horario de consulta:</span>
                   <strong>Lunes a Viernes</strong>
                 </div>
-                <div className="flex justify-between text-[#777b86]">
+                <div className="flex justify-between text-[#64748B]">
                   <span>Atención quirúrgica:</span>
                   <strong className="text-[#5d2a1a]">Programada y Urgencias</strong>
                 </div>
@@ -1368,7 +1375,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               <a
                 href="#agendar"
-                className="w-full py-2.5 rounded-xl bg-[#17191c] hover:opacity-90 text-[#ffffff] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 rounded-xl bg-[#1E293B] hover:opacity-90 text-[#ffffff] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Agendar con el Dr. Camilo</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -1382,25 +1389,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   👩‍⚕️
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[#17191c]">Dra. Andrea Morales</h3>
+                  <h3 className="text-lg font-bold text-[#1E293B]">Dra. Andrea Morales</h3>
                   <span className="text-xs font-bold text-teal-700 block">
                     Medicina Felina & Dermatología
                   </span>
-                  <span className="text-[11px] font-mono text-[#979799]">TP: 21450-VET · 9 Años Exp.</span>
+                  <span className="text-[11px] font-mono text-[#64748B]">TP: 21450-VET · 9 Años Exp.</span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#979799] leading-relaxed">
+              <p className="text-xs text-[#64748B] leading-relaxed">
                 Especialista en etología y medicina amigable con los gatos (Cat Friendly Practice), diagnóstico
                 de dermatitis alérgicas complejas y planes de longevidad felina.
               </p>
 
               <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec] text-xs space-y-1">
-                <div className="flex justify-between text-[#777b86]">
+                <div className="flex justify-between text-[#64748B]">
                   <span>Horario de consulta:</span>
                   <strong>Martes a Sábado</strong>
                 </div>
-                <div className="flex justify-between text-[#777b86]">
+                <div className="flex justify-between text-[#64748B]">
                   <span>Especialidad:</span>
                   <strong className="text-teal-700">Gatos y Dermatología Canina</strong>
                 </div>
@@ -1408,7 +1415,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               <a
                 href="#agendar"
-                className="w-full py-2.5 rounded-xl bg-[#17191c] hover:opacity-90 text-[#ffffff] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 rounded-xl bg-[#1E293B] hover:opacity-90 text-[#ffffff] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Agendar con la Dra. Andrea</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -1422,25 +1429,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   👩‍⚕️
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[#17191c]">Dra. Mariana Gómez</h3>
+                  <h3 className="text-lg font-bold text-[#1E293B]">Dra. Mariana Gómez</h3>
                   <span className="text-xs font-bold text-indigo-700 block">
                     Cardiología & Diagnóstico por Imagen
                   </span>
-                  <span className="text-[11px] font-mono text-[#979799]">TP: 24119-VET · 8 Años Exp.</span>
+                  <span className="text-[11px] font-mono text-[#64748B]">TP: 24119-VET · 8 Años Exp.</span>
                 </div>
               </div>
 
-              <p className="text-xs text-[#979799] leading-relaxed">
+              <p className="text-xs text-[#64748B] leading-relaxed">
                 Experta en ecocardiografía Doppler color, monitoreo electrocardiográfico Holter y detección
                 temprana de patologías cardiorrespiratorias en pacientes geriátricos.
               </p>
 
               <div className="p-3 bg-[#ffffff] rounded-xl border border-[#ececec] text-xs space-y-1">
-                <div className="flex justify-between text-[#777b86]">
+                <div className="flex justify-between text-[#64748B]">
                   <span>Horario de consulta:</span>
                   <strong>Lunes, Miércoles y Viernes</strong>
                 </div>
-                <div className="flex justify-between text-[#777b86]">
+                <div className="flex justify-between text-[#64748B]">
                   <span>Especialidad:</span>
                   <strong className="text-indigo-700">Ecografía y Cardiología</strong>
                 </div>
@@ -1448,7 +1455,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               <a
                 href="#agendar"
-                className="w-full py-2.5 rounded-xl bg-[#17191c] hover:opacity-90 text-[#ffffff] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 rounded-xl bg-[#1E293B] hover:opacity-90 text-[#ffffff] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Agendar con la Dra. Mariana</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -1465,10 +1472,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
               Planes de Salud Preventiva
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#17191c] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1E293B] tracking-tight">
               Protección Integral Todo el Año para tu Compañero
             </h2>
-            <p className="text-sm text-[#979799]">
+            <p className="text-sm text-[#64748B]">
               Membresías diseñadas para cuidar su bienestar continuo sin gastos imprevistos.
             </p>
           </LazyScrollSection>
@@ -1477,18 +1484,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             {/* Plan 1: Cachorro */}
             <LazyScrollSection delay={50} className="p-8 rounded-[24px] border border-[#ececec] bg-[#ffffff] flex flex-col justify-between space-y-6 shadow-xs">
               <div className="space-y-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#979799] font-mono">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#64748B] font-mono">
                   Plan Cachorro / Gatito
                 </span>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-black text-[#17191c]">$35</span>
-                  <span className="text-xs text-[#979799]">/ mes</span>
+                  <span className="text-4xl font-black text-[#1E293B]">$35</span>
+                  <span className="text-xs text-[#64748B]">/ mes</span>
                 </div>
-                <p className="text-xs text-[#979799]">
+                <p className="text-xs text-[#64748B]">
                   Para cachorros y gatitos hasta los 12 meses de edad.
                 </p>
 
-                <div className="space-y-2.5 pt-4 border-t border-slate-100 text-xs text-[#777b86]">
+                <div className="space-y-2.5 pt-4 border-t border-slate-100 text-xs text-[#64748B]">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#5d2a1a] shrink-0" />
                     <span>Esquema completo de vacunación inicial</span>
@@ -1510,15 +1517,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               <a
                 href="#agendar"
-                className="w-full py-3 bg-[#f2f2f3] hover:bg-[#f2f2f3] text-[#17191c] rounded-xl text-xs font-bold text-center transition-colors block"
+                className="w-full py-3 bg-[#f2f2f3] hover:bg-[#f2f2f3] text-[#1E293B] rounded-xl text-xs font-bold text-center transition-colors block"
               >
                 Suscribir Plan Cachorro
               </a>
             </LazyScrollSection>
 
             {/* Plan 2: Adulto Total (Featured) */}
-            <LazyScrollSection delay={100} className="p-8 rounded-[24px] border-2 border-[#17191c] bg-linear-to-b from-emerald-50/50 via-white to-white flex flex-col justify-between space-y-6 shadow-xl relative">
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#17191c] text-[#ffffff] text-[11px] font-bold rounded-full uppercase tracking-wider shadow-sm">
+            <LazyScrollSection delay={100} className="p-8 rounded-[24px] border-2 border-[#1E293B] bg-linear-to-b from-emerald-50/50 via-white to-white flex flex-col justify-between space-y-6 shadow-xl relative">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#1E293B] text-[#ffffff] text-[11px] font-bold rounded-full uppercase tracking-wider shadow-sm">
                 Más Recomendado por Veterinarios
               </div>
 
@@ -1527,14 +1534,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   Plan Salud Total Adulto
                 </span>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-black text-[#17191c]">$49</span>
-                  <span className="text-xs text-[#979799]">/ mes</span>
+                  <span className="text-4xl font-black text-[#1E293B]">$49</span>
+                  <span className="text-xs text-[#64748B]">/ mes</span>
                 </div>
-                <p className="text-xs text-[#979799]">
+                <p className="text-xs text-[#64748B]">
                   Cobertura preventiva total para perros y gatos entre 1 y 7 años.
                 </p>
 
-                <div className="space-y-2.5 pt-4 border-t border-slate-100 text-xs text-[#777b86]">
+                <div className="space-y-2.5 pt-4 border-t border-slate-100 text-xs text-[#64748B]">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#5d2a1a] shrink-0" />
                     <span>Todas las vacunas anuales de refuerzo</span>
@@ -1556,7 +1563,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               <a
                 href="#agendar"
-                className="w-full py-3.5 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-xl text-xs font-bold text-center shadow-md  transition-all block"
+                className="w-full py-3.5 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] rounded-xl text-xs font-bold text-center shadow-md  transition-all block"
               >
                 Suscribir Salud Total
               </a>
@@ -1565,18 +1572,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             {/* Plan 3: Senior Care */}
             <LazyScrollSection delay={150} className="p-8 rounded-[24px] border border-[#ececec] bg-[#ffffff] flex flex-col justify-between space-y-6 shadow-xs">
               <div className="space-y-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#979799] font-mono">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#64748B] font-mono">
                   Plan Senior Vital (7+ Años)
                 </span>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-black text-[#17191c]">$69</span>
-                  <span className="text-xs text-[#979799]">/ mes</span>
+                  <span className="text-4xl font-black text-[#1E293B]">$69</span>
+                  <span className="text-xs text-[#64748B]">/ mes</span>
                 </div>
-                <p className="text-xs text-[#979799]">
+                <p className="text-xs text-[#64748B]">
                   Cuidados geriátricos especializados para su etapa dorada.
                 </p>
 
-                <div className="space-y-2.5 pt-4 border-t border-slate-100 text-xs text-[#777b86]">
+                <div className="space-y-2.5 pt-4 border-t border-slate-100 text-xs text-[#64748B]">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#5d2a1a] shrink-0" />
                     <span>Chequeo renal, hepático y cardíaco periódico</span>
@@ -1598,7 +1605,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               <a
                 href="#agendar"
-                className="w-full py-3 bg-[#17191c] hover:opacity-90 text-[#ffffff] rounded-xl text-xs font-bold text-center transition-colors block"
+                className="w-full py-3 bg-[#1E293B] hover:opacity-90 text-[#ffffff] rounded-xl text-xs font-bold text-center transition-colors block"
               >
                 Suscribir Plan Senior
               </a>
@@ -1614,10 +1621,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
               Opiniones de Familias Reales
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#17191c] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1E293B] tracking-tight">
               Lo que Dicen Quienes Confían en Nosotros
             </h2>
-            <p className="text-sm text-[#979799]">
+            <p className="text-sm text-[#64748B]">
               Más de 2,500 tutores confían la vida de sus mascotas a nuestro hospital cada año.
             </p>
           </LazyScrollSection>
@@ -1631,7 +1638,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     <Star key={i} className="w-4 h-4 fill-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs text-[#777b86] leading-relaxed italic">
+                <p className="text-xs text-[#64748B] leading-relaxed italic">
                   "El Dr. Camilo salvó a Lucas tras un episodio agudo de gastritis e intoxicación. La atención
                   en urgencias fue impecable, y el resumen que me enviaron a través del sistema explicaba con
                   total claridad la dosis exacta del tratamiento."
@@ -1639,12 +1646,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               </div>
 
               <div className="flex items-center gap-3 pt-3 border-t border-[#ececec]">
-                <div className="w-9 h-9 rounded-full bg-[#17191c] text-[#ffffff] flex items-center justify-center font-bold text-xs">
+                <div className="w-9 h-9 rounded-full bg-[#1E293B] text-[#ffffff] flex items-center justify-center font-bold text-xs">
                   CM
                 </div>
                 <div>
-                  <strong className="text-xs text-[#17191c] block">Carlos Mendoza</strong>
-                  <span className="text-[11px] text-[#979799]">Tutor de Lucas (Golden Retriever)</span>
+                  <strong className="text-xs text-[#1E293B] block">Carlos Mendoza</strong>
+                  <span className="text-[11px] text-[#64748B]">Tutor de Lucas (Golden Retriever)</span>
                 </div>
               </div>
             </LazyScrollSection>
@@ -1657,7 +1664,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     <Star key={i} className="w-4 h-4 fill-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs text-[#777b86] leading-relaxed italic">
+                <p className="text-xs text-[#64748B] leading-relaxed italic">
                   "Tengo dos gatas y la Dra. Andrea es maravillosa con la medicina felina. La clínica tiene un
                   área tranquila para evitar el estrés y el carné de vacunación en el celular con código QR nos
                   facilitó viajar sin papeles extraviados."
@@ -1669,8 +1676,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   SR
                 </div>
                 <div>
-                  <strong className="text-xs text-[#17191c] block">Sofía Ramírez</strong>
-                  <span className="text-[11px] text-[#979799]">Tutora de Luna y Mia (Siamesa y Persa)</span>
+                  <strong className="text-xs text-[#1E293B] block">Sofía Ramírez</strong>
+                  <span className="text-[11px] text-[#64748B]">Tutora de Luna y Mia (Siamesa y Persa)</span>
                 </div>
               </div>
             </LazyScrollSection>
@@ -1683,7 +1690,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     <Star key={i} className="w-4 h-4 fill-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs text-[#777b86] leading-relaxed italic">
+                <p className="text-xs text-[#64748B] leading-relaxed italic">
                   "Poder agendar la cita desde la página y recibir confirmación inmediata nos ahorró mucho
                   tiempo. Las instalaciones son de primer nivel, limpias y el personal de recepción es
                   sumamente cálido."
@@ -1695,8 +1702,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   DA
                 </div>
                 <div>
-                  <strong className="text-xs text-[#17191c] block">Diego Álvarez</strong>
-                  <span className="text-[11px] text-[#979799]">Tutor de Rocky (Bulldog Francés)</span>
+                  <strong className="text-xs text-[#1E293B] block">Diego Álvarez</strong>
+                  <span className="text-[11px] text-[#64748B]">Tutor de Rocky (Bulldog Francés)</span>
                 </div>
               </div>
             </LazyScrollSection>
@@ -1711,7 +1718,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
               Dudas Resueltas
             </span>
-            <h2 className="text-3xl font-black text-[#17191c] tracking-tight">
+            <h2 className="text-3xl font-black text-[#1E293B] tracking-tight">
               Preguntas Frecuentes de Tutores
             </h2>
           </LazyScrollSection>
@@ -1722,17 +1729,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 <div className="bg-[#ffffff] rounded-[20px] border border-[#ececec] overflow-hidden shadow-2xs">
                   <button
                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                    className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-[#17191c] hover:text-[#5d2a1a] transition-colors cursor-pointer"
+                    className="w-full p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-[#1E293B] hover:text-[#5d2a1a] transition-colors cursor-pointer"
                   >
                     <span>{faq.q}</span>
                     {openFaq === idx ? (
                       <ChevronUp className="w-4 h-4 shrink-0 text-[#5d2a1a]" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 shrink-0 text-[#979799]" />
+                      <ChevronDown className="w-4 h-4 shrink-0 text-[#64748B]" />
                     )}
                   </button>
                   {openFaq === idx && (
-                    <div className="px-5 pb-5 text-xs text-[#979799] leading-relaxed border-t border-slate-100 pt-3">
+                    <div className="px-5 pb-5 text-xs text-[#64748B] leading-relaxed border-t border-slate-100 pt-3">
                       {faq.a}
                     </div>
                   )}
@@ -1751,19 +1758,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
                 Contacto & Ubicación
               </span>
-              <h2 className="text-3xl font-black text-[#17191c] tracking-tight">
+              <h2 className="text-3xl font-black text-[#1E293B] tracking-tight">
                 Estamos Listos para Atenderte Cuando Más lo Necesites
               </h2>
-              <p className="text-sm text-[#979799] leading-relaxed">
+              <p className="text-sm text-[#64748B] leading-relaxed">
                 Nuestra clínica cuenta con estacionamiento privado para clientes, acceso adaptado para camillas
                 y sala de espera climatizada.
               </p>
 
-              <div className="space-y-4 text-xs text-[#777b86]">
+              <div className="space-y-4 text-xs text-[#64748B]">
                 <div className="flex items-start gap-3 p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
                   <MapPin className="w-5 h-5 text-[#5d2a1a] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-[#17191c] block font-semibold">Sede Principal:</strong>
+                    <strong className="text-[#1E293B] block font-semibold">Sede Principal:</strong>
                     <span>Carrera 45 # 128 - 22, Barrio Bella Suiza, Bogotá D.C., Colombia</span>
                   </div>
                 </div>
@@ -1771,7 +1778,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 <div className="flex items-start gap-3 p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
                   <Clock className="w-5 h-5 text-[#5d2a1a] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-[#17191c] block font-semibold">Horarios de Atención:</strong>
+                    <strong className="text-[#1E293B] block font-semibold">Horarios de Atención:</strong>
                     <span>Consultas Programadas: Lunes a Sábado de 7:00 AM a 8:00 PM</span>
                     <span className="block font-bold text-rose-600 mt-0.5">
                       🚨 Urgencias & Hospitalización: 24 Horas al Día los 365 Días
@@ -1782,7 +1789,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 <div className="flex items-start gap-3 p-3 bg-[#ffffff] rounded-xl border border-[#ececec]">
                   <Phone className="w-5 h-5 text-[#5d2a1a] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-[#17191c] block font-semibold">Teléfonos y WhatsApp:</strong>
+                    <strong className="text-[#1E293B] block font-semibold">Teléfonos y WhatsApp:</strong>
                     <span>Línea Directa Urgencias: +57 (300) 912-3456</span>
                     <span className="block">Recepción y Citas: +57 (601) 749-8020</span>
                   </div>
@@ -1804,12 +1811,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     className="w-full h-full object-cover opacity-25"
                   />
                 </picture>
-                <div className="relative z-10 max-w-md bg-[#ffffff]/95 backdrop-blur-md rounded-[24px] p-6 border border-[#ececec] text-[#17191c] space-y-3">
+                <div className="relative z-10 max-w-md bg-[#ffffff]/95 backdrop-blur-md rounded-[24px] p-6 border border-[#ececec] text-[#1E293B] space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-[#fbe1d1] text-[#5d2a1a] mx-auto flex items-center justify-center font-bold">
                     <MapPin className="w-5 h-5" />
                   </div>
-                  <h4 className="text-base font-bold text-[#17191c]">Hospital Clínico Veterinario VetSoft</h4>
-                  <p className="text-xs text-[#979799]">
+                  <h4 className="text-base font-bold text-[#1E293B]">Hospital Clínico Veterinario VetSoft</h4>
+                  <p className="text-xs text-[#64748B]">
                     Fácil acceso vial por la Autopista Norte y Calle 127. Contamos con bahía de parqueo y
                     recepción de urgencias independiente.
                   </p>
@@ -1818,14 +1825,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                       href="https://maps.google.com"
                       target="_blank"
                       rel="noreferrer"
-                      className="px-4 py-2 bg-[#17191c] hover:opacity-90 text-[#ffffff] rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+                      className="px-4 py-2 bg-[#1E293B] hover:opacity-90 text-[#ffffff] rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
                     >
                       <span>Abrir en Google Maps</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                     <a
                       href="#agendar"
-                      className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+                      className="px-4 py-2 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
                     >
                       <span>Pedir Cita</span>
                     </a>
@@ -1846,7 +1853,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
             ¿Eres Médico Veterinario o Parte del Equipo de la Clínica?
           </h2>
-          <p className="text-sm text-[#777b86] max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm text-[#64748B] max-w-xl mx-auto leading-relaxed">
             Ingresa a la plataforma integral para gestionar expedientes clínicos, registrar constantes
             vitales, dispensar inventario por lotes, facturar en POS y generar fichas médicas asistidas con IA.
           </p>
@@ -1854,7 +1861,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           <div className="pt-2">
             <button
               onClick={onEnterERP}
-              className="px-8 py-4 bg-[#17191c] text-[#ffffff] hover:bg-emerald-500 text-white font-black text-sm rounded-[20px] shadow-xl  inline-flex items-center gap-2 transition-all cursor-pointer"
+              className="px-8 py-4 bg-[#1E293B] text-[#ffffff] hover:bg-emerald-500 text-white font-black text-sm rounded-[20px] shadow-xl  inline-flex items-center gap-2 transition-all cursor-pointer"
             >
               <span>Ingresar al Sistema de Gestión Médica ERP</span>
               <ArrowRight className="w-4 h-4" />
@@ -1864,34 +1871,34 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* QUIET PROFESSIONAL FOOTER */}
-      <footer className="py-12 bg-[#ffffff] text-[#979799] text-xs border-t border-[#ececec]">
+      <footer className="py-12 bg-[#ffffff] text-[#64748B] text-xs border-t border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#17191c] text-[#ffffff] flex items-center justify-center font-bold text-xs">
+            <div className="w-7 h-7 rounded-lg bg-[#1E293B] text-[#ffffff] flex items-center justify-center font-bold text-xs">
               <Stethoscope className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-[#17191c]">Clínica Veterinaria VetSoft</span>
-              <span className="text-[#979799] block text-[10px]">
+              <span className="font-bold text-[#1E293B]">Clínica Veterinaria VetSoft</span>
+              <span className="text-[#64748B] block text-[10px]">
                 Impulsado por el Sistema de Gestión VETSOFT & Gemini 3.8 Flash
               </span>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-[#979799]">
-            <a href="#servicios" className="hover:text-[#17191c] transition-colors">
+          <div className="flex flex-wrap items-center gap-5 text-[#64748B]">
+            <a href="#servicios" className="hover:text-[#1E293B] transition-colors">
               Servicios
             </a>
-            <a href="#agendar" className="hover:text-[#17191c] transition-colors">
+            <a href="#agendar" className="hover:text-[#1E293B] transition-colors">
               Agendar Cita
             </a>
-            <a href="#carne" className="hover:text-[#17191c] transition-colors">
+            <a href="#carne" className="hover:text-[#1E293B] transition-colors">
               Carné Digital
             </a>
-            <a href="#equipo" className="hover:text-[#17191c] transition-colors">
+            <a href="#equipo" className="hover:text-[#1E293B] transition-colors">
               Especialistas
             </a>
-            <a href="#planes" className="hover:text-[#17191c] transition-colors">
+            <a href="#planes" className="hover:text-[#1E293B] transition-colors">
               Planes
             </a>
             <button onClick={onEnterERP} className="text-[#5d2a1a] font-bold hover:underline">

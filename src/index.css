@@ -1,22 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  /* Steep Design System — Colors */
-  --color-ink-black: #17191c;
+  /* Steep & Semantic Clinical Design System â€” Colors */
+  --color-ink-black: #1E293B;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #777b86;
-  --color-ash-gray: #979799;
-  --color-smoke-gray: #a3a6af;
+  --color-slate-gray: #64748B;
+  --color-ash-gray: #64748B;
+  --color-smoke-gray: #94a3b8;
   --color-blush-peach: #fbe1d1;
   --color-sienna-brown: #5d2a1a;
+  --color-critical-text: #DC2626;
+  --color-critical-bg: #FEF2F2;
+  --color-warning-text: #D97706;
+  --color-warning-bg: #FFFBEB;
+  --color-success-text: #0D9488;
+  --color-success-bg: #F0FDFA;
 
-  /* Typography — Font Families */
+  /* Typography â€” Font Families */
   --font-signifier: 'Signifier', 'Source Serif 4', Georgia, Cambria, "Times New Roman", Times, serif;
   --font-sohne: 'Sohne', 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Typography — Scale */
+  /* Typography â€” Scale */
   --text-caption: 15px;
   --leading-caption: 1.5;
   --text-body: 17px;
@@ -69,15 +75,21 @@
 }
 
 :root {
-  --color-ink-black: #17191c;
+  --color-ink-black: #1E293B;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #777b86;
-  --color-ash-gray: #979799;
-  --color-smoke-gray: #a3a6af;
+  --color-slate-gray: #64748B;
+  --color-ash-gray: #64748B;
+  --color-smoke-gray: #94a3b8;
   --color-blush-peach: #fbe1d1;
   --color-sienna-brown: #5d2a1a;
+  --color-critical-text: #DC2626;
+  --color-critical-bg: #FEF2F2;
+  --color-warning-text: #D97706;
+  --color-warning-bg: #FFFBEB;
+  --color-success-text: #0D9488;
+  --color-success-bg: #F0FDFA;
 
   --surface-canvas: #ffffff;
   --surface-card-mist: #f2f2f3;
@@ -93,13 +105,13 @@
   --radius-elevatedcards: 20px;
 
   background-color: #ffffff;
-  color: #17191c;
+  color: #1E293B;
   font-family: var(--font-sohne);
 }
 
 body {
   background-color: #ffffff;
-  color: #17191c;
+  color: #1E293B;
   font-family: var(--font-sohne);
   margin: 0;
   padding: 0;
@@ -115,7 +127,7 @@ h1, h2, .font-serif-editorial {
   line-height: 1.2;
 }
 
-/* Scrollbar — Warm Editorial Light */
+/* Scrollbar â€” Warm Editorial Light */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -131,14 +143,14 @@ h1, h2, .font-serif-editorial {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #979799;
+  background: #64748B;
 }
 
 /* Steep Component Classes */
 .steep-pill-filled {
-  background-color: #17191c;
+  background-color: #1E293B;
   color: #ffffff;
-  border: 1px solid #17191c;
+  border: 1px solid #1E293B;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);
@@ -154,8 +166,8 @@ h1, h2, .font-serif-editorial {
 
 .steep-pill-ghost {
   background-color: transparent;
-  color: #17191c;
-  border: 1px solid #17191c;
+  color: #1E293B;
+  border: 1px solid #1E293B;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);

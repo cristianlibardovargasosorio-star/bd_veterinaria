@@ -103,3 +103,4 @@ public class AuthController {
         return RolUsuario.PROPIETARIO;
     }
 }
+

@@ -27,3 +27,4 @@ server:
         http-only: true
         secure: false # Cambiar a true en producción bajo HTTPS
         same-site: lax
+

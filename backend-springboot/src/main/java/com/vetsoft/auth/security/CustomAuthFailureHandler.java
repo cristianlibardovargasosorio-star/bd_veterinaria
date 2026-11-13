@@ -49,3 +49,4 @@ public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
         response.sendRedirect(request.getContextPath() + "/login?error=credenciales");
     }
 }
+

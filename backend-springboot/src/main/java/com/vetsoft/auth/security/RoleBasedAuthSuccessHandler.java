@@ -48,3 +48,4 @@ public class RoleBasedAuthSuccessHandler implements AuthenticationSuccessHandler
         response.sendRedirect(request.getContextPath() + targetUrl);
     }
 }
+

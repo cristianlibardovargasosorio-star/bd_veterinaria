@@ -24,9 +24,6 @@ export default defineConfig(() => {
               if (id.includes('react') || id.includes('react-dom')) {
                 return 'vendor-react';
               }
-              if (id.includes('three')) {
-                return 'vendor-three';
-              }
               if (id.includes('lucide-react')) {
                 return 'vendor-icons';
               }

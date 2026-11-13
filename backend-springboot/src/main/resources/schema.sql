@@ -26,3 +26,4 @@ VALUES
     ('camilo.vet@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'VETERINARIO', TRUE),
     ('carlos.mendoza@email.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'PROPIETARIO', TRUE)
 ON CONFLICT (correo) DO NOTHING;
+

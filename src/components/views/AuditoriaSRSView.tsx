@@ -55,11 +55,11 @@ export const AuditoriaSRSView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#17191c] tracking-tight flex items-center gap-2">
+          <h2 className="text-xl font-black text-[#1E293B] tracking-tight flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-[#5d2a1a]" />
             <span>Auditoría del Sistema y Garantías ACID (Script 02)</span>
           </h2>
-          <p className="text-xs text-[#979799] mt-0.5">
+          <p className="text-xs text-[#64748B] mt-0.5">
             Registro cronológico inmutable de operaciones (INSERT, UPDATE, DELETE) en la tabla <code>auditoria_sistema</code>.
           </p>
         </div>
@@ -75,7 +75,7 @@ export const AuditoriaSRSView: React.FC = () => {
       {/* Filter Toolbar */}
       <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#ececec] shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-[#979799] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
@@ -86,7 +86,7 @@ export const AuditoriaSRSView: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto text-xs">
-          <span className="text-[#979799] font-semibold">Tabla:</span>
+          <span className="text-[#64748B] font-semibold">Tabla:</span>
           <select
             value={filterTabla}
             onChange={(e) => setFilterTabla(e.target.value)}
@@ -99,7 +99,7 @@ export const AuditoriaSRSView: React.FC = () => {
             ))}
           </select>
 
-          <span className="text-[#979799] font-semibold ml-2">Operación:</span>
+          <span className="text-[#64748B] font-semibold ml-2">Operación:</span>
           <select
             value={filterOp}
             onChange={(e) => setFilterOp(e.target.value)}
@@ -118,7 +118,7 @@ export const AuditoriaSRSView: React.FC = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b border-[#ececec] text-[#979799] bg-[#ffffff] font-bold uppercase tracking-wider text-[11px]">
+              <tr className="border-b border-[#ececec] text-[#64748B] bg-[#ffffff] font-bold uppercase tracking-wider text-[11px]">
                 <th className="py-3 px-4">ID</th>
                 <th className="py-3 px-4">Fecha y Hora</th>
                 <th className="py-3 px-4">Usuario</th>
@@ -129,17 +129,17 @@ export const AuditoriaSRSView: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredLogs.map((log) => {
-                const badge = opBadges[log.operacion] || { bg: 'bg-[#f2f2f3]', text: 'text-[#17191c]' };
+                const badge = opBadges[log.operacion] || { bg: 'bg-[#f2f2f3]', text: 'text-[#1E293B]' };
 
                 return (
                   <tr key={log.id_auditoria} className="hover:bg-[#ffffff]/80">
-                    <td className="py-3 px-4 font-mono font-bold text-[#979799]">
+                    <td className="py-3 px-4 font-mono font-bold text-[#64748B]">
                       #{log.id_auditoria}
                     </td>
-                    <td className="py-3 px-4 text-[#979799] font-mono text-[11px] whitespace-nowrap">
+                    <td className="py-3 px-4 text-[#64748B] font-mono text-[11px] whitespace-nowrap">
                       {new Date(log.fecha).toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 font-medium text-[#17191c] whitespace-nowrap">
+                    <td className="py-3 px-4 font-medium text-[#1E293B] whitespace-nowrap">
                       {log.usuario_nombre || `ID #${log.id_usuario}`}
                     </td>
                     <td className="py-3 px-4">
@@ -152,7 +152,7 @@ export const AuditoriaSRSView: React.FC = () => {
                         {log.operacion}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-[#777b86] leading-relaxed max-w-lg">
+                    <td className="py-3 px-4 text-[#64748B] leading-relaxed max-w-lg">
                       {log.detalles}
                     </td>
                   </tr>
@@ -163,7 +163,7 @@ export const AuditoriaSRSView: React.FC = () => {
         </div>
 
         {filteredLogs.length === 0 && (
-          <div className="p-8 text-center text-xs text-[#979799]">
+          <div className="p-8 text-center text-xs text-[#64748B]">
             No hay registros de auditoría que coincidan con los filtros.
           </div>
         )}

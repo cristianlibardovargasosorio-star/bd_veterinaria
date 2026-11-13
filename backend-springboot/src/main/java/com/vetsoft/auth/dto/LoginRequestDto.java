@@ -48,3 +48,4 @@ public class LoginRequestDto {
         return "LoginRequestDto{correo='" + correo + "', contrasena='[PROTECTED]'}";
     }
 }
+

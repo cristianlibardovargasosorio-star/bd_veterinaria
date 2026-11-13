@@ -10,3 +10,4 @@ public class VetSoftAuthApplication {
         SpringApplication.run(VetSoftAuthApplication.class, args);
     }
 }
+
