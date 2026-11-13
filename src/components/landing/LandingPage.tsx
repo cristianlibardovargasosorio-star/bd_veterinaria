@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStore } from '../../db/store';
 import { LazyScrollSection } from '../common/LazyScrollSection';
 import { SkeletonCard, SkeletonKPI, SkeletonTable } from '../common/Skeleton';
+import { BackgroundThreeCanvas } from '../common/BackgroundThreeCanvas';
 import { HeroThreeScene } from './HeroThreeScene';
 import confetti from 'canvas-confetti';
 import {
@@ -379,7 +380,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
   ];
 
   return (
-    <div className="min-h-screen bg-[#ffffff] text-[#17191c] font-sans selection:bg-[#fbe1d1] selection:text-[#5d2a1a] scroll-smooth">
+    <div className="min-h-screen relative bg-transparent text-[#17191c] font-sans selection:bg-[#fbe1d1] selection:text-[#5d2a1a] scroll-smooth">
+      {/* Three.js 3D Interactive Spatial Background */}
+      <BackgroundThreeCanvas />
+
+      <div className="relative z-10">
       {/* TOP EMERGENCY AND CONTACT TICKER (Quiet Editorial Strip) */}
       <div className="bg-[#fafafb] text-[#777b86] text-xs py-2.5 px-4 border-b border-[#ececec]">
         <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -543,7 +548,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </header>
 
       {/* HERO SECTION — Steep Editorial Magazine Spread + Floating Product Artifacts */}
-      <section className="relative pt-14 pb-20 md:pt-20 md:pb-28 bg-[#ffffff]">
+      <section className="relative pt-14 pb-20 md:pt-20 md:pb-28 bg-transparent">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Column: Signifier Editorial Headline and Matched Pill Buttons */}
@@ -663,7 +668,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* MEDICAL SERVICES CATALOG */}
-      <section id="servicios" className="py-20 bg-[#ffffff] border-b border-[#ececec]">
+      <section id="servicios" className="py-20 bg-[#ffffff]/60 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mb-12 space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
@@ -721,7 +726,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* INTERACTIVE APPOINTMENT BOOKING FORM */}
-      <section id="agendar" className="py-20 bg-[#f2f2f3] border-b border-[#ececec]">
+      <section id="agendar" className="py-20 bg-[#f2f2f3]/75 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             {/* Left Context Column */}
@@ -1002,7 +1007,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* PATIENT PORTAL & DIGITAL VACCINE CARD LOOKUP */}
-      <section id="carne" className="py-20 bg-[#ffffff] border-b border-[#ececec]">
+      <section id="carne" className="py-20 bg-[#ffffff]/60 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-3xl mx-auto text-center space-y-3 mb-10">
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
@@ -1333,7 +1338,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* MEDICAL TEAM / SPECIALISTS */}
-      <section id="equipo" className="py-20 bg-[#ffffff] border-b border-[#ececec]">
+      <section id="equipo" className="py-20 bg-[#ffffff]/60 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mb-12 space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
@@ -1473,7 +1478,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* HEALTH PLANS & PREVENTIVE SUBSCRIPTIONS */}
-      <section id="planes" className="py-20 bg-[#f2f2f3] border-b border-[#ececec]">
+      <section id="planes" className="py-20 bg-[#f2f2f3]/75 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mx-auto text-center space-y-3 mb-12">
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
@@ -1622,7 +1627,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* TESTIMONIALS & SUCCESS STORIES */}
-      <section id="testimonios" className="py-20 bg-[#ffffff] border-b border-[#ececec]">
+      <section id="testimonios" className="py-20 bg-[#ffffff]/60 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mb-12 space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
@@ -1719,7 +1724,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* FREQUENTLY ASKED QUESTIONS */}
-      <section id="faq" className="py-20 bg-[#ffffff] border-b border-[#ececec]">
+      <section id="faq" className="py-20 bg-[#ffffff]/60 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="text-center space-y-3 mb-12">
             <span className="text-xs font-bold uppercase tracking-wider text-[#5d2a1a] font-mono">
@@ -1758,7 +1763,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* LOCATION, MAP & CONTACT SECTION */}
-      <section id="contacto" className="py-20 bg-[#ffffff] border-b border-[#ececec]">
+      <section id="contacto" className="py-20 bg-[#ffffff]/60 backdrop-blur-[1px] border-b border-[#ececec]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <LazyScrollSection className="lg:col-span-5 space-y-6">
@@ -1918,6 +1923,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 };
