@@ -39,6 +39,8 @@ import {
   BadgeCheck,
   Flame,
   PhoneCall,
+  Menu,
+  X,
 } from 'lucide-react';
 import { TipoCita } from '../../types';
 
@@ -63,6 +65,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
   const [showSkeletonMode, setShowSkeletonMode] = useState(false);
   const [activeDemoTab, setActiveDemoTab] = useState<'ia' | 'carne' | 'lotes' | 'pos'>('ia');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Images (WebP & AVIF modern next-gen formats with native fallback)
   const heroImg = '/src/assets/images/landing_vet_hero_1794425108227.webp';
@@ -419,50 +422,48 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </div>
 
       {/* MAIN NAVIGATION BAR — Steep Whisper-quiet Top Bar */}
-      <header className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md">
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
+      <header className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md border-b border-[#ececec]/70">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
           {/* Brand Identity */}
           <a href="#" className="flex items-center gap-3 shrink-0 group">
-            <div className="w-10 h-10 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff]">
-              <Stethoscope className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
+              <Stethoscope className="w-4 h-4" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-serif-editorial text-2xl tracking-tight text-[#17191c]">San Antón</span>
-                <span className="text-xs text-[#979799] font-normal">
-                  VetSoft
-                </span>
-              </div>
+            <div className="flex items-baseline gap-2 whitespace-nowrap">
+              <span className="font-serif-editorial text-2xl tracking-tight text-[#17191c]">San Antón</span>
+              <span className="text-xs text-[#979799] font-normal hidden sm:inline">
+                VetSoft
+              </span>
             </div>
           </a>
 
-          {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-7 text-[15px] font-normal text-[#17191c]">
-            <a href="#servicios" className="hover:text-[#777b86] transition-colors">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-[15px] font-normal text-[#17191c]">
+            <a href="#servicios" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
               Servicios
             </a>
-            <a href="#agendar" className="hover:text-[#777b86] transition-colors">
-              Agendar Cita
+            <a href="#agendar" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+              Agendar cita
             </a>
-            <a href="#carne" className="hover:text-[#777b86] transition-colors">
-              Carné Digital
+            <a href="#carne" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
+              Carné digital
             </a>
-            <a href="#equipo" className="hover:text-[#777b86] transition-colors">
+            <a href="#equipo" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
               Especialistas
             </a>
-            <a href="#asistente-ia" className="hover:text-[#777b86] transition-colors">
+            <a href="#asistente-ia" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
               Asistente IA
             </a>
-            <a href="#planes" className="hover:text-[#777b86] transition-colors">
+            <a href="#planes" className="whitespace-nowrap hover:text-[#777b86] transition-colors">
               Planes
             </a>
           </nav>
 
-          {/* Primary Action Buttons: Ghost Pill + Filled Pill */}
-          <div className="flex items-center gap-2.5 shrink-0">
+          {/* Primary Action Buttons: Ghost Pill + Filled Pill + Mobile Menu Toggle */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={onOpenLogin}
-              className="px-5 py-2 rounded-full text-sm font-normal text-[#17191c] bg-transparent hover:bg-[#f2f2f3] border border-[#17191c] transition-colors cursor-pointer"
+              className="hidden sm:inline-flex items-center px-4 py-2 rounded-full text-sm font-normal text-[#17191c] bg-transparent hover:bg-[#f2f2f3] border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
               title="Ir al Módulo 1: Login de Usuarios (/login)"
             >
               Iniciar sesión
@@ -470,20 +471,75 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
             <a
               href="#agendar"
-              className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-normal bg-[#17191c] text-[#ffffff] hover:opacity-90 transition-opacity cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-normal bg-[#17191c] text-[#ffffff] hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
             >
               <span>Reservar cita</span>
             </a>
 
             <button
               onClick={onEnterERP}
-              className="px-4 py-2 rounded-full text-sm font-normal bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2 rounded-full text-sm font-normal bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap"
               title="Abrir el software integral de gestión clínica"
             >
               <span>ERP →</span>
             </button>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-full text-[#17191c] hover:bg-[#f2f2f3] transition-colors cursor-pointer"
+              aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile / Tablet Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden px-4 pb-5 pt-2 bg-[#ffffff] border-t border-[#ececec]">
+            <nav className="flex flex-col space-y-1 text-[15px] text-[#17191c]">
+              {[
+                { href: '#servicios', label: 'Servicios' },
+                { href: '#agendar', label: 'Agendar cita' },
+                { href: '#carne', label: 'Carné digital' },
+                { href: '#equipo', label: 'Especialistas' },
+                { href: '#asistente-ia', label: 'Asistente IA' },
+                { href: '#planes', label: 'Planes' },
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-2.5 rounded-[16px] hover:bg-[#f2f2f3] transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+
+            <div className="mt-4 pt-3 border-t border-[#ececec] flex flex-col sm:hidden gap-2">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenLogin();
+                }}
+                className="w-full py-2.5 px-5 rounded-full text-sm text-[#17191c] border border-[#17191c] text-center cursor-pointer"
+              >
+                Iniciar sesión
+              </button>
+              <a
+                href="#agendar"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-2.5 px-5 rounded-full text-sm bg-[#17191c] text-[#ffffff] text-center"
+              >
+                Reservar cita
+              </a>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* HERO SECTION — Steep Editorial Magazine Spread + Floating Product Artifacts */}

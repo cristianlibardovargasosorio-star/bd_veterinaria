@@ -75,31 +75,31 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="bg-[#ffffff]/95 backdrop-blur-md sticky top-0 z-40">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header className="bg-[#ffffff]/95 backdrop-blur-md sticky top-0 z-40 border-b border-[#ececec]">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
         {/* Brand */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff]">
-            <Stethoscope className="w-5 h-5" />
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
+            <Stethoscope className="w-4 h-4" />
           </div>
-          <div>
-            <div className="flex items-center gap-2.5">
+          <div className="whitespace-nowrap">
+            <div className="flex items-center gap-2">
               <span className="font-serif-editorial text-2xl tracking-tight text-[#17191c]">VetSoft</span>
-              <span className="text-[12px] text-[#979799] font-normal">
+              <span className="text-[12px] text-[#979799] font-normal hidden xl:inline">
                 Editorial Clinical Suite
               </span>
             </div>
-            <p className="text-[12px] text-[#777b86] hidden sm:block">Hospital Clínico Veterinario San Antón</p>
+            <p className="text-[11px] text-[#777b86] hidden md:block">Hospital Clínico San Antón</p>
           </div>
         </div>
 
         {/* Center / Right controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {/* Return to Landing Button */}
           {onReturnToLanding && (
             <button
               onClick={onReturnToLanding}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
             >
               <ArrowLeft className="w-3.5 h-3.5 text-[#17191c]" />
               <span className="hidden sm:inline">Sitio Web</span>
@@ -110,11 +110,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenLogin && (
             <button
               onClick={onOpenLogin}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
               title="Ir al Módulo 1: Login de Usuarios (/login)"
             >
               <Lock className="w-3.5 h-3.5 text-[#17191c]" />
-              <span className="hidden sm:inline">Login (/login)</span>
+              <span className="hidden md:inline">Login</span>
             </button>
           )}
 
@@ -122,7 +122,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onToggleSkeleton && (
             <button
               onClick={onToggleSkeleton}
-              className={`px-3.5 py-2 rounded-full text-xs transition-colors cursor-pointer ${
+              className={`hidden xl:inline-flex px-3.5 py-2 rounded-full text-xs transition-colors cursor-pointer whitespace-nowrap ${
                 isSkeletonLoading
                   ? 'bg-[#fbe1d1] text-[#5d2a1a] font-medium'
                   : 'bg-[#f2f2f3] text-[#777b86] hover:text-[#17191c]'
@@ -137,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {vwAlertasStock.length > 0 && (
             <div
               title={`${vwAlertasStock.length} producto(s) en stock crítico o agotado`}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#fbe1d1] text-[#5d2a1a] text-xs font-medium"
+              className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#fbe1d1] text-[#5d2a1a] text-xs font-medium whitespace-nowrap"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#5d2a1a]" />
               <span>{vwAlertasStock.length} Alertas</span>
@@ -147,30 +147,31 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Traceability Matrix Button */}
           <button
             onClick={onOpenTraceability}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] text-xs transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] text-xs transition-colors cursor-pointer whitespace-nowrap"
+            title="Matriz SRS (RF01-RF11)"
           >
             <FileCheck2 className="w-3.5 h-3.5 text-[#5d2a1a]" />
-            <span className="hidden md:inline">Matriz SRS</span>
+            <span className="hidden lg:inline">Matriz SRS</span>
           </button>
 
           {/* 2FA & Security Demo */}
           <button
             onClick={onOpenSecurityModal}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#777b86] hover:text-[#17191c] text-xs transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#777b86] hover:text-[#17191c] text-xs transition-colors cursor-pointer whitespace-nowrap"
             title="Prueba de Autenticación, BCrypt, 3 Intentos y OTP (RF01)"
           >
             <Lock className="w-3.5 h-3.5" />
-            <span className="hidden lg:inline">Seguridad RF01</span>
+            <span className="hidden xl:inline">Seguridad</span>
           </button>
 
           {/* Role Switcher (Filled Pill) */}
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#17191c] text-[#ffffff] text-xs font-normal hover:opacity-90 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#17191c] text-[#ffffff] text-xs font-normal hover:opacity-90 transition-all cursor-pointer whitespace-nowrap"
             >
               <RoleIcon className="w-3.5 h-3.5 text-[#fbe1d1]" />
-              <span>{currentBadge.label}</span>
+              <span className="hidden sm:inline">{currentBadge.label}</span>
               <ChevronDown className="w-3 h-3 text-[#a3a6af]" />
             </button>
 
