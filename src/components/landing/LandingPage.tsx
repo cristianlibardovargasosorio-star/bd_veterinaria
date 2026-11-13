@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStore } from '../../db/store';
 import { LazyScrollSection } from '../common/LazyScrollSection';
 import { SkeletonCard, SkeletonKPI, SkeletonTable } from '../common/Skeleton';
+import { BackgroundThreeCanvas } from '../common/BackgroundThreeCanvas';
 import confetti from 'canvas-confetti';
 import {
   Stethoscope,
@@ -379,6 +380,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
   return (
     <div className="min-h-screen relative bg-transparent text-[#1E293B] font-sans selection:bg-[#F0FDFA] selection:text-[#0D9488] scroll-smooth">
+      {/* Fondo 3D inmersivo en Three.js exclusivo de la Landing Page */}
+      <BackgroundThreeCanvas />
       <div className="relative z-10">
       {/* TOP EMERGENCY STRIP (Quiet Editorial Strip, sin botones duplicados) */}
       <div className="bg-[#fafafb] text-[#64748B] text-xs py-2 px-4 border-b border-[#ececec]">

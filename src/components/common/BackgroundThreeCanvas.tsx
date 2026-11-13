@@ -1,42 +1,93 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 /**
- * Fondo 3D veterinario en Three.js (WebGL) para todo el sitio.
- * Posiciona motivos 3D temáticos (huellas, cruces clínicas, cápsula y hélice ADN)
- * exclusivamente en los márgenes laterales para no cubrir el texto central,
- * con animación continua e interacción suave con el cursor.
+ * Configuración centralizada del fondo 3D de la Landing Page.
+ * Modifica estos valores para ajustar cantidad, colores y velocidad de las figuras.
+ */
+export const LANDING_3D_CONFIG = {
+  /** Cantidad total de figuras 3D orgánicas dispersas en la escena */
+  shapeCount: 16,
+  /** Cantidad de partículas ambientales flotantes */
+  particleCount: 55,
+  /** Colores de la paleta del sitio para los materiales y wireframe */
+  palette: {
+    primaryTint: '#0D9488', // Verde Esmeralda Clínico (sutil)
+    warmAccent: '#fbe1d1', // Durazno Editorial
+    neutralLight: '#e2e8f0', // Gris Pizarra Claro
+    wireframe: '#64748B', // Gris Medio
+    particle: '#0D9488',
+  },
+  /** Velocidades base de animación */
+  rotationSpeed: 0.0022,
+  floatSpeed: 0.55,
+  floatAmplitude: 0.32,
+  /** Sensibilidad al movimiento del cursor */
+  cursorParallaxStrength: 0.55,
+  cursorRepulsionRadius: 4.5,
+  cursorRepulsionStrength: 1.25,
+};
+
+/** Verifica de forma segura si WebGL está disponible en el navegador */
+function isWebGLAvailable(): boolean {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Fondo 3D inmersivo en Three.js exclusivo para la Landing Page.
+ * - Dispersa formas geométricas modernas (toroides, poliedros, esferas, nudos) de forma orgánica.
+ * - Anima con rotación lenta, flotación suave y reacción al cursor (parallax + repulsión/inclinación).
+ * - Pausa el bucle al ocultar la pestaña, respeta `prefers-reduced-motion` y ofrece fallback estático sin WebGL.
  */
 export const BackgroundThreeCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [useFallback, setUseFallback] = useState<boolean>(() => !isWebGLAvailable());
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || useFallback) return;
+
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let prefersReducedMotion = motionQuery.matches;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    const scene = new THREE.Scene();
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: 'high-performance',
+      });
+    } catch {
+      // Fallback limpio si el contexto WebGL falla al inicializarse
+      setUseFallback(true);
+      return;
+    }
 
-    const fov = 42;
-    const camZ = 16;
+    const scene = new THREE.Scene();
+    const fov = 45;
+    const camZ = 15;
     const camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 100);
     camera.position.set(0, 0, camZ);
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: 'high-performance',
-    });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setClearColor(0x000000, 0);
 
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    // Iluminación editorial suave
+    // Iluminación editorial suave para mantener el contenido principal legible
     const ambientLight = new THREE.AmbientLight('#ffffff', 1.65);
     scene.add(ambientLight);
 
@@ -44,308 +95,124 @@ export const BackgroundThreeCanvas: React.FC = () => {
     dirLight.position.set(6, 10, 10);
     scene.add(dirLight);
 
-    const peachLight = new THREE.PointLight('#fbe1d1', 1.8, 35);
-    peachLight.position.set(-10, 4, 8);
-    scene.add(peachLight);
+    const accentLight = new THREE.PointLight(LANDING_3D_CONFIG.palette.warmAccent, 1.5, 34);
+    accentLight.position.set(-9, 5, 7);
+    scene.add(accentLight);
 
-    const emeraldLight = new THREE.PointLight('#F0FDFA', 1.4, 35);
-    emeraldLight.position.set(10, -4, 8);
-    scene.add(emeraldLight);
+    const clinicalLight = new THREE.PointLight(LANDING_3D_CONFIG.palette.primaryTint, 1.1, 34);
+    clinicalLight.position.set(9, -5, 7);
+    scene.add(clinicalLight);
 
-    // Materiales suaves en armonía con la paleta del sitio
-    const matPeach = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#fbe1d1'),
-      roughness: 0.45,
-      metalness: 0.04,
-      transparent: true,
-      opacity: 0.62,
-    });
+    // Materiales translúcidos y sutiles para no competir con la tipografía
+    const materials = [
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.warmAccent),
+        roughness: 0.45,
+        metalness: 0.05,
+        transparent: true,
+        opacity: 0.42,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.neutralLight),
+        roughness: 0.5,
+        metalness: 0.06,
+        transparent: true,
+        opacity: 0.4,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.primaryTint),
+        roughness: 0.4,
+        metalness: 0.08,
+        transparent: true,
+        opacity: 0.18,
+      }),
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.wireframe),
+        wireframe: true,
+        transparent: true,
+        opacity: 0.14,
+      }),
+    ];
 
-    const matMist = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#e2e8f0'),
-      roughness: 0.55,
-      metalness: 0.05,
-      transparent: true,
-      opacity: 0.58,
-    });
+    // Catálogo de geometrías modernas (esferas, toroides, poliedros, nudos y cápsulas)
+    const geometries = [
+      new THREE.TorusGeometry(0.75, 0.2, 16, 44),
+      new THREE.IcosahedronGeometry(0.68, 0),
+      new THREE.SphereGeometry(0.55, 22, 22),
+      new THREE.OctahedronGeometry(0.65, 0),
+      new THREE.TorusKnotGeometry(0.52, 0.14, 64, 12),
+      new THREE.DodecahedronGeometry(0.58, 0),
+      new THREE.CapsuleGeometry(0.28, 0.65, 8, 16),
+    ];
 
-    const matTerracottaSoft = new THREE.MeshStandardMaterial({
-      color: new THREE.Color('#d9a78c'),
-      roughness: 0.45,
-      metalness: 0.05,
-      transparent: true,
-      opacity: 0.38,
-    });
-
-    const matSiennaWire = new THREE.MeshBasicMaterial({
-      color: new THREE.Color('#64748B'),
-      wireframe: true,
-      transparent: true,
-      opacity: 0.16,
-    });
-
-    // Constructores de motivos 3D veterinarios
-    const createPawGroup = (material: THREE.Material) => {
-      const group = new THREE.Group();
-      const padGeo = new THREE.SphereGeometry(0.46, 20, 20);
-      const pad = new THREE.Mesh(padGeo, material);
-      pad.scale.set(1.15, 0.95, 0.42);
-      pad.position.set(0, -0.18, 0);
-      group.add(pad);
-
-      const toeGeo = new THREE.SphereGeometry(0.18, 16, 16);
-      const toeOffsets: [number, number][] = [
-        [-0.52, 0.36],
-        [-0.18, 0.58],
-        [0.18, 0.58],
-        [0.52, 0.36],
-      ];
-      toeOffsets.forEach(([tx, ty]) => {
-        const toe = new THREE.Mesh(toeGeo, material);
-        toe.scale.set(0.92, 1.12, 0.48);
-        toe.position.set(tx, ty, 0);
-        group.add(toe);
-      });
-      return group;
-    };
-
-    const createVetCrossGroup = (material: THREE.Material, wireMat: THREE.Material) => {
-      const group = new THREE.Group();
-      const vGeo = new THREE.BoxGeometry(0.38, 1.18, 0.24);
-      const hGeo = new THREE.BoxGeometry(1.18, 0.38, 0.24);
-      group.add(new THREE.Mesh(vGeo, material));
-      group.add(new THREE.Mesh(hGeo, material));
-
-      const ringGeo = new THREE.TorusGeometry(0.86, 0.028, 12, 42);
-      group.add(new THREE.Mesh(ringGeo, wireMat));
-      return group;
-    };
-
-    const createCapsuleGroup = (matTop: THREE.Material, matBottom: THREE.Material) => {
-      const group = new THREE.Group();
-      const halfGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.48, 20);
-      const capGeo = new THREE.SphereGeometry(0.24, 20, 16);
-
-      const top = new THREE.Mesh(halfGeo, matTop);
-      top.position.y = 0.24;
-      const topCap = new THREE.Mesh(capGeo, matTop);
-      topCap.position.y = 0.48;
-
-      const bottom = new THREE.Mesh(halfGeo, matBottom);
-      bottom.position.y = -0.24;
-      const bottomCap = new THREE.Mesh(capGeo, matBottom);
-      bottomCap.position.y = -0.48;
-
-      group.add(top, topCap, bottom, bottomCap);
-      group.rotation.z = Math.PI / 5;
-      return group;
-    };
-
-    const createMiniDnaGroup = (matA: THREE.Material, matB: THREE.Material, rungMat: THREE.Material) => {
-      const group = new THREE.Group();
-      const nodeGeo = new THREE.SphereGeometry(0.095, 12, 12);
-      const rungGeo = new THREE.CylinderGeometry(0.022, 0.022, 0.56, 8);
-      rungGeo.rotateZ(Math.PI / 2);
-
-      const steps = 7;
-      for (let i = 0; i < steps; i++) {
-        const y = (i - (steps - 1) / 2) * 0.32;
-        const angle = i * 0.72;
-        const x = Math.cos(angle) * 0.28;
-        const z = Math.sin(angle) * 0.28;
-
-        const a = new THREE.Mesh(nodeGeo, matA);
-        a.position.set(x, y, z);
-        const b = new THREE.Mesh(nodeGeo, matB);
-        b.position.set(-x, y, -z);
-
-        const rung = new THREE.Mesh(rungGeo, rungMat);
-        rung.position.set(0, y, 0);
-        rung.rotation.y = -angle;
-
-        group.add(a, b, rung);
-      }
-      return group;
-    };
-
-    interface SideItem {
-      group: THREE.Group;
-      side: -1 | 1;
-      edgeFactor: number;
-      baseX: number;
-      baseY: number;
-      baseZ: number;
-      offset: THREE.Vector2;
-      speed: number;
-      amp: number;
+    interface FloatingShape {
+      mesh: THREE.Mesh;
+      basePos: THREE.Vector3;
+      offset: THREE.Vector3;
       rotSpeed: { x: number; y: number; z: number };
+      phase: number;
+      speedFactor: number;
       baseScale: number;
-      responsiveScale: number;
       currentScale: number;
     }
 
-    const items: SideItem[] = [
-      // Lado izquierdo
-      {
-        group: createPawGroup(matPeach),
-        side: -1,
-        edgeFactor: 0.85,
-        baseX: -8,
-        baseY: 2.9,
-        baseZ: -1.5,
-        offset: new THREE.Vector2(0, 0),
-        speed: 0.65,
-        amp: 0.28,
-        rotSpeed: { x: 0.0008, y: 0.0022, z: 0.0006 },
-        baseScale: 0.95,
-        responsiveScale: 0.95,
-        currentScale: 0.95,
-      },
-      {
-        group: createCapsuleGroup(matTerracottaSoft, matMist),
-        side: -1,
-        edgeFactor: 0.88,
-        baseX: -8.5,
-        baseY: -0.2,
-        baseZ: -2.2,
-        offset: new THREE.Vector2(0, 0),
-        speed: 0.75,
-        amp: 0.24,
-        rotSpeed: { x: 0.0018, y: 0.002, z: 0.001 },
-        baseScale: 0.9,
-        responsiveScale: 0.9,
-        currentScale: 0.9,
-      },
-      {
-        group: createVetCrossGroup(matMist, matSiennaWire),
-        side: -1,
-        edgeFactor: 0.83,
-        baseX: -8,
-        baseY: -3.2,
-        baseZ: -2.5,
-        offset: new THREE.Vector2(0, 0),
-        speed: 0.55,
-        amp: 0.22,
-        rotSpeed: { x: 0.0012, y: 0.0018, z: 0.0008 },
-        baseScale: 0.82,
-        responsiveScale: 0.82,
-        currentScale: 0.82,
-      },
-      // Lado derecho
-      {
-        group: createVetCrossGroup(matPeach, matSiennaWire),
-        side: 1,
-        edgeFactor: 0.85,
-        baseX: 8,
-        baseY: 3.0,
-        baseZ: -1.8,
-        offset: new THREE.Vector2(0, 0),
-        speed: 0.6,
-        amp: 0.26,
-        rotSpeed: { x: 0.001, y: -0.002, z: 0.0007 },
-        baseScale: 0.88,
-        responsiveScale: 0.88,
-        currentScale: 0.88,
-      },
-      {
-        group: createMiniDnaGroup(matPeach, matTerracottaSoft, matMist),
-        side: 1,
-        edgeFactor: 0.88,
-        baseX: 8.5,
-        baseY: -0.1,
-        baseZ: -1.5,
-        offset: new THREE.Vector2(0, 0),
-        speed: 0.7,
-        amp: 0.25,
-        rotSpeed: { x: 0.0004, y: 0.0035, z: 0.0004 },
-        baseScale: 0.95,
-        responsiveScale: 0.95,
-        currentScale: 0.95,
-      },
-      {
-        group: createPawGroup(matMist),
-        side: 1,
-        edgeFactor: 0.84,
-        baseX: 8,
-        baseY: -3.1,
-        baseZ: -2.0,
-        offset: new THREE.Vector2(0, 0),
-        speed: 0.68,
-        amp: 0.24,
-        rotSpeed: { x: 0.001, y: -0.0022, z: 0.0005 },
-        baseScale: 0.88,
-        responsiveScale: 0.88,
-        currentScale: 0.88,
-      },
-    ];
+    const shapes: FloatingShape[] = [];
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // Dispersión orgánica tipo espiral áurea con jitter
 
-    items.forEach((item) => {
-      scene.add(item.group);
-    });
+    for (let i = 0; i < LANDING_3D_CONFIG.shapeCount; i++) {
+      const geo = geometries[i % geometries.length];
+      const mat = materials[i % materials.length];
+      const mesh = new THREE.Mesh(geo, mat);
 
-    // Partículas sutiles únicamente en los bordes laterales
-    const particleCount = 36;
-    const pPositions = new Float32Array(particleCount * 3);
-    const pSides: (-1 | 1)[] = [];
-    const pFactors: number[] = [];
+      // Dispersión orgánica no rígida a lo ancho y alto de la escena
+      const radiusNorm = Math.sqrt((i + 0.5) / LANDING_3D_CONFIG.shapeCount);
+      const angle = i * goldenAngle + (Math.random() - 0.5) * 0.45;
+      const spreadX = Math.cos(angle) * radiusNorm * 11.5 + (Math.random() - 0.5) * 1.4;
+      const spreadY = Math.sin(angle) * radiusNorm * 6.4 + (Math.random() - 0.5) * 1.0;
+      const depthZ = -2.0 - Math.random() * 6.5;
 
-    for (let i = 0; i < particleCount; i++) {
-      const side: -1 | 1 = i % 2 === 0 ? -1 : 1;
-      const factor = 0.76 + Math.random() * 0.2;
-      const y = (Math.random() - 0.5) * 11;
-      const z = -1 - Math.random() * 4;
-      pSides.push(side);
-      pFactors.push(factor);
-      pPositions[i * 3] = side * 8 * factor;
-      pPositions[i * 3 + 1] = y;
-      pPositions[i * 3 + 2] = z;
+      const scale = 0.65 + Math.random() * 0.65;
+      mesh.position.set(spreadX, spreadY, depthZ);
+      mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      mesh.scale.setScalar(scale);
+      scene.add(mesh);
+
+      shapes.push({
+        mesh,
+        basePos: new THREE.Vector3(spreadX, spreadY, depthZ),
+        offset: new THREE.Vector3(0, 0, 0),
+        rotSpeed: {
+          x: (Math.random() > 0.5 ? 1 : -1) * (LANDING_3D_CONFIG.rotationSpeed * (0.6 + Math.random() * 0.9)),
+          y: (Math.random() > 0.5 ? 1 : -1) * (LANDING_3D_CONFIG.rotationSpeed * (0.8 + Math.random() * 1.1)),
+          z: (Math.random() - 0.5) * LANDING_3D_CONFIG.rotationSpeed * 0.5,
+        },
+        phase: Math.random() * Math.PI * 2,
+        speedFactor: 0.75 + Math.random() * 0.55,
+        baseScale: scale,
+        currentScale: scale,
+      });
     }
 
+    // Partículas ambientales dispersas
+    const pCount = LANDING_3D_CONFIG.particleCount;
+    const pPositions = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount; i++) {
+      pPositions[i * 3] = (Math.random() - 0.5) * 24;
+      pPositions[i * 3 + 1] = (Math.random() - 0.5) * 14;
+      pPositions[i * 3 + 2] = -1.5 - Math.random() * 7.5;
+    }
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
     const pMat = new THREE.PointsMaterial({
-      color: '#64748B',
-      size: 0.055,
+      color: LANDING_3D_CONFIG.palette.particle,
+      size: 0.065,
       transparent: true,
-      opacity: 0.2,
+      opacity: 0.22,
     });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
 
-    const updateSideLayout = () => {
-      const aspect = width / height;
-      const halfVisibleHeight = Math.tan(THREE.MathUtils.degToRad(fov / 2)) * camZ;
-      const halfVisibleWidth = halfVisibleHeight * aspect;
-      const isNarrow = width < 1024;
-      const isMobile = width < 640;
-
-      items.forEach((item) => {
-        const scaleFactor = isMobile ? 0.5 : isNarrow ? 0.72 : 1;
-        item.responsiveScale = item.baseScale * scaleFactor;
-        item.currentScale = item.responsiveScale;
-        item.group.scale.setScalar(item.responsiveScale);
-
-        const edge = isMobile ? 0.94 : isNarrow ? 0.9 : item.edgeFactor;
-        const depthScale = (camZ - item.baseZ) / camZ;
-        item.baseX = item.side * halfVisibleWidth * edge * depthScale;
-        item.group.position.set(item.baseX, item.baseY, item.baseZ);
-      });
-
-      const posAttr = pGeo.attributes.position as THREE.BufferAttribute;
-      for (let i = 0; i < particleCount; i++) {
-        posAttr.setX(i, pSides[i] * halfVisibleWidth * pFactors[i]);
-      }
-      posAttr.needsUpdate = true;
-
-      matPeach.opacity = isMobile ? 0.32 : 0.62;
-      matMist.opacity = isMobile ? 0.3 : 0.58;
-      matTerracottaSoft.opacity = isMobile ? 0.22 : 0.38;
-      pMat.opacity = isMobile ? 0.1 : 0.2;
-    };
-
-    updateSideLayout();
-
-    // Cursor interactivo + Parallax suave
+    // Estado del cursor y scroll
     let mouseNdcX = 0;
     let mouseNdcY = 0;
     let cursorActive = false;
@@ -360,6 +227,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
     };
 
     const handleMouseMove = (e: MouseEvent) => {
+      if (prefersReducedMotion) return;
       mouseNdcX = (e.clientX / window.innerWidth) * 2 - 1;
       mouseNdcY = -((e.clientY / window.innerHeight) * 2 - 1);
       cursorActive = true;
@@ -381,87 +249,150 @@ export const BackgroundThreeCanvas: React.FC = () => {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
-      updateSideLayout();
       updateCursorWorld();
+      if (prefersReducedMotion) {
+        renderer.render(scene, camera);
+      }
+    };
+
+    const clock = new THREE.Clock();
+    let frameId: number | null = null;
+
+    const renderStaticFrame = () => {
+      camera.position.set(0, 0, camZ);
+      camera.lookAt(0, 0, -3);
+      renderer.render(scene, camera);
+    };
+
+    const animate = () => {
+      if (document.hidden || prefersReducedMotion) {
+        frameId = null;
+        return;
+      }
+
+      frameId = requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+
+      shapes.forEach((item) => {
+        const floatT = t * LANDING_3D_CONFIG.floatSpeed * item.speedFactor + item.phase;
+        const floatY = Math.sin(floatT) * LANDING_3D_CONFIG.floatAmplitude;
+        const floatX = Math.cos(floatT * 0.7) * (LANDING_3D_CONFIG.floatAmplitude * 0.45);
+
+        let targetOffX = 0;
+        let targetOffY = 0;
+        let targetScale = item.baseScale;
+        let rotBoost = 1;
+
+        if (cursorActive) {
+          const dx = item.basePos.x + floatX - cursorWorld.x;
+          const dy = item.basePos.y + floatY - cursorWorld.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const radius = LANDING_3D_CONFIG.cursorRepulsionRadius;
+
+          if (dist < radius && dist > 0.001) {
+            const strength = 1 - dist / radius;
+            targetOffX = (dx / dist) * strength * LANDING_3D_CONFIG.cursorRepulsionStrength;
+            targetOffY = (dy / dist) * strength * LANDING_3D_CONFIG.cursorRepulsionStrength;
+            targetScale = item.baseScale * (1 + strength * 0.2);
+            rotBoost = 1 + strength * 2.8;
+          }
+        }
+
+        item.offset.x += (targetOffX - item.offset.x) * 0.07;
+        item.offset.y += (targetOffY - item.offset.y) * 0.07;
+        item.currentScale += (targetScale - item.currentScale) * 0.09;
+
+        item.mesh.position.x = item.basePos.x + floatX + item.offset.x;
+        item.mesh.position.y = item.basePos.y + floatY + item.offset.y;
+        item.mesh.scale.setScalar(item.currentScale);
+
+        item.mesh.rotation.x += item.rotSpeed.x * rotBoost;
+        item.mesh.rotation.y += item.rotSpeed.y * rotBoost;
+        item.mesh.rotation.z += item.rotSpeed.z * rotBoost;
+      });
+
+      // Parallax suave de cámara con el cursor y scroll
+      const targetCamX = mouseNdcX * LANDING_3D_CONFIG.cursorParallaxStrength;
+      const targetCamY = mouseNdcY * (LANDING_3D_CONFIG.cursorParallaxStrength * 0.7) - (scrollY % 1800) * 0.0007;
+      camera.position.x += (targetCamX - camera.position.x) * 0.05;
+      camera.position.y += (targetCamY - camera.position.y) * 0.05;
+      camera.lookAt(0, camera.position.y * 0.25, -3);
+
+      particles.rotation.y = t * 0.02 + mouseNdcX * 0.06;
+      particles.rotation.x = mouseNdcY * 0.04;
+
+      renderer.render(scene, camera);
+    };
+
+    const startAnimation = () => {
+      if (prefersReducedMotion) {
+        renderStaticFrame();
+        return;
+      }
+      if (!document.hidden && frameId === null) {
+        clock.getDelta();
+        animate();
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (frameId !== null) {
+          cancelAnimationFrame(frameId);
+          frameId = null;
+        }
+      } else {
+        startAnimation();
+      }
+    };
+
+    const handleMotionPreferenceChange = (e: MediaQueryListEvent) => {
+      prefersReducedMotion = e.matches;
+      if (prefersReducedMotion) {
+        if (frameId !== null) {
+          cancelAnimationFrame(frameId);
+          frameId = null;
+        }
+        renderStaticFrame();
+      } else {
+        startAnimation();
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    motionQuery.addEventListener('change', handleMotionPreferenceChange);
 
-    const clock = new THREE.Clock();
-    let frameId: number;
-
-    const animate = () => {
-      frameId = requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
-
-      items.forEach((item, idx) => {
-        const floatY = Math.sin(t * item.speed + idx * 1.1) * item.amp;
-
-        let targetOffX = 0;
-        let targetOffY = 0;
-        let targetScale = item.responsiveScale;
-        let boostRot = 1;
-
-        if (cursorActive) {
-          const dx = item.baseX - cursorWorld.x;
-          const dy = item.baseY + floatY - cursorWorld.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const radius = 4.2;
-
-          if (dist < radius && dist > 0.001) {
-            const strength = 1 - dist / radius;
-            // Empuje suave hacia afuera del borde lateral para no invadir el centro
-            targetOffX = item.side * Math.abs(dx / dist) * strength * 0.65;
-            targetOffY = (dy / dist) * strength * 0.75;
-            targetScale = item.responsiveScale * (1 + strength * 0.18);
-            boostRot = 1 + strength * 3.0;
-          }
-        }
-
-        item.offset.x += (targetOffX - item.offset.x) * 0.08;
-        item.offset.y += (targetOffY - item.offset.y) * 0.08;
-        item.currentScale += (targetScale - item.currentScale) * 0.1;
-
-        item.group.position.x = item.baseX + item.offset.x;
-        item.group.position.y = item.baseY + floatY + item.offset.y;
-        item.group.scale.setScalar(item.currentScale);
-
-        item.group.rotation.x += item.rotSpeed.x * boostRot;
-        item.group.rotation.y += item.rotSpeed.y * boostRot;
-        item.group.rotation.z += item.rotSpeed.z * boostRot;
-      });
-
-      const targetCamX = mouseNdcX * 0.22;
-      const targetCamY = mouseNdcY * 0.2 - (scrollY % 1200) * 0.0005;
-      camera.position.x += (targetCamX - camera.position.x) * 0.04;
-      camera.position.y += (targetCamY - camera.position.y) * 0.04;
-      camera.lookAt(0, camera.position.y * 0.3, -2);
-
-      particles.position.y = Math.sin(t * 0.35) * 0.15;
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
+    startAnimation();
 
     return () => {
-      cancelAnimationFrame(frameId);
+      if (frameId !== null) cancelAnimationFrame(frameId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      motionQuery.removeEventListener('change', handleMotionPreferenceChange);
+      geometries.forEach((g) => g.dispose());
+      materials.forEach((m) => m.dispose());
       pGeo.dispose();
       pMat.dispose();
-      matPeach.dispose();
-      matMist.dispose();
-      matTerracottaSoft.dispose();
-      matSiennaWire.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [useFallback]);
+
+  // Fallback limpio cuando WebGL no está disponible
+  if (useFallback) {
+    return (
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 pointer-events-none z-0 bg-linear-to-br from-[#ffffff] via-[#fafafb] to-[#F0FDFA]/50"
+      />
+    );
+  }
 
   return (
     <div
