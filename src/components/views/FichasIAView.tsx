@@ -119,11 +119,11 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
+          <h2 className="text-xl font-black text-[#1f2937] tracking-tight flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-[#1e40af]" />
             <span>Fichas Médicas Clínicas con IA (RF10)</span>
           </h2>
-          <p className="text-xs text-[#475569] mt-0.5">
+          <p className="text-xs text-[#4b5563] mt-0.5">
             Generación dual con Gemini 3.8 Flash: Explicación empática para el tutor y síntesis técnica para el expediente.
           </p>
         </div>
@@ -148,10 +148,10 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
       </div>
 
       {/* Select Consultation */}
-      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#d1d5db] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <Stethoscope className="w-4 h-4 text-[#1e40af]" />
-          <span className="text-xs font-bold text-[#475569]">Consulta Clínica Seleccionada:</span>
+          <span className="text-xs font-bold text-[#4b5563]">Consulta Clínica Seleccionada:</span>
         </div>
 
         <select
@@ -180,18 +180,18 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
 
       {/* Context Card: Active Consultation Info */}
       {activeConsulta && activePet && (
-        <div className="p-5 bg-[#e2e8f0] text-[#0f172a] border border-[#cbd5e1] rounded-[24px] space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#cbd5e1] pb-2">
+        <div className="p-5 bg-[#e5e7eb] text-[#1f2937] border border-[#d1d5db] rounded-[24px] space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#d1d5db] pb-2">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-[#1e40af]">
                 EXP: {activePet.codigo_expediente}
               </span>
-              <span className="text-[#475569]">•</span>
-              <span className="text-xs font-bold text-[#0f172a]">
+              <span className="text-[#4b5563]">•</span>
+              <span className="text-xs font-bold text-[#1f2937]">
                 {activePet.nombre} ({activePet.especie} - {activePet.raza})
               </span>
             </div>
-            <div className="text-xs text-[#475569]">
+            <div className="text-xs text-[#4b5563]">
               FC: <strong className="text-[#1e40af]">{activeConsulta.frecuencia_cardiaca || '--'} lpm</strong> • Temp:{' '}
               <strong className="text-[#1e40af]">{activeConsulta.temperatura_c || '--'} °C</strong> • Peso:{' '}
               <strong className="text-[#1e40af]">{activeConsulta.peso_actual} kg</strong>
@@ -200,12 +200,12 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
             <div>
-              <span className="text-[#475569] block text-[10px] uppercase font-bold">Diagnóstico Técnico:</span>
-              <p className="text-[#0f172a] font-medium">{activeConsulta.diagnostico}</p>
+              <span className="text-[#4b5563] block text-[10px] uppercase font-bold">Diagnóstico Técnico:</span>
+              <p className="text-[#1f2937] font-medium">{activeConsulta.diagnostico}</p>
             </div>
             <div>
-              <span className="text-[#475569] block text-[10px] uppercase font-bold">Tratamiento Prescrito:</span>
-              <p className="text-[#0f172a] font-medium">{activeConsulta.tratamiento_recetado}</p>
+              <span className="text-[#4b5563] block text-[10px] uppercase font-bold">Tratamiento Prescrito:</span>
+              <p className="text-[#1f2937] font-medium">{activeConsulta.tratamiento_recetado}</p>
             </div>
           </div>
         </div>
@@ -216,7 +216,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
         <div className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* 1. Resumen para el Propietario */}
-            <div className="bg-[#ffffff] rounded-[20px] border-2 border-[#cbd5e1] p-6 shadow-sm flex flex-col justify-between space-y-4 relative overflow-hidden">
+            <div className="bg-[#ffffff] rounded-[20px] border-2 border-[#d1d5db] p-6 shadow-sm flex flex-col justify-between space-y-4 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-[#dbeafe] text-[#1e40af] rounded-bl-full -mr-8 -mt-8 opacity-40"></div>
 
               <div className="space-y-3 relative z-10">
@@ -226,16 +226,16 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                       <HeartHandshake className="w-4 h-4" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm text-[#0f172a]">Resumen para el Propietario</h4>
-                      <p className="text-[10px] text-[#475569]">Lenguaje empático, cálido y comprensible</p>
+                      <h4 className="font-bold text-sm text-[#1f2937]">Resumen para el Propietario</h4>
+                      <p className="text-[10px] text-[#4b5563]">Lenguaje empático, cálido y comprensible</p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#dbeafe] text-[#1e40af] border border-[#cbd5e1]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#dbeafe] text-[#1e40af] border border-[#d1d5db]">
                     Para el Tutor
                   </span>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#dbeafe] text-[#1e40af]/50 border border-emerald-100 text-xs text-[#0f172a] leading-relaxed font-sans">
+                <div className="p-4 rounded-xl bg-[#dbeafe] text-[#1e40af]/50 border border-emerald-100 text-xs text-[#1f2937] leading-relaxed font-sans">
                   {existingFicha.resumen_propietario}
                 </div>
               </div>
@@ -243,9 +243,9 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
               <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                 <button
                   onClick={() => handleCopy(existingFicha.resumen_propietario)}
-                  className="px-3 py-1.5 rounded-lg border border-[#cbd5e1] hover:bg-[#ffffff] text-[#475569] text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                  className="px-3 py-1.5 rounded-lg border border-[#d1d5db] hover:bg-[#ffffff] text-[#4b5563] text-xs font-semibold flex items-center gap-1.5 transition-colors"
                 >
-                  <Copy className="w-3.5 h-3.5 text-[#475569]" />
+                  <Copy className="w-3.5 h-3.5 text-[#4b5563]" />
                   <span>{copied ? '¡Copiado!' : 'Copiar texto'}</span>
                 </button>
 
@@ -264,27 +264,27 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#e2e8f0] text-[#0f172a] flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-[#e5e7eb] text-[#1f2937] flex items-center justify-center">
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm text-[#0f172a]">Síntesis Técnica Médica</h4>
-                      <p className="text-[10px] text-[#475569]">Expediente Clínico Interno Veterinario</p>
+                      <h4 className="font-bold text-sm text-[#1f2937]">Síntesis Técnica Médica</h4>
+                      <p className="text-[10px] text-[#4b5563]">Expediente Clínico Interno Veterinario</p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#e2e8f0] text-[#0f172a] border border-[#cbd5e1]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#e5e7eb] text-[#1f2937] border border-[#d1d5db]">
                     Expediente Oficial
                   </span>
                 </div>
 
-                <div className="p-4 rounded-xl bg-[#ffffff] border border-[#cbd5e1] text-xs text-[#0f172a] leading-relaxed font-mono">
+                <div className="p-4 rounded-xl bg-[#ffffff] border border-[#d1d5db] text-xs text-[#1f2937] leading-relaxed font-mono">
                   {existingFicha.sintesis_tecnica}
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#475569]">
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-[#4b5563]">
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#475569]" />
+                  <Clock className="w-3.5 h-3.5 text-[#4b5563]" />
                   <span>{new Date(existingFicha.fecha_generacion).toLocaleString()}</span>
                 </div>
                 <span className="font-mono text-[10px] text-[#1e40af] bg-[#dbeafe] text-[#1e40af] px-2 py-0.5 rounded">
@@ -295,7 +295,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
           </div>
 
           {/* Veterinarian Approval Box (SRS RF10 Requirement) */}
-          <div className="p-5 rounded-[20px] bg-[#ffffff] border border-[#cbd5e1] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-5 rounded-[20px] bg-[#ffffff] border border-[#d1d5db] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div
                 className={`w-12 h-12 rounded-[20px] flex items-center justify-center transition-colors ${
@@ -308,7 +308,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h4 className="font-bold text-sm text-[#0f172a]">
+                  <h4 className="font-bold text-sm text-[#1f2937]">
                     Aprobación y Firma del Médico Veterinario
                   </h4>
                   <span
@@ -321,9 +321,9 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                     {existingFicha.aprobado_por_veterinario ? 'Aprobada Oficialmente' : 'Pendiente de Firma'}
                   </span>
                 </div>
-                <p className="text-xs text-[#475569] mt-0.5">
+                <p className="text-xs text-[#4b5563] mt-0.5">
                   Responsable:{' '}
-                  <strong className="text-[#0f172a]">
+                  <strong className="text-[#1f2937]">
                     {activeVet ? `${activeVet.nombres} ${activeVet.apellidos} (${activeVet.tarjeta_profesional})` : 'Veterinario'}
                   </strong>
                 </p>
@@ -338,7 +338,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                 }}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
                   existingFicha.aprobado_por_veterinario
-                    ? 'bg-[#e2e8f0] hover:bg-[#e2e8f0] text-[#475569] border border-[#e2e2e5]'
+                    ? 'bg-[#e5e7eb] hover:bg-[#e5e7eb] text-[#4b5563] border border-[#e2e2e5]'
                     : 'bg-[#1d4ed8] text-[#ffffff] hover:bg-[#1d4ed8] text-[#ffffff] '
                 }`}
               >
@@ -351,15 +351,15 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
         </div>
       ) : (
         /* Empty State */
-        <div className="p-12 text-center bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] space-y-3">
+        <div className="p-12 text-center bg-[#ffffff] rounded-[20px] border border-[#d1d5db] space-y-3">
           <div className="w-16 h-16 rounded-[20px] bg-[#dbeafe] text-[#1e40af] flex items-center justify-center mx-auto">
             <Sparkles className="w-8 h-8" />
           </div>
           <div>
-            <h3 className="font-bold text-base text-[#0f172a]">
+            <h3 className="font-bold text-base text-[#1f2937]">
               Esta consulta aún no cuenta con Ficha Médica generada
             </h3>
-            <p className="text-xs text-[#475569] max-w-md mx-auto mt-1">
+            <p className="text-xs text-[#4b5563] max-w-md mx-auto mt-1">
               Haz clic en "Generar Ficha con Gemini" para obtener la explicación comprensible para el dueño de{' '}
               <strong>{activePet?.nombre || 'la mascota'}</strong> y la síntesis técnica interna.
             </p>

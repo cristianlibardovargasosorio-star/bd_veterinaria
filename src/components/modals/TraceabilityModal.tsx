@@ -182,36 +182,36 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-      <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-4xl w-full border border-[#cbd5e1] overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-4xl w-full border border-[#d1d5db] overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-[#e2e8f0] text-[#0f172a] border-b border-[#cbd5e1] flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 bg-[#e5e7eb] text-[#1f2937] border-b border-[#d1d5db] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 rounded-lg bg-emerald-500/20 text-[#1e40af]">
               <FileCheck2 className="w-5 h-5" />
             </div>
             <div>
               <h3 className="font-bold text-base">Matriz de Trazabilidad y Cumplimiento SRS (VETSOFT)</h3>
-              <p className="text-xs text-[#475569]">
+              <p className="text-xs text-[#4b5563]">
                 Mapeo 1:1 de Requisitos Funcionales, Historias de Usuario y RNF
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-[#475569] hover:text-white p-1 rounded-lg transition-colors"
+            className="text-[#4b5563] hover:text-white p-1 rounded-lg transition-colors"
           >
             ✕
           </button>
         </div>
 
         {/* Tab switcher */}
-        <div className="px-6 py-3 border-b border-[#cbd5e1] bg-[#ffffff] flex items-center gap-2 shrink-0">
+        <div className="px-6 py-3 border-b border-[#d1d5db] bg-[#ffffff] flex items-center gap-2 shrink-0">
           <button
             onClick={() => setActiveSection('rf')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
               activeSection === 'rf'
                 ? 'bg-[#1d4ed8] text-[#ffffff] shadow-xs'
-                : 'text-[#475569] hover:bg-[#e2e8f0]'
+                : 'text-[#4b5563] hover:bg-[#e5e7eb]'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -222,7 +222,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
             className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
               activeSection === 'hu'
                 ? 'bg-[#1d4ed8] text-[#ffffff] shadow-xs'
-                : 'text-[#475569] hover:bg-[#e2e8f0]'
+                : 'text-[#4b5563] hover:bg-[#e5e7eb]'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -233,7 +233,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
             className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
               activeSection === 'rnf'
                 ? 'bg-[#1d4ed8] text-[#ffffff] shadow-xs'
-                : 'text-[#475569] hover:bg-[#e2e8f0]'
+                : 'text-[#4b5563] hover:bg-[#e5e7eb]'
             }`}
           >
             <Zap className="w-3.5 h-3.5" />
@@ -248,27 +248,27 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
               {rfList.map((rf) => (
                 <div
                   key={rf.id}
-                  className="p-4 rounded-xl border border-[#cbd5e1] hover:border-[#cbd5e1] bg-[#ffffff] hover:bg-[#dbeafe] text-[#1e40af]/20 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs"
+                  className="p-4 rounded-xl border border-[#d1d5db] hover:border-[#d1d5db] bg-[#ffffff] hover:bg-[#dbeafe] text-[#1e40af]/20 transition-all flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-mono font-bold text-xs px-2 py-0.5 rounded bg-[#ffffff] text-[#1e40af]">
                         {rf.id}
                       </span>
-                      <h4 className="font-bold text-sm text-[#0f172a]">{rf.titulo}</h4>
+                      <h4 className="font-bold text-sm text-[#1f2937]">{rf.titulo}</h4>
                       <span className="flex items-center gap-1 text-[11px] font-semibold text-[#1e40af] bg-[#dbeafe] text-[#1e40af] px-2 py-0.5 rounded-full">
                         <CheckCircle2 className="w-3 h-3" />
                         {rf.status}
                       </span>
                     </div>
-                    <p className="text-xs text-[#475569]">
-                      <strong>Tablas SQL:</strong> <code className="bg-[#e2e8f0] px-1 py-0.5 rounded">{rf.tabla}</code>
+                    <p className="text-xs text-[#4b5563]">
+                      <strong>Tablas SQL:</strong> <code className="bg-[#e5e7eb] px-1 py-0.5 rounded">{rf.tabla}</code>
                     </p>
-                    <p className="text-xs text-[#475569]">{rf.regla}</p>
+                    <p className="text-xs text-[#4b5563]">{rf.regla}</p>
                   </div>
                   <button
                     onClick={() => handleGoTo(rf.tabTarget)}
-                    className="self-start md:self-center shrink-0 flex items-center gap-1 px-3 py-1.5 bg-[#e2e8f0] hover:bg-[#1d4ed8] text-[#ffffff] hover:text-white text-[#475569] text-xs font-semibold rounded-lg transition-colors"
+                    className="self-start md:self-center shrink-0 flex items-center gap-1 px-3 py-1.5 bg-[#e5e7eb] hover:bg-[#1d4ed8] text-[#ffffff] hover:text-white text-[#4b5563] text-xs font-semibold rounded-lg transition-colors"
                   >
                     <span>Probar en vivo</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -283,16 +283,16 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
               {huList.map((hu) => (
                 <div
                   key={hu.id}
-                  className="p-4 rounded-xl border border-[#cbd5e1] bg-[#ffffff] space-y-2 flex flex-col justify-between shadow-xs"
+                  className="p-4 rounded-xl border border-[#d1d5db] bg-[#ffffff] space-y-2 flex flex-col justify-between shadow-xs"
                 >
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="font-mono font-bold text-xs px-2 py-0.5 rounded bg-[#dbeafe] text-[#1e40af] text-emerald-900">
                         {hu.id}
                       </span>
-                      <span className="text-xs font-semibold text-[#475569]">{hu.rol}</span>
+                      <span className="text-xs font-semibold text-[#4b5563]">{hu.rol}</span>
                     </div>
-                    <p className="text-xs text-[#475569] mt-2 leading-relaxed">{hu.desc}</p>
+                    <p className="text-xs text-[#4b5563] mt-2 leading-relaxed">{hu.desc}</p>
                   </div>
                   <button
                     onClick={() => handleGoTo(hu.target)}
@@ -311,14 +311,14 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
               {rnfList.map((rnf) => (
                 <div
                   key={rnf.codigo}
-                  className="p-4 rounded-xl border border-[#cbd5e1] bg-[#ffffff] flex items-center gap-4 shadow-xs"
+                  className="p-4 rounded-xl border border-[#d1d5db] bg-[#ffffff] flex items-center gap-4 shadow-xs"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#e2e8f0] flex items-center justify-center font-bold text-[#0f172a] shrink-0 font-mono text-xs">
+                  <div className="w-10 h-10 rounded-xl bg-[#e5e7eb] flex items-center justify-center font-bold text-[#1f2937] shrink-0 font-mono text-xs">
                     {rnf.codigo}
                   </div>
                   <div className="space-y-1">
-                    <h4 className="font-bold text-sm text-[#0f172a]">{rnf.nombre}</h4>
-                    <p className="text-xs text-[#475569]">{rnf.garantia}</p>
+                    <h4 className="font-bold text-sm text-[#1f2937]">{rnf.nombre}</h4>
+                    <p className="text-xs text-[#4b5563]">{rnf.garantia}</p>
                   </div>
                   <div className="ml-auto text-[#1e40af] font-bold text-xs flex items-center gap-1 shrink-0">
                     <CheckCircle2 className="w-4 h-4" />
@@ -331,8 +331,8 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 bg-[#e2e8f0] border-t border-[#cbd5e1] flex items-center justify-between shrink-0">
-          <span className="text-xs text-[#475569] font-medium">
+        <div className="px-6 py-3 bg-[#e5e7eb] border-t border-[#d1d5db] flex items-center justify-between shrink-0">
+          <span className="text-xs text-[#4b5563] font-medium">
             100% Cobertura de Requerimientos SRS & Scripts SQL
           </span>
           <button

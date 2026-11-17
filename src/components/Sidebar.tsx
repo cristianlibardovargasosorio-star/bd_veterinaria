@@ -139,11 +139,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
   const visibleItems = navigationItems.filter((item) => item.roles.includes(currentRole));
 
   return (
-    <aside className="w-full md:w-64 md:min-w-[256px] bg-[#ffffff] text-[#0f172a] flex flex-col shrink-0 md:min-h-[calc(100vh-4.5rem)] p-4 border-b md:border-b-0 md:border-r border-[#cbd5e1]">
-      <div className="px-4 py-3 mb-3 rounded-[20px] bg-[#e2e8f0]">
-        <p className="text-[11px] uppercase tracking-wider text-[#475569]">Navegación Clínica</p>
-        <div className="mt-1.5 flex items-center justify-between gap-2 text-xs text-[#0f172a]">
-          <span className="text-[#475569] shrink-0">Vista:</span>
+    <aside className="w-full md:w-64 md:min-w-[256px] bg-[#ffffff] text-[#1f2937] flex flex-col shrink-0 md:min-h-[calc(100vh-4.5rem)] p-4 border-b md:border-b-0 md:border-r border-[#d1d5db]">
+      <div className="px-4 py-3 mb-3 rounded-[20px] bg-[#e5e7eb]">
+        <p className="text-[11px] uppercase tracking-wider text-[#4b5563]">Navegación Clínica</p>
+        <div className="mt-1.5 flex items-center justify-between gap-2 text-xs text-[#1f2937]">
+          <span className="text-[#4b5563] shrink-0">Vista:</span>
           <span className="font-medium text-[#1e40af] bg-[#dbeafe] px-2.5 py-0.5 rounded-full text-[11px] truncate">
             {currentRole}
           </span>
@@ -162,13 +162,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
               className={`shrink-0 md:shrink md:w-full flex items-center justify-between px-3.5 py-2.5 rounded-[16px] text-left transition-all cursor-pointer ${
                 isActive
                   ? 'bg-[#dbeafe] text-[#1e40af] border border-[#bfdbfe]'
-                  : 'bg-transparent text-[#0f172a] hover:bg-[#e2e8f0]'
+                  : 'bg-transparent text-[#1f2937] hover:bg-[#e5e7eb]'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Icon
                   className={`w-4 h-4 shrink-0 ${
-                    isActive ? 'text-[#1d4ed8]' : 'text-[#475569]'
+                    isActive ? 'text-[#1d4ed8]' : 'text-[#4b5563]'
                   }`}
                 />
                 <div className="min-w-0">
@@ -177,7 +177,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
                   </div>
                   <div
                     className={`hidden md:block text-[10px] mt-0.5 leading-tight truncate ${
-                      isActive ? 'text-[#1e3a8a]' : 'text-[#475569]'
+                      isActive ? 'text-[#1e3a8a]' : 'text-[#4b5563]'
                     }`}
                   >
                     {item.sublabel}

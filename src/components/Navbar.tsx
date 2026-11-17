@@ -75,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="bg-[#ffffff]/95 backdrop-blur-md sticky top-0 z-40 border-b border-[#cbd5e1]">
+    <header className="bg-[#ffffff]/95 backdrop-blur-md sticky top-0 z-40 border-b border-[#d1d5db]">
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3 shrink-0">
@@ -84,12 +84,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div className="whitespace-nowrap">
             <div className="flex items-center gap-2">
-              <span className="font-serif-editorial text-[22px] tracking-tight text-[#0f172a] leading-none">VetSoft</span>
-              <span className="text-[11px] text-[#475569] font-normal hidden xl:inline">
+              <span className="font-serif-editorial text-[22px] tracking-tight text-[#1f2937] leading-none">VetSoft</span>
+              <span className="text-[11px] text-[#4b5563] font-normal hidden xl:inline">
                 Clinical Suite
               </span>
             </div>
-            <p className="text-[11px] text-[#475569] hidden md:block leading-tight">Hospital Clínico Veterinario VetSoft</p>
+            <p className="text-[11px] text-[#4b5563] hidden md:block leading-tight">Hospital Clínico Veterinario VetSoft</p>
           </div>
         </div>
 
@@ -99,9 +99,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onReturnToLanding && (
             <button
               onClick={onReturnToLanding}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#e2e8f0] text-[#0f172a] text-xs font-normal border border-[#0f172a] transition-colors cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#e5e7eb] text-[#1f2937] text-xs font-normal border border-[#1f2937] transition-colors cursor-pointer whitespace-nowrap"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#0f172a]" />
+              <ArrowLeft className="w-3.5 h-3.5 text-[#1f2937]" />
               <span className="hidden sm:inline">Sitio Web</span>
             </button>
           )}
@@ -110,10 +110,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenLogin && (
             <button
               onClick={onOpenLogin}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#e2e8f0] text-[#0f172a] text-xs font-normal border border-[#0f172a] transition-colors cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#e5e7eb] text-[#1f2937] text-xs font-normal border border-[#1f2937] transition-colors cursor-pointer whitespace-nowrap"
               title="Ir al Módulo 1: Login de Usuarios (/login)"
             >
-              <Lock className="w-3.5 h-3.5 text-[#0f172a]" />
+              <Lock className="w-3.5 h-3.5 text-[#1f2937]" />
               <span className="hidden md:inline">Login</span>
             </button>
           )}
@@ -125,7 +125,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className={`hidden xl:inline-flex px-3.5 py-2 rounded-full text-xs transition-colors cursor-pointer whitespace-nowrap ${
                 isSkeletonLoading
                   ? 'bg-[#dbeafe] text-[#1e40af] font-medium'
-                  : 'bg-[#e2e8f0] text-[#475569] hover:text-[#0f172a]'
+                  : 'bg-[#e5e7eb] text-[#4b5563] hover:text-[#1f2937]'
               }`}
               title="Alternar diseño Skeleton para ver placeholders de carga"
             >
@@ -147,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Traceability Matrix Button */}
           <button
             onClick={onOpenTraceability}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#e2e8f0] hover:bg-[#e5e5e7] text-[#0f172a] text-xs transition-colors cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#e5e7eb] hover:bg-[#e5e5e7] text-[#1f2937] text-xs transition-colors cursor-pointer whitespace-nowrap"
             title="Matriz SRS (RF01-RF11)"
           >
             <FileCheck2 className="w-3.5 h-3.5 text-[#1e40af]" />
@@ -157,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 2FA & Security Demo */}
           <button
             onClick={onOpenSecurityModal}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#e2e8f0] hover:bg-[#e5e5e7] text-[#475569] hover:text-[#0f172a] text-xs transition-colors cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#e5e7eb] hover:bg-[#e5e5e7] text-[#4b5563] hover:text-[#1f2937] text-xs transition-colors cursor-pointer whitespace-nowrap"
             title="Prueba de Autenticación, BCrypt, 3 Intentos y OTP (RF01)"
           >
             <Lock className="w-3.5 h-3.5" />
@@ -177,12 +177,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {showRoleMenu && (
               <div className="absolute right-0 mt-2 w-72 bg-[#ffffff] rounded-[20px] p-3 z-50 steep-floating-artifact">
-                <div className="px-3 py-2 border-b border-[#cbd5e1] mb-2">
-                  <p className="text-[11px] uppercase tracking-wider text-[#475569]">
+                <div className="px-3 py-2 border-b border-[#d1d5db] mb-2">
+                  <p className="text-[11px] uppercase tracking-wider text-[#4b5563]">
                     Cambio Rápido de Rol (RBAC)
                   </p>
-                  <p className="text-xs text-[#475569] mt-0.5 truncate">
-                    Usuario: <strong className="text-[#0f172a]">{currentUser.correo}</strong>
+                  <p className="text-xs text-[#4b5563] mt-0.5 truncate">
+                    Usuario: <strong className="text-[#1f2937]">{currentUser.correo}</strong>
                   </p>
                 </div>
 
@@ -197,14 +197,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                         className={`w-full text-left px-3 py-2.5 rounded-[16px] text-xs transition-colors flex items-center justify-between cursor-pointer ${
                           active
                             ? 'bg-[#dbeafe] text-[#1e40af] font-medium'
-                            : 'text-[#0f172a] hover:bg-[#e2e8f0]'
+                            : 'text-[#1f2937] hover:bg-[#e5e7eb]'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <BIcon className={`w-4 h-4 ${active ? 'text-[#1e40af]' : 'text-[#475569]'}`} />
+                          <BIcon className={`w-4 h-4 ${active ? 'text-[#1e40af]' : 'text-[#4b5563]'}`} />
                           <div>
                             <div className="font-medium">{roleBadges[r].label}</div>
-                            <span className={`text-[10px] ${active ? 'text-[#1e40af]/80' : 'text-[#475569]'}`}>
+                            <span className={`text-[10px] ${active ? 'text-[#1e40af]/80' : 'text-[#4b5563]'}`}>
                               Vista {r.toLowerCase()}
                             </span>
                           </div>
@@ -221,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Reset button */}
           <div className="relative">
             {resetConfirm ? (
-              <div className="flex items-center gap-1 bg-[#e2e8f0] p-1 rounded-full">
+              <div className="flex items-center gap-1 bg-[#e5e7eb] p-1 rounded-full">
                 <button
                   onClick={handleReset}
                   className="px-3 py-1 bg-[#1d4ed8] text-[#ffffff] rounded-full text-[11px] font-normal transition-colors cursor-pointer"
@@ -230,7 +230,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
                 <button
                   onClick={() => setResetConfirm(false)}
-                  className="px-2 py-1 text-[#475569] hover:text-[#0f172a] text-[11px] cursor-pointer"
+                  className="px-2 py-1 text-[#4b5563] hover:text-[#1f2937] text-[11px] cursor-pointer"
                 >
                   ✕
                 </button>
@@ -239,7 +239,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setResetConfirm(true)}
                 title="Reiniciar base de datos a datos iniciales de fábrica"
-                className="p-2 text-[#475569] hover:text-[#0f172a] hover:bg-[#e2e8f0] rounded-full transition-colors cursor-pointer"
+                className="p-2 text-[#4b5563] hover:text-[#1f2937] hover:bg-[#e5e7eb] rounded-full transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>

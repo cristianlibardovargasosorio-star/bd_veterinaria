@@ -2,12 +2,12 @@
 
 @theme {
   /* Steep Design System — Colors */
-  --color-ink-black: #0f172a;
+  --color-ink-black: #1f2937;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #475569;
-  --color-ash-gray: #475569;
+  --color-slate-gray: #4b5563;
+  --color-ash-gray: #4b5563;
   --color-smoke-gray: #a3a6af;
   --color-blush-peach: #dbeafe;
   --color-sienna-brown: #1e40af;
@@ -69,12 +69,12 @@
 }
 
 :root {
-  --color-ink-black: #0f172a;
+  --color-ink-black: #1f2937;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #475569;
-  --color-ash-gray: #475569;
+  --color-slate-gray: #4b5563;
+  --color-ash-gray: #4b5563;
   --color-smoke-gray: #a3a6af;
   --color-blush-peach: #dbeafe;
   --color-sienna-brown: #1e40af;
@@ -93,13 +93,13 @@
   --radius-elevatedcards: 20px;
 
   background-color: #ffffff;
-  color: #0f172a;
+  color: #1f2937;
   font-family: var(--font-sohne);
 }
 
 body {
   background-color: #ffffff;
-  color: #0f172a;
+  color: #1f2937;
   font-family: var(--font-sohne);
   margin: 0;
   padding: 0;
@@ -131,14 +131,14 @@ h1, h2, .font-serif-editorial {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #4b5563;
 }
 
 /* Steep Component Classes */
 .steep-pill-filled {
-  background-color: #0f172a;
+  background-color: #1f2937;
   color: #ffffff;
-  border: 1px solid #0f172a;
+  border: 1px solid #1f2937;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);
@@ -154,8 +154,8 @@ h1, h2, .font-serif-editorial {
 
 .steep-pill-ghost {
   background-color: transparent;
-  color: #0f172a;
-  border: 1px solid #0f172a;
+  color: #1f2937;
+  border: 1px solid #1f2937;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);
