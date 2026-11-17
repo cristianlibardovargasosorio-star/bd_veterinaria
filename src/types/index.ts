@@ -10,6 +10,7 @@ export type UserState = 'ACTIVO' | 'INACTIVO' | 'BLOQUEADO';
 
 export interface Usuario {
   id_usuario: number;
+  nombre_completo?: string;
   correo: string;
   contrasena: string; // BCrypt hash simulation
   rol_id: number;

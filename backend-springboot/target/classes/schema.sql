@@ -6,9 +6,10 @@
 --    o mediante CHECK constraint para máxima compatibilidad con JPA/Hibernate)
 CREATE TABLE IF NOT EXISTS usuarios (
     id_usuario BIGSERIAL PRIMARY KEY,
+    nombre_completo VARCHAR(150) NOT NULL DEFAULT '',
     correo VARCHAR(150) NOT NULL UNIQUE,
     contrasena VARCHAR(60) NOT NULL, -- Hash BCrypt ($2a$12$...) nunca texto plano
-    rol VARCHAR(25) NOT NULL CHECK (rol IN ('ADMINISTRADOR', 'VETERINARIO', 'PROPIETARIO')),
+    rol VARCHAR(25) NOT NULL CHECK (rol IN ('ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA', 'PROPIETARIO')),
     activo BOOLEAN NOT NULL DEFAULT TRUE,
     fecha_creacion TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -20,10 +21,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_usuarios_correo_lower ON usuarios (LOWER(c
 -- DATOS SEMILLA DE PRUEBA (Contraseñas cifradas con BCrypt strength 12)
 -- Contraseña original para todos los usuarios de prueba: "VetSoft2026*"
 -- =============================================================================
-INSERT INTO usuarios (correo, contrasena, rol, activo)
+INSERT INTO usuarios (nombre_completo, correo, contrasena, rol, activo)
 VALUES
-    ('admin@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'ADMINISTRADOR', TRUE),
-    ('camilo.vet@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'VETERINARIO', TRUE),
-    ('carlos.mendoza@email.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'PROPIETARIO', TRUE)
+    ('Administrador Principal', 'admin@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'ADMINISTRADOR', TRUE),
+    ('Dr. Camilo Andrés', 'camilo.vet@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'VETERINARIO', TRUE),
+    ('Carlos Mendoza', 'carlos.mendoza@email.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'PROPIETARIO', TRUE)
 ON CONFLICT (correo) DO NOTHING;
 

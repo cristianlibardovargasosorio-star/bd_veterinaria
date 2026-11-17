@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.OffsetDateTime;
 
 /**
@@ -24,6 +25,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long idUsuario;
+
+    @NotBlank(message = "El nombre completo es obligatorio")
+    @Size(max = 150, message = "El nombre completo no puede superar 150 caracteres")
+    @Column(name = "nombre_completo", nullable = false, length = 150)
+    private String nombreCompleto = "";
 
     @NotBlank(message = "El correo electrónico es obligatorio")
     @Email(
@@ -53,7 +59,12 @@ public class Usuario {
     }
 
     public Usuario(Long idUsuario, String correo, String contrasena, RolUsuario rol, boolean activo) {
+        this(idUsuario, "", correo, contrasena, rol, activo);
+    }
+
+    public Usuario(Long idUsuario, String nombreCompleto, String correo, String contrasena, RolUsuario rol, boolean activo) {
         this.idUsuario = idUsuario;
+        this.nombreCompleto = nombreCompleto;
         this.correo = correo;
         this.contrasena = contrasena;
         this.rol = rol;
@@ -66,6 +77,14 @@ public class Usuario {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 
     public String getCorreo() {
@@ -111,6 +130,7 @@ public class Usuario {
     public String toString() {
         return "Usuario{" +
                 "idUsuario=" + idUsuario +
+                ", nombreCompleto='" + nombreCompleto + '\'' +
                 ", correo='" + correo + '\'' +
                 ", rol=" + rol +
                 ", activo=" + activo +

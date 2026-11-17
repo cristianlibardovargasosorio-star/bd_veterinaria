@@ -13,6 +13,7 @@ import {
   FileText,
   BotMessageSquare,
   ShieldCheck,
+  UserPlus,
 } from 'lucide-react';
 
 export type ActiveTab =
@@ -26,6 +27,7 @@ export type ActiveTab =
   | 'inventario'
   | 'reportes-ia'
   | 'asistente-ia'
+  | 'usuarios'
   | 'auditoria';
 
 interface SidebarProps {
@@ -117,6 +119,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       sublabel: 'Dosis e Interacciones',
       icon: BotMessageSquare,
       roles: ['ADMINISTRADOR', 'VETERINARIO'],
+    },
+    {
+      id: 'usuarios',
+      label: 'Usuarios Internos',
+      sublabel: 'VET-RF-01 /admin/usuarios',
+      icon: UserPlus,
+      roles: ['ADMINISTRADOR'],
     },
     {
       id: 'auditoria',

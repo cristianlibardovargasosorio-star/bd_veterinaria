@@ -15,6 +15,7 @@ import { FacturacionPOSView } from './components/views/FacturacionPOSView';
 import { InventarioView } from './components/views/InventarioView';
 import { ReportesIAView } from './components/views/ReportesIAView';
 import { AsistenteClinicoView } from './components/views/AsistenteClinicoView';
+import { AdminUsuariosView } from './components/views/AdminUsuariosView';
 import { AuditoriaSRSView } from './components/views/AuditoriaSRSView';
 import { SecurityModal } from './components/modals/SecurityModal';
 import { TraceabilityModal } from './components/modals/TraceabilityModal';
@@ -37,7 +38,10 @@ export default function App() {
 
   useEffect(() => {
     const handleHash = () => {
-      if (window.location.hash === '#login') {
+      if (window.location.pathname === '/admin/usuarios' || window.location.hash === '#admin/usuarios') {
+        setAppMode('erp');
+        setActiveTab('usuarios');
+      } else if (window.location.hash === '#login') {
         setAppMode('login');
       } else if (window.location.hash === '#erp') {
         setAppMode('erp');
@@ -174,6 +178,8 @@ export default function App() {
                   {activeTab === 'reportes-ia' && <ReportesIAView />}
 
                   {activeTab === 'asistente-ia' && <AsistenteClinicoView />}
+
+                  {activeTab === 'usuarios' && <AdminUsuariosView />}
 
                   {activeTab === 'auditoria' && <AuditoriaSRSView />}
                 </>

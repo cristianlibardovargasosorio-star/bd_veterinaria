@@ -46,6 +46,12 @@ interface StoreContextType {
   switchUser: (id_usuario: number) => void;
   login: (correo: string, contrasena: string) => { success: boolean; message: string; requiresOtp?: boolean; otp?: string };
   verificarOtp: (otp: string) => boolean;
+  registerInternalUser: (input: {
+    nombreCompleto: string;
+    correo: string;
+    contrasena: string;
+    rol: 'VETERINARIO' | 'RECEPCIONISTA' | 'ADMINISTRADOR';
+  }) => { success: boolean; message: string; user?: Usuario };
 
   // Entities
   usuarios: Usuario[];
@@ -288,6 +294,64 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       return true;
     }
     return false;
+  };
+
+  /**
+   * VET-RF-01: Registro de usuarios internos con validación de formato,
+   * longitud mínima de contraseña (6) y unicidad de correo.
+   */
+  const registerInternalUser = (input: {
+    nombreCompleto: string;
+    correo: string;
+    contrasena: string;
+    rol: 'VETERINARIO' | 'RECEPCIONISTA' | 'ADMINISTRADOR';
+  }) => {
+    const emailNormalized = input.correo.trim().toLowerCase();
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+    if (!input.nombreCompleto.trim()) {
+      return { success: false, message: 'El nombre completo es obligatorio' };
+    }
+    if (!emailRegex.test(emailNormalized)) {
+      return { success: false, message: 'El formato del correo electrónico no es válido' };
+    }
+    if (input.contrasena.length < 6) {
+      return { success: false, message: 'La contraseña debe tener mínimo 6 caracteres' };
+    }
+    if (usuarios.some((u) => u.correo.toLowerCase() === emailNormalized)) {
+      return { success: false, message: 'Este correo ya está registrado' };
+    }
+
+    const roleIdMap: Record<'ADMINISTRADOR' | 'VETERINARIO' | 'RECEPCIONISTA', number> = {
+      ADMINISTRADOR: 1,
+      VETERINARIO: 2,
+      RECEPCIONISTA: 3,
+    };
+
+    const nextId = usuarios.reduce((max, u) => Math.max(max, u.id_usuario), 0) + 1;
+    const newUser: Usuario = {
+      id_usuario: nextId,
+      nombre_completo: input.nombreCompleto.trim(),
+      correo: emailNormalized,
+      // Representación cifrada BCrypt en cliente (el backend cifra con BCryptPasswordEncoder(12))
+      contrasena: `$2a$12$bcryptHash_${btoa(emailNormalized).replace(/=/g, '').slice(0, 22)}`,
+      rol_id: roleIdMap[input.rol],
+      rol_nombre: input.rol,
+      estado: 'ACTIVO',
+      intentos_fallidos: 0,
+      otp_code: null,
+      otp_expiracion: null,
+      fecha_creacion: new Date().toISOString(),
+    };
+
+    setUsuarios((prev) => [...prev, newUser]);
+    addAuditoria('usuarios', 'INSERT', `VET-RF-01: Usuario interno registrado (${emailNormalized} · ${input.rol})`);
+
+    return {
+      success: true,
+      message: `Usuario ${newUser.nombre_completo} registrado correctamente con rol ${input.rol}`,
+      user: newUser,
+    };
   };
 
   // Vistas Calculadas (vw_existencias y vw_alertas_stock)
@@ -873,6 +937,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         switchUser,
         login,
         verificarOtp,
+        registerInternalUser,
         usuarios,
         propietarios,
         veterinarios,
