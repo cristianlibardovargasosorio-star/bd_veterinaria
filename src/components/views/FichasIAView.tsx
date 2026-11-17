@@ -180,7 +180,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
 
       {/* Context Card: Active Consultation Info */}
       {activeConsulta && activePet && (
-        <div className="p-5 bg-[#f2f2f3] text-[#17191c] border border-[#e2ded7] rounded-[24px] space-y-3">
+        <div className="p-5 bg-[#ede8e0] text-[#17191c] border border-[#e2ded7] rounded-[24px] space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#e2ded7] pb-2">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-bold text-[#5d2a1a]">
@@ -251,7 +251,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
 
                 <button
                   onClick={handlePrint}
-                  className="px-3 py-1.5 rounded-lg bg-[#22201e] hover:opacity-90 text-[#ffffff] text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-[#8c4a27] hover:opacity-90 text-[#ffffff] text-xs font-semibold flex items-center gap-1.5 transition-colors"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Imprimir para el Cliente</span>
@@ -264,7 +264,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#f2f2f3] text-[#17191c] flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-[#ede8e0] text-[#17191c] flex items-center justify-center">
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
@@ -272,7 +272,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                       <p className="text-[10px] text-[#777b86]">Expediente Clínico Interno Veterinario</p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#f2f2f3] text-[#17191c] border border-[#e2ded7]">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#ede8e0] text-[#17191c] border border-[#e2ded7]">
                     Expediente Oficial
                   </span>
                 </div>
@@ -338,8 +338,8 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                 }}
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
                   existingFicha.aprobado_por_veterinario
-                    ? 'bg-[#f2f2f3] hover:bg-[#f2f2f3] text-[#777b86] border border-[#e2e2e5]'
-                    : 'bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] '
+                    ? 'bg-[#ede8e0] hover:bg-[#ede8e0] text-[#777b86] border border-[#e2e2e5]'
+                    : 'bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] '
                 }`}
               >
                 {existingFicha.aprobado_por_veterinario
@@ -367,7 +367,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
           <button
             onClick={handleGenerateAI}
             disabled={loading}
-            className="px-5 py-2.5 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-md "
+            className="px-5 py-2.5 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-md "
           >
             <Sparkles className="w-4 h-4" />
             <span>Generar Ahora con Gemini 3.8 Flash</span>

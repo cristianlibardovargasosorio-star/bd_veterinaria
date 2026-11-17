@@ -143,7 +143,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
       {/* Whisper-quiet Editorial Top Navigation */}
       <div className="max-w-[1200px] w-full mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#22201e] flex items-center justify-center text-[#ffffff]">
+          <div className="w-9 h-9 rounded-full bg-[#8c4a27] flex items-center justify-center text-[#ffffff]">
             <Lock className="w-4 h-4" />
           </div>
           <div>
@@ -158,7 +158,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
         <button
           onClick={onReturnToLanding}
-          className="flex items-center gap-2 text-sm text-[#17191c] bg-transparent hover:bg-[#f2f2f3] px-5 py-2 rounded-full border border-[#17191c] transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-sm text-[#17191c] bg-transparent hover:bg-[#ede8e0] px-5 py-2 rounded-full border border-[#17191c] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver al Sitio</span>
@@ -216,7 +216,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                       Rol autenticado: <strong className="text-[#17191c]">{successInfo.role}</strong>
                     </p>
                   </div>
-                  <div className="p-4 rounded-[16px] bg-[#f2f2f3] text-xs text-[#777b86] w-full max-w-sm">
+                  <div className="p-4 rounded-[16px] bg-[#ede8e0] text-xs text-[#777b86] w-full max-w-sm">
                     <span>Redirigiendo al panel asignado:</span>
                     <strong className="block text-[#17191c] mt-1">{successInfo.panelName}</strong>
                   </div>
@@ -242,7 +242,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('admin@vetsoft.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-[#f2f2f3] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
+                    className="p-3 rounded-[16px] text-left bg-[#ede8e0] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-[#777b86]">
                       <span className="text-[11px] font-medium text-[#17191c]">ADMINISTRADOR</span>
@@ -254,7 +254,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('camilo.vet@vetsoft.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-[#f2f2f3] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
+                    className="p-3 rounded-[16px] text-left bg-[#ede8e0] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-[#777b86]">
                       <span className="text-[11px] font-medium text-[#17191c]">VETERINARIO</span>
@@ -266,7 +266,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('carlos.mendoza@email.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-[#f2f2f3] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
+                    className="p-3 rounded-[16px] text-left bg-[#ede8e0] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-[#777b86]">
                       <span className="text-[11px] font-medium text-[#17191c]">PROPIETARIO</span>
@@ -357,7 +357,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="submit"
                     disabled={isSubmitting || !!emailError || !email.trim() || !password.trim()}
-                    className="flex-1 py-3 px-6 bg-[#22201e] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 py-3 px-6 bg-[#8c4a27] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
@@ -375,7 +375,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={onReturnToLanding}
-                    className="py-3 px-6 bg-transparent hover:bg-[#f2f2f3] text-[#17191c] border border-[#17191c] font-normal text-sm rounded-full transition-colors cursor-pointer"
+                    className="py-3 px-6 bg-transparent hover:bg-[#ede8e0] text-[#17191c] border border-[#17191c] font-normal text-sm rounded-full transition-colors cursor-pointer"
                   >
                     Cancelar
                   </button>

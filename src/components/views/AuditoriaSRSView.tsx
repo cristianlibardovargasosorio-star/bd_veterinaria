@@ -129,7 +129,7 @@ export const AuditoriaSRSView: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredLogs.map((log) => {
-                const badge = opBadges[log.operacion] || { bg: 'bg-[#f2f2f3]', text: 'text-[#17191c]' };
+                const badge = opBadges[log.operacion] || { bg: 'bg-[#ede8e0]', text: 'text-[#17191c]' };
 
                 return (
                   <tr key={log.id_auditoria} className="hover:bg-[#ffffff]/80">
@@ -143,7 +143,7 @@ export const AuditoriaSRSView: React.FC = () => {
                       {log.usuario_nombre || `ID #${log.id_usuario}`}
                     </td>
                     <td className="py-3 px-4">
-                      <code className="px-2 py-0.5 rounded bg-[#f2f2f3] text-[#5d2a1a] font-mono font-bold text-[11px]">
+                      <code className="px-2 py-0.5 rounded bg-[#ede8e0] text-[#5d2a1a] font-mono font-bold text-[11px]">
                         {log.tabla_afectada}
                       </code>
                     </td>

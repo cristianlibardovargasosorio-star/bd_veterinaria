@@ -111,7 +111,7 @@ export const FacturacionPOSView: React.FC = () => {
         {!activeFactura && (
           <button
             onClick={handleNuevaFactura}
-            className="px-4 py-2 rounded-xl bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
+            className="px-4 py-2 rounded-xl bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
           >
             <Plus className="w-4 h-4" />
             <span>Nueva Factura POS</span>
@@ -214,7 +214,7 @@ export const FacturacionPOSView: React.FC = () => {
                       />
                       <button
                         type="submit"
-                        className="px-4 py-2 bg-[#22201e] hover:opacity-90 text-[#ffffff] rounded-lg font-bold shrink-0 transition-colors"
+                        className="px-4 py-2 bg-[#8c4a27] hover:opacity-90 text-[#ffffff] rounded-lg font-bold shrink-0 transition-colors"
                       >
                         + Agregar
                       </button>
@@ -291,7 +291,7 @@ export const FacturacionPOSView: React.FC = () => {
                   <button
                     onClick={handleConfirmarVenta}
                     disabled={activeDetalles.length === 0}
-                    className="px-6 py-2.5 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
+                    className="px-6 py-2.5 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>Confirmar Venta y Cobrar (sp_confirmar_factura)</span>
@@ -329,7 +329,7 @@ export const FacturacionPOSView: React.FC = () => {
 
               <button
                 onClick={handleNuevaFactura}
-                className="px-6 py-3 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
+                className="px-6 py-3 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 <span>Iniciar Factura POS (sp_crear_factura)</span>
@@ -343,7 +343,7 @@ export const FacturacionPOSView: React.FC = () => {
           <div className="bg-[#ffffff] rounded-[20px] border border-[#e2ded7] p-5 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-sm text-[#17191c]">Historial de Facturas</h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#f2f2f3] text-[#777b86]">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#ede8e0] text-[#777b86]">
                 {facturas.length} registradas
               </span>
             </div>
@@ -458,7 +458,7 @@ export const FacturacionPOSView: React.FC = () => {
                 <span className="text-[#5d2a1a]">${showReceiptModal.total.toFixed(2)} USD</span>
               </div>
 
-              <div className="p-2 bg-[#f2f2f3] rounded text-center text-[10px] text-[#777b86]">
+              <div className="p-2 bg-[#ede8e0] rounded text-center text-[10px] text-[#777b86]">
                 Transacción ACID confirmada con deducción en movimientos_inventario.
               </div>
             </div>
@@ -473,7 +473,7 @@ export const FacturacionPOSView: React.FC = () => {
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-4 py-2 bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
+                className="px-4 py-2 bg-[#8c4a27] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Imprimir Ticket</span>

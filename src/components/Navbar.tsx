@@ -79,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="w-9 h-9 rounded-full bg-[#22201e] flex items-center justify-center text-[#ffffff] shrink-0">
+          <div className="w-9 h-9 rounded-full bg-[#8c4a27] flex items-center justify-center text-[#ffffff] shrink-0">
             <Stethoscope size={18} className="w-[18px] h-[18px] text-[#ffffff] shrink-0" strokeWidth={2} />
           </div>
           <div className="whitespace-nowrap">
@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onReturnToLanding && (
             <button
               onClick={onReturnToLanding}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#ede8e0] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
             >
               <ArrowLeft className="w-3.5 h-3.5 text-[#17191c]" />
               <span className="hidden sm:inline">Sitio Web</span>
@@ -110,7 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {onOpenLogin && (
             <button
               onClick={onOpenLogin}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#f2f2f3] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#ede8e0] text-[#17191c] text-xs font-normal border border-[#17191c] transition-colors cursor-pointer whitespace-nowrap"
               title="Ir al Módulo 1: Login de Usuarios (/login)"
             >
               <Lock className="w-3.5 h-3.5 text-[#17191c]" />
@@ -125,7 +125,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className={`hidden xl:inline-flex px-3.5 py-2 rounded-full text-xs transition-colors cursor-pointer whitespace-nowrap ${
                 isSkeletonLoading
                   ? 'bg-[#fbe1d1] text-[#5d2a1a] font-medium'
-                  : 'bg-[#f2f2f3] text-[#777b86] hover:text-[#17191c]'
+                  : 'bg-[#ede8e0] text-[#777b86] hover:text-[#17191c]'
               }`}
               title="Alternar diseño Skeleton para ver placeholders de carga"
             >
@@ -139,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               title={`${vwAlertasStock.length} producto(s) en stock crítico o agotado`}
               className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#fbe1d1] text-[#5d2a1a] text-xs font-medium whitespace-nowrap"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#22201e]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8c4a27]" />
               <span>{vwAlertasStock.length} Alertas</span>
             </div>
           )}
@@ -147,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Traceability Matrix Button */}
           <button
             onClick={onOpenTraceability}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#17191c] text-xs transition-colors cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#ede8e0] hover:bg-[#e5e5e7] text-[#17191c] text-xs transition-colors cursor-pointer whitespace-nowrap"
             title="Matriz SRS (RF01-RF11)"
           >
             <FileCheck2 className="w-3.5 h-3.5 text-[#5d2a1a]" />
@@ -157,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 2FA & Security Demo */}
           <button
             onClick={onOpenSecurityModal}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#f2f2f3] hover:bg-[#e5e5e7] text-[#777b86] hover:text-[#17191c] text-xs transition-colors cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#ede8e0] hover:bg-[#e5e5e7] text-[#777b86] hover:text-[#17191c] text-xs transition-colors cursor-pointer whitespace-nowrap"
             title="Prueba de Autenticación, BCrypt, 3 Intentos y OTP (RF01)"
           >
             <Lock className="w-3.5 h-3.5" />
@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#22201e] text-[#ffffff] text-xs font-normal hover:opacity-90 transition-all cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#8c4a27] text-[#ffffff] text-xs font-normal hover:opacity-90 transition-all cursor-pointer whitespace-nowrap"
             >
               <RoleIcon className="w-3.5 h-3.5 text-[#fbe1d1]" />
               <span className="hidden sm:inline">{currentBadge.label}</span>
@@ -197,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         className={`w-full text-left px-3 py-2.5 rounded-[16px] text-xs transition-colors flex items-center justify-between cursor-pointer ${
                           active
                             ? 'bg-[#fbe1d1] text-[#5d2a1a] font-medium'
-                            : 'text-[#17191c] hover:bg-[#f2f2f3]'
+                            : 'text-[#17191c] hover:bg-[#ede8e0]'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
@@ -221,10 +221,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Reset button */}
           <div className="relative">
             {resetConfirm ? (
-              <div className="flex items-center gap-1 bg-[#f2f2f3] p-1 rounded-full">
+              <div className="flex items-center gap-1 bg-[#ede8e0] p-1 rounded-full">
                 <button
                   onClick={handleReset}
-                  className="px-3 py-1 bg-[#22201e] text-[#ffffff] rounded-full text-[11px] font-normal transition-colors cursor-pointer"
+                  className="px-3 py-1 bg-[#8c4a27] text-[#ffffff] rounded-full text-[11px] font-normal transition-colors cursor-pointer"
                 >
                   Confirmar
                 </button>
@@ -239,7 +239,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setResetConfirm(true)}
                 title="Reiniciar base de datos a datos iniciales de fábrica"
-                className="p-2 text-[#777b86] hover:text-[#17191c] hover:bg-[#f2f2f3] rounded-full transition-colors cursor-pointer"
+                className="p-2 text-[#777b86] hover:text-[#17191c] hover:bg-[#ede8e0] rounded-full transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>

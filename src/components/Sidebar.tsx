@@ -140,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
 
   return (
     <aside className="w-full md:w-64 md:min-w-[256px] bg-[#ffffff] text-[#17191c] flex flex-col shrink-0 md:min-h-[calc(100vh-4.5rem)] p-4 border-b md:border-b-0 md:border-r border-[#e2ded7]">
-      <div className="px-4 py-3 mb-3 rounded-[20px] bg-[#f2f2f3]">
+      <div className="px-4 py-3 mb-3 rounded-[20px] bg-[#ede8e0]">
         <p className="text-[11px] uppercase tracking-wider text-[#777b86]">Navegación Clínica</p>
         <div className="mt-1.5 flex items-center justify-between gap-2 text-xs text-[#17191c]">
           <span className="text-[#777b86] shrink-0">Vista:</span>
@@ -161,14 +161,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
               onClick={() => setActiveTab(item.id)}
               className={`shrink-0 md:shrink md:w-full flex items-center justify-between px-3.5 py-2.5 rounded-[16px] text-left transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-[#22201e] text-[#faf8f5] shadow-xs'
-                  : 'bg-transparent text-[#17191c] hover:bg-[#efede8]'
+                  ? 'bg-[#fbe1d1] text-[#5d2a1a] border border-[#f0c8b0]'
+                  : 'bg-transparent text-[#2c2623] hover:bg-[#ede8e0]'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Icon
                   className={`w-4 h-4 shrink-0 ${
-                    isActive ? 'text-[#fbe1d1]' : 'text-[#6e6a64]'
+                    isActive ? 'text-[#8c4a27]' : 'text-[#6e665e]'
                   }`}
                 />
                 <div className="min-w-0">
@@ -177,7 +177,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
                   </div>
                   <div
                     className={`hidden md:block text-[10px] mt-0.5 leading-tight truncate ${
-                      isActive ? 'text-[#b8b2a8]' : 'text-[#777b86]'
+                      isActive ? 'text-[#7a4330]' : 'text-[#777b86]'
                     }`}
                   >
                     {item.sublabel}

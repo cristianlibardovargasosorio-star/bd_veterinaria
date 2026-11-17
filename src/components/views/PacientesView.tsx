@@ -183,7 +183,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
 
             <button
               onClick={() => setShowNewPetModal(true)}
-              className="px-4 py-2 rounded-xl bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
+              className="px-4 py-2 rounded-xl bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
             >
               <Plus className="w-4 h-4" />
               <span>Nuevo Paciente (RF05)</span>
@@ -213,8 +213,8 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
               onClick={() => setFilterEspecie(esp)}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 filterEspecie === esp
-                  ? 'bg-[#22201e] text-[#ffffff]'
-                  : 'bg-[#f2f2f3] text-[#777b86] hover:bg-[#f2f2f3]'
+                  ? 'bg-[#8c4a27] text-[#ffffff]'
+                  : 'bg-[#ede8e0] text-[#777b86] hover:bg-[#ede8e0]'
               }`}
             >
               {esp}
@@ -311,7 +311,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       {selectedPet && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
           <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#e2ded7] overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="px-6 py-4 bg-[#f2f2f3] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between shrink-0">
+            <div className="px-6 py-4 bg-[#ede8e0] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">
                   {selectedPet.especie === 'Canino' ? '🐶' : '🐱'}
@@ -416,13 +416,13 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
               </div>
             </div>
 
-            <div className="px-6 py-3 bg-[#f2f2f3] border-t border-[#e2ded7] flex flex-wrap items-center justify-between gap-2 shrink-0">
+            <div className="px-6 py-3 bg-[#ede8e0] border-t border-[#e2ded7] flex flex-wrap items-center justify-between gap-2 shrink-0">
               <button
                 onClick={() => {
                   if (onSelectPetForCard) onSelectPetForCard(selectedPet.id_mascota);
                   onNavigateTab('vacunacion');
                 }}
-                className="px-3 py-1.5 bg-[#ffffff] hover:bg-[#f2f2f3] text-[#17191c] rounded-lg text-xs font-bold border border-[#e2e2e5] flex items-center gap-1.5"
+                className="px-3 py-1.5 bg-[#ffffff] hover:bg-[#ede8e0] text-[#17191c] rounded-lg text-xs font-bold border border-[#e2e2e5] flex items-center gap-1.5"
               >
                 <Syringe className="w-3.5 h-3.5 text-[#5d2a1a]" />
                 <span>Ver Carné de Vacunas (RF09)</span>
@@ -442,7 +442,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     onClick={() => {
                       onNavigateTab('consultas');
                     }}
-                    className="px-3.5 py-1.5 bg-[#22201e] hover:bg-[#33302c] text-[#ffffff] rounded-full text-xs font-medium transition-colors"
+                    className="px-3.5 py-1.5 bg-[#8c4a27] hover:bg-[#733b1e] text-[#ffffff] rounded-full text-xs font-medium transition-colors"
                   >
                     Iniciar Consulta
                   </button>
@@ -457,7 +457,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       {showNewPetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
           <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-xl w-full border border-[#e2ded7] overflow-hidden">
-            <div className="px-6 py-4 bg-[#f2f2f3] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#ede8e0] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <PawPrint className="w-5 h-5 text-[#5d2a1a]" />
                 <h3 className="font-bold text-base">RF05: Registrar Nuevo Paciente</h3>
@@ -612,7 +612,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold"
+                  className="px-4 py-2 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] rounded-lg text-xs font-bold"
                 >
                   Guardar Paciente
                 </button>
@@ -626,7 +626,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       {showNewOwnerModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
           <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-lg w-full border border-[#e2ded7] overflow-hidden">
-            <div className="px-6 py-4 bg-[#f2f2f3] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#ede8e0] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-[#5d2a1a]" />
                 <h3 className="font-bold text-base">RF06: Registrar Propietario / Tutor Legal</h3>
@@ -732,7 +732,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold"
+                  className="px-4 py-2 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] rounded-lg text-xs font-bold"
                 >
                   Guardar Propietario
                 </button>

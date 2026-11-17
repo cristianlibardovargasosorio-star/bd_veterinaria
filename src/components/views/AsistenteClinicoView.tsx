@@ -138,7 +138,7 @@ export const AsistenteClinicoView: React.FC = () => {
               }`}
             >
               {msg.sender === 'ia' && (
-                <div className="w-8 h-8 rounded-xl bg-[#22201e] text-[#ffffff] flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-[#8c4a27] text-[#ffffff] flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles className="w-4 h-4" />
                 </div>
               )}
@@ -146,7 +146,7 @@ export const AsistenteClinicoView: React.FC = () => {
               <div
                 className={`p-4 rounded-[20px] max-w-xl leading-relaxed ${
                   msg.sender === 'user'
-                    ? 'bg-[#22201e] text-[#ffffff] rounded-tr-xs'
+                    ? 'bg-[#8c4a27] text-[#ffffff] rounded-tr-xs'
                     : 'bg-[#ffffff] text-[#17191c] rounded-tl-xs border border-[#e2ded7] shadow-2xs'
                 }`}
               >
@@ -177,7 +177,7 @@ export const AsistenteClinicoView: React.FC = () => {
             <button
               key={idx}
               onClick={() => setPregunta(p)}
-              className="px-2.5 py-1 bg-[#ffffff] hover:bg-[#f2f2f3] text-[#777b86] rounded-lg border border-[#e2ded7] text-[11px] font-medium shrink-0 transition-colors"
+              className="px-2.5 py-1 bg-[#ffffff] hover:bg-[#ede8e0] text-[#777b86] rounded-lg border border-[#e2ded7] text-[11px] font-medium shrink-0 transition-colors"
             >
               {p}
             </button>
@@ -196,7 +196,7 @@ export const AsistenteClinicoView: React.FC = () => {
           <button
             type="submit"
             disabled={loading || !pregunta.trim()}
-            className="px-4 py-2.5 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-4 py-2.5 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Send className="w-4 h-4" />
             <span>Enviar</span>

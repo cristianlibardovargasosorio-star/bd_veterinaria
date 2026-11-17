@@ -48,21 +48,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
   return (
     <div className="space-y-6">
-      {/* Welcome Banner (Cohesive Warm Charcoal & Blush Peach Editorial Card) */}
-      <div className="p-6 rounded-[24px] bg-[#22201e] text-[#faf8f5] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
+      {/* Welcome Banner (Soft Warm Sand & Peach Editorial Card) */}
+      <div className="p-6 rounded-[24px] bg-[#ede8e0] border border-[#ddd5c8] text-[#2c2623] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#fbe1d1] text-[#5d2a1a]">
+            <span className="text-[11px] font-medium uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#fbe1d1] text-[#5d2a1a] border border-[#f0c8b0]">
               {currentRole}
             </span>
-            <span className="text-xs text-[#b8b2a8]">VETSOFT v2.4 ACID</span>
+            <span className="text-xs text-[#6e665e]">VETSOFT v2.4 ACID</span>
           </div>
-          <h1 className="font-serif-editorial text-2xl sm:text-3xl tracking-tight text-[#faf8f5]">
+          <h1 className="font-serif-editorial text-2xl sm:text-3xl tracking-tight text-[#2c2623]">
             {currentRole === 'PROPIETARIO'
               ? `Hola, ${ownerRecord?.nombres || 'Tutor'}`
               : `Panel de Control Veterinario`}
           </h1>
-          <p className="text-sm text-[#b8b2a8] max-w-xl">
+          <p className="text-sm text-[#5c554e] max-w-xl">
             {currentRole === 'PROPIETARIO'
               ? 'Consulta el estado de salud, carné de vacunas e historial clínico con explicaciones claras con IA.'
               : 'Sistema unificado de historias clínicas, control estricto de inventario con lotes y motor clínico asistido.'}
@@ -74,14 +74,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             <>
               <button
                 onClick={() => onNavigateTab('consultas')}
-                className="px-4 py-2 bg-[#fbe1d1] hover:bg-[#f5d0b8] text-[#5d2a1a] text-xs font-medium rounded-full flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 py-2 bg-[#8c4a27] hover:bg-[#733b1e] text-[#ffffff] text-xs font-medium rounded-full flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <Stethoscope className="w-3.5 h-3.5" />
                 <span>Nueva Consulta</span>
               </button>
               <button
                 onClick={() => onNavigateTab('facturacion')}
-                className="px-4 py-2 bg-[#33302c] hover:bg-[#3f3b36] text-[#faf8f5] border border-[#4a453f] text-xs font-normal rounded-full flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 py-2 bg-[#ffffff] hover:bg-[#fbe1d1] text-[#2c2623] border border-[#cfc6b8] text-xs font-normal rounded-full flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <Receipt className="w-3.5 h-3.5" />
                 <span>Facturación POS</span>
@@ -91,7 +91,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
           {currentRole === 'PROPIETARIO' && (
             <button
               onClick={() => onNavigateTab('citas')}
-              className="px-4 py-2.5 bg-[#fbe1d1] hover:bg-[#f5d0b8] text-[#5d2a1a] text-xs font-bold rounded-full flex items-center gap-2 transition-all cursor-pointer"
+              className="px-4 py-2.5 bg-[#8c4a27] hover:bg-[#733b1e] text-[#ffffff] text-xs font-bold rounded-full flex items-center gap-2 transition-all cursor-pointer"
             >
               <CalendarCheck2 className="w-4 h-4" />
               <span>Solicitar Cita Médica</span>
@@ -248,7 +248,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                       {cita.estado === 'CONFIRMADA' && currentRole !== 'PROPIETARIO' && (
                         <button
                           onClick={() => onNavigateTab('consultas')}
-                          className="px-2.5 py-1.5 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-semibold transition-colors"
+                          className="px-2.5 py-1.5 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] rounded-lg text-xs font-semibold transition-colors"
                         >
                           Atender
                         </button>
@@ -306,7 +306,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                 <AlertTriangle className="w-4 h-4 text-amber-600" />
                 <h3 className="font-bold text-sm text-[#17191c]">Alertas de Inventario</h3>
               </div>
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#f2f2f3] text-[#777b86]">
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#ede8e0] text-[#777b86]">
                 vw_alertas_stock
               </span>
             </div>
@@ -353,7 +353,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                 <FileCheck2 className="w-4 h-4 text-[#777b86]" />
                 <h3 className="font-bold text-sm text-[#17191c]">Auditoría del Sistema</h3>
               </div>
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#f2f2f3] text-[#777b86]">
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#ede8e0] text-[#777b86]">
                 ACID
               </span>
             </div>
@@ -372,7 +372,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
             <button
               onClick={() => onNavigateTab('auditoria')}
-              className="w-full mt-3 py-1.5 text-center text-xs font-semibold text-[#777b86] hover:text-[#17191c] bg-[#f2f2f3] rounded-lg transition-colors"
+              className="w-full mt-3 py-1.5 text-center text-xs font-semibold text-[#777b86] hover:text-[#17191c] bg-[#ede8e0] rounded-lg transition-colors"
             >
               Ver Log Completo de Auditoría
             </button>

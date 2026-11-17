@@ -184,7 +184,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
       <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-4xl w-full border border-[#e2ded7] overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-[#f2f2f3] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 bg-[#ede8e0] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 rounded-lg bg-emerald-500/20 text-[#5d2a1a]">
               <FileCheck2 className="w-5 h-5" />
@@ -210,8 +210,8 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
             onClick={() => setActiveSection('rf')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
               activeSection === 'rf'
-                ? 'bg-[#22201e] text-[#ffffff] shadow-xs'
-                : 'text-[#777b86] hover:bg-[#f2f2f3]'
+                ? 'bg-[#8c4a27] text-[#ffffff] shadow-xs'
+                : 'text-[#777b86] hover:bg-[#ede8e0]'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -221,8 +221,8 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
             onClick={() => setActiveSection('hu')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
               activeSection === 'hu'
-                ? 'bg-[#22201e] text-[#ffffff] shadow-xs'
-                : 'text-[#777b86] hover:bg-[#f2f2f3]'
+                ? 'bg-[#8c4a27] text-[#ffffff] shadow-xs'
+                : 'text-[#777b86] hover:bg-[#ede8e0]'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -232,8 +232,8 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
             onClick={() => setActiveSection('rnf')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors ${
               activeSection === 'rnf'
-                ? 'bg-[#22201e] text-[#ffffff] shadow-xs'
-                : 'text-[#777b86] hover:bg-[#f2f2f3]'
+                ? 'bg-[#8c4a27] text-[#ffffff] shadow-xs'
+                : 'text-[#777b86] hover:bg-[#ede8e0]'
             }`}
           >
             <Zap className="w-3.5 h-3.5" />
@@ -262,13 +262,13 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
                       </span>
                     </div>
                     <p className="text-xs text-[#777b86]">
-                      <strong>Tablas SQL:</strong> <code className="bg-[#f2f2f3] px-1 py-0.5 rounded">{rf.tabla}</code>
+                      <strong>Tablas SQL:</strong> <code className="bg-[#ede8e0] px-1 py-0.5 rounded">{rf.tabla}</code>
                     </p>
                     <p className="text-xs text-[#777b86]">{rf.regla}</p>
                   </div>
                   <button
                     onClick={() => handleGoTo(rf.tabTarget)}
-                    className="self-start md:self-center shrink-0 flex items-center gap-1 px-3 py-1.5 bg-[#f2f2f3] hover:bg-[#22201e] text-[#ffffff] hover:text-white text-[#777b86] text-xs font-semibold rounded-lg transition-colors"
+                    className="self-start md:self-center shrink-0 flex items-center gap-1 px-3 py-1.5 bg-[#ede8e0] hover:bg-[#8c4a27] text-[#ffffff] hover:text-white text-[#777b86] text-xs font-semibold rounded-lg transition-colors"
                   >
                     <span>Probar en vivo</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -296,7 +296,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
                   </div>
                   <button
                     onClick={() => handleGoTo(hu.target)}
-                    className="mt-3 flex items-center justify-center gap-1.5 w-full py-1.5 bg-[#ffffff] hover:bg-[#22201e] text-[#ffffff] text-xs font-bold rounded-lg transition-colors"
+                    className="mt-3 flex items-center justify-center gap-1.5 w-full py-1.5 bg-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] text-xs font-bold rounded-lg transition-colors"
                   >
                     <span>Ejecutar Historia</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -313,7 +313,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
                   key={rnf.codigo}
                   className="p-4 rounded-xl border border-[#e2ded7] bg-[#ffffff] flex items-center gap-4 shadow-xs"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-[#f2f2f3] flex items-center justify-center font-bold text-[#17191c] shrink-0 font-mono text-xs">
+                  <div className="w-10 h-10 rounded-xl bg-[#ede8e0] flex items-center justify-center font-bold text-[#17191c] shrink-0 font-mono text-xs">
                     {rnf.codigo}
                   </div>
                   <div className="space-y-1">
@@ -331,13 +331,13 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 bg-[#f2f2f3] border-t border-[#e2ded7] flex items-center justify-between shrink-0">
+        <div className="px-6 py-3 bg-[#ede8e0] border-t border-[#e2ded7] flex items-center justify-between shrink-0">
           <span className="text-xs text-[#777b86] font-medium">
             100% Cobertura de Requerimientos SRS & Scripts SQL
           </span>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#22201e] hover:opacity-90 text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
+            className="px-4 py-2 bg-[#8c4a27] hover:opacity-90 text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
           >
             Cerrar Matriz
           </button>

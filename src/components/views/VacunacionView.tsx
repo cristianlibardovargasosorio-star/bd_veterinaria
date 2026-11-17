@@ -152,7 +152,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 });
                 setShowApplyModal(true);
               }}
-              className="px-4 py-2 rounded-xl bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
+              className="px-4 py-2 rounded-xl bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
             >
               <Plus className="w-4 h-4" />
               <span>Aplicar Vacuna</span>
@@ -312,7 +312,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
       {showApplyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
           <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-lg w-full border border-[#e2ded7] overflow-hidden">
-            <div className="px-6 py-4 bg-[#f2f2f3] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#ede8e0] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Syringe className="w-5 h-5 text-[#5d2a1a]" />
                 <h3 className="font-bold text-base">RF09: Aplicación de Vacuna</h3>
@@ -440,7 +440,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] rounded-lg font-bold"
+                  className="px-4 py-2 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] rounded-lg font-bold"
                 >
                   Registrar en Carné
                 </button>

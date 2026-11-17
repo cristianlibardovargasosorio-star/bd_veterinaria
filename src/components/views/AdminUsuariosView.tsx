@@ -150,7 +150,7 @@ export const AdminUsuariosView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="p-6 rounded-[24px] bg-[#f2f2f3] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-[24px] bg-[#ede8e0] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs text-[#777b86] mb-1">
             <span className="px-2.5 py-0.5 rounded-full bg-[#F0FDFA] text-[#0D9488] font-semibold border border-[#0D9488]/20">
@@ -311,7 +311,7 @@ export const AdminUsuariosView: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-5 rounded-full bg-[#22201e] hover:bg-[#33302c] text-[#ffffff] text-sm font-medium transition-colors disabled:opacity-60 cursor-pointer"
+              className="w-full py-2.5 px-5 rounded-full bg-[#8c4a27] hover:bg-[#733b1e] text-[#ffffff] text-sm font-medium transition-colors disabled:opacity-60 cursor-pointer"
             >
               {isSubmitting ? 'Registrando...' : 'Registrar usuario interno'}
             </button>
@@ -345,7 +345,7 @@ export const AdminUsuariosView: React.FC = () => {
                       <div className="text-[11px] text-[#777b86] font-mono">{u.correo}</div>
                     </td>
                     <td className="py-3 px-3 whitespace-nowrap">
-                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#f2f2f3] text-[#17191c]">
+                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#ede8e0] text-[#17191c]">
                         {ROLE_LABELS[u.rol_nombre] || u.rol_nombre}
                       </span>
                     </td>

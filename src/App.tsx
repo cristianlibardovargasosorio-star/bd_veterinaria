@@ -118,7 +118,7 @@ export default function App() {
               {isSkeletonLoading ? (
                 /* Skeleton Presentation Mode */
                 <div className="space-y-6 animate-pulse">
-                  <div className="p-6 rounded-[24px] bg-[#f2f2f3] h-28" />
+                  <div className="p-6 rounded-[24px] bg-[#ede8e0] h-28" />
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <SkeletonKPI />
                     <SkeletonKPI />

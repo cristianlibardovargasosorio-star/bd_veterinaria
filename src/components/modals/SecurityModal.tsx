@@ -42,7 +42,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
       <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#e2ded7] overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-        <div className="px-6 py-4 bg-[#f2f2f3] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
+        <div className="px-6 py-4 bg-[#ede8e0] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Lock className="w-5 h-5 text-[#5d2a1a]" />
             <h3 className="font-bold text-base">RF01: Demostrador de Autenticación, BCrypt y OTP</h3>
@@ -114,7 +114,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
               <div className="md:col-span-2 flex items-center gap-2">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
+                  className="px-4 py-2 bg-[#8c4a27] text-[#ffffff] hover:bg-[#8c4a27] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
                 >
                   Simular Verificación
                 </button>
@@ -128,7 +128,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                 <button
                   type="button"
                   onClick={() => setTestPassword('vetsoft2026')}
-                  className="px-3 py-2 bg-[#f2f2f3] hover:bg-slate-300 text-[#777b86] rounded-lg text-xs font-medium"
+                  className="px-3 py-2 bg-[#ede8e0] hover:bg-slate-300 text-[#777b86] rounded-lg text-xs font-medium"
                 >
                   Probar válida
                 </button>
@@ -163,7 +163,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                     ? 'bg-[#fbe1d1] text-[#5d2a1a]'
                     : targetUser.estado === 'BLOQUEADO'
                     ? 'bg-red-100 text-red-800 animate-pulse'
-                    : 'bg-[#f2f2f3] text-[#17191c]'
+                    : 'bg-[#ede8e0] text-[#17191c]'
                 }`}
               >
                 {targetUser.estado}
@@ -234,10 +234,10 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           </div>
         </div>
 
-        <div className="px-6 py-3 bg-[#f2f2f3] border-t border-[#e2ded7] flex justify-end">
+        <div className="px-6 py-3 bg-[#ede8e0] border-t border-[#e2ded7] flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#f5f3ef] hover:bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
+            className="px-4 py-2 bg-[#f5f3ef] hover:bg-[#8c4a27] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
           >
             Cerrar Demostrador
           </button>
