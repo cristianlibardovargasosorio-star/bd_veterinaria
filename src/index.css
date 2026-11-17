@@ -2,15 +2,15 @@
 
 @theme {
   /* Steep Design System — Colors */
-  --color-ink-black: #17191c;
+  --color-ink-black: #0f172a;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #777b86;
-  --color-ash-gray: #777b86;
+  --color-slate-gray: #475569;
+  --color-ash-gray: #475569;
   --color-smoke-gray: #a3a6af;
-  --color-blush-peach: #fbe1d1;
-  --color-sienna-brown: #5d2a1a;
+  --color-blush-peach: #dbeafe;
+  --color-sienna-brown: #1e40af;
 
   /* Typography â€” Font Families */
   --font-signifier: 'Signifier', 'Source Serif 4', Georgia, Cambria, "Times New Roman", Times, serif;
@@ -69,20 +69,20 @@
 }
 
 :root {
-  --color-ink-black: #17191c;
+  --color-ink-black: #0f172a;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #777b86;
-  --color-ash-gray: #777b86;
+  --color-slate-gray: #475569;
+  --color-ash-gray: #475569;
   --color-smoke-gray: #a3a6af;
-  --color-blush-peach: #fbe1d1;
-  --color-sienna-brown: #5d2a1a;
+  --color-blush-peach: #dbeafe;
+  --color-sienna-brown: #1e40af;
 
   --surface-canvas: #ffffff;
   --surface-card-mist: #f2f2f3;
   --surface-section-fog: #fafafb;
-  --surface-accent-blush: #fbe1d1;
+  --surface-accent-blush: #dbeafe;
   --surface-elevated-white: #ffffff;
 
   --radius-cards: 24px;
@@ -93,13 +93,13 @@
   --radius-elevatedcards: 20px;
 
   background-color: #ffffff;
-  color: #17191c;
+  color: #0f172a;
   font-family: var(--font-sohne);
 }
 
 body {
   background-color: #ffffff;
-  color: #17191c;
+  color: #0f172a;
   font-family: var(--font-sohne);
   margin: 0;
   padding: 0;
@@ -131,14 +131,14 @@ h1, h2, .font-serif-editorial {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #777b86;
+  background: #475569;
 }
 
 /* Steep Component Classes */
 .steep-pill-filled {
-  background-color: #17191c;
+  background-color: #0f172a;
   color: #ffffff;
-  border: 1px solid #17191c;
+  border: 1px solid #0f172a;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);
@@ -154,8 +154,8 @@ h1, h2, .font-serif-editorial {
 
 .steep-pill-ghost {
   background-color: transparent;
-  color: #17191c;
-  border: 1px solid #17191c;
+  color: #0f172a;
+  border: 1px solid #0f172a;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);
@@ -177,8 +177,8 @@ h1, h2, .font-serif-editorial {
 }
 
 .steep-peach-card {
-  background-color: #fbe1d1;
-  color: #5d2a1a;
+  background-color: #dbeafe;
+  color: #1e40af;
   border-radius: 24px;
   border: none;
   box-shadow: none;
