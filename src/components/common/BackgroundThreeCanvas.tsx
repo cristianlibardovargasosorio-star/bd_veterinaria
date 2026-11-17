@@ -12,13 +12,13 @@ export const LANDING_3D_CONFIG = {
   particleCount: 55,
   /** Colores de la paleta del sitio para los materiales y wireframe */
   palette: {
-    primaryTint: '#2563EB', // Azul Clínico Principal
-    deepSlate: '#4B5563', // Gris Pizarra Medio-Oscuro
-    deepSienna: '#9CA3AF', // Gris Plata Neutro
-    warmAccent: '#DBEAFE', // Azul Claro Suave
-    neutralLight: '#D1D5DB', // Gris Claro
-    wireframe: '#6B7280', // Wireframe Gris Acero
-    particle: '#4B5563', // Partículas Gris Pizarra
+    primaryTint: '#5C3A21', // Café Intenso Principal
+    deepSlate: '#4A2C18', // Café Espresso
+    deepSienna: '#8B5E3C', // Café Moka / Caramelo
+    warmAccent: '#DCC3AD', // Capuchino Suave
+    neutralLight: '#CBB8A6', // Latte / Taupe
+    wireframe: '#5C3A21', // Wireframe Café
+    particle: '#4A2C18', // Partículas Espresso
   },
   /** Velocidades base de animación */
   rotationSpeed: 0.0022,
@@ -105,41 +105,41 @@ export const BackgroundThreeCanvas: React.FC = () => {
     clinicalLight.position.set(9, -5, 7);
     scene.add(clinicalLight);
 
-    // Materiales armónicos combinando Tonos Grises (Plata, Acero, Pizarra) y Azules Clínicos
+    // Materiales armónicos en gama de Tonos Cafés (Espresso, Moka, Caramelo y Capuchino)
     const materials = [
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#9CA3AF'), // Gris Plata
-        roughness: 0.42,
-        metalness: 0.12,
-        transparent: true,
-        opacity: 0.52,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#93C5FD'), // Azul Cielo
+        color: new THREE.Color('#8B5E3C'), // Café Moka
         roughness: 0.4,
-        metalness: 0.08,
-        transparent: true,
-        opacity: 0.48,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#D1D5DB'), // Gris Claro
-        roughness: 0.48,
-        metalness: 0.08,
+        metalness: 0.1,
         transparent: true,
         opacity: 0.55,
       }),
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#60A5FA'), // Azul Clínico Medio
-        roughness: 0.38,
-        metalness: 0.1,
+        color: new THREE.Color('#A47551'), // Caramelo Tostado
+        roughness: 0.42,
+        metalness: 0.08,
         transparent: true,
-        opacity: 0.4,
+        opacity: 0.52,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color('#C4A488'), // Capuchino
+        roughness: 0.46,
+        metalness: 0.06,
+        transparent: true,
+        opacity: 0.56,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color('#5C3A21'), // Café Oscuro
+        roughness: 0.38,
+        metalness: 0.12,
+        transparent: true,
+        opacity: 0.42,
       }),
       new THREE.MeshBasicMaterial({
-        color: new THREE.Color('#6B7280'), // Wireframe Gris Acero
+        color: new THREE.Color('#4A2C18'), // Wireframe Espresso
         wireframe: true,
         transparent: true,
-        opacity: 0.24,
+        opacity: 0.26,
       }),
     ];
 
@@ -407,7 +407,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-linear-to-br from-[#f3f4f6] via-[#f8fafc] to-[#dbeafe]/55"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-linear-to-br from-[#e8dfd5] via-[#f2ebe3] to-[#dccbb8]"
     />
   );
 };
