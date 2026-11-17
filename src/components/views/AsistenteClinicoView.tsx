@@ -90,11 +90,11 @@ export const AsistenteClinicoView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#1E293B] tracking-tight flex items-center gap-2">
+          <h2 className="text-xl font-black text-[#17191c] tracking-tight flex items-center gap-2">
             <BotMessageSquare className="w-6 h-6 text-[#5d2a1a]" />
             <span>Asistente Clínico Veterinario Interactivo (Gemini 3.8 Flash)</span>
           </h2>
-          <p className="text-xs text-[#64748B] mt-0.5">
+          <p className="text-xs text-[#777b86] mt-0.5">
             Cálculo de posología en mg/kg, interacciones farmacológicas y triaje médico por especie y peso.
           </p>
         </div>
@@ -104,7 +104,7 @@ export const AsistenteClinicoView: React.FC = () => {
       <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#ececec] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
           <Stethoscope className="w-4 h-4 text-[#5d2a1a]" />
-          <span className="font-bold text-[#64748B]">Contexto de Paciente Activo:</span>
+          <span className="font-bold text-[#777b86]">Contexto de Paciente Activo:</span>
         </div>
 
         <div className="flex items-center gap-3">
@@ -138,7 +138,7 @@ export const AsistenteClinicoView: React.FC = () => {
               }`}
             >
               {msg.sender === 'ia' && (
-                <div className="w-8 h-8 rounded-xl bg-[#1E293B] text-[#ffffff] flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-[#5d2a1a] text-[#ffffff] flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles className="w-4 h-4" />
                 </div>
               )}
@@ -146,14 +146,14 @@ export const AsistenteClinicoView: React.FC = () => {
               <div
                 className={`p-4 rounded-[20px] max-w-xl leading-relaxed ${
                   msg.sender === 'user'
-                    ? 'bg-[#1E293B] text-[#ffffff] rounded-tr-xs'
-                    : 'bg-[#ffffff] text-[#1E293B] rounded-tl-xs border border-[#ececec] shadow-2xs'
+                    ? 'bg-[#5d2a1a] text-[#ffffff] rounded-tr-xs'
+                    : 'bg-[#ffffff] text-[#17191c] rounded-tl-xs border border-[#ececec] shadow-2xs'
                 }`}
               >
                 <p className="whitespace-pre-line">{msg.text}</p>
                 <span
                   className={`block text-[10px] mt-1.5 text-right ${
-                    msg.sender === 'user' ? 'text-[#64748B]' : 'text-[#64748B]'
+                    msg.sender === 'user' ? 'text-[#777b86]' : 'text-[#777b86]'
                   }`}
                 >
                   {msg.time}
@@ -163,7 +163,7 @@ export const AsistenteClinicoView: React.FC = () => {
           ))}
 
           {loading && (
-            <div className="flex items-center gap-2 text-xs text-[#64748B] italic">
+            <div className="flex items-center gap-2 text-xs text-[#777b86] italic">
               <RotateCw className="w-3.5 h-3.5 animate-spin text-[#5d2a1a]" />
               <span>Gemini 3.8 Flash está consultando la literatura veterinaria...</span>
             </div>
@@ -172,12 +172,12 @@ export const AsistenteClinicoView: React.FC = () => {
 
         {/* Quick Prompts */}
         <div className="px-4 py-2 border-t border-slate-100 bg-[#ffffff] flex items-center gap-2 overflow-x-auto">
-          <span className="text-[11px] font-bold text-[#64748B] shrink-0">Sugerencias:</span>
+          <span className="text-[11px] font-bold text-[#777b86] shrink-0">Sugerencias:</span>
           {quickPrompts.map((p, idx) => (
             <button
               key={idx}
               onClick={() => setPregunta(p)}
-              className="px-2.5 py-1 bg-[#ffffff] hover:bg-[#f2f2f3] text-[#64748B] rounded-lg border border-[#ececec] text-[11px] font-medium shrink-0 transition-colors"
+              className="px-2.5 py-1 bg-[#ffffff] hover:bg-[#f2f2f3] text-[#777b86] rounded-lg border border-[#ececec] text-[11px] font-medium shrink-0 transition-colors"
             >
               {p}
             </button>
@@ -191,12 +191,12 @@ export const AsistenteClinicoView: React.FC = () => {
             value={pregunta}
             onChange={(e) => setPregunta(e.target.value)}
             placeholder={`Consulta clínica para ${activePet?.nombre || 'el paciente'} (ej. dosis de Meloxicam, fluidos...)`}
-            className="flex-1 text-xs p-2.5 border border-[#e2e2e5] rounded-xl focus:outline-hidden focus:border-[#1E293B] focus:ring-1 focus:ring-emerald-500"
+            className="flex-1 text-xs p-2.5 border border-[#e2e2e5] rounded-xl focus:outline-hidden focus:border-[#17191c] focus:ring-1 focus:ring-emerald-500"
           />
           <button
             type="submit"
             disabled={loading || !pregunta.trim()}
-            className="px-4 py-2.5 bg-[#1E293B] text-[#ffffff] hover:bg-[#1E293B] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-4 py-2.5 bg-[#5d2a1a] text-[#ffffff] hover:bg-[#5d2a1a] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Send className="w-4 h-4" />
             <span>Enviar</span>

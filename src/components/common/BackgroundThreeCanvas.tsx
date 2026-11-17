@@ -12,11 +12,11 @@ export const LANDING_3D_CONFIG = {
   particleCount: 55,
   /** Colores de la paleta del sitio para los materiales y wireframe */
   palette: {
-    primaryTint: '#0D9488', // Verde Esmeralda Clínico (sutil)
-    warmAccent: '#fbe1d1', // Durazno Editorial
-    neutralLight: '#e2e8f0', // Gris Pizarra Claro
-    wireframe: '#64748B', // Gris Medio
-    particle: '#0D9488',
+    primaryTint: '#5d2a1a', // Sienna Brown (Steep)
+    warmAccent: '#fbe1d1', // Blush Peach (Steep)
+    neutralLight: '#f2f2f3', // Mist Gray (Steep)
+    wireframe: '#777b86', // Slate Gray (Steep)
+    particle: '#5d2a1a',
   },
   /** Velocidades base de animación */
   rotationSpeed: 0.0022,

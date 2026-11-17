@@ -238,3 +238,4 @@ if (failed.length > 0) {
   process.exit(1);
 }
 console.log(`TOTAL: ${results.length}/${results.length} PRUEBAS APROBADAS EN RAMA QA.\n`);
+
