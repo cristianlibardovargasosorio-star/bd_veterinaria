@@ -2,28 +2,34 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 /**
- * Configuración centralizada del fondo 3D de la Landing Page.
- * Modifica estos valores para ajustar cantidad, colores y velocidad de las figuras.
+ * Configuración centralizada del fondo 3D veterinario de la Landing Page.
+ * Permite ajustar cantidad, colores y velocidad de las figuras.
  */
 export const LANDING_3D_CONFIG = {
-  /** Cantidad total de figuras 3D orgánicas dispersas en la escena */
+  /** Cantidad total de figuras 3D veterinarias dispersas en la escena */
   shapeCount: 16,
   /** Cantidad de partículas ambientales flotantes */
-  particleCount: 55,
-  /** Colores de la paleta del sitio para los materiales y wireframe */
+  particleCount: 45,
+  /** Colores armónicos con la paleta actual del sitio (azules, cafés y blancos) */
   palette: {
     primaryTint: '#2563EB', // Azul Clínico
-    deepSlate: '#5C3A21', // Café Intenso
-    deepSienna: '#8B5E3C', // Café Caramelo
-    warmAccent: '#DBEAFE', // Azul Claro
-    neutralLight: '#FFFFFF', // Blanco Puro
-    wireframe: '#1D4ED8', // Wireframe Azul
-    particle: '#5C3A21', // Partículas Café
+    deepCoffee: '#8B5E3C', // Café Caramelo
+    softCoffee: '#C4A488', // Capuchino Suave
+    softBlue: '#60A5FA', // Azul Cielo
+    wireframe: '#1D4ED8', // Wireframe Azul Real
+    particle: '#64748B', // Partículas sutiles
+  },
+  /** Transparencia sutil para no interferir con la lectura del contenido */
+  opacity: {
+    solid: 0.2,
+    accent: 0.24,
+    wireframe: 0.11,
+    particle: 0.15,
   },
   /** Velocidades base de animación */
-  rotationSpeed: 0.0022,
-  floatSpeed: 0.55,
-  floatAmplitude: 0.32,
+  rotationSpeed: 0.002,
+  floatSpeed: 0.5,
+  floatAmplitude: 0.3,
   /** Sensibilidad al movimiento del cursor */
   cursorParallaxStrength: 0.55,
   cursorRepulsionRadius: 4.5,
@@ -44,10 +50,11 @@ function isWebGLAvailable(): boolean {
 }
 
 /**
- * Fondo 3D inmersivo en Three.js exclusivo para la Landing Page.
- * - Dispersa formas geométricas modernas (toroides, poliedros, esferas, nudos) de forma orgánica.
- * - Anima con rotación lenta, flotación suave y reacción al cursor (parallax + repulsión/inclinación).
- * - Pausa el bucle al ocultar la pestaña, respeta `prefers-reduced-motion` y ofrece fallback estático sin WebGL.
+ * Fondo 3D inmersivo veterinario en Three.js exclusivo para la Landing Page.
+ * - Dispersa formas 3D veterinarias (huellas, huesitos, cruces clínicas, cápsulas,
+ *   corazones y mini hélices ADN) de forma orgánica y muy transparente.
+ * - Reacciona al movimiento del cursor (parallax + repulsión/inclinación suave).
+ * - Pausa al ocultar la pestaña, respeta `prefers-reduced-motion` y ofrece fallback sin WebGL.
  */
 export const BackgroundThreeCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -71,7 +78,6 @@ export const BackgroundThreeCanvas: React.FC = () => {
         powerPreference: 'high-performance',
       });
     } catch {
-      // Fallback limpio si el contexto WebGL falla al inicializarse
       setUseFallback(true);
       return;
     }
@@ -89,73 +95,203 @@ export const BackgroundThreeCanvas: React.FC = () => {
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    // Iluminación editorial suave para mantener el contenido principal legible
-    const ambientLight = new THREE.AmbientLight('#ffffff', 1.65);
+    // Iluminación editorial suave
+    const ambientLight = new THREE.AmbientLight('#ffffff', 1.6);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight('#ffffff', 1.1);
+    const dirLight = new THREE.DirectionalLight('#ffffff', 1.05);
     dirLight.position.set(6, 10, 10);
     scene.add(dirLight);
 
-    const accentLight = new THREE.PointLight(LANDING_3D_CONFIG.palette.warmAccent, 1.5, 34);
-    accentLight.position.set(-9, 5, 7);
-    scene.add(accentLight);
+    const blueLight = new THREE.PointLight(LANDING_3D_CONFIG.palette.softBlue, 1.1, 34);
+    blueLight.position.set(-9, 5, 7);
+    scene.add(blueLight);
 
-    const clinicalLight = new THREE.PointLight(LANDING_3D_CONFIG.palette.primaryTint, 1.1, 34);
-    clinicalLight.position.set(9, -5, 7);
-    scene.add(clinicalLight);
+    const coffeeLight = new THREE.PointLight(LANDING_3D_CONFIG.palette.softCoffee, 1.1, 34);
+    coffeeLight.position.set(9, -5, 7);
+    scene.add(coffeeLight);
 
-    // Materiales combinando los 3 tonos: Azules Clínicos, Cafés Cálidos y Blancos
+    // Materiales muy transparentes para que las figuras no compitan con las letras
     const materials = [
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#60A5FA'), // Azul Clínico
-        roughness: 0.38,
-        metalness: 0.1,
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.softBlue),
+        roughness: 0.42,
+        metalness: 0.08,
         transparent: true,
-        opacity: 0.48,
+        opacity: LANDING_3D_CONFIG.opacity.solid,
       }),
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#8B5E3C'), // Café Caramelo
-        roughness: 0.4,
-        metalness: 0.1,
-        transparent: true,
-        opacity: 0.5,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#FFFFFF'), // Blanco Luminoso
-        roughness: 0.35,
-        metalness: 0.05,
-        transparent: true,
-        opacity: 0.65,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color('#C4A488'), // Capuchino Suave
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.deepCoffee),
         roughness: 0.44,
+        metalness: 0.08,
+        transparent: true,
+        opacity: LANDING_3D_CONFIG.opacity.solid,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.softCoffee),
+        roughness: 0.45,
         metalness: 0.06,
         transparent: true,
-        opacity: 0.5,
+        opacity: LANDING_3D_CONFIG.opacity.accent,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.primaryTint),
+        roughness: 0.4,
+        metalness: 0.08,
+        transparent: true,
+        opacity: 0.16,
       }),
       new THREE.MeshBasicMaterial({
-        color: new THREE.Color('#1D4ED8'), // Wireframe Azul Real
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.wireframe),
         wireframe: true,
         transparent: true,
-        opacity: 0.22,
+        opacity: LANDING_3D_CONFIG.opacity.wireframe,
       }),
     ];
 
-    // Catálogo de geometrías modernas (esferas, toroides, poliedros, nudos y cápsulas)
-    const geometries = [
-      new THREE.TorusGeometry(0.75, 0.2, 16, 44),
-      new THREE.IcosahedronGeometry(0.68, 0),
-      new THREE.SphereGeometry(0.55, 22, 22),
-      new THREE.OctahedronGeometry(0.65, 0),
-      new THREE.TorusKnotGeometry(0.52, 0.14, 64, 12),
-      new THREE.DodecahedronGeometry(0.58, 0),
-      new THREE.CapsuleGeometry(0.28, 0.65, 8, 16),
+    // Geometrías compartidas para facilitar su limpieza (dispose)
+    const disposableGeometries: THREE.BufferGeometry[] = [];
+    const trackGeo = <T extends THREE.BufferGeometry>(geo: T): T => {
+      disposableGeometries.push(geo);
+      return geo;
+    };
+
+    const pawPadGeo = trackGeo(new THREE.SphereGeometry(0.42, 18, 18));
+    const pawToeGeo = trackGeo(new THREE.SphereGeometry(0.16, 14, 14));
+    const crossVGeo = trackGeo(new THREE.BoxGeometry(0.32, 0.96, 0.2));
+    const crossHGeo = trackGeo(new THREE.BoxGeometry(0.96, 0.32, 0.2));
+    const crossRingGeo = trackGeo(new THREE.TorusGeometry(0.72, 0.025, 10, 34));
+    const capBodyGeo = trackGeo(new THREE.CylinderGeometry(0.2, 0.2, 0.38, 16));
+    const capDomeGeo = trackGeo(new THREE.SphereGeometry(0.2, 16, 12));
+    const boneShaftGeo = trackGeo(new THREE.CylinderGeometry(0.11, 0.11, 0.78, 14));
+    boneShaftGeo.rotateZ(Math.PI / 2);
+    const boneKnobGeo = trackGeo(new THREE.SphereGeometry(0.17, 14, 14));
+    const dnaNodeGeo = trackGeo(new THREE.SphereGeometry(0.085, 10, 10));
+    const dnaRungGeo = trackGeo(new THREE.CylinderGeometry(0.02, 0.02, 0.48, 8));
+    dnaRungGeo.rotateZ(Math.PI / 2);
+
+    const heartShape = new THREE.Shape();
+    heartShape.moveTo(0, 0.25);
+    heartShape.bezierCurveTo(0, 0.48, -0.35, 0.48, -0.35, 0.2);
+    heartShape.bezierCurveTo(-0.35, -0.05, 0, -0.22, 0, -0.38);
+    heartShape.bezierCurveTo(0, -0.22, 0.35, -0.05, 0.35, 0.2);
+    heartShape.bezierCurveTo(0.35, 0.48, 0, 0.48, 0, 0.25);
+    const heartGeo = trackGeo(
+      new THREE.ExtrudeGeometry(heartShape, {
+        depth: 0.14,
+        bevelEnabled: true,
+        bevelThickness: 0.05,
+        bevelSize: 0.04,
+        bevelSegments: 3,
+      })
+    );
+    heartGeo.center();
+
+    // Constructores de motivos 3D veterinarios
+    const createPawGroup = (mat: THREE.Material) => {
+      const group = new THREE.Group();
+      const pad = new THREE.Mesh(pawPadGeo, mat);
+      pad.scale.set(1.15, 0.92, 0.4);
+      pad.position.set(0, -0.15, 0);
+      group.add(pad);
+
+      const offsets: [number, number][] = [
+        [-0.46, 0.32],
+        [-0.16, 0.52],
+        [0.16, 0.52],
+        [0.46, 0.32],
+      ];
+      offsets.forEach(([tx, ty]) => {
+        const toe = new THREE.Mesh(pawToeGeo, mat);
+        toe.scale.set(0.9, 1.1, 0.45);
+        toe.position.set(tx, ty, 0);
+        group.add(toe);
+      });
+      return group;
+    };
+
+    const createBoneGroup = (mat: THREE.Material) => {
+      const group = new THREE.Group();
+      group.add(new THREE.Mesh(boneShaftGeo, mat));
+      const knobs: [number, number][] = [
+        [-0.4, 0.14],
+        [-0.4, -0.14],
+        [0.4, 0.14],
+        [0.4, -0.14],
+      ];
+      knobs.forEach(([kx, ky]) => {
+        const knob = new THREE.Mesh(boneKnobGeo, mat);
+        knob.position.set(kx, ky, 0);
+        group.add(knob);
+      });
+      group.rotation.z = Math.PI / 7;
+      return group;
+    };
+
+    const createVetCrossGroup = (mat: THREE.Material, ringMat: THREE.Material) => {
+      const group = new THREE.Group();
+      group.add(new THREE.Mesh(crossVGeo, mat));
+      group.add(new THREE.Mesh(crossHGeo, mat));
+      group.add(new THREE.Mesh(crossRingGeo, ringMat));
+      return group;
+    };
+
+    const createCapsuleGroup = (matTop: THREE.Material, matBottom: THREE.Material) => {
+      const group = new THREE.Group();
+      const top = new THREE.Mesh(capBodyGeo, matTop);
+      top.position.y = 0.19;
+      const topDome = new THREE.Mesh(capDomeGeo, matTop);
+      topDome.position.y = 0.38;
+
+      const bottom = new THREE.Mesh(capBodyGeo, matBottom);
+      bottom.position.y = -0.19;
+      const bottomDome = new THREE.Mesh(capDomeGeo, matBottom);
+      bottomDome.position.y = -0.38;
+
+      group.add(top, topDome, bottom, bottomDome);
+      group.rotation.z = Math.PI / 5;
+      return group;
+    };
+
+    const createHeartGroup = (mat: THREE.Material) => {
+      const group = new THREE.Group();
+      const mesh = new THREE.Mesh(heartGeo, mat);
+      mesh.scale.setScalar(1.25);
+      group.add(mesh);
+      return group;
+    };
+
+    const createMiniDnaGroup = (matA: THREE.Material, matB: THREE.Material, rungMat: THREE.Material) => {
+      const group = new THREE.Group();
+      for (let i = 0; i < 6; i++) {
+        const y = (i - 2.5) * 0.28;
+        const angle = i * 0.78;
+        const x = Math.cos(angle) * 0.24;
+        const z = Math.sin(angle) * 0.24;
+
+        const a = new THREE.Mesh(dnaNodeGeo, matA);
+        a.position.set(x, y, z);
+        const b = new THREE.Mesh(dnaNodeGeo, matB);
+        b.position.set(-x, y, -z);
+        const rung = new THREE.Mesh(dnaRungGeo, rungMat);
+        rung.position.set(0, y, 0);
+        rung.rotation.y = -angle;
+        group.add(a, b, rung);
+      }
+      return group;
+    };
+
+    const builders: Array<(idx: number) => THREE.Group> = [
+      (idx) => createPawGroup(materials[idx % 4]),
+      (idx) => createBoneGroup(materials[(idx + 1) % 4]),
+      (idx) => createVetCrossGroup(materials[idx % 4], materials[4]),
+      (idx) => createCapsuleGroup(materials[idx % 2], materials[(idx + 2) % 4]),
+      (idx) => createHeartGroup(materials[(idx + 2) % 4]),
+      (idx) => createMiniDnaGroup(materials[0], materials[1], materials[4]),
     ];
 
     interface FloatingShape {
-      mesh: THREE.Mesh;
+      group: THREE.Group;
       basePos: THREE.Vector3;
       offset: THREE.Vector3;
       rotSpeed: { x: number; y: number; z: number };
@@ -166,34 +302,35 @@ export const BackgroundThreeCanvas: React.FC = () => {
     }
 
     const shapes: FloatingShape[] = [];
-    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // Dispersión orgánica tipo espiral áurea con jitter
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // Dispersión orgánica sin cuadrícula rígida
 
     for (let i = 0; i < LANDING_3D_CONFIG.shapeCount; i++) {
-      const geo = geometries[i % geometries.length];
-      const mat = materials[i % materials.length];
-      const mesh = new THREE.Mesh(geo, mat);
+      const group = builders[i % builders.length](i);
 
-      // Dispersión orgánica no rígida a lo ancho y alto de la escena
       const radiusNorm = Math.sqrt((i + 0.5) / LANDING_3D_CONFIG.shapeCount);
       const angle = i * goldenAngle + (Math.random() - 0.5) * 0.45;
       const spreadX = Math.cos(angle) * radiusNorm * 11.5 + (Math.random() - 0.5) * 1.4;
       const spreadY = Math.sin(angle) * radiusNorm * 6.4 + (Math.random() - 0.5) * 1.0;
-      const depthZ = -2.0 - Math.random() * 6.5;
+      const depthZ = -2.2 - Math.random() * 6.0;
 
-      const scale = 0.65 + Math.random() * 0.65;
-      mesh.position.set(spreadX, spreadY, depthZ);
-      mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      mesh.scale.setScalar(scale);
-      scene.add(mesh);
+      const scale = 0.68 + Math.random() * 0.52;
+      group.position.set(spreadX, spreadY, depthZ);
+      group.rotation.set(
+        (Math.random() - 0.5) * 0.6,
+        (Math.random() - 0.5) * 0.9,
+        (Math.random() - 0.5) * 0.4
+      );
+      group.scale.setScalar(scale);
+      scene.add(group);
 
       shapes.push({
-        mesh,
+        group,
         basePos: new THREE.Vector3(spreadX, spreadY, depthZ),
         offset: new THREE.Vector3(0, 0, 0),
         rotSpeed: {
-          x: (Math.random() > 0.5 ? 1 : -1) * (LANDING_3D_CONFIG.rotationSpeed * (0.6 + Math.random() * 0.9)),
-          y: (Math.random() > 0.5 ? 1 : -1) * (LANDING_3D_CONFIG.rotationSpeed * (0.8 + Math.random() * 1.1)),
-          z: (Math.random() - 0.5) * LANDING_3D_CONFIG.rotationSpeed * 0.5,
+          x: (Math.random() > 0.5 ? 1 : -1) * (LANDING_3D_CONFIG.rotationSpeed * (0.5 + Math.random() * 0.8)),
+          y: (Math.random() > 0.5 ? 1 : -1) * (LANDING_3D_CONFIG.rotationSpeed * (0.8 + Math.random() * 1.0)),
+          z: (Math.random() - 0.5) * LANDING_3D_CONFIG.rotationSpeed * 0.45,
         },
         phase: Math.random() * Math.PI * 2,
         speedFactor: 0.75 + Math.random() * 0.55,
@@ -202,7 +339,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
       });
     }
 
-    // Partículas ambientales dispersas
+    // Partículas ambientales sutiles
     const pCount = LANDING_3D_CONFIG.particleCount;
     const pPositions = new Float32Array(pCount * 3);
     for (let i = 0; i < pCount; i++) {
@@ -214,14 +351,13 @@ export const BackgroundThreeCanvas: React.FC = () => {
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
     const pMat = new THREE.PointsMaterial({
       color: LANDING_3D_CONFIG.palette.particle,
-      size: 0.065,
+      size: 0.06,
       transparent: true,
-      opacity: 0.22,
+      opacity: LANDING_3D_CONFIG.opacity.particle,
     });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
 
-    // Estado del cursor y scroll
     let mouseNdcX = 0;
     let mouseNdcY = 0;
     let cursorActive = false;
@@ -311,13 +447,13 @@ export const BackgroundThreeCanvas: React.FC = () => {
         item.offset.y += (targetOffY - item.offset.y) * 0.07;
         item.currentScale += (targetScale - item.currentScale) * 0.09;
 
-        item.mesh.position.x = item.basePos.x + floatX + item.offset.x;
-        item.mesh.position.y = item.basePos.y + floatY + item.offset.y;
-        item.mesh.scale.setScalar(item.currentScale);
+        item.group.position.x = item.basePos.x + floatX + item.offset.x;
+        item.group.position.y = item.basePos.y + floatY + item.offset.y;
+        item.group.scale.setScalar(item.currentScale);
 
-        item.mesh.rotation.x += item.rotSpeed.x * rotBoost;
-        item.mesh.rotation.y += item.rotSpeed.y * rotBoost;
-        item.mesh.rotation.z += item.rotSpeed.z * rotBoost;
+        item.group.rotation.x += item.rotSpeed.x * rotBoost;
+        item.group.rotation.y += item.rotSpeed.y * rotBoost;
+        item.group.rotation.z += item.rotSpeed.z * rotBoost;
       });
 
       // Parallax suave de cámara con el cursor y scroll
@@ -385,7 +521,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       motionQuery.removeEventListener('change', handleMotionPreferenceChange);
-      geometries.forEach((g) => g.dispose());
+      disposableGeometries.forEach((g) => g.dispose());
       materials.forEach((m) => m.dispose());
       pGeo.dispose();
       pMat.dispose();
@@ -393,12 +529,12 @@ export const BackgroundThreeCanvas: React.FC = () => {
     };
   }, [useFallback]);
 
-  // Fallback limpio cuando WebGL no está disponible
+  // Fallback limpio cuando WebGL no está disponible (sin cambiar el color de fondo del sitio)
   if (useFallback) {
     return (
       <div
         aria-hidden="true"
-        className="fixed inset-0 pointer-events-none z-0 bg-linear-to-br from-[#ffffff] via-[#fafafb] to-[#F0FDFA]/50"
+        className="fixed inset-0 pointer-events-none z-0 bg-transparent"
       />
     );
   }
@@ -407,7 +543,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-linear-to-br from-[#eff6ff] via-[#ffffff] to-[#f0e5da]"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-transparent"
     />
   );
 };
