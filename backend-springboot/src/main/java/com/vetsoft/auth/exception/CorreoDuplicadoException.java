@@ -11,3 +11,4 @@ public class CorreoDuplicadoException extends RuntimeException {
         super(MENSAJE_EXACTO);
     }
 }
+

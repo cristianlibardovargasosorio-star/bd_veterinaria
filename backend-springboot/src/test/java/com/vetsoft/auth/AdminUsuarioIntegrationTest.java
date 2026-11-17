@@ -165,3 +165,4 @@ class AdminUsuarioIntegrationTest {
         verify(usuarioRepository, never()).save(any());
     }
 }
+
