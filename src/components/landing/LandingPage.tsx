@@ -570,26 +570,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 </a>
               </div>
 
-              {/* Floating Stat Artifact Row */}
+              {/* Floating Stat Artifact Row — Rich Dark Clinical Cards */}
               <div className="pt-6 grid grid-cols-3 gap-4 max-w-lg">
-                <div className="p-4 rounded-[20px] bg-[#ffffff] steep-floating-artifact">
-                  <div className="text-xl font-medium text-[#1E293B]">2,540+</div>
-                  <div className="text-xs text-[#64748B] mt-0.5">↑ 18% pacientes activos</div>
+                <div className="p-4 rounded-[20px] bg-[#1E293B] text-[#ffffff] border border-[#334155] shadow-md">
+                  <div className="text-xl font-bold text-[#ffffff]">2,540+</div>
+                  <div className="text-xs text-[#5eead4] mt-0.5">↑ 18% pacientes activos</div>
                 </div>
-                <div className="p-4 rounded-[20px] bg-[#ffffff] steep-floating-artifact">
-                  <div className="text-xl font-medium text-[#1E293B]">99.4%</div>
-                  <div className="text-xs text-[#64748B] mt-0.5">Trazabilidad vacunal</div>
+                <div className="p-4 rounded-[20px] bg-[#134E4A] text-[#ffffff] border border-[#0F766E] shadow-md">
+                  <div className="text-xl font-bold text-[#ffffff]">99.4%</div>
+                  <div className="text-xs text-[#99f6e4] mt-0.5">Trazabilidad vacunal</div>
                 </div>
-                <div className="p-4 rounded-[20px] bg-[#fbe1d1] text-[#5d2a1a]">
-                  <div className="text-xl font-medium text-[#5d2a1a]">24 / 7</div>
-                  <div className="text-xs text-[#5d2a1a] mt-0.5">Unidad crítica</div>
+                <div className="p-4 rounded-[20px] bg-[#5d2a1a] text-[#ffffff] border border-[#7c3a25] shadow-md">
+                  <div className="text-xl font-bold text-[#fbe1d1]">24 / 7</div>
+                  <div className="text-xs text-[#fbe1d1]/85 mt-0.5">Unidad crítica</div>
                 </div>
               </div>
             </LazyScrollSection>
 
             {/* Right Column: Clean Editorial Clinical Showcase Card */}
             <LazyScrollSection delay={150} className="lg:col-span-5 relative space-y-4">
-              <div className="rounded-[24px] overflow-hidden bg-[#ffffff] border border-[#e2e8f0] shadow-sm">
+              <div className="rounded-[24px] overflow-hidden bg-[#1E293B] border border-[#334155] shadow-lg">
                 <div className="aspect-4/3 w-full overflow-hidden">
                   <picture>
                     <source srcSet={heroImgAvif} type="image/avif" />
@@ -604,18 +604,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     />
                   </picture>
                 </div>
-                <div className="p-5 flex items-center justify-between gap-4 bg-[#ffffff]">
+                <div className="p-5 flex items-center justify-between gap-4 bg-[#1E293B]">
                   <div className="min-w-0">
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-[#5d2a1a]">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-[#5eead4]">
                       Quirófano &amp; Diagnóstico por Imagen
                     </div>
-                    <div className="text-sm font-semibold text-[#1E293B] truncate mt-0.5">
+                    <div className="text-sm font-semibold text-[#ffffff] truncate mt-0.5">
                       Monitoreo multiparamétrico 24/7 en sede principal
                     </div>
                   </div>
                   <button
                     onClick={onEnterERP}
-                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#0F766E] text-[#ffffff] text-xs font-medium hover:bg-[#115E59] transition-colors cursor-pointer"
+                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#0D9488] text-[#ffffff] text-xs font-medium hover:bg-[#0F766E] transition-colors cursor-pointer"
                   >
                     <span>Abrir ERP</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -625,29 +625,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             </LazyScrollSection>
           </div>
 
-          {/* KEY PROOF STATS BAR */}
+          {/* KEY PROOF STATS BAR — Rich Dark Slate & Clinical Emerald Cards */}
           <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#1E293B] font-mono tabular-nums">+14,200</span>
-              <span className="block text-xs font-semibold text-[#64748B] mt-1">
+            <div className="p-6 bg-[#1E293B] rounded-[20px] border border-[#334155] shadow-md text-center">
+              <span className="text-3xl font-black text-[#ffffff] font-mono tabular-nums">+14,200</span>
+              <span className="block text-xs font-semibold text-[#cbd5e1] mt-1.5">
                 Pacientes Atendidos con Éxito
               </span>
             </div>
-            <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#5d2a1a] font-mono tabular-nums">24 / 7</span>
-              <span className="block text-xs font-semibold text-[#64748B] mt-1">
-                Urgencias & Cuidados Críticos
+            <div className="p-6 bg-[#134E4A] rounded-[20px] border border-[#0F766E] shadow-md text-center">
+              <span className="text-3xl font-black text-[#5eead4] font-mono tabular-nums">24 / 7</span>
+              <span className="block text-xs font-semibold text-[#ccfbf1] mt-1.5">
+                Urgencias &amp; Cuidados Críticos
               </span>
             </div>
-            <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#1E293B] font-mono tabular-nums">100%</span>
-              <span className="block text-xs font-semibold text-[#64748B] mt-1">
+            <div className="p-6 bg-[#1E293B] rounded-[20px] border border-[#334155] shadow-md text-center">
+              <span className="text-3xl font-black text-[#ffffff] font-mono tabular-nums">100%</span>
+              <span className="block text-xs font-semibold text-[#cbd5e1] mt-1.5">
                 Vacunas con Lote Trazable
               </span>
             </div>
-            <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#5d2a1a] font-mono tabular-nums">IA Dual</span>
-              <span className="block text-xs font-semibold text-[#64748B] mt-1">
+            <div className="p-6 bg-[#5d2a1a] rounded-[20px] border border-[#7c3a25] shadow-md text-center">
+              <span className="text-3xl font-black text-[#fbe1d1] font-mono tabular-nums">IA Dual</span>
+              <span className="block text-xs font-semibold text-[#fbe1d1]/85 mt-1.5">
                 Fichas Claras para Tutores
               </span>
             </div>

@@ -105,41 +105,41 @@ export const BackgroundThreeCanvas: React.FC = () => {
     clinicalLight.position.set(9, -5, 7);
     scene.add(clinicalLight);
 
-    // Materiales en tonos oscuros ricos (Pizarra, Esmeralda Clínico, Sienna y Durazno)
+    // Materiales en tonos oscuros ricos y definidos (Pizarra, Esmeralda Clínico, Sienna y Cobre)
     const materials = [
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color(LANDING_3D_CONFIG.palette.deepSlate),
-        roughness: 0.38,
+        color: new THREE.Color('#1E293B'),
+        roughness: 0.32,
+        metalness: 0.18,
+        transparent: true,
+        opacity: 0.58,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color('#0F766E'),
+        roughness: 0.3,
+        metalness: 0.15,
+        transparent: true,
+        opacity: 0.55,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color('#5D2A1A'),
+        roughness: 0.36,
         metalness: 0.12,
         transparent: true,
-        opacity: 0.34,
+        opacity: 0.54,
       }),
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color(LANDING_3D_CONFIG.palette.primaryTint),
-        roughness: 0.35,
-        metalness: 0.1,
+        color: new THREE.Color('#334155'),
+        roughness: 0.38,
+        metalness: 0.14,
         transparent: true,
-        opacity: 0.32,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color(LANDING_3D_CONFIG.palette.deepSienna),
-        roughness: 0.42,
-        metalness: 0.08,
-        transparent: true,
-        opacity: 0.3,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color(LANDING_3D_CONFIG.palette.warmAccent),
-        roughness: 0.45,
-        metalness: 0.05,
-        transparent: true,
-        opacity: 0.48,
+        opacity: 0.5,
       }),
       new THREE.MeshBasicMaterial({
-        color: new THREE.Color(LANDING_3D_CONFIG.palette.wireframe),
+        color: new THREE.Color('#0F766E'),
         wireframe: true,
         transparent: true,
-        opacity: 0.22,
+        opacity: 0.35,
       }),
     ];
 
