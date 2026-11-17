@@ -41,15 +41,15 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-      <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#cbd5e1] overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-        <div className="px-6 py-4 bg-[#f2f2f3] text-[#1E293B] border-b border-[#cbd5e1] flex items-center justify-between">
+      <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#e2ded7] overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        <div className="px-6 py-4 bg-[#f2f2f3] text-[#17191c] border-b border-[#e2ded7] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Lock className="w-5 h-5 text-[#5d2a1a]" />
             <h3 className="font-bold text-base">RF01: Demostrador de Autenticación, BCrypt y OTP</h3>
           </div>
           <button
             onClick={onClose}
-            className="text-[#64748B] hover:text-white p-1 rounded-lg transition-colors"
+            className="text-[#777b86] hover:text-white p-1 rounded-lg transition-colors"
           >
             ✕
           </button>
@@ -57,7 +57,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
 
         <div className="p-6 space-y-6 max-h-[85vh] overflow-y-auto">
           {/* Theory & SRS Spec */}
-          <div className="p-3 bg-[#fbe1d1] text-[#5d2a1a] rounded-xl border border-[#cbd5e1] text-xs text-emerald-950 space-y-1">
+          <div className="p-3 bg-[#fbe1d1] text-[#5d2a1a] rounded-xl border border-[#e2ded7] text-xs text-emerald-950 space-y-1">
             <div className="font-bold flex items-center gap-1.5 text-emerald-900">
               <ShieldCheck className="w-4 h-4 text-[#5d2a1a]" />
               Garantía Tecnológica RF01 & RNF03 (Seguridad):
@@ -74,14 +74,14 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           </div>
 
           {/* Test form */}
-          <div className="bg-[#ffffff] p-4 rounded-xl border border-[#cbd5e1] space-y-4">
-            <div className="text-xs font-bold text-[#64748B] uppercase tracking-wider">
+          <div className="bg-[#ffffff] p-4 rounded-xl border border-[#e2ded7] space-y-4">
+            <div className="text-xs font-bold text-[#777b86] uppercase tracking-wider">
               Simulador de Inicio de Sesión
             </div>
 
             <form onSubmit={handleTestLogin} className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-[#64748B] mb-1">Usuario / Correo</label>
+                <label className="block text-xs font-semibold text-[#777b86] mb-1">Usuario / Correo</label>
                 <select
                   value={selectedEmail}
                   onChange={(e) => {
@@ -99,7 +99,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#64748B] mb-1">
+                <label className="block text-xs font-semibold text-[#777b86] mb-1">
                   Contraseña (Prueba errónea &lt; 4 letras)
                 </label>
                 <input
@@ -114,7 +114,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
               <div className="md:col-span-2 flex items-center gap-2">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0F766E] text-[#ffffff] hover:bg-[#0F766E] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
+                  className="px-4 py-2 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
                 >
                   Simular Verificación
                 </button>
@@ -128,7 +128,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                 <button
                   type="button"
                   onClick={() => setTestPassword('vetsoft2026')}
-                  className="px-3 py-2 bg-[#f2f2f3] hover:bg-slate-300 text-[#64748B] rounded-lg text-xs font-medium"
+                  className="px-3 py-2 bg-[#f2f2f3] hover:bg-slate-300 text-[#777b86] rounded-lg text-xs font-medium"
                 >
                   Probar válida
                 </button>
@@ -140,7 +140,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                 className={`p-3 rounded-lg text-xs font-medium flex items-center gap-2 ${
                   loginMessage.isError
                     ? 'bg-red-50 text-red-800 border border-red-200'
-                    : 'bg-[#fbe1d1] text-[#5d2a1a] border border-[#cbd5e1]'
+                    : 'bg-[#fbe1d1] text-[#5d2a1a] border border-[#e2ded7]'
                 }`}
               >
                 {loginMessage.isError ? (
@@ -154,8 +154,8 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           </div>
 
           {/* User state in DB */}
-          <div className="border border-[#cbd5e1] rounded-xl p-4 bg-[#ffffff] space-y-3">
-            <div className="text-xs font-bold text-[#64748B] uppercase tracking-wider flex items-center justify-between">
+          <div className="border border-[#e2ded7] rounded-xl p-4 bg-[#ffffff] space-y-3">
+            <div className="text-xs font-bold text-[#777b86] uppercase tracking-wider flex items-center justify-between">
               <span>Estado en Base de Datos (Tabla usuarios)</span>
               <span
                 className={`px-2 py-0.5 rounded text-[11px] font-bold ${
@@ -163,7 +163,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
                     ? 'bg-[#fbe1d1] text-[#5d2a1a]'
                     : targetUser.estado === 'BLOQUEADO'
                     ? 'bg-red-100 text-red-800 animate-pulse'
-                    : 'bg-[#f2f2f3] text-[#1E293B]'
+                    : 'bg-[#f2f2f3] text-[#17191c]'
                 }`}
               >
                 {targetUser.estado}
@@ -171,26 +171,26 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
-              <div className="p-2 bg-[#ffffff] rounded border border-[#cbd5e1]">
-                <span className="text-[#64748B] block text-[10px]">Intentos fallidos:</span>
-                <span className="font-bold text-[#1E293B] text-sm">
+              <div className="p-2 bg-[#ffffff] rounded border border-[#e2ded7]">
+                <span className="text-[#777b86] block text-[10px]">Intentos fallidos:</span>
+                <span className="font-bold text-[#17191c] text-sm">
                   {targetUser.intentos_fallidos} / 3
                 </span>
               </div>
-              <div className="p-2 bg-[#ffffff] rounded border border-[#cbd5e1]">
-                <span className="text-[#64748B] block text-[10px]">Código OTP Activo:</span>
+              <div className="p-2 bg-[#ffffff] rounded border border-[#e2ded7]">
+                <span className="text-[#777b86] block text-[10px]">Código OTP Activo:</span>
                 <span className="font-mono font-bold text-[#5d2a1a] text-sm">
                   {targetUser.otp_code || 'Ninguno'}
                 </span>
               </div>
-              <div className="p-2 bg-[#ffffff] rounded border border-[#cbd5e1] col-span-2 sm:col-span-1">
-                <span className="text-[#64748B] block text-[10px]">Rol Asignado:</span>
+              <div className="p-2 bg-[#ffffff] rounded border border-[#e2ded7] col-span-2 sm:col-span-1">
+                <span className="text-[#777b86] block text-[10px]">Rol Asignado:</span>
                 <span className="font-bold text-purple-700">{targetUser.rol_nombre}</span>
               </div>
             </div>
 
             <div>
-              <span className="text-[#64748B] block text-[10px] mb-1">Hash BCrypt (RNF03):</span>
+              <span className="text-[#777b86] block text-[10px] mb-1">Hash BCrypt (RNF03):</span>
               <code className="block p-2 bg-[#ffffff] text-[#5d2a1a] font-mono text-[11px] rounded break-all">
                 {targetUser.contrasena}
               </code>
@@ -199,7 +199,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
             {/* OTP verification */}
             {targetUser.otp_code && (
               <form onSubmit={handleVerifyOtp} className="pt-2 border-t border-slate-100 space-y-2">
-                <label className="block text-xs font-bold text-[#64748B]">
+                <label className="block text-xs font-bold text-[#777b86]">
                   Validar Código OTP (Doble Factor)
                 </label>
                 <div className="flex gap-2">
@@ -234,10 +234,10 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           </div>
         </div>
 
-        <div className="px-6 py-3 bg-[#f2f2f3] border-t border-[#cbd5e1] flex justify-end">
+        <div className="px-6 py-3 bg-[#f2f2f3] border-t border-[#e2ded7] flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#f1f5f9] hover:bg-[#0F766E] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
+            className="px-4 py-2 bg-[#f5f3ef] hover:bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
           >
             Cerrar Demostrador
           </button>

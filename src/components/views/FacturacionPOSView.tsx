@@ -99,11 +99,11 @@ export const FacturacionPOSView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#1E293B] tracking-tight flex items-center gap-2">
+          <h2 className="text-xl font-black text-[#17191c] tracking-tight flex items-center gap-2">
             <Receipt className="w-6 h-6 text-[#5d2a1a]" />
             <span>Módulo de Facturación POS e Inventario (Script 02)</span>
           </h2>
-          <p className="text-xs text-[#64748B] mt-0.5">
+          <p className="text-xs text-[#777b86] mt-0.5">
             Procedimientos almacenados transaccionales (sp_crear_factura, sp_agregar_detalle, sp_confirmar_factura) con deducción de stock en lotes vigentes.
           </p>
         </div>
@@ -111,7 +111,7 @@ export const FacturacionPOSView: React.FC = () => {
         {!activeFactura && (
           <button
             onClick={handleNuevaFactura}
-            className="px-4 py-2 rounded-xl bg-[#0F766E] text-[#ffffff] hover:bg-[#0F766E] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
+            className="px-4 py-2 rounded-xl bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
           >
             <Plus className="w-4 h-4" />
             <span>Nueva Factura POS</span>
@@ -124,7 +124,7 @@ export const FacturacionPOSView: React.FC = () => {
           className={`p-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 ${
             feedback.isError
               ? 'bg-red-50 text-red-800 border border-red-200'
-              : 'bg-[#fbe1d1] text-[#5d2a1a] border border-[#cbd5e1]'
+              : 'bg-[#fbe1d1] text-[#5d2a1a] border border-[#e2ded7]'
           }`}
         >
           {feedback.isError ? (
@@ -141,45 +141,45 @@ export const FacturacionPOSView: React.FC = () => {
         {/* Left Column (2 cols): Active Invoice Detail or Setup */}
         <div className="lg:col-span-2 space-y-6">
           {activeFactura ? (
-            <div className="bg-[#ffffff] rounded-[20px] border-2 border-[#cbd5e1] p-6 shadow-sm space-y-6">
+            <div className="bg-[#ffffff] rounded-[20px] border-2 border-[#e2ded7] p-6 shadow-sm space-y-6">
               {/* Invoice Meta */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-base font-black text-[#1E293B]">
+                    <span className="text-base font-black text-[#17191c]">
                       Factura #{activeFactura.id_factura}
                     </span>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
                       {activeFactura.estado}
                     </span>
                   </div>
-                  <p className="text-xs text-[#64748B] mt-0.5">
+                  <p className="text-xs text-[#777b86] mt-0.5">
                     Cliente:{' '}
-                    <strong className="text-[#1E293B]">
+                    <strong className="text-[#17191c]">
                       {activeCliente ? `${activeCliente.nombres} ${activeCliente.apellidos}` : 'N/A'} (CC: {activeCliente?.cedula_documento})
                     </strong>
                   </p>
                 </div>
 
                 <div className="text-right text-xs">
-                  <span className="text-[#64748B] block text-[10px]">Cajero Responsable:</span>
-                  <span className="font-bold text-[#1E293B]">{currentUser.correo}</span>
+                  <span className="text-[#777b86] block text-[10px]">Cajero Responsable:</span>
+                  <span className="font-bold text-[#17191c]">{currentUser.correo}</span>
                 </div>
               </div>
 
               {/* Add item to invoice form (sp_agregar_detalle) */}
               <form
                 onSubmit={handleAgregarItem}
-                className="p-4 bg-[#ffffff] rounded-xl border border-[#cbd5e1] space-y-3 text-xs"
+                className="p-4 bg-[#ffffff] rounded-xl border border-[#e2ded7] space-y-3 text-xs"
               >
-                <div className="font-bold text-[#64748B] uppercase tracking-wider text-[11px] flex items-center justify-between">
+                <div className="font-bold text-[#777b86] uppercase tracking-wider text-[11px] flex items-center justify-between">
                   <span>Agregar Producto por Lote Específico (sp_agregar_detalle)</span>
-                  <span className="text-[#64748B] font-normal">Validación FIFO / Vencimiento</span>
+                  <span className="text-[#777b86] font-normal">Validación FIFO / Vencimiento</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="sm:col-span-2">
-                    <label className="block text-[#64748B] mb-1 font-semibold">
+                    <label className="block text-[#777b86] mb-1 font-semibold">
                       Seleccionar Lote de Producto
                     </label>
                     <select
@@ -202,7 +202,7 @@ export const FacturacionPOSView: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-[#64748B] mb-1 font-semibold">Cantidad a Vender</label>
+                    <label className="block text-[#777b86] mb-1 font-semibold">Cantidad a Vender</label>
                     <div className="flex gap-2">
                       <input
                         type="number"
@@ -214,7 +214,7 @@ export const FacturacionPOSView: React.FC = () => {
                       />
                       <button
                         type="submit"
-                        className="px-4 py-2 bg-[#0F766E] hover:opacity-90 text-[#ffffff] rounded-lg font-bold shrink-0 transition-colors"
+                        className="px-4 py-2 bg-[#22201e] hover:opacity-90 text-[#ffffff] rounded-lg font-bold shrink-0 transition-colors"
                       >
                         + Agregar
                       </button>
@@ -225,19 +225,19 @@ export const FacturacionPOSView: React.FC = () => {
 
               {/* Items Table */}
               <div className="space-y-2">
-                <span className="font-bold text-[#64748B] uppercase tracking-wider text-xs">
+                <span className="font-bold text-[#777b86] uppercase tracking-wider text-xs">
                   Detalle de la Factura (detalle_factura)
                 </span>
 
                 {activeDetalles.length === 0 ? (
-                  <div className="p-6 text-center bg-[#ffffff] rounded-xl text-xs text-[#64748B]">
+                  <div className="p-6 text-center bg-[#ffffff] rounded-xl text-xs text-[#777b86]">
                     Aún no has agregado productos a esta factura.
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
-                        <tr className="border-b border-[#cbd5e1] text-[#64748B] bg-[#ffffff]">
+                        <tr className="border-b border-[#e2ded7] text-[#777b86] bg-[#ffffff]">
                           <th className="py-2 px-3">Producto</th>
                           <th className="py-2 px-3 font-mono">Lote</th>
                           <th className="py-2 px-3 text-center">Cantidad</th>
@@ -252,11 +252,11 @@ export const FacturacionPOSView: React.FC = () => {
 
                           return (
                             <tr key={det.id_detalle}>
-                              <td className="py-2.5 px-3 font-bold text-[#1E293B]">{prod?.nombre}</td>
+                              <td className="py-2.5 px-3 font-bold text-[#17191c]">{prod?.nombre}</td>
                               <td className="py-2.5 px-3 font-mono text-[#5d2a1a]">{lote?.codigo_lote}</td>
                               <td className="py-2.5 px-3 text-center font-bold">{det.cantidad}</td>
                               <td className="py-2.5 px-3 text-right">${det.precio_unitario.toFixed(2)}</td>
-                              <td className="py-2.5 px-3 text-right font-bold text-[#1E293B]">
+                              <td className="py-2.5 px-3 text-right font-bold text-[#17191c]">
                                 ${det.subtotal.toFixed(2)}
                               </td>
                             </tr>
@@ -269,14 +269,14 @@ export const FacturacionPOSView: React.FC = () => {
               </div>
 
               {/* Total & Confirmation */}
-              <div className="pt-4 border-t border-[#cbd5e1] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="pt-4 border-t border-[#e2ded7] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="text-left">
-                  <span className="text-xs text-[#64748B] uppercase tracking-wider font-semibold block">
+                  <span className="text-xs text-[#777b86] uppercase tracking-wider font-semibold block">
                     Total a Cobrar
                   </span>
-                  <div className="text-3xl font-black text-[#1E293B]">
+                  <div className="text-3xl font-black text-[#17191c]">
                     ${activeDetalles.reduce((sum, d) => sum + d.subtotal, 0).toFixed(2)}{' '}
-                    <span className="text-xs text-[#64748B] font-normal">USD</span>
+                    <span className="text-xs text-[#777b86] font-normal">USD</span>
                   </div>
                 </div>
 
@@ -291,7 +291,7 @@ export const FacturacionPOSView: React.FC = () => {
                   <button
                     onClick={handleConfirmarVenta}
                     disabled={activeDetalles.length === 0}
-                    className="px-6 py-2.5 bg-[#0F766E] text-[#ffffff] hover:bg-[#0F766E] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
+                    className="px-6 py-2.5 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>Confirmar Venta y Cobrar (sp_confirmar_factura)</span>
@@ -301,19 +301,19 @@ export const FacturacionPOSView: React.FC = () => {
             </div>
           ) : (
             /* Create new invoice start card */
-            <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-8 text-center space-y-4">
+            <div className="bg-[#ffffff] rounded-[20px] border border-[#e2ded7] p-8 text-center space-y-4">
               <div className="w-16 h-16 rounded-[20px] bg-[#fbe1d1] text-[#5d2a1a] flex items-center justify-center mx-auto">
                 <Receipt className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="font-bold text-lg text-[#1E293B]">No hay factura en curso</h3>
-                <p className="text-xs text-[#64748B] max-w-sm mx-auto mt-1">
+                <h3 className="font-bold text-lg text-[#17191c]">No hay factura en curso</h3>
+                <p className="text-xs text-[#777b86] max-w-sm mx-auto mt-1">
                   Selecciona el cliente y presiona "Iniciar Factura POS" para comenzar a vender medicamentos y servicios.
                 </p>
               </div>
 
               <div className="max-w-xs mx-auto text-left space-y-2">
-                <label className="block text-xs font-semibold text-[#64748B]">Cliente / Propietario</label>
+                <label className="block text-xs font-semibold text-[#777b86]">Cliente / Propietario</label>
                 <select
                   value={selectedClienteId}
                   onChange={(e) => setSelectedClienteId(Number(e.target.value))}
@@ -329,7 +329,7 @@ export const FacturacionPOSView: React.FC = () => {
 
               <button
                 onClick={handleNuevaFactura}
-                className="px-6 py-3 bg-[#0F766E] text-[#ffffff] hover:bg-[#0F766E] text-[#ffffff] text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
+                className="px-6 py-3 bg-[#22201e] text-[#ffffff] hover:bg-[#22201e] text-[#ffffff] text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 <span>Iniciar Factura POS (sp_crear_factura)</span>
@@ -340,10 +340,10 @@ export const FacturacionPOSView: React.FC = () => {
 
         {/* Right Column (1 col): Invoices History & ACID Summary */}
         <div className="space-y-6">
-          <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-5 shadow-xs">
+          <div className="bg-[#ffffff] rounded-[20px] border border-[#e2ded7] p-5 shadow-xs">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-bold text-sm text-[#1E293B]">Historial de Facturas</h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#f2f2f3] text-[#64748B]">
+              <h3 className="font-bold text-sm text-[#17191c]">Historial de Facturas</h3>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-[#f2f2f3] text-[#777b86]">
                 {facturas.length} registradas
               </span>
             </div>
@@ -355,7 +355,7 @@ export const FacturacionPOSView: React.FC = () => {
 
                 const statusColors = {
                   BORRADOR: 'bg-amber-100 text-amber-800 border-amber-200',
-                  PAGADA: 'bg-[#fbe1d1] text-[#5d2a1a] border-[#cbd5e1]',
+                  PAGADA: 'bg-[#fbe1d1] text-[#5d2a1a] border-[#e2ded7]',
                   ANULADA: 'bg-red-100 text-red-800 border-red-200',
                 };
 
@@ -368,22 +368,22 @@ export const FacturacionPOSView: React.FC = () => {
                     }}
                     className={`p-3 rounded-xl border text-xs cursor-pointer transition-all ${
                       isSelected
-                        ? 'border-[#1E293B] bg-[#fbe1d1] text-[#5d2a1a]/30'
-                        : 'border-[#cbd5e1] hover:border-[#e2e2e5] hover:bg-[#ffffff]'
+                        ? 'border-[#17191c] bg-[#fbe1d1] text-[#5d2a1a]/30'
+                        : 'border-[#e2ded7] hover:border-[#e2e2e5] hover:bg-[#ffffff]'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-black text-[#1E293B]">#{f.id_factura}</span>
+                      <span className="font-black text-[#17191c]">#{f.id_factura}</span>
                       <span className={`text-[10px] font-bold px-2 py-0.2 rounded-full border ${statusColors[f.estado]}`}>
                         {f.estado}
                       </span>
                     </div>
-                    <div className="text-[#64748B] mt-1">
+                    <div className="text-[#777b86] mt-1">
                       {client ? `${client.nombres} ${client.apellidos}` : 'Cliente'}
                     </div>
                     <div className="flex items-center justify-between mt-1 text-[11px]">
-                      <span className="text-[#64748B]">{new Date(f.fecha).toLocaleDateString()}</span>
-                      <strong className="text-[#1E293B] text-xs">${f.total.toFixed(2)}</strong>
+                      <span className="text-[#777b86]">{new Date(f.fecha).toLocaleDateString()}</span>
+                      <strong className="text-[#17191c] text-xs">${f.total.toFixed(2)}</strong>
                     </div>
                   </div>
                 );
@@ -396,12 +396,12 @@ export const FacturacionPOSView: React.FC = () => {
       {/* Modal: Comprobante Térmico / Factura Fiscal */}
       {showReceiptModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-md w-full border border-[#cbd5e1] overflow-hidden font-mono text-xs">
+          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-md w-full border border-[#e2ded7] overflow-hidden font-mono text-xs">
             {/* Ticket Header */}
             <div className="p-6 bg-[#ffffff] border-b border-dashed border-[#e2e2e5] text-center space-y-1">
-              <h3 className="font-black text-base tracking-tight text-[#1E293B]">VETSOFT CLINICAL S.A.S.</h3>
-              <p className="text-[10px] text-[#64748B]">NIT: 901.849.201-4 • IVA Régimen Común</p>
-              <p className="text-[10px] text-[#64748B]">Carrera 45 # 128 - 22, Bogotá</p>
+              <h3 className="font-black text-base tracking-tight text-[#17191c]">VETSOFT CLINICAL S.A.S.</h3>
+              <p className="text-[10px] text-[#777b86]">NIT: 901.849.201-4 • IVA Régimen Común</p>
+              <p className="text-[10px] text-[#777b86]">Carrera 45 # 128 - 22, Bogotá</p>
               <div className="pt-2">
                 <span className="px-2 py-0.5 rounded bg-[#fbe1d1] text-[#5d2a1a] font-bold text-[10px]">
                   FACTURA DE VENTA #{showReceiptModal.id_factura}
@@ -411,13 +411,13 @@ export const FacturacionPOSView: React.FC = () => {
 
             {/* Ticket Body */}
             <div className="p-6 space-y-3">
-              <div className="text-[11px] space-y-1 border-b border-dashed border-[#cbd5e1] pb-3">
+              <div className="text-[11px] space-y-1 border-b border-dashed border-[#e2ded7] pb-3">
                 <div className="flex justify-between">
-                  <span className="text-[#64748B]">Fecha y Hora:</span>
+                  <span className="text-[#777b86]">Fecha y Hora:</span>
                   <span>{new Date(showReceiptModal.fecha).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#64748B]">Cliente:</span>
+                  <span className="text-[#777b86]">Cliente:</span>
                   <span>
                     {(() => {
                       const c = propietarios.find((p) => p.id_propietario === showReceiptModal.id_cliente);
@@ -426,13 +426,13 @@ export const FacturacionPOSView: React.FC = () => {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#64748B]">Estado:</span>
+                  <span className="text-[#777b86]">Estado:</span>
                   <span className="font-bold text-[#5d2a1a]">{showReceiptModal.estado}</span>
                 </div>
               </div>
 
               {/* Items */}
-              <div className="space-y-1.5 border-b border-dashed border-[#cbd5e1] pb-3">
+              <div className="space-y-1.5 border-b border-dashed border-[#e2ded7] pb-3">
                 {detallesFactura
                   .filter((d) => d.id_factura === showReceiptModal.id_factura)
                   .map((det) => {
@@ -441,12 +441,12 @@ export const FacturacionPOSView: React.FC = () => {
                     return (
                       <div key={det.id_detalle} className="flex justify-between text-[11px]">
                         <div>
-                          <div className="font-bold text-[#1E293B]">{prod?.nombre}</div>
-                          <span className="text-[10px] text-[#64748B]">
+                          <div className="font-bold text-[#17191c]">{prod?.nombre}</div>
+                          <span className="text-[10px] text-[#777b86]">
                             Lote: {lote?.codigo_lote} x {det.cantidad}
                           </span>
                         </div>
-                        <span className="font-bold text-[#1E293B]">${det.subtotal.toFixed(2)}</span>
+                        <span className="font-bold text-[#17191c]">${det.subtotal.toFixed(2)}</span>
                       </div>
                     );
                   })}
@@ -458,22 +458,22 @@ export const FacturacionPOSView: React.FC = () => {
                 <span className="text-[#5d2a1a]">${showReceiptModal.total.toFixed(2)} USD</span>
               </div>
 
-              <div className="p-2 bg-[#f2f2f3] rounded text-center text-[10px] text-[#64748B]">
+              <div className="p-2 bg-[#f2f2f3] rounded text-center text-[10px] text-[#777b86]">
                 Transacción ACID confirmada con deducción en movimientos_inventario.
               </div>
             </div>
 
             {/* Footer Buttons */}
-            <div className="p-4 bg-[#ffffff] border-t border-[#cbd5e1] flex justify-end gap-2">
+            <div className="p-4 bg-[#ffffff] border-t border-[#e2ded7] flex justify-end gap-2">
               <button
                 onClick={() => setShowReceiptModal(null)}
-                className="px-4 py-2 border border-[#e2e2e5] text-[#64748B] rounded-lg text-xs font-bold"
+                className="px-4 py-2 border border-[#e2e2e5] text-[#777b86] rounded-lg text-xs font-bold"
               >
                 Cerrar
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-4 py-2 bg-[#0F766E] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
+                className="px-4 py-2 bg-[#22201e] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Imprimir Ticket</span>
