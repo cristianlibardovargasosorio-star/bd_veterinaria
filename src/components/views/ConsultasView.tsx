@@ -113,8 +113,8 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#2b1d14] tracking-tight flex items-center gap-2">
-            <Stethoscope className="w-6 h-6 text-[#4a2c18]" />
+          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
+            <Stethoscope className="w-6 h-6 text-[#1e40af]" />
             <span>Consultas Médicas Clínicas (RF08)</span>
           </h2>
           <p className="text-xs text-[#634b3b] mt-0.5">
@@ -128,7 +128,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
             setFormFeedback(null);
             setShowModal(true);
           }}
-          className="px-4 py-2 rounded-xl bg-[#5c3a21] text-[#ffffff] hover:bg-[#5c3a21] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
+          className="px-4 py-2 rounded-xl bg-[#1d4ed8] text-[#ffffff] hover:bg-[#1d4ed8] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Registrar Consulta Médica</span>
@@ -145,16 +145,16 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
           return (
             <div
               key={cons.id_consulta}
-              className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbb8a6] hover:border-[#cbb8a6] transition-all shadow-xs space-y-4"
+              className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] hover:border-[#cbd5e1] transition-all shadow-xs space-y-4"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#dcc3ad] text-[#4a2c18] font-black flex items-center justify-center text-sm">
+                  <div className="w-10 h-10 rounded-xl bg-[#dcc3ad] text-[#1e40af] font-black flex items-center justify-center text-sm">
                     #{cons.id_consulta}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-base text-[#2b1d14]">
+                      <h3 className="font-bold text-base text-[#0f172a]">
                         {pet?.nombre} ({pet?.especie} - {pet?.raza})
                       </h3>
                       <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-[#e3d7ca] text-[#634b3b]">
@@ -187,21 +187,21 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   <Heart className="w-4 h-4 text-rose-500" />
                   <div>
                     <span className="text-[#634b3b] block text-[10px]">Frec. Cardíaca</span>
-                    <strong className="text-[#2b1d14]">{cons.frecuencia_cardiaca || '--'} lpm</strong>
+                    <strong className="text-[#0f172a]">{cons.frecuencia_cardiaca || '--'} lpm</strong>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <Thermometer className="w-4 h-4 text-amber-500" />
                   <div>
                     <span className="text-[#634b3b] block text-[10px]">Temperatura</span>
-                    <strong className="text-[#2b1d14]">{cons.temperatura_c || '--'} °C</strong>
+                    <strong className="text-[#0f172a]">{cons.temperatura_c || '--'} °C</strong>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <Scale className="w-4 h-4 text-teal-600" />
                   <div>
                     <span className="text-[#634b3b] block text-[10px]">Peso Paciente</span>
-                    <strong className="text-[#2b1d14]">{cons.peso_actual} kg</strong>
+                    <strong className="text-[#0f172a]">{cons.peso_actual} kg</strong>
                   </div>
                 </div>
               </div>
@@ -217,10 +217,10 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <span className="font-bold text-[#4a2c18] uppercase text-[10px]">
+                  <span className="font-bold text-[#1e40af] uppercase text-[10px]">
                     Diagnóstico Definitivo
                   </span>
-                  <p className="text-[#2b1d14] font-semibold bg-[#dcc3ad] text-[#4a2c18]/50 p-2.5 rounded-lg border border-emerald-100">
+                  <p className="text-[#0f172a] font-semibold bg-[#dcc3ad] text-[#1e40af]/50 p-2.5 rounded-lg border border-emerald-100">
                     {cons.diagnostico}
                   </p>
                 </div>
@@ -239,8 +239,8 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
                 {ficha ? (
                   <div className="flex items-center gap-2 text-xs">
-                    <span className="flex items-center gap-1 text-[#4a2c18] font-bold bg-[#dcc3ad] text-[#4a2c18] px-2.5 py-1 rounded-lg border border-[#cbb8a6]">
-                      <Sparkles className="w-3.5 h-3.5 text-[#4a2c18]" />
+                    <span className="flex items-center gap-1 text-[#1e40af] font-bold bg-[#dcc3ad] text-[#1e40af] px-2.5 py-1 rounded-lg border border-[#cbd5e1]">
+                      <Sparkles className="w-3.5 h-3.5 text-[#1e40af]" />
                       Ficha IA Generada ({ficha.modelo_utilizado})
                     </span>
                     {ficha.aprobado_por_veterinario && (
@@ -270,10 +270,10 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
       {/* Modal: Registrar Consulta Médica */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#cbb8a6] overflow-hidden max-h-[92vh] flex flex-col">
-            <div className="px-6 py-4 bg-[#e3d7ca] text-[#2b1d14] border-b border-[#cbb8a6] flex items-center justify-between shrink-0">
+          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-2xl w-full border border-[#cbd5e1] overflow-hidden max-h-[92vh] flex flex-col">
+            <div className="px-6 py-4 bg-[#e3d7ca] text-[#0f172a] border-b border-[#cbd5e1] flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
-                <Stethoscope className="w-5 h-5 text-[#4a2c18]" />
+                <Stethoscope className="w-5 h-5 text-[#1e40af]" />
                 <h3 className="font-bold text-base">RF08: Registro de Consulta Médica</h3>
               </div>
               <button
@@ -324,7 +324,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   </div>
 
                   {/* Constantes Vitales */}
-                  <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+                  <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
                     <span className="block font-bold text-[#634b3b] uppercase tracking-wider text-[11px] mb-2">
                       Constantes Vitales del Paciente
                     </span>
@@ -426,13 +426,13 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                       className={`p-3 rounded-lg text-xs font-semibold flex items-center gap-2 ${
                         formFeedback.isError
                           ? 'bg-red-50 text-red-800 border border-red-200'
-                          : 'bg-[#dcc3ad] text-[#4a2c18] border border-[#cbb8a6]'
+                          : 'bg-[#dcc3ad] text-[#1e40af] border border-[#cbd5e1]'
                       }`}
                     >
                       {formFeedback.isError ? (
                         <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
                       ) : (
-                        <CheckCircle2 className="w-4 h-4 shrink-0 text-[#4a2c18]" />
+                        <CheckCircle2 className="w-4 h-4 shrink-0 text-[#1e40af]" />
                       )}
                       <span>{formFeedback.text}</span>
                     </div>
@@ -448,7 +448,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-[#5c3a21] text-[#ffffff] hover:bg-[#5c3a21] text-[#ffffff] rounded-lg text-xs font-bold"
+                      className="px-4 py-2 bg-[#1d4ed8] text-[#ffffff] hover:bg-[#1d4ed8] text-[#ffffff] rounded-lg text-xs font-bold"
                     >
                       Guardar Consulta
                     </button>
@@ -457,11 +457,11 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
               ) : (
                 /* Success Screen with Direct AI Trigger */
                 <div className="py-6 text-center space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-[#dcc3ad] text-[#4a2c18] flex items-center justify-center mx-auto">
+                  <div className="w-16 h-16 rounded-full bg-[#dcc3ad] text-[#1e40af] flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-black text-[#2b1d14]">
+                    <h4 className="text-lg font-black text-[#0f172a]">
                       ¡Consulta Médica #{createdConsultaId} Registrada!
                     </h4>
                     <p className="text-xs text-[#634b3b] max-w-md mx-auto mt-1">
@@ -469,9 +469,9 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-linear-to-r from-emerald-50 to-teal-50 border border-[#cbb8a6] max-w-md mx-auto text-left space-y-2">
+                  <div className="p-4 rounded-xl bg-linear-to-r from-emerald-50 to-teal-50 border border-[#cbd5e1] max-w-md mx-auto text-left space-y-2">
                     <div className="flex items-center gap-2 text-xs font-bold text-emerald-950">
-                      <Sparkles className="w-4 h-4 text-[#4a2c18]" />
+                      <Sparkles className="w-4 h-4 text-[#1e40af]" />
                       <span>Siguiente paso: Ficha Médica con IA (RF10)</span>
                     </div>
                     <p className="text-[11px] text-emerald-900/80">
@@ -488,7 +488,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     </button>
                     <button
                       onClick={() => handleProceedToAI(createdConsultaId)}
-                      className="px-5 py-2.5 bg-[#5c3a21] text-[#ffffff] hover:bg-[#5c3a21] text-[#ffffff] text-xs font-bold rounded-xl flex items-center gap-2 shadow-md "
+                      className="px-5 py-2.5 bg-[#1d4ed8] text-[#ffffff] hover:bg-[#1d4ed8] text-[#ffffff] text-xs font-bold rounded-xl flex items-center gap-2 shadow-md "
                     >
                       <Sparkles className="w-4 h-4" />
                       <span>Generar Ficha con Gemini 3.8 Flash</span>

@@ -2,7 +2,7 @@
 
 @theme {
   /* Steep Design System — Colors */
-  --color-ink-black: #2b1d14;
+  --color-ink-black: #0f172a;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
@@ -10,7 +10,7 @@
   --color-ash-gray: #634b3b;
   --color-smoke-gray: #a3a6af;
   --color-blush-peach: #dcc3ad;
-  --color-sienna-brown: #4a2c18;
+  --color-sienna-brown: #1e40af;
 
   /* Typography â€” Font Families */
   --font-signifier: 'Signifier', 'Source Serif 4', Georgia, Cambria, "Times New Roman", Times, serif;
@@ -69,7 +69,7 @@
 }
 
 :root {
-  --color-ink-black: #2b1d14;
+  --color-ink-black: #0f172a;
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
@@ -77,7 +77,7 @@
   --color-ash-gray: #634b3b;
   --color-smoke-gray: #a3a6af;
   --color-blush-peach: #dcc3ad;
-  --color-sienna-brown: #4a2c18;
+  --color-sienna-brown: #1e40af;
 
   --surface-canvas: #ffffff;
   --surface-card-mist: #f2f2f3;
@@ -93,13 +93,13 @@
   --radius-elevatedcards: 20px;
 
   background-color: #ffffff;
-  color: #2b1d14;
+  color: #0f172a;
   font-family: var(--font-sohne);
 }
 
 body {
   background-color: #ffffff;
-  color: #2b1d14;
+  color: #0f172a;
   font-family: var(--font-sohne);
   margin: 0;
   padding: 0;
@@ -136,9 +136,9 @@ h1, h2, .font-serif-editorial {
 
 /* Steep Component Classes */
 .steep-pill-filled {
-  background-color: #2b1d14;
+  background-color: #0f172a;
   color: #ffffff;
-  border: 1px solid #2b1d14;
+  border: 1px solid #0f172a;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);
@@ -154,8 +154,8 @@ h1, h2, .font-serif-editorial {
 
 .steep-pill-ghost {
   background-color: transparent;
-  color: #2b1d14;
-  border: 1px solid #2b1d14;
+  color: #0f172a;
+  border: 1px solid #0f172a;
   border-radius: 9999px;
   padding: 10px 22px;
   font-family: var(--font-sohne);
@@ -178,7 +178,7 @@ h1, h2, .font-serif-editorial {
 
 .steep-peach-card {
   background-color: #dcc3ad;
-  color: #4a2c18;
+  color: #1e40af;
   border-radius: 24px;
   border: none;
   box-shadow: none;

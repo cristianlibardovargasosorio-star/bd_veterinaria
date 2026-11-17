@@ -114,8 +114,8 @@ export const ReportesIAView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#2b1d14] tracking-tight flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-[#4a2c18]" />
+          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-[#1e40af]" />
             <span>Reportes Ejecutivos e Inteligencia de Negocio con IA (RF11)</span>
           </h2>
           <p className="text-xs text-[#634b3b] mt-0.5">
@@ -150,7 +150,7 @@ export const ReportesIAView: React.FC = () => {
       )}
 
       {/* Control Panel: Parameters */}
-      <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbb8a6] shadow-xs space-y-4">
+      <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs space-y-4">
         <span className="font-bold text-xs text-[#634b3b] uppercase tracking-wider block">
           Parámetros del Análisis Gerencial
         </span>
@@ -193,23 +193,23 @@ export const ReportesIAView: React.FC = () => {
 
         {/* Live Metrics Preview Pill */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-3 border-t border-slate-100 text-xs">
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
             <span className="text-[#634b3b] block text-[10px]">Citas Atendidas</span>
-            <strong className="text-[#2b1d14] text-sm">{totalCitasAtendidas}</strong>
+            <strong className="text-[#0f172a] text-sm">{totalCitasAtendidas}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
             <span className="text-[#634b3b] block text-[10px]">Facturación</span>
-            <strong className="text-[#4a2c18] text-sm">${ingresosTotales.toFixed(2)}</strong>
+            <strong className="text-[#1e40af] text-sm">${ingresosTotales.toFixed(2)}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
             <span className="text-[#634b3b] block text-[10px]">Dosis de Vacunas</span>
-            <strong className="text-[#2b1d14] text-sm">{vacunasAplicadas}</strong>
+            <strong className="text-[#0f172a] text-sm">{vacunasAplicadas}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
             <span className="text-[#634b3b] block text-[10px]">Top Diagnóstico</span>
             <strong className="text-purple-700 text-xs truncate block">{topDiagnosticoFrecuente}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
             <span className="text-[#634b3b] block text-[10px]">Alertas Stock</span>
             <strong className="text-red-600 text-sm">{alertasStockCritico}</strong>
           </div>
@@ -223,12 +223,12 @@ export const ReportesIAView: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-emerald-100 pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#4a2c18] bg-[#dcc3ad] text-[#4a2c18] px-2.5 py-0.5 rounded-full border border-[#cbb8a6]">
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#1e40af] bg-[#dcc3ad] text-[#1e40af] px-2.5 py-0.5 rounded-full border border-[#cbd5e1]">
                     Reporte Ejecutivo IA ({latestReport.tipo_reporte})
                   </span>
                   <span className="text-[11px] font-mono text-[#634b3b]">Gemini 3.8 Flash</span>
                 </div>
-                <h3 className="text-xl font-black text-[#2b1d14] mt-1">
+                <h3 className="text-xl font-black text-[#0f172a] mt-1">
                   Evaluación de Desempeño Clínico y Operativo
                 </h3>
                 <p className="text-xs text-[#634b3b]">
@@ -239,7 +239,7 @@ export const ReportesIAView: React.FC = () => {
 
               <button
                 onClick={() => window.print()}
-                className="px-3.5 py-2 rounded-xl bg-[#5c3a21] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto transition-colors"
+                className="px-3.5 py-2 rounded-xl bg-[#1d4ed8] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto transition-colors"
               >
                 <Printer className="w-4 h-4" />
                 <span>Imprimir Reporte</span>
@@ -247,20 +247,20 @@ export const ReportesIAView: React.FC = () => {
             </div>
 
             {/* Narrative Analysis */}
-            <div className="p-5 rounded-[20px] bg-[#ffffff] border border-[#cbb8a6] space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#2b1d14] uppercase tracking-wider">
-                <BarChart3 className="w-4 h-4 text-[#4a2c18]" />
+            <div className="p-5 rounded-[20px] bg-[#ffffff] border border-[#cbd5e1] space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0f172a] uppercase tracking-wider">
+                <BarChart3 className="w-4 h-4 text-[#1e40af]" />
                 <span>Análisis Narrativo Cuantitativo y Clínico</span>
               </div>
-              <p className="text-xs text-[#2b1d14] leading-relaxed font-sans">
+              <p className="text-xs text-[#0f172a] leading-relaxed font-sans">
                 {latestReport.analisis_narrativo}
               </p>
             </div>
 
             {/* Operational Recommendations */}
-            <div className="p-5 rounded-[20px] bg-linear-to-br from-emerald-50 to-teal-50 border border-[#cbb8a6] space-y-2">
+            <div className="p-5 rounded-[20px] bg-linear-to-br from-emerald-50 to-teal-50 border border-[#cbd5e1] space-y-2">
               <div className="flex items-center gap-2 text-xs font-bold text-emerald-950 uppercase tracking-wider">
-                <Lightbulb className="w-4 h-4 text-[#4a2c18]" />
+                <Lightbulb className="w-4 h-4 text-[#1e40af]" />
                 <span>Estrategias y Recomendaciones Operativas Inmediatas</span>
               </div>
               <div className="text-xs text-emerald-900 leading-relaxed font-medium">
@@ -270,25 +270,25 @@ export const ReportesIAView: React.FC = () => {
 
             {/* Metrics Snapshot */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 text-xs">
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
                 <span className="text-[#634b3b] block text-[10px]">Citas Procesadas</span>
-                <span className="font-black text-lg text-[#2b1d14]">
+                <span className="font-black text-lg text-[#0f172a]">
                   {latestReport.metricas_json.total_citas_atendidas}
                 </span>
               </div>
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
                 <span className="text-[#634b3b] block text-[10px]">Ingresos del Periodo</span>
-                <span className="font-black text-lg text-[#4a2c18]">
+                <span className="font-black text-lg text-[#1e40af]">
                   ${latestReport.metricas_json.ingresos_totales.toLocaleString()}
                 </span>
               </div>
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
                 <span className="text-[#634b3b] block text-[10px]">Vacunas Aplicadas</span>
-                <span className="font-black text-lg text-[#2b1d14]">
+                <span className="font-black text-lg text-[#0f172a]">
                   {latestReport.metricas_json.vacunas_aplicadas}
                 </span>
               </div>
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbb8a6]">
+              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
                 <span className="text-[#634b3b] block text-[10px]">Alertas de Stock</span>
                 <span className="font-black text-lg text-red-600">
                   {latestReport.metricas_json.alertas_stock_critico}
@@ -297,7 +297,7 @@ export const ReportesIAView: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <div className="pt-4 border-t border-[#cbb8a6] flex items-center justify-between text-xs text-[#634b3b]">
+            <div className="pt-4 border-t border-[#cbd5e1] flex items-center justify-between text-xs text-[#634b3b]">
               <span>Registrado en tabla reportes_ejecutivos_ia</span>
               <span>Generado: {new Date(latestReport.fecha_generacion).toLocaleString()}</span>
             </div>
@@ -307,16 +307,16 @@ export const ReportesIAView: React.FC = () => {
 
       {/* Historical Reports */}
       {reportesIA.length > 1 && (
-        <div className="bg-[#ffffff] rounded-[20px] border border-[#cbb8a6] p-5 shadow-xs space-y-3">
-          <h3 className="font-bold text-sm text-[#2b1d14]">Historial de Reportes Generados</h3>
+        <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-5 shadow-xs space-y-3">
+          <h3 className="font-bold text-sm text-[#0f172a]">Historial de Reportes Generados</h3>
           <div className="space-y-2">
             {reportesIA.slice(0, -1).map((rep) => (
               <div
                 key={rep.id_reporte}
-                className="p-3.5 rounded-xl border border-[#cbb8a6] hover:bg-[#ffffff] transition-all text-xs space-y-1"
+                className="p-3.5 rounded-xl border border-[#cbd5e1] hover:bg-[#ffffff] transition-all text-xs space-y-1"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-[#2b1d14]">
+                  <span className="font-bold text-[#0f172a]">
                     Reporte #{rep.id_reporte} ({rep.tipo_reporte})
                   </span>
                   <span className="text-[#634b3b]">{new Date(rep.fecha_generacion).toLocaleDateString()}</span>

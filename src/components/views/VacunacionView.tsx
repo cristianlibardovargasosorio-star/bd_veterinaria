@@ -120,8 +120,8 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#2b1d14] tracking-tight flex items-center gap-2">
-            <Syringe className="w-6 h-6 text-[#4a2c18]" />
+          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
+            <Syringe className="w-6 h-6 text-[#1e40af]" />
             <span>Control de Vacunas y Carné Digital (RF09)</span>
           </h2>
           <p className="text-xs text-[#634b3b] mt-0.5">
@@ -152,7 +152,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 });
                 setShowApplyModal(true);
               }}
-              className="px-4 py-2 rounded-xl bg-[#5c3a21] text-[#ffffff] hover:bg-[#5c3a21] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
+              className="px-4 py-2 rounded-xl bg-[#1d4ed8] text-[#ffffff] hover:bg-[#1d4ed8] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
             >
               <Plus className="w-4 h-4" />
               <span>Aplicar Vacuna</span>
@@ -162,9 +162,9 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
       </div>
 
       {/* Pet Selector */}
-      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#cbb8a6] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <PawPrint className="w-4 h-4 text-[#4a2c18]" />
+          <PawPrint className="w-4 h-4 text-[#1e40af]" />
           <span className="text-xs font-bold text-[#634b3b]">Seleccionar Paciente para Carné:</span>
         </div>
 
@@ -186,7 +186,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
         <div className="bg-[#ffffff] rounded-[24px] border-2 border-emerald-400 p-6 md:p-8 shadow-lg relative overflow-hidden">
           {/* Watermark badge */}
           <div className="absolute right-4 top-4 opacity-10 pointer-events-none">
-            <Syringe className="w-48 h-48 text-[#4a2c18]" />
+            <Syringe className="w-48 h-48 text-[#1e40af]" />
           </div>
 
           {/* Card Header */}
@@ -196,25 +196,25 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 {activePet.especie === 'Canino' ? '🐕' : '🐈'}
               </div>
               <div>
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4a2c18] bg-[#dcc3ad] text-[#4a2c18] px-2.5 py-0.5 rounded-full border border-[#cbb8a6]">
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#1e40af] bg-[#dcc3ad] text-[#1e40af] px-2.5 py-0.5 rounded-full border border-[#cbd5e1]">
                   Carné Oficial Digital de Inmunización
                 </span>
-                <h3 className="text-2xl font-black text-[#2b1d14] mt-1">{activePet.nombre}</h3>
+                <h3 className="text-2xl font-black text-[#0f172a] mt-1">{activePet.nombre}</h3>
                 <p className="text-xs text-[#634b3b] font-mono">
-                  Expediente: <strong className="text-[#2b1d14]">{activePet.codigo_expediente}</strong> • Microchip:{' '}
-                  <strong className="text-[#2b1d14]">{activePet.microchip_id || 'Sin microchip'}</strong>
+                  Expediente: <strong className="text-[#0f172a]">{activePet.codigo_expediente}</strong> • Microchip:{' '}
+                  <strong className="text-[#0f172a]">{activePet.microchip_id || 'Sin microchip'}</strong>
                 </p>
               </div>
             </div>
 
             {/* QR Simulation & Status */}
-            <div className="flex items-center gap-4 bg-[#ffffff] p-3 rounded-[20px] border border-[#cbb8a6]">
+            <div className="flex items-center gap-4 bg-[#ffffff] p-3 rounded-[20px] border border-[#cbd5e1]">
               <div className="w-14 h-14 bg-[#ffffff] p-1 rounded-xl border border-[#e2e2e5] flex items-center justify-center shadow-xs">
-                <QrCode className="w-12 h-12 text-[#2b1d14]" />
+                <QrCode className="w-12 h-12 text-[#0f172a]" />
               </div>
               <div className="text-xs">
                 <span className="text-[#634b3b] block text-[10px]">Tutor Registrado:</span>
-                <span className="font-bold text-[#2b1d14]">
+                <span className="font-bold text-[#0f172a]">
                   {activeOwner ? `${activeOwner.nombres} ${activeOwner.apellidos}` : 'N/A'}
                 </span>
                 <span className="text-[10px] text-[#634b3b] block">CC: {activeOwner?.cedula_documento}</span>
@@ -225,21 +225,21 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
           {/* Doses Table */}
           <div className="mt-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-bold text-sm text-[#2b1d14] uppercase tracking-wider">
+              <h4 className="font-bold text-sm text-[#0f172a] uppercase tracking-wider">
                 Registro de Dosis y Biológicos Aplicados
               </h4>
               <span className="text-xs text-[#634b3b] font-semibold">{petDoses.length} dosis registradas</span>
             </div>
 
             {petDoses.length === 0 ? (
-              <div className="p-8 text-center bg-[#ffffff] rounded-[20px] border border-[#cbb8a6] text-xs text-[#634b3b]">
+              <div className="p-8 text-center bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] text-xs text-[#634b3b]">
                 Este paciente no registra vacunas aplicadas en el sistema.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-[#cbb8a6] text-[11px] font-bold text-[#634b3b] uppercase tracking-wider bg-[#ffffff]">
+                    <tr className="border-b border-[#cbd5e1] text-[11px] font-bold text-[#634b3b] uppercase tracking-wider bg-[#ffffff]">
                       <th className="py-2.5 px-3">Biológico / Vacuna</th>
                       <th className="py-2.5 px-3">Laboratorio / Marca</th>
                       <th className="py-2.5 px-3 font-mono">Lote</th>
@@ -255,7 +255,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                       const vet = veterinarios.find((v) => v.id_veterinario === dose.id_veterinario);
 
                       // Status of booster
-                      let statusBadge = { label: 'Al Día', bg: 'bg-[#dcc3ad] text-[#4a2c18]' };
+                      let statusBadge = { label: 'Al Día', bg: 'bg-[#dcc3ad] text-[#1e40af]' };
                       if (dose.fecha_refuerzo) {
                         const boosterDate = new Date(dose.fecha_refuerzo);
                         const diffDays = Math.ceil((boosterDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
@@ -272,11 +272,11 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
 
                       return (
                         <tr key={dose.id_historia_vacuna} className="hover:bg-[#ffffff]/60">
-                          <td className="py-3 px-3 font-bold text-[#2b1d14]">{vac?.nombre || 'Vacuna'}</td>
+                          <td className="py-3 px-3 font-bold text-[#0f172a]">{vac?.nombre || 'Vacuna'}</td>
                           <td className="py-3 px-3 text-[#634b3b]">{vac?.marca || 'N/A'}</td>
-                          <td className="py-3 px-3 font-mono font-bold text-[#4a2c18]">{dose.lote}</td>
+                          <td className="py-3 px-3 font-mono font-bold text-[#1e40af]">{dose.lote}</td>
                           <td className="py-3 px-3 text-[#634b3b]">{dose.fecha_aplicacion}</td>
-                          <td className="py-3 px-3 font-bold text-[#2b1d14]">{dose.fecha_refuerzo || 'N/A'}</td>
+                          <td className="py-3 px-3 font-bold text-[#0f172a]">{dose.fecha_refuerzo || 'N/A'}</td>
                           <td className="py-3 px-3">
                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${statusBadge.bg}`}>
                               {statusBadge.label}
@@ -295,13 +295,13 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
           </div>
 
           {/* Professional Seal / Footer */}
-          <div className="mt-8 pt-6 border-t border-[#cbb8a6] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-[#634b3b]">
+          <div className="mt-8 pt-6 border-t border-[#cbd5e1] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-[#634b3b]">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#4a2c18]" />
+              <ShieldCheck className="w-5 h-5 text-[#1e40af]" />
               <span>Certificado digital avalado por la Dirección Médica de VETSOFT.</span>
             </div>
             <div className="text-right">
-              <span className="block font-bold text-[#2b1d14]">Clínica Veterinaria Central</span>
+              <span className="block font-bold text-[#0f172a]">Clínica Veterinaria Central</span>
               <span className="text-[10px] text-[#634b3b]">Generado el: {new Date().toLocaleDateString()}</span>
             </div>
           </div>
@@ -311,10 +311,10 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
       {/* Modal: Aplicar Vacuna */}
       {showApplyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-lg w-full border border-[#cbb8a6] overflow-hidden">
-            <div className="px-6 py-4 bg-[#e3d7ca] text-[#2b1d14] border-b border-[#cbb8a6] flex items-center justify-between">
+          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-lg w-full border border-[#cbd5e1] overflow-hidden">
+            <div className="px-6 py-4 bg-[#e3d7ca] text-[#0f172a] border-b border-[#cbd5e1] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Syringe className="w-5 h-5 text-[#4a2c18]" />
+                <Syringe className="w-5 h-5 text-[#1e40af]" />
                 <h3 className="font-bold text-base">RF09: Aplicación de Vacuna</h3>
               </div>
               <button
@@ -328,7 +328,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
             <form onSubmit={handleApply} className="p-6 space-y-4 text-xs">
               <div>
                 <label className="block font-semibold text-[#634b3b] mb-1">Paciente</label>
-                <div className="p-2 bg-[#ffffff] border border-[#cbb8a6] rounded-lg font-bold text-[#2b1d14]">
+                <div className="p-2 bg-[#ffffff] border border-[#cbd5e1] rounded-lg font-bold text-[#0f172a]">
                   {activePet?.nombre} ({activePet?.especie}) - {activePet?.codigo_expediente}
                 </div>
               </div>
@@ -397,7 +397,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                     required
                     value={vacForm.fecha_refuerzo}
                     onChange={(e) => setVacForm({ ...vacForm, fecha_refuerzo: e.target.value })}
-                    className="w-full p-2 border border-[#cbb8a6] rounded-lg bg-[#dcc3ad] text-[#4a2c18]/50 font-bold"
+                    className="w-full p-2 border border-[#cbd5e1] rounded-lg bg-[#dcc3ad] text-[#1e40af]/50 font-bold"
                   />
                 </div>
               </div>
@@ -418,13 +418,13 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                   className={`p-3 rounded-lg text-xs font-semibold flex items-center gap-2 ${
                     feedback.isError
                       ? 'bg-red-50 text-red-800 border border-red-200'
-                      : 'bg-[#dcc3ad] text-[#4a2c18] border border-[#cbb8a6]'
+                      : 'bg-[#dcc3ad] text-[#1e40af] border border-[#cbd5e1]'
                   }`}
                 >
                   {feedback.isError ? (
                     <AlertTriangle className="w-4 h-4 shrink-0 text-red-600" />
                   ) : (
-                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#4a2c18]" />
+                    <CheckCircle2 className="w-4 h-4 shrink-0 text-[#1e40af]" />
                   )}
                   <span>{feedback.text}</span>
                 </div>
@@ -440,7 +440,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#5c3a21] text-[#ffffff] hover:bg-[#5c3a21] text-[#ffffff] rounded-lg font-bold"
+                  className="px-4 py-2 bg-[#1d4ed8] text-[#ffffff] hover:bg-[#1d4ed8] text-[#ffffff] rounded-lg font-bold"
                 >
                   Registrar en Carné
                 </button>

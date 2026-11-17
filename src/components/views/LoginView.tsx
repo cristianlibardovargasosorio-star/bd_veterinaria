@@ -125,7 +125,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
           particleCount: 45,
           spread: 55,
           origin: { y: 0.6 },
-          colors: ['#2b1d14', '#dcc3ad', '#4a2c18'],
+          colors: ['#0f172a', '#dcc3ad', '#1e40af'],
         });
       } catch (e) {
         // ignore confetti errors
@@ -139,16 +139,16 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
   };
 
   return (
-    <div className="min-h-screen relative z-10 bg-transparent text-[#2b1d14] flex flex-col justify-between selection:bg-[#dcc3ad] selection:text-[#4a2c18]">
+    <div className="min-h-screen relative z-10 bg-transparent text-[#0f172a] flex flex-col justify-between selection:bg-[#dcc3ad] selection:text-[#1e40af]">
       {/* Whisper-quiet Editorial Top Navigation */}
       <div className="max-w-[1200px] w-full mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#5c3a21] flex items-center justify-center text-[#ffffff]">
+          <div className="w-9 h-9 rounded-full bg-[#1d4ed8] flex items-center justify-center text-[#ffffff]">
             <Lock className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="font-serif-editorial text-xl tracking-tight text-[#2b1d14]">VetSoft</span>
+              <span className="font-serif-editorial text-xl tracking-tight text-[#0f172a]">VetSoft</span>
               <span className="text-[13px] text-[#634b3b] font-normal">
                 Módulo 1 · Autenticación RF-01
               </span>
@@ -158,7 +158,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
         <button
           onClick={onReturnToLanding}
-          className="flex items-center gap-2 text-sm text-[#2b1d14] bg-transparent hover:bg-[#e3d7ca] px-5 py-2 rounded-full border border-[#2b1d14] transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-sm text-[#0f172a] bg-transparent hover:bg-[#e3d7ca] px-5 py-2 rounded-full border border-[#0f172a] transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver al Sitio</span>
@@ -174,7 +174,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
               Seguridad & Control RBAC · Spring Security 6
             </div>
 
-            <h1 className="font-serif-editorial text-4xl sm:text-5xl text-[#2b1d14] tracking-tight leading-[1.18]">
+            <h1 className="font-serif-editorial text-4xl sm:text-5xl text-[#0f172a] tracking-tight leading-[1.18]">
               Acceso clínico con <span className="italic">integridad</span> criptográfica.
             </h1>
 
@@ -183,12 +183,12 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
             </p>
 
             {/* Rare Accent Peach Card (1 per page max as per Steep rules) */}
-            <div className="p-6 rounded-[24px] bg-[#dcc3ad] text-[#4a2c18] space-y-3">
-              <div className="flex items-center gap-2 text-sm font-medium text-[#4a2c18]">
-                <ShieldCheck className="w-4 h-4 text-[#4a2c18]" />
+            <div className="p-6 rounded-[24px] bg-[#dcc3ad] text-[#1e40af] space-y-3">
+              <div className="flex items-center gap-2 text-sm font-medium text-[#1e40af]">
+                <ShieldCheck className="w-4 h-4 text-[#1e40af]" />
                 <span>Criterios de Aceptación RF-01</span>
               </div>
-              <ul className="text-xs text-[#4a2c18] space-y-1.5 leading-relaxed">
+              <ul className="text-xs text-[#1e40af] space-y-1.5 leading-relaxed">
                 <li>1. Validación previa de formato de correo electrónico (RFC 5322).</li>
                 <li>2. Verificación de hash BCrypt en PostgreSQL sin exponer contraseñas.</li>
                 <li>3. Redirección automática según rol ENUM (Administrador, Veterinario, Propietario).</li>
@@ -202,30 +202,30 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
               {/* SUCCESS OVERLAY */}
               {successInfo && (
                 <div className="absolute inset-0 z-20 bg-[#ffffff]/98 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-in fade-in duration-200">
-                  <div className="w-12 h-12 rounded-full bg-[#dcc3ad] text-[#4a2c18] flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-[#dcc3ad] text-[#1e40af] flex items-center justify-center">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div className="space-y-1">
                     <span className="text-[12px] text-[#634b3b]">
                       Sesión verificada en PostgreSQL
                     </span>
-                    <h3 className="font-serif-editorial text-2xl text-[#2b1d14] pt-1">
+                    <h3 className="font-serif-editorial text-2xl text-[#0f172a] pt-1">
                       Bienvenido, {successInfo.email}
                     </h3>
                     <p className="text-xs text-[#634b3b]">
-                      Rol autenticado: <strong className="text-[#2b1d14]">{successInfo.role}</strong>
+                      Rol autenticado: <strong className="text-[#0f172a]">{successInfo.role}</strong>
                     </p>
                   </div>
                   <div className="p-4 rounded-[16px] bg-[#e3d7ca] text-xs text-[#634b3b] w-full max-w-sm">
                     <span>Redirigiendo al panel asignado:</span>
-                    <strong className="block text-[#2b1d14] mt-1">{successInfo.panelName}</strong>
+                    <strong className="block text-[#0f172a] mt-1">{successInfo.panelName}</strong>
                   </div>
                 </div>
               )}
 
-              <div className="flex items-center justify-between pb-5 mb-6 border-b border-[#cbb8a6]">
+              <div className="flex items-center justify-between pb-5 mb-6 border-b border-[#cbd5e1]">
                 <div>
-                  <h2 className="font-serif-editorial text-2xl text-[#2b1d14]">Iniciar Sesión</h2>
+                  <h2 className="font-serif-editorial text-2xl text-[#0f172a]">Iniciar Sesión</h2>
                   <p className="text-xs text-[#634b3b] mt-1">Ingrese su correo electrónico y contraseña</p>
                 </div>
                 <span className="text-xs text-[#634b3b] font-mono">
@@ -245,7 +245,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     className="p-3 rounded-[16px] text-left bg-[#e3d7ca] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-[#634b3b]">
-                      <span className="text-[11px] font-medium text-[#2b1d14]">ADMINISTRADOR</span>
+                      <span className="text-[11px] font-medium text-[#0f172a]">ADMINISTRADOR</span>
                       <Shield className="w-3.5 h-3.5" />
                     </div>
                     <div className="text-xs text-[#634b3b] truncate mt-1">admin@vetsoft.com</div>
@@ -257,7 +257,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     className="p-3 rounded-[16px] text-left bg-[#e3d7ca] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-[#634b3b]">
-                      <span className="text-[11px] font-medium text-[#2b1d14]">VETERINARIO</span>
+                      <span className="text-[11px] font-medium text-[#0f172a]">VETERINARIO</span>
                       <Stethoscope className="w-3.5 h-3.5" />
                     </div>
                     <div className="text-xs text-[#634b3b] truncate mt-1">camilo.vet@vetsoft.com</div>
@@ -269,7 +269,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     className="p-3 rounded-[16px] text-left bg-[#e3d7ca] hover:bg-[#e8e8ea] transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-[#634b3b]">
-                      <span className="text-[11px] font-medium text-[#2b1d14]">PROPIETARIO</span>
+                      <span className="text-[11px] font-medium text-[#0f172a]">PROPIETARIO</span>
                       <Sparkles className="w-3.5 h-3.5" />
                     </div>
                     <div className="text-xs text-[#634b3b] truncate mt-1">carlos.mendoza...</div>
@@ -282,7 +282,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                 {/* Email Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-medium text-[#2b1d14] flex items-center gap-1.5">
+                    <label className="text-xs font-medium text-[#0f172a] flex items-center gap-1.5">
                       <Mail className="w-3.5 h-3.5 text-[#634b3b]" />
                       <span>Correo Electrónico</span>
                     </label>
@@ -294,15 +294,15 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     value={email}
                     onChange={(e) => handleEmailChange(e.target.value)}
                     placeholder="nombre@clinica.com"
-                    className={`w-full px-4 py-3 rounded-[16px] bg-[#ffffff] border text-[#2b1d14] placeholder-[#a3a6af] text-sm outline-none transition-colors ${
+                    className={`w-full px-4 py-3 rounded-[16px] bg-[#ffffff] border text-[#0f172a] placeholder-[#a3a6af] text-sm outline-none transition-colors ${
                       emailError
-                        ? 'border-[#4a2c18] bg-[#dcc3ad]/20'
-                        : 'border-[#cbb8a6] focus:border-[#2b1d14]'
+                        ? 'border-[#1e40af] bg-[#dcc3ad]/20'
+                        : 'border-[#cbd5e1] focus:border-[#0f172a]'
                     }`}
                   />
 
                   {emailError && (
-                    <div className="mt-1.5 flex items-center gap-1.5 text-[#4a2c18] text-xs">
+                    <div className="mt-1.5 flex items-center gap-1.5 text-[#1e40af] text-xs">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       <span>{emailError}</span>
                     </div>
@@ -312,7 +312,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                 {/* Password Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-medium text-[#2b1d14] flex items-center gap-1.5">
+                    <label className="text-xs font-medium text-[#0f172a] flex items-center gap-1.5">
                       <KeyRound className="w-3.5 h-3.5 text-[#634b3b]" />
                       <span>Contraseña</span>
                     </label>
@@ -328,13 +328,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                         setLoginError(null);
                       }}
                       placeholder="••••••••••••"
-                      className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-[#ffffff] border border-[#cbb8a6] focus:border-[#2b1d14] text-[#2b1d14] placeholder-[#a3a6af] outline-none text-sm transition-colors"
+                      className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-[#ffffff] border border-[#cbd5e1] focus:border-[#0f172a] text-[#0f172a] placeholder-[#a3a6af] outline-none text-sm transition-colors"
                     />
 
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#634b3b] hover:text-[#2b1d14] transition-colors cursor-pointer"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#634b3b] hover:text-[#0f172a] transition-colors cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -343,8 +343,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
                 {/* Error Banner */}
                 {loginError && (
-                  <div className="p-3.5 rounded-[16px] bg-[#dcc3ad] text-[#4a2c18] text-xs flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0 text-[#4a2c18] mt-0.5" />
+                  <div className="p-3.5 rounded-[16px] bg-[#dcc3ad] text-[#1e40af] text-xs flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-[#1e40af] mt-0.5" />
                     <div>
                       <strong className="block font-medium">Aviso de Autenticación:</strong>
                       <span>{loginError}</span>
@@ -357,7 +357,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="submit"
                     disabled={isSubmitting || !!emailError || !email.trim() || !password.trim()}
-                    className="flex-1 py-3 px-6 bg-[#5c3a21] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 py-3 px-6 bg-[#1d4ed8] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
@@ -375,7 +375,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={onReturnToLanding}
-                    className="py-3 px-6 bg-transparent hover:bg-[#e3d7ca] text-[#2b1d14] border border-[#2b1d14] font-normal text-sm rounded-full transition-colors cursor-pointer"
+                    className="py-3 px-6 bg-transparent hover:bg-[#e3d7ca] text-[#0f172a] border border-[#0f172a] font-normal text-sm rounded-full transition-colors cursor-pointer"
                   >
                     Cancelar
                   </button>
@@ -383,7 +383,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
               </form>
 
               {/* Tech Architecture Footnote */}
-              <div className="mt-6 pt-4 border-t border-[#cbb8a6] text-[12px] text-[#634b3b] flex flex-wrap items-center justify-between gap-2">
+              <div className="mt-6 pt-4 border-t border-[#cbd5e1] text-[12px] text-[#634b3b] flex flex-wrap items-center justify-between gap-2">
                 <span>PostgreSQL · Spring Security 6</span>
                 <span>BCryptPasswordEncoder (strength 12)</span>
               </div>

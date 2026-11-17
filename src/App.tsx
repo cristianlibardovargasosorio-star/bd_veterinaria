@@ -97,7 +97,7 @@ export default function App() {
           onOpenLogin={handleOpenLogin}
         />
       ) : (
-        <div className="min-h-screen relative z-10 bg-transparent flex flex-col font-sans text-[#2b1d14] antialiased selection:bg-[#F0FDFA] selection:text-[#0D9488]">
+        <div className="min-h-screen relative z-10 bg-transparent flex flex-col font-sans text-[#0f172a] antialiased selection:bg-[#F0FDFA] selection:text-[#0D9488]">
           {/* Top Navbar */}
           <Navbar
             onOpenTraceability={() => setShowTraceability(true)}

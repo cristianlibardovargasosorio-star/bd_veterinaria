@@ -45,7 +45,7 @@ export const AuditoriaSRSView: React.FC = () => {
   });
 
   const opBadges: Record<OperacionAuditoria, { bg: string; text: string }> = {
-    INSERT: { bg: 'bg-[#dcc3ad] text-[#4a2c18]', text: 'text-[#4a2c18]' },
+    INSERT: { bg: 'bg-[#dcc3ad] text-[#1e40af]', text: 'text-[#1e40af]' },
     UPDATE: { bg: 'bg-blue-100', text: 'text-blue-800' },
     DELETE: { bg: 'bg-red-100', text: 'text-red-800' },
   };
@@ -55,8 +55,8 @@ export const AuditoriaSRSView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#2b1d14] tracking-tight flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-[#4a2c18]" />
+          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
+            <ShieldCheck className="w-6 h-6 text-[#1e40af]" />
             <span>Auditoría del Sistema y Garantías ACID (Script 02)</span>
           </h2>
           <p className="text-xs text-[#634b3b] mt-0.5">
@@ -65,15 +65,15 @@ export const AuditoriaSRSView: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#dcc3ad] text-[#4a2c18] border border-[#cbb8a6] text-xs font-bold">
-            <Database className="w-4 h-4 text-[#4a2c18]" />
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#dcc3ad] text-[#1e40af] border border-[#cbd5e1] text-xs font-bold">
+            <Database className="w-4 h-4 text-[#1e40af]" />
             <span>{auditoria.length} Eventos Auditados</span>
           </div>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#cbb8a6] shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between">
+      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between">
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 text-[#634b3b] absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -81,7 +81,7 @@ export const AuditoriaSRSView: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar en detalles o usuario..."
-            className="w-full pl-9 pr-3 py-2 rounded-xl border border-[#cbb8a6] text-xs focus:outline-hidden"
+            className="w-full pl-9 pr-3 py-2 rounded-xl border border-[#cbd5e1] text-xs focus:outline-hidden"
           />
         </div>
 
@@ -114,11 +114,11 @@ export const AuditoriaSRSView: React.FC = () => {
       </div>
 
       {/* Log Table */}
-      <div className="bg-[#ffffff] rounded-[20px] border border-[#cbb8a6] shadow-xs overflow-hidden">
+      <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b border-[#cbb8a6] text-[#634b3b] bg-[#ffffff] font-bold uppercase tracking-wider text-[11px]">
+              <tr className="border-b border-[#cbd5e1] text-[#634b3b] bg-[#ffffff] font-bold uppercase tracking-wider text-[11px]">
                 <th className="py-3 px-4">ID</th>
                 <th className="py-3 px-4">Fecha y Hora</th>
                 <th className="py-3 px-4">Usuario</th>
@@ -129,7 +129,7 @@ export const AuditoriaSRSView: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredLogs.map((log) => {
-                const badge = opBadges[log.operacion] || { bg: 'bg-[#e3d7ca]', text: 'text-[#2b1d14]' };
+                const badge = opBadges[log.operacion] || { bg: 'bg-[#e3d7ca]', text: 'text-[#0f172a]' };
 
                 return (
                   <tr key={log.id_auditoria} className="hover:bg-[#ffffff]/80">
@@ -139,11 +139,11 @@ export const AuditoriaSRSView: React.FC = () => {
                     <td className="py-3 px-4 text-[#634b3b] font-mono text-[11px] whitespace-nowrap">
                       {new Date(log.fecha).toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 font-medium text-[#2b1d14] whitespace-nowrap">
+                    <td className="py-3 px-4 font-medium text-[#0f172a] whitespace-nowrap">
                       {log.usuario_nombre || `ID #${log.id_usuario}`}
                     </td>
                     <td className="py-3 px-4">
-                      <code className="px-2 py-0.5 rounded bg-[#e3d7ca] text-[#4a2c18] font-mono font-bold text-[11px]">
+                      <code className="px-2 py-0.5 rounded bg-[#e3d7ca] text-[#1e40af] font-mono font-bold text-[11px]">
                         {log.tabla_afectada}
                       </code>
                     </td>
