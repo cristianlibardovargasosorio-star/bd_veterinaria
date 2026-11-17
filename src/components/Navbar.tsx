@@ -79,8 +79,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="w-9 h-9 rounded-full bg-[#fbe1d1] flex items-center justify-center text-[#5d2a1a] shrink-0">
-            <Stethoscope size={18} className="w-[18px] h-[18px] text-[#5d2a1a] shrink-0" strokeWidth={2} />
+          <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff] shrink-0">
+            <Stethoscope size={18} className="w-[18px] h-[18px] text-[#ffffff] shrink-0" strokeWidth={2} />
           </div>
           <div className="whitespace-nowrap">
             <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               title={`${vwAlertasStock.length} producto(s) en stock crítico o agotado`}
               className="hidden lg:flex items-center gap-1.5 px-3 py-2 rounded-full bg-[#fbe1d1] text-[#5d2a1a] text-xs font-medium whitespace-nowrap"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5d2a1a]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#17191c]" />
               <span>{vwAlertasStock.length} Alertas</span>
             </div>
           )}
@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#5d2a1a] text-[#ffffff] text-xs font-normal hover:opacity-90 transition-all cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#17191c] text-[#ffffff] text-xs font-normal hover:opacity-90 transition-all cursor-pointer whitespace-nowrap"
             >
               <RoleIcon className="w-3.5 h-3.5 text-[#fbe1d1]" />
               <span className="hidden sm:inline">{currentBadge.label}</span>
@@ -224,7 +224,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="flex items-center gap-1 bg-[#f2f2f3] p-1 rounded-full">
                 <button
                   onClick={handleReset}
-                  className="px-3 py-1 bg-[#5d2a1a] text-[#ffffff] rounded-full text-[11px] font-normal transition-colors cursor-pointer"
+                  className="px-3 py-1 bg-[#17191c] text-[#ffffff] rounded-full text-[11px] font-normal transition-colors cursor-pointer"
                 >
                   Confirmar
                 </button>

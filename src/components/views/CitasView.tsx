@@ -126,7 +126,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
 
         <button
           onClick={() => setShowModal(true)}
-          className="px-4 py-2 rounded-xl bg-[#5d2a1a] text-[#ffffff] hover:bg-[#5d2a1a] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
+          className="px-4 py-2 rounded-xl bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Nueva Cita Médica</span>
@@ -141,7 +141,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
             onClick={() => setFilterEstado(st)}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-colors ${
               filterEstado === st
-                ? 'bg-[#5d2a1a] text-[#ffffff] shadow-xs'
+                ? 'bg-[#17191c] text-[#ffffff] shadow-xs'
                 : 'bg-[#ffffff] text-[#777b86] hover:bg-[#f2f2f3] border border-[#ececec]'
             }`}
           >
@@ -167,7 +167,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
               className="p-4 bg-[#ffffff] rounded-[20px] border border-[#ececec] hover:border-[#ececec] transition-all shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-[#5d2a1a] text-[#ffffff] flex flex-col items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-xl bg-[#17191c] text-[#ffffff] flex flex-col items-center justify-center shrink-0">
                   <span className="text-[10px] font-bold uppercase text-[#5d2a1a]">
                     {dateObj.toLocaleDateString([], { month: 'short' })}
                   </span>
@@ -244,7 +244,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
                           }
                           onNavigateTab('consultas');
                         }}
-                        className="px-3.5 py-1.5 bg-[#5d2a1a] text-[#ffffff] hover:bg-[#5d2a1a] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
+                        className="px-3.5 py-1.5 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
                       >
                         <Stethoscope className="w-3.5 h-3.5" />
                         <span>Atender (RF08)</span>
@@ -402,7 +402,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#5d2a1a] text-[#ffffff] hover:bg-[#5d2a1a] text-[#ffffff] rounded-lg text-xs font-bold"
+                  className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-lg text-xs font-bold"
                 >
                   Programar Cita
                 </button>

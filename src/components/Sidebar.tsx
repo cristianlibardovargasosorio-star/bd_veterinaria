@@ -161,14 +161,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
               onClick={() => setActiveTab(item.id)}
               className={`shrink-0 md:shrink md:w-full flex items-center justify-between px-3.5 py-2.5 rounded-[16px] text-left transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-[#fbe1d1] text-[#5d2a1a]'
+                  ? 'bg-[#17191c] text-[#ffffff]'
                   : 'bg-transparent text-[#17191c] hover:bg-[#f2f2f3]'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <Icon
                   className={`w-4 h-4 shrink-0 ${
-                    isActive ? 'text-[#5d2a1a]' : 'text-[#777b86]'
+                    isActive ? 'text-[#fbe1d1]' : 'text-[#777b86]'
                   }`}
                 />
                 <div className="min-w-0">
@@ -177,7 +177,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
                   </div>
                   <div
                     className={`hidden md:block text-[10px] mt-0.5 leading-tight truncate ${
-                      isActive ? 'text-[#5d2a1a]/80' : 'text-[#777b86]'
+                      isActive ? 'text-[#a3a6af]' : 'text-[#777b86]'
                     }`}
                   >
                     {item.sublabel}

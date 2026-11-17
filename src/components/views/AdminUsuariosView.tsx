@@ -311,7 +311,7 @@ export const AdminUsuariosView: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-5 rounded-full bg-[#5d2a1a] hover:bg-[#471f13] text-[#ffffff] text-sm font-medium transition-colors disabled:opacity-60 cursor-pointer"
+              className="w-full py-2.5 px-5 rounded-full bg-[#17191c] hover:bg-[#272a30] text-[#ffffff] text-sm font-medium transition-colors disabled:opacity-60 cursor-pointer"
             >
               {isSubmitting ? 'Registrando...' : 'Registrar usuario interno'}
             </button>

@@ -152,7 +152,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 });
                 setShowApplyModal(true);
               }}
-              className="px-4 py-2 rounded-xl bg-[#5d2a1a] text-[#ffffff] hover:bg-[#5d2a1a] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
+              className="px-4 py-2 rounded-xl bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
             >
               <Plus className="w-4 h-4" />
               <span>Aplicar Vacuna</span>
@@ -440,7 +440,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#5d2a1a] text-[#ffffff] hover:bg-[#5d2a1a] text-[#ffffff] rounded-lg font-bold"
+                  className="px-4 py-2 bg-[#17191c] text-[#ffffff] hover:bg-[#17191c] text-[#ffffff] rounded-lg font-bold"
                 >
                   Registrar en Carné
                 </button>

@@ -143,7 +143,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
       {/* Whisper-quiet Editorial Top Navigation */}
       <div className="max-w-[1200px] w-full mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#5d2a1a] flex items-center justify-center text-[#ffffff]">
+          <div className="w-9 h-9 rounded-full bg-[#17191c] flex items-center justify-center text-[#ffffff]">
             <Lock className="w-4 h-4" />
           </div>
           <div>
@@ -357,7 +357,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="submit"
                     disabled={isSubmitting || !!emailError || !email.trim() || !password.trim()}
-                    className="flex-1 py-3 px-6 bg-[#5d2a1a] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 py-3 px-6 bg-[#17191c] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>
