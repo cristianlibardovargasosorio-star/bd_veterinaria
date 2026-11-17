@@ -12,11 +12,13 @@ export const LANDING_3D_CONFIG = {
   particleCount: 55,
   /** Colores de la paleta del sitio para los materiales y wireframe */
   palette: {
-    primaryTint: '#17191c', // Ink Black (Steep dark detail)
-    warmAccent: '#fbe1d1', // Blush Peach (Steep)
-    neutralLight: '#d8d8de', // Cool Slate Mist
-    wireframe: '#17191c', // Ink Black wireframe
-    particle: '#17191c',
+    primaryTint: '#0F766E', // Verde Esmeralda Oscuro Clínico
+    deepSlate: '#1E293B', // Azul Pizarra Oscuro
+    deepSienna: '#5D2A1A', // Terracota / Sienna Oscuro
+    warmAccent: '#fbe1d1', // Durazno Cálido
+    neutralLight: '#cbd5e1', // Pizarra Medio
+    wireframe: '#0F766E', // Wireframe Esmeralda Oscuro
+    particle: '#1E293B', // Partículas Pizarra Oscuro
   },
   /** Velocidades base de animación */
   rotationSpeed: 0.0022,
@@ -103,34 +105,41 @@ export const BackgroundThreeCanvas: React.FC = () => {
     clinicalLight.position.set(9, -5, 7);
     scene.add(clinicalLight);
 
-    // Materiales translúcidos y sutiles para no competir con la tipografía
+    // Materiales en tonos oscuros ricos (Pizarra, Esmeralda Clínico, Sienna y Durazno)
     const materials = [
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.deepSlate),
+        roughness: 0.38,
+        metalness: 0.12,
+        transparent: true,
+        opacity: 0.34,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.primaryTint),
+        roughness: 0.35,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 0.32,
+      }),
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color(LANDING_3D_CONFIG.palette.deepSienna),
+        roughness: 0.42,
+        metalness: 0.08,
+        transparent: true,
+        opacity: 0.3,
+      }),
       new THREE.MeshStandardMaterial({
         color: new THREE.Color(LANDING_3D_CONFIG.palette.warmAccent),
         roughness: 0.45,
         metalness: 0.05,
         transparent: true,
-        opacity: 0.42,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color(LANDING_3D_CONFIG.palette.neutralLight),
-        roughness: 0.5,
-        metalness: 0.06,
-        transparent: true,
-        opacity: 0.4,
-      }),
-      new THREE.MeshStandardMaterial({
-        color: new THREE.Color(LANDING_3D_CONFIG.palette.primaryTint),
-        roughness: 0.4,
-        metalness: 0.08,
-        transparent: true,
-        opacity: 0.18,
+        opacity: 0.48,
       }),
       new THREE.MeshBasicMaterial({
         color: new THREE.Color(LANDING_3D_CONFIG.palette.wireframe),
         wireframe: true,
         transparent: true,
-        opacity: 0.14,
+        opacity: 0.22,
       }),
     ];
 
@@ -398,7 +407,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-linear-to-br from-[#f1f5f9] via-[#fafafb] to-[#f0fdfa]/70"
     />
   );
 };

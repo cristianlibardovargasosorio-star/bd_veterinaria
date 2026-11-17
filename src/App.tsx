@@ -20,6 +20,7 @@ import { AuditoriaSRSView } from './components/views/AuditoriaSRSView';
 import { SecurityModal } from './components/modals/SecurityModal';
 import { TraceabilityModal } from './components/modals/TraceabilityModal';
 import { SkeletonKPI, SkeletonCard, SkeletonTable } from './components/common/Skeleton';
+import { BackgroundThreeCanvas } from './components/common/BackgroundThreeCanvas';
 
 export default function App() {
   // Navigation mode: Landing Page first, with dedicated /login and seamless access to ERP
@@ -84,6 +85,7 @@ export default function App() {
 
   return (
     <StoreProvider>
+      <BackgroundThreeCanvas />
       {appMode === 'login' ? (
         <LoginView
           onLoginSuccess={handleLoginSuccess}
@@ -95,7 +97,7 @@ export default function App() {
           onOpenLogin={handleOpenLogin}
         />
       ) : (
-        <div className="min-h-screen bg-[#ffffff] flex flex-col font-sans text-[#17191c] antialiased selection:bg-[#F0FDFA] selection:text-[#0D9488]">
+        <div className="min-h-screen relative z-10 bg-transparent flex flex-col font-sans text-[#1E293B] antialiased selection:bg-[#F0FDFA] selection:text-[#0D9488]">
           {/* Top Navbar */}
           <Navbar
             onOpenTraceability={() => setShowTraceability(true)}
