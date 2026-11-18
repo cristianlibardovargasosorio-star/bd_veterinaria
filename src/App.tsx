@@ -158,7 +158,7 @@ export default function App() {
           />
         </Suspense>
       ) : (
-        <div className="min-h-screen relative z-10 bg-transparent flex flex-col font-sans text-[#0f172a] antialiased selection:bg-[#F0FDFA] selection:text-[#0D9488]">
+        <div className="min-h-screen relative z-10 bg-vet-ice flex flex-col font-sans text-vet-navy antialiased selection:bg-vet-emerald/15 selection:text-vet-navy">
           {/* Top Navbar */}
           <Navbar
             onOpenTraceability={() => setShowTraceability(true)}

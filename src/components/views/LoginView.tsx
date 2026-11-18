@@ -139,17 +139,17 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
   };
 
   return (
-    <div className="min-h-screen relative z-10 bg-transparent text-[#0f172a] flex flex-col justify-between selection:bg-[#E0F2FE] selection:text-[#0369A1]">
+    <div className="min-h-screen relative z-10 bg-vet-ice text-vet-navy flex flex-col justify-between selection:bg-vet-emerald/15 selection:text-vet-navy">
       {/* Whisper-quiet Editorial Top Navigation */}
       <div className="max-w-[1200px] w-full mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-[#0D9488] flex items-center justify-center text-[#ffffff]">
+          <div className="w-9 h-9 rounded-full bg-vet-navy flex items-center justify-center text-white">
             <Lock className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="font-serif-editorial text-xl tracking-tight text-[#0f172a]">VetSoft</span>
-              <span className="text-[13px] text-[#475569] font-normal">
+              <span className="font-serif-editorial text-xl tracking-tight text-vet-navy">VetSoft</span>
+              <span className="text-[13px] text-vet-muted font-normal">
                 Módulo 1 · Autenticación RF-01
               </span>
             </div>
@@ -158,7 +158,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
         <button
           onClick={onReturnToLanding}
-          className="flex items-center gap-2 text-sm text-[#0f172a] bg-transparent hover:bg-[#F1F5F9] px-5 py-2 rounded-full border border-[#0f172a] transition-colors cursor-pointer"
+          className="flex items-center gap-2 text-sm text-vet-navy bg-vet-surface hover:bg-vet-ice px-5 py-2 rounded-full border border-vet-border transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Volver al Sitio</span>
@@ -183,12 +183,12 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
             </p>
 
             {/* Criterios de Aceptación — Warm Amber Callout */}
-            <div className="p-6 rounded-[24px] bg-[#FFFBEB] border border-[#F59E0B]/45 text-[#78350F] space-y-3">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#92400E]">
-                <ShieldCheck className="w-4 h-4 text-[#D97706]" />
+            <div className="p-6 rounded-[24px] bg-vet-amber-soft border border-vet-amber/35 text-vet-amber-ink space-y-3">
+              <div className="flex items-center gap-2 text-sm font-semibold text-vet-amber-ink">
+                <ShieldCheck className="w-4 h-4 text-vet-amber" />
                 <span>Criterios de Aceptación RF-01 &amp; VET-RF-02</span>
               </div>
-              <ul className="text-xs text-[#78350F] space-y-1.5 leading-relaxed">
+              <ul className="text-xs text-vet-amber-ink space-y-1.5 leading-relaxed">
                 <li>1. Validación previa de formato de correo electrónico (RFC 5322).</li>
                 <li>2. Verificación de hash BCrypt en PostgreSQL sin exponer contraseñas.</li>
                 <li>3. Emisión de token JWT y redirección automática según rol ENUM.</li>
@@ -198,37 +198,37 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
           {/* Right Column: Floating Product Artifact Login Card */}
           <div className="lg:col-span-7">
-            <div className="bg-[#ffffff] rounded-[20px] p-8 sm:p-10 relative overflow-hidden steep-floating-artifact">
+            <div className="bg-vet-surface border border-vet-border rounded-[20px] p-8 sm:p-10 relative overflow-hidden steep-floating-artifact">
               {/* SUCCESS OVERLAY */}
               {successInfo && (
-                <div className="absolute inset-0 z-20 bg-[#ffffff]/98 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-in fade-in duration-200">
-                  <div className="w-12 h-12 rounded-full bg-[#E0F2FE] text-[#0369A1] flex items-center justify-center">
+                <div className="absolute inset-0 z-20 bg-vet-surface/98 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-in fade-in duration-200">
+                  <div className="w-12 h-12 rounded-full bg-vet-ice border border-vet-border text-vet-emerald flex items-center justify-center">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>
                   <div className="space-y-1">
-                    <span className="text-[12px] text-[#475569]">
+                    <span className="text-[12px] text-vet-muted">
                       Sesión verificada en PostgreSQL
                     </span>
-                    <h3 className="font-serif-editorial text-2xl text-[#0f172a] pt-1">
+                    <h3 className="font-serif-editorial text-2xl text-vet-navy pt-1">
                       Bienvenido, {successInfo.email}
                     </h3>
-                    <p className="text-xs text-[#475569]">
-                      Rol autenticado: <strong className="text-[#0f172a]">{successInfo.role}</strong>
+                    <p className="text-xs text-vet-muted">
+                      Rol autenticado: <strong className="text-vet-navy">{successInfo.role}</strong>
                     </p>
                   </div>
-                  <div className="p-4 rounded-[16px] bg-[#F1F5F9] text-xs text-[#475569] w-full max-w-sm">
+                  <div className="p-4 rounded-[16px] bg-vet-ice border border-vet-border text-xs text-vet-muted w-full max-w-sm">
                     <span>Redirigiendo al panel asignado:</span>
-                    <strong className="block text-[#0f172a] mt-1">{successInfo.panelName}</strong>
+                    <strong className="block text-vet-navy mt-1">{successInfo.panelName}</strong>
                   </div>
                 </div>
               )}
 
-              <div className="flex items-center justify-between pb-5 mb-6 border-b border-[#cbd5e1]">
+              <div className="flex items-center justify-between pb-5 mb-6 border-b border-vet-border">
                 <div>
-                  <h2 className="font-serif-editorial text-2xl text-[#0f172a]">Iniciar Sesión</h2>
-                  <p className="text-xs text-[#475569] mt-1">Ingrese su correo electrónico y contraseña</p>
+                  <h2 className="font-serif-editorial text-2xl text-vet-navy">Iniciar Sesión</h2>
+                  <p className="text-xs text-vet-muted mt-1">Ingrese su correo electrónico y contraseña</p>
                 </div>
-                <span className="text-xs text-[#475569] font-mono">
+                <span className="text-xs text-vet-muted font-mono">
                   /login
                 </span>
               </div>
@@ -357,7 +357,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="submit"
                     disabled={isSubmitting || !!emailError || !email.trim() || !password.trim()}
-                    className="flex-1 py-3 px-6 bg-[#0D9488] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed text-[#ffffff] font-normal text-sm rounded-full transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                    className="flex-1 py-3 px-6 bg-vet-emerald hover:bg-vet-emerald-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vet-emerald/40 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-full transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>

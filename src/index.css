@@ -1,27 +1,31 @@
 @import "tailwindcss";
+@config "../tailwind.config.js";
 
 @theme {
-  /* VetSoft Clinical Design System — Reusable Color Tokens */
+  /* VetSoft Clinical Design System — Centralized Color Tokens */
   --color-vet-navy: #0F172A;
   --color-vet-slate: #1E293B;
   --color-vet-emerald: #0D9488;
   --color-vet-emerald-hover: #0F766E;
-  --color-vet-blue: #0284C7;
+  --color-vet-mint: #10B981;
   --color-vet-ice: #F8FAFC;
-  --color-vet-ice-alt: #F1F5F9;
-  --color-vet-border: #CBD5E1;
+  --color-vet-surface: #FFFFFF;
+  --color-vet-border: #E2E8F0;
+  --color-vet-muted: #475569;
   --color-vet-amber: #F59E0B;
+  --color-vet-amber-ink: #92400E;
+  --color-vet-amber-soft: #FFFBEB;
 
   /* Base Aliases */
   --color-ink-black: #0F172A;
   --color-paper-white: #FFFFFF;
-  --color-mist-gray: #F1F5F9;
+  --color-mist-gray: #F8FAFC;
   --color-fog-white: #F8FAFC;
   --color-slate-gray: #475569;
   --color-ash-gray: #64748B;
   --color-smoke-gray: #94A3B8;
-  --color-blush-peach: #E0F2FE;
-  --color-sienna-brown: #0284C7;
+  --color-blush-peach: #F1F5F9;
+  --color-sienna-brown: #0F172A;
 
   /* Typography â€” Font Families */
   --font-signifier: 'Signifier', 'Source Serif 4', Georgia, Cambria, "Times New Roman", Times, serif;

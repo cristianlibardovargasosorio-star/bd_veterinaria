@@ -378,45 +378,45 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
   ];
 
   return (
-    <div className="min-h-screen relative bg-transparent text-[#0f172a] font-sans selection:bg-[#F0FDFA] selection:text-[#0D9488] scroll-smooth">
+    <div className="min-h-screen relative bg-transparent text-vet-navy font-sans selection:bg-vet-emerald/15 selection:text-vet-navy scroll-smooth">
       <div className="relative z-10">
-      {/* TOP EMERGENCY STRIP (Deep Slate Contrast Bar) */}
-      <div className="bg-[#0F172A] text-[#CBD5E1] text-xs py-2.5 px-4 border-b border-[#1E293B]">
+      {/* TOP EMERGENCY STRIP (Fondo gris hielo limpio #F8FAFC con texto oscuro sobrio #0F172A) */}
+      <div className="bg-vet-ice text-vet-muted text-xs py-2.5 px-4 border-b border-vet-border">
         <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 font-medium text-[#5EEAD4] bg-[#134E4A]/70 px-2.5 py-0.5 rounded-full text-[11px] border border-[#0D9488]/40">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]" />
+            <span className="inline-flex items-center gap-1.5 font-semibold text-vet-navy bg-vet-surface px-2.5 py-0.5 rounded-full text-[11px] border border-vet-border">
+              <span className="w-1.5 h-1.5 rounded-full bg-vet-mint" />
               Urgencias 24 Horas
             </span>
-            <span className="text-[#64748B] hidden sm:inline">·</span>
-            <span className="hidden sm:inline text-[#CBD5E1] text-[12px]">
+            <span className="text-vet-muted hidden sm:inline">·</span>
+            <span className="hidden sm:inline text-vet-muted text-[12px]">
               Cra. 45 # 128-22, Bogotá
             </span>
           </div>
 
           <a
             href="tel:+573009123456"
-            className="flex items-center gap-1.5 text-[#F8FAFC] font-medium hover:text-[#38BDF8] transition-colors text-[12px] whitespace-nowrap"
+            className="flex items-center gap-1.5 text-vet-navy font-semibold hover:text-vet-emerald transition-colors text-[12px] whitespace-nowrap"
           >
-            <Phone className="w-3.5 h-3.5 text-[#38BDF8]" />
+            <Phone className="w-3.5 h-3.5 text-vet-emerald" />
             <span>+57 (300) 912-3456</span>
           </a>
         </div>
       </div>
 
       {/* MAIN NAVIGATION BAR — Steep Editorial Top Bar */}
-      <header className="sticky top-0 z-50 bg-[#ffffff]/95 backdrop-blur-md border-b border-[#cbd5e1]">
+      <header className="sticky top-0 z-50 bg-vet-surface/95 backdrop-blur-md border-b border-vet-border">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
           {/* Brand Identity */}
           <a href="#" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-9 h-9 rounded-full bg-[#0D9488] flex items-center justify-center text-[#ffffff] shrink-0">
-              <Stethoscope size={18} className="w-[18px] h-[18px] text-[#ffffff] shrink-0" strokeWidth={2} />
+            <div className="w-9 h-9 rounded-full bg-vet-navy flex items-center justify-center text-white shrink-0">
+              <Stethoscope size={18} className="w-[18px] h-[18px] text-white shrink-0" strokeWidth={2} />
             </div>
             <div className="flex items-baseline gap-2 whitespace-nowrap">
-              <span className="font-serif-editorial text-[22px] tracking-tight text-[#0f172a] leading-none">
+              <span className="font-serif-editorial text-[22px] tracking-tight text-vet-navy leading-none">
                 VetSoft
               </span>
-              <span className="text-[11px] text-[#475569] font-normal hidden sm:inline">
+              <span className="text-[11px] text-vet-muted font-normal hidden sm:inline">
                 Clínica Veterinaria
               </span>
             </div>
@@ -604,18 +604,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     />
                   </picture>
                 </div>
-                <div className="p-5 flex items-center justify-between gap-4 bg-[#0F172A] border-t border-[#1E293B]">
+                <div className="p-5 flex items-center justify-between gap-4 bg-vet-surface border-t border-vet-border">
                   <div className="min-w-0">
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-[#5EEAD4]">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-vet-emerald">
                       Quirófano &amp; Diagnóstico por Imagen
                     </div>
-                    <div className="text-sm font-semibold text-[#F8FAFC] truncate mt-0.5">
+                    <div className="text-sm font-semibold text-vet-navy truncate mt-0.5">
                       Monitoreo multiparamétrico 24/7 en sede principal
                     </div>
                   </div>
                   <button
                     onClick={onEnterERP}
-                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#0D9488] text-[#ffffff] text-xs font-medium hover:bg-[#0F766E] transition-colors cursor-pointer"
+                    className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-vet-emerald text-white text-xs font-semibold hover:bg-vet-emerald-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vet-emerald/40 transition-colors cursor-pointer"
                   >
                     <span>Abrir ERP</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -625,29 +625,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             </LazyScrollSection>
           </div>
 
-          {/* KEY PROOF STATS BAR — Azul Petróleo #0F172A, Ámbar #F59E0B, Blanco #FFFFFF y Gris Hielo #F1F5F9 */}
+          {/* KEY PROOF STATS BAR — Tarjetas blancas #FFFFFF con bordes finos #E2E8F0 y toque ámbar moderado */}
           <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-6 bg-[#0F172A] rounded-[20px] border border-[#1E293B] shadow-sm text-center">
-              <span className="text-3xl font-black text-[#FFFFFF] font-mono tabular-nums">+14,200</span>
-              <span className="block text-xs font-semibold text-[#CBD5E1] mt-1.5">
+            <div className="p-6 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs text-center">
+              <span className="text-3xl font-black text-vet-navy font-mono tabular-nums">+14,200</span>
+              <span className="block text-xs font-semibold text-vet-muted mt-1.5">
                 Pacientes Atendidos con Éxito
               </span>
             </div>
-            <div className="p-6 bg-[#F59E0B] rounded-[20px] border border-[#D97706] shadow-sm text-center">
-              <span className="text-3xl font-black text-[#451A03] font-mono tabular-nums">24 / 7</span>
-              <span className="block text-xs font-semibold text-[#78350F] mt-1.5">
+            <div className="p-6 bg-vet-amber-soft rounded-[20px] border border-vet-amber/35 shadow-xs text-center">
+              <span className="text-3xl font-black text-vet-amber-ink font-mono tabular-nums">24 / 7</span>
+              <span className="block text-xs font-semibold text-vet-amber-ink mt-1.5">
                 Urgencias &amp; Cuidados Críticos
               </span>
             </div>
-            <div className="p-6 bg-[#FFFFFF] rounded-[20px] border border-[#CBD5E1] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#0284C7] font-mono tabular-nums">100%</span>
-              <span className="block text-xs font-semibold text-[#475569] mt-1.5">
+            <div className="p-6 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs text-center">
+              <span className="text-3xl font-black text-vet-navy font-mono tabular-nums">100%</span>
+              <span className="block text-xs font-semibold text-vet-muted mt-1.5">
                 Vacunas con Lote Trazable
               </span>
             </div>
-            <div className="p-6 bg-[#F1F5F9] rounded-[20px] border border-[#CBD5E1] shadow-xs text-center">
-              <span className="text-3xl font-black text-[#1E293B] font-mono tabular-nums">IA Dual</span>
-              <span className="block text-xs font-semibold text-[#475569] mt-1.5">
+            <div className="p-6 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs text-center">
+              <span className="text-3xl font-black text-vet-navy font-mono tabular-nums">IA Dual</span>
+              <span className="block text-xs font-semibold text-vet-muted mt-1.5">
                 Fichas Claras para Tutores
               </span>
             </div>
@@ -1872,43 +1872,43 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
         </div>
       </section>
 
-      {/* DEEP SLATE CONTRAST FOOTER */}
-      <footer className="py-12 bg-[#0F172A] text-[#94A3B8] text-xs border-t border-[#1E293B]">
+      {/* CLEAN LIGHT CLINICAL FOOTER */}
+      <footer className="py-12 bg-vet-surface text-vet-muted text-xs border-t border-vet-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#0D9488] text-[#ffffff] flex items-center justify-center font-bold text-xs">
+            <div className="w-8 h-8 rounded-full bg-vet-navy text-white flex items-center justify-center font-bold text-xs">
               <Stethoscope className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-[#F8FAFC]">Clínica Veterinaria VetSoft</span>
-              <span className="text-[#94A3B8] block text-[10px]">
+              <span className="font-bold text-vet-navy">Clínica Veterinaria VetSoft</span>
+              <span className="text-vet-muted block text-[10px]">
                 Impulsado por el Sistema de Gestión VETSOFT &amp; Gemini 3.8 Flash
               </span>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-[#CBD5E1]">
-            <a href="#servicios" className="hover:text-[#ffffff] transition-colors">
+          <div className="flex flex-wrap items-center gap-5 text-vet-muted">
+            <a href="#servicios" className="hover:text-vet-navy transition-colors">
               Servicios
             </a>
-            <a href="#agendar" className="hover:text-[#ffffff] transition-colors">
+            <a href="#agendar" className="hover:text-vet-navy transition-colors">
               Agendar Cita
             </a>
-            <a href="#carne" className="hover:text-[#ffffff] transition-colors">
+            <a href="#carne" className="hover:text-vet-navy transition-colors">
               Carné Digital
             </a>
-            <a href="#equipo" className="hover:text-[#ffffff] transition-colors">
+            <a href="#equipo" className="hover:text-vet-navy transition-colors">
               Especialistas
             </a>
-            <a href="#planes" className="hover:text-[#ffffff] transition-colors">
+            <a href="#planes" className="hover:text-vet-navy transition-colors">
               Planes
             </a>
-            <button onClick={onEnterERP} className="text-[#5EEAD4] font-bold hover:underline cursor-pointer">
+            <button onClick={onEnterERP} className="text-vet-emerald font-bold hover:text-vet-emerald-hover hover:underline cursor-pointer">
               Acceso ERP →
             </button>
           </div>
 
-          <div className="text-center md:text-right text-[#94A3B8]">
+          <div className="text-center md:text-right text-vet-muted">
             <span>© {new Date().getFullYear()} Clínica Veterinaria VetSoft · Todos los derechos reservados.</span>
           </div>
         </div>

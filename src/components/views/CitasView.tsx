@@ -104,10 +104,10 @@ export const CitasView: React.FC<CitasViewProps> = ({
   };
 
   const statusBadgeConfig: Record<EstadoCita, { label: string; bg: string; text: string; border: string }> = {
-    PENDIENTE: { label: 'Pendiente', bg: 'bg-[#FFFBEB]', text: 'text-[#D97706]', border: 'border-[#D97706]/25' },
-    CONFIRMADA: { label: 'Confirmada', bg: 'bg-[#F0FDFA]', text: 'text-[#0D9488]', border: 'border-[#0D9488]/25' },
-    ATENDIDA: { label: 'Atendida', bg: 'bg-[#F0FDFA]', text: 'text-[#0D9488]', border: 'border-[#0D9488]/25' },
-    CANCELADA: { label: 'Cancelada', bg: 'bg-[#FEF2F2]', text: 'text-[#DC2626]', border: 'border-[#DC2626]/25' },
+    PENDIENTE: { label: 'Pendiente', bg: 'bg-vet-amber-soft', text: 'text-vet-amber-ink', border: 'border-vet-amber/35' },
+    CONFIRMADA: { label: 'Confirmada', bg: 'bg-vet-ice', text: 'text-vet-emerald-hover', border: 'border-vet-emerald/30' },
+    ATENDIDA: { label: 'Atendida', bg: 'bg-vet-ice', text: 'text-vet-navy', border: 'border-vet-border' },
+    CANCELADA: { label: 'Cancelada', bg: 'bg-[#FEF2F2]', text: 'text-[#B91C1C]', border: 'border-[#DC2626]/25' },
   };
 
   return (

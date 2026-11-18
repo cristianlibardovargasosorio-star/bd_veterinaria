@@ -154,33 +154,33 @@ export const AdminUsuariosView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="p-6 rounded-[24px] bg-[#F1F5F9] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-[24px] bg-vet-surface border border-vet-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
         <div>
-          <div className="flex items-center gap-2 text-xs text-[#475569] mb-1">
-            <span className="px-2.5 py-0.5 rounded-full bg-[#F0FDFA] text-[#0D9488] font-semibold border border-[#0D9488]/20">
+          <div className="flex items-center gap-2 text-xs text-vet-muted mb-1">
+            <span className="px-2.5 py-0.5 rounded-full bg-vet-ice text-vet-navy font-semibold border border-vet-border">
               VET-RF-01
             </span>
             <span className="font-mono">/admin/usuarios</span>
           </div>
-          <h1 className="font-serif-editorial text-2xl sm:text-3xl text-[#0f172a] tracking-tight">
+          <h1 className="font-serif-editorial text-2xl sm:text-3xl text-vet-navy tracking-tight">
             Registro de Usuarios Internos
           </h1>
-          <p className="text-sm text-[#475569] mt-1">
+          <p className="text-sm text-vet-muted mt-1">
             Alta de personal clínico y administrativo con validación de unicidad y cifrado BCrypt.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#ffffff] border border-[#cbd5e1] text-xs font-medium text-[#0f172a] shrink-0">
-          <Users className="w-4 h-4 text-[#0D9488]" />
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-vet-ice border border-vet-border text-xs font-medium text-vet-navy shrink-0">
+          <Users className="w-4 h-4 text-vet-emerald" />
           <span>{internalUsers.length} usuarios internos</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Formulario de Registro */}
-        <div className="lg:col-span-5 bg-[#ffffff] rounded-[24px] border border-[#cbd5e1] p-6 shadow-xs">
+        <div className="lg:col-span-5 bg-vet-surface rounded-[24px] border border-vet-border p-6 shadow-xs">
           <div className="flex items-center gap-2 mb-5">
-            <div className="w-9 h-9 rounded-xl bg-[#F0FDFA] text-[#0D9488] flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-vet-ice border border-vet-border text-vet-emerald flex items-center justify-center">
               <UserPlus className="w-4 h-4" />
             </div>
             <div>
@@ -305,9 +305,9 @@ export const AdminUsuariosView: React.FC = () => {
             {successMessage && (
               <div
                 role="status"
-                className="p-3 rounded-2xl bg-[#F0FDFA] border border-[#0D9488]/25 text-xs text-[#0D9488] font-medium flex items-center gap-2"
+                className="p-3 rounded-2xl bg-vet-ice border border-vet-emerald/35 text-xs text-vet-emerald-hover font-medium flex items-center gap-2"
               >
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-vet-emerald" />
                 <span>{successMessage}</span>
               </div>
             )}
@@ -315,7 +315,7 @@ export const AdminUsuariosView: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-5 rounded-full bg-[#0D9488] hover:bg-[#0F766E] text-[#ffffff] text-sm font-medium transition-colors disabled:opacity-60 cursor-pointer"
+              className="w-full py-2.5 px-5 rounded-full bg-vet-emerald hover:bg-vet-emerald-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vet-emerald/40 text-white text-sm font-semibold transition-colors disabled:opacity-60 cursor-pointer"
             >
               {isSubmitting ? 'Registrando...' : 'Registrar usuario interno'}
             </button>
@@ -354,7 +354,7 @@ export const AdminUsuariosView: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-3 px-3 whitespace-nowrap">
-                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F0FDFA] text-[#0D9488] border border-[#0D9488]/25">
+                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-vet-ice text-vet-emerald-hover border border-vet-emerald/30">
                         {u.estado}
                       </span>
                     </td>

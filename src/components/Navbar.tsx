@@ -83,8 +83,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="w-9 h-9 rounded-full bg-[#0D9488] flex items-center justify-center text-[#ffffff] shrink-0">
-            <Stethoscope size={18} className="w-[18px] h-[18px] text-[#ffffff] shrink-0" strokeWidth={2} />
+          <div className="w-9 h-9 rounded-full bg-vet-navy flex items-center justify-center text-white shrink-0">
+            <Stethoscope size={18} className="w-[18px] h-[18px] text-white shrink-0" strokeWidth={2} />
           </div>
           <div className="whitespace-nowrap">
             <div className="flex items-center gap-2">

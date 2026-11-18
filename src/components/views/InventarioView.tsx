@@ -267,15 +267,15 @@ export const InventarioView: React.FC = () => {
                           </td>
                           <td className="py-3 px-3 whitespace-nowrap">
                             {isExpired ? (
-                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#FEF2F2] text-[#DC2626] border border-[#DC2626]/25">
+                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#FEF2F2] text-[#B91C1C] border border-[#DC2626]/25">
                                 Vencido (No vendible)
                               </span>
                             ) : isNear ? (
-                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#FFFBEB] text-[#D97706] border border-[#D97706]/25">
+                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-vet-amber-soft text-vet-amber-ink border border-vet-amber/35">
                                 Próximo a vencer
                               </span>
                             ) : (
-                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F0FDFA] text-[#0D9488] border border-[#0D9488]/25">
+                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-vet-ice text-vet-emerald-hover border border-vet-emerald/30">
                                 Vigente
                               </span>
                             )}
