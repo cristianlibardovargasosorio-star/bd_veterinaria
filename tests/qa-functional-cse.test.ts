@@ -302,6 +302,35 @@ runCase('TC-13', 'CSE-Seguridad', 'VET-RF-02: Cierre de sesión invalida el toke
   return 'Token JWT eliminado correctamente del cliente al cerrar sesión';
 });
 
+// ============================================================================
+// 5. AUDITORÍA CSE DE LAZY LOADING (BACKEND + FRONTEND) Y ARTEFACTOS JWT
+// ============================================================================
+runCase('TC-14', 'CSE-Seguridad', 'Lazy Loading: FetchType.LAZY, open-in-view=false, Pageable y React.lazy()', () => {
+  const appYml = fs.readFileSync(path.resolve('backend-springboot/src/main/resources/application.yml'), 'utf8');
+  const audEntity = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/model/RegistroAuditoriaAcceso.java'), 'utf8');
+  const adminCtrl = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/controller/AdminUsuarioController.java'), 'utf8');
+  const appTsx = fs.readFileSync(path.resolve('src/App.tsx'), 'utf8');
+
+  assert.ok(appYml.includes('open-in-view: false'), 'open-in-view: false debe estar configurado');
+  assert.ok(audEntity.includes('FetchType.LAZY'), 'FetchType.LAZY debe estar configurado en relaciones');
+  assert.ok(adminCtrl.includes('Pageable'), 'Paginación Pageable debe estar activa en /admin/usuarios');
+  assert.ok(appTsx.includes('lazy(() =>') && appTsx.includes('<Suspense'), 'React.lazy y Suspense activos en frontend');
+  return 'FetchType.LAZY, open-in-view=false, Pageable y React.lazy() verificados en QA';
+});
+
+runCase('TC-15', 'CSE-Seguridad', 'Auditoría estática de JWT (JwtService, JwtAuthenticationFilter y AuthController)', () => {
+  const jwtSvc = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/security/JwtService.java'), 'utf8');
+  const jwtFilter = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/security/JwtAuthenticationFilter.java'), 'utf8');
+  const authCtrl = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/controller/AuthController.java'), 'utf8');
+  const failureHandler = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/security/CustomAuthFailureHandler.java'), 'utf8');
+
+  assert.ok(jwtSvc.includes('HmacSHA256') && jwtSvc.includes('generateToken'), 'Firma HS256 y generación JWT presentes');
+  assert.ok(jwtFilter.includes('Bearer ') && jwtFilter.includes('userDetails.isEnabled()'), 'Filtro Bearer verifica cuenta activa');
+  assert.ok(authCtrl.includes('jwtService.generateToken'), 'AuthController emite JWT al autenticar');
+  assert.ok(failureHandler.includes('"Correo o contraseña incorrectos"'), 'Mensaje exacto configurado en CustomAuthFailureHandler');
+  return 'Filtro JWT, firma HS256, verificación de cuenta activa y mensaje exacto verificados';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');
