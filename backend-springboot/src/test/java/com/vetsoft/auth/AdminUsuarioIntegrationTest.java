@@ -14,6 +14,8 @@ import com.vetsoft.auth.model.RolUsuario;
 import com.vetsoft.auth.model.Usuario;
 import com.vetsoft.auth.repository.UsuarioRepository;
 import com.vetsoft.auth.security.CustomAuthFailureHandler;
+import com.vetsoft.auth.security.JwtAuthenticationFilter;
+import com.vetsoft.auth.security.JwtService;
 import com.vetsoft.auth.security.RoleBasedAuthSuccessHandler;
 import com.vetsoft.auth.security.SecurityConfig;
 import com.vetsoft.auth.service.AdminUsuarioService;
@@ -47,6 +49,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(AdminUsuarioController.class)
 @Import({
     SecurityConfig.class,
+    JwtService.class,
+    JwtAuthenticationFilter.class,
     AdminUsuarioService.class,
     CustomUserDetailsService.class,
     RoleBasedAuthSuccessHandler.class,

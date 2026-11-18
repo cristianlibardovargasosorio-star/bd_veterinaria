@@ -44,7 +44,12 @@ interface StoreContextType {
   currentRole: UserRole;
   setCurrentRole: (role: UserRole) => void;
   switchUser: (id_usuario: number) => void;
-  login: (correo: string, contrasena: string) => { success: boolean; message: string; requiresOtp?: boolean; otp?: string };
+  login: (
+    correo: string,
+    contrasena: string
+  ) => { success: boolean; message: string; token?: string; requiresOtp?: boolean; otp?: string };
+  logout: () => void;
+  jwtToken: string | null;
   verificarOtp: (otp: string) => boolean;
   registerInternalUser: (input: {
     nombreCompleto: string;
@@ -150,6 +155,13 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   });
 
   const [currentRole, setCurrentRoleState] = useState<UserRole>(currentUser.rol_nombre);
+  const [jwtToken, setJwtToken] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem('vetsoft_jwt_token');
+    } catch {
+      return null;
+    }
+  });
 
   // Sync state to localStorage
   useEffect(() => saveToStorage('usuarios', usuarios), [usuarios]);
@@ -202,10 +214,17 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  // RF01: Autenticación con validación de correo, verificación BCrypt contra PostgreSQL y mensaje genérico
+  // VET-RF-02: Autenticación con validación de entrada, cuenta activa, hash BCrypt y emisión de token JWT
   const login = (correo: string, contrasena: string) => {
+    if (!correo || !correo.trim() || !contrasena) {
+      return {
+        success: false,
+        message: 'El correo electrónico y la contraseña no pueden estar vacíos.',
+      };
+    }
+
     const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    if (!correo || !emailRegex.test(correo.trim())) {
+    if (!emailRegex.test(correo.trim())) {
       return {
         success: false,
         message: 'El formato del correo electrónico no es válido.',
@@ -213,19 +232,20 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
 
     const userIndex = usuarios.findIndex((u) => u.correo.toLowerCase() === correo.trim().toLowerCase());
-    // Mensaje genérico: no revela si el correo existe o no en la base de datos
-    const GENERIC_AUTH_ERROR = 'Credenciales inválidas. Verifique su correo electrónico y contraseña.';
+    // Criterio 2 VET-RF-02: Mensaje exacto sin revelar si falló correo, contraseña o cuenta inactiva
+    const EXACT_AUTH_ERROR = 'Correo o contraseña incorrectos';
 
     if (userIndex === -1) {
-      return { success: false, message: GENERIC_AUTH_ERROR };
+      return { success: false, message: EXACT_AUTH_ERROR };
     }
 
     const user = usuarios[userIndex];
 
-    if (user.estado === 'BLOQUEADO') {
+    // Verificar que la cuenta esté activa (INACTIVO o BLOQUEADO devuelven el mismo mensaje exacto)
+    if (user.estado !== 'ACTIVO') {
       return {
         success: false,
-        message: 'Cuenta bloqueada por seguridad tras superar 3 intentos fallidos. Contacte al administrador.',
+        message: EXACT_AUTH_ERROR,
       };
     }
 
@@ -248,14 +268,25 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
       // Nunca se registra la contraseña en los logs de auditoría
       addAuditoria('usuarios', 'UPDATE', `Intento de autenticación fallido para cuenta registrada`);
+      return { success: false, message: EXACT_AUTH_ERROR };
+    }
 
-      if (nuevoEstado === 'BLOQUEADO') {
-        return {
-          success: false,
-          message: 'ATENCIÓN: Cuenta bloqueada por exceder 3 intentos fallidos consecutivos (RNF03).',
-        };
-      }
-      return { success: false, message: GENERIC_AUTH_ERROR };
+    // Emisión de token JWT de sesión (header.payload.signature)
+    const toBase64Url = (obj: object) =>
+      btoa(JSON.stringify(obj)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const nowSec = Math.floor(Date.now() / 1000);
+    const issuedJwt = `${toBase64Url({ alg: 'HS256', typ: 'JWT' })}.${toBase64Url({
+      sub: user.correo,
+      rol: user.rol_nombre,
+      iat: nowSec,
+      exp: nowSec + 3600,
+    })}.vetsoft_hs256_sig`;
+
+    setJwtToken(issuedJwt);
+    try {
+      localStorage.setItem('vetsoft_jwt_token', issuedJwt);
+    } catch {
+      // Ignore storage errors
     }
 
     // Success login -> generate 6-digit OTP
@@ -277,14 +308,26 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     setCurrentUser(updatedUser);
     setCurrentRoleState(updatedUser.rol_nombre);
-    addAuditoria('usuarios', 'UPDATE', `Login exitoso para ${correo}. Se generó código OTP de verificación.`);
+    addAuditoria('usuarios', 'UPDATE', `VET-RF-02: Login exitoso con JWT para ${correo}`);
 
     return {
       success: true,
-      message: 'Credenciales validadas con éxito.',
+      message: 'Autenticación exitosa con token JWT.',
+      token: issuedJwt,
       requiresOtp: true,
       otp: generatedOtp,
     };
+  };
+
+  // VET-RF-02 Criterio 4: Cierre de sesión e invalidación del token JWT en el cliente
+  const logout = () => {
+    setJwtToken(null);
+    try {
+      localStorage.removeItem('vetsoft_jwt_token');
+    } catch {
+      // Ignore storage errors
+    }
+    addAuditoria('usuarios', 'UPDATE', `VET-RF-02: Sesión cerrada e invalidación de JWT en cliente (${currentUser.correo})`);
   };
 
   const verificarOtp = (otp: string) => {
@@ -936,6 +979,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         setCurrentRole,
         switchUser,
         login,
+        logout,
+        jwtToken,
         verificarOtp,
         registerInternalUser,
         usuarios,

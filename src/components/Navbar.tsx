@@ -9,6 +9,7 @@ import {
   RotateCcw,
   Sparkles,
   Lock,
+  LogOut,
   ChevronDown,
   ArrowLeft,
   CheckCircle2,
@@ -19,6 +20,7 @@ interface NavbarProps {
   onOpenSecurityModal: () => void;
   onReturnToLanding?: () => void;
   onOpenLogin?: () => void;
+  onLogout?: () => void;
   isSkeletonLoading?: boolean;
   onToggleSkeleton?: () => void;
 }
@@ -28,10 +30,12 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenSecurityModal,
   onReturnToLanding,
   onOpenLogin,
+  onLogout,
   isSkeletonLoading = false,
   onToggleSkeleton,
 }) => {
   const {
+    logout,
     currentUser,
     currentRole,
     setCurrentRole,
@@ -106,16 +110,30 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
 
-          {/* Go to Login RF-01 Button */}
-          {onOpenLogin && (
+          {/* Go to Login / Logout VET-RF-02 Button */}
+          {onLogout ? (
             <button
-              onClick={onOpenLogin}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#e3d7ca] text-[#0f172a] text-xs font-normal border border-[#0f172a] transition-colors cursor-pointer whitespace-nowrap"
-              title="Ir al Módulo 1: Login de Usuarios (/login)"
+              onClick={() => {
+                logout();
+                onLogout();
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#FEF2F2] text-[#DC2626] text-xs font-medium border border-[#DC2626]/30 transition-colors cursor-pointer whitespace-nowrap"
+              title="Cerrar sesión e invalidar token JWT"
             >
-              <Lock className="w-3.5 h-3.5 text-[#0f172a]" />
-              <span className="hidden md:inline">Login</span>
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">Cerrar sesión</span>
             </button>
+          ) : (
+            onOpenLogin && (
+              <button
+                onClick={onOpenLogin}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#e3d7ca] text-[#0f172a] text-xs font-normal border border-[#0f172a] transition-colors cursor-pointer whitespace-nowrap"
+                title="Ir al Módulo 1: Login de Usuarios (/login)"
+              >
+                <Lock className="w-3.5 h-3.5 text-[#0f172a]" />
+                <span className="hidden md:inline">Login</span>
+              </button>
+            )
           )}
 
           {/* Skeleton Shimmer Toggle Button */}

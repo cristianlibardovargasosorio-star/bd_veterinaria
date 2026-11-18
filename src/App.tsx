@@ -165,6 +165,7 @@ export default function App() {
             onOpenSecurityModal={() => setShowSecurityModal(true)}
             onReturnToLanding={handleReturnToLanding}
             onOpenLogin={handleOpenLogin}
+            onLogout={handleOpenLogin}
             isSkeletonLoading={isSkeletonLoading}
             onToggleSkeleton={() => setIsSkeletonLoading(!isSkeletonLoading)}
           />

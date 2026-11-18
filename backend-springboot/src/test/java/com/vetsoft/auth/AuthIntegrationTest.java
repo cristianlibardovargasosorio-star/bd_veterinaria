@@ -10,6 +10,8 @@ import com.vetsoft.auth.model.RolUsuario;
 import com.vetsoft.auth.model.Usuario;
 import com.vetsoft.auth.repository.UsuarioRepository;
 import com.vetsoft.auth.security.CustomAuthFailureHandler;
+import com.vetsoft.auth.security.JwtAuthenticationFilter;
+import com.vetsoft.auth.security.JwtService;
 import com.vetsoft.auth.security.RoleBasedAuthSuccessHandler;
 import com.vetsoft.auth.security.SecurityConfig;
 import com.vetsoft.auth.service.CustomUserDetailsService;
@@ -38,6 +40,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(AuthController.class)
 @Import({
     SecurityConfig.class,
+    JwtService.class,
+    JwtAuthenticationFilter.class,
     CustomUserDetailsService.class,
     RoleBasedAuthSuccessHandler.class,
     CustomAuthFailureHandler.class
@@ -63,6 +67,7 @@ class AuthIntegrationTest {
         Usuario admin = new Usuario(1L, "admin@vetsoft.com", hashValido, RolUsuario.ADMINISTRADOR, true);
         Usuario vet = new Usuario(2L, "camilo.vet@vetsoft.com", hashValido, RolUsuario.VETERINARIO, true);
         Usuario prop = new Usuario(3L, "carlos.mendoza@email.com", hashValido, RolUsuario.PROPIETARIO, true);
+        Usuario inactivo = new Usuario(4L, "inactivo@vetsoft.com", hashValido, RolUsuario.VETERINARIO, false);
 
         when(usuarioRepository.findByCorreoIgnoreCase("admin@vetsoft.com"))
                 .thenReturn(Optional.of(admin));
@@ -70,6 +75,8 @@ class AuthIntegrationTest {
                 .thenReturn(Optional.of(vet));
         when(usuarioRepository.findByCorreoIgnoreCase("carlos.mendoza@email.com"))
                 .thenReturn(Optional.of(prop));
+        when(usuarioRepository.findByCorreoIgnoreCase("inactivo@vetsoft.com"))
+                .thenReturn(Optional.of(inactivo));
         when(usuarioRepository.findByCorreoIgnoreCase("noexiste@vetsoft.com"))
                 .thenReturn(Optional.empty());
     }
@@ -167,8 +174,85 @@ class AuthIntegrationTest {
                         .content(payload)
                         .with(csrf()))
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.autenticado").value(false));
+    }
+
+    @Test
+    @DisplayName("VET-RF-02: Credenciales válidas emiten token JWT firmado y URL de redirección por rol")
+    void apiJsonCredencialesValidasEmitenJwt() throws Exception {
+        String payload = """
+                {
+                  "correo": "admin@vetsoft.com",
+                  "contrasena": "VetSoft2026*"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.autenticado").value(true))
+                .andExpect(jsonPath("$.token").isNotEmpty())
+                .andExpect(jsonPath("$.tipoToken").value("Bearer"))
+                .andExpect(jsonPath("$.rol").value("ADMINISTRADOR"))
+                .andExpect(jsonPath("$.redirectUrl").value("/admin/dashboard"));
+    }
+
+    @Test
+    @DisplayName("VET-RF-02: Credenciales inválidas devuelven exactamente 'Correo o contraseña incorrectos'")
+    void apiJsonCredencialesInvalidasRetornanMensajeExacto() throws Exception {
+        String payload = """
+                {
+                  "correo": "admin@vetsoft.com",
+                  "contrasena": "ClaveIncorrecta999"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload)
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.autenticado").value(false))
-                .andExpect(jsonPath("$.mensaje").value(CustomAuthFailureHandler.INVALID_EMAIL_FORMAT_ERROR));
+                .andExpect(jsonPath("$.mensaje").value("Correo o contraseña incorrectos"));
+    }
+
+    @Test
+    @DisplayName("VET-RF-02: Cuenta inactiva es rechazada con exactamente 'Correo o contraseña incorrectos'")
+    void apiJsonCuentaInactivaRetornaMensajeExacto() throws Exception {
+        String payload = """
+                {
+                  "correo": "inactivo@vetsoft.com",
+                  "contrasena": "VetSoft2026*"
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload)
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.autenticado").value(false))
+                .andExpect(jsonPath("$.mensaje").value("Correo o contraseña incorrectos"));
+    }
+
+    @Test
+    @DisplayName("VET-RF-02: Campos vacíos son rechazados en el backend con HTTP 400")
+    void apiJsonCamposVaciosRechazados() throws Exception {
+        String payload = """
+                {
+                  "correo": "",
+                  "contrasena": ""
+                }
+                """;
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload)
+                        .with(csrf()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.autenticado").value(false));
     }
 }
 

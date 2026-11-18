@@ -30,3 +30,8 @@ server:
         secure: false # Cambiar a true en producción bajo HTTPS
         same-site: lax
 
+vetsoft:
+  jwt:
+    secret: ${JWT_SECRET:VetSoftJwtSecretKey2026ParaFirmaHS256VeterinariaSegura!}
+    expiration-ms: 3600000
+

@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Configuración central de Spring Security para el Módulo 1: Autenticación y Acceso (RF-01).
@@ -22,15 +23,18 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final RoleBasedAuthSuccessHandler successHandler;
     private final CustomAuthFailureHandler failureHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(
             CustomUserDetailsService userDetailsService,
             RoleBasedAuthSuccessHandler successHandler,
-            CustomAuthFailureHandler failureHandler
+            CustomAuthFailureHandler failureHandler,
+            JwtAuthenticationFilter jwtAuthenticationFilter
     ) {
         this.userDetailsService = userDetailsService;
         this.successHandler = successHandler;
         this.failureHandler = failureHandler;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     /**
@@ -68,10 +72,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/api/auth/login", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/login", "/api/auth/login", "/api/auth/logout", "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                 .requestMatchers("/veterinario/**").hasRole("VETERINARIO")
+                .requestMatchers("/recepcion/**").hasRole("RECEPCIONISTA")
                 .requestMatchers("/propietario/**").hasRole("PROPIETARIO")
                 .anyRequest().authenticated()
             )

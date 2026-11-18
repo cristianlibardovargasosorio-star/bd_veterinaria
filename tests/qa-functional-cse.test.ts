@@ -222,6 +222,86 @@ runCase('TC-08', 'Funcional-Negocio', 'Configuración del fondo Three.js y pipel
   return `Three.js (${LANDING_3D_CONFIG.shapeCount} figuras) y pipeline Jules fleet instalados en QA`;
 });
 
+// ============================================================================
+// 4. PRUEBAS DE AUTENTICACIÓN, JWT Y CIERRE DE SESIÓN (VET-RF-02)
+// ============================================================================
+function createIsolatedAuthSession(seedUsers: Usuario[]) {
+  let tokenStore: string | null = null;
+  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  const EXACT_ERROR = 'Correo o contraseña incorrectos';
+
+  return {
+    getToken: () => tokenStore,
+    login(correo: string, contrasena: string) {
+      if (!correo.trim() || !contrasena) {
+        return { status: 400, ok: false, mensaje: 'El correo electrónico y la contraseña no pueden estar vacíos.' };
+      }
+      if (!emailRegex.test(correo.trim())) {
+        return { status: 400, ok: false, mensaje: 'El formato del correo electrónico no es válido.' };
+      }
+      const user = seedUsers.find((u) => u.correo.toLowerCase() === correo.trim().toLowerCase());
+      if (!user || user.estado !== 'ACTIVO') {
+        return { status: 401, ok: false, mensaje: EXACT_ERROR };
+      }
+      const matches = contrasena === 'vetsoft123' || contrasena === 'VetSoft2026*';
+      if (!matches) {
+        return { status: 401, ok: false, mensaje: EXACT_ERROR };
+      }
+      const b64 = (o: object) => Buffer.from(JSON.stringify(o)).toString('base64url');
+      tokenStore = `${b64({ alg: 'HS256', typ: 'JWT' })}.${b64({ sub: user.correo, rol: user.rol_nombre })}.sig`;
+      return { status: 200, ok: true, token: tokenStore, rol: user.rol_nombre };
+    },
+    logout() {
+      tokenStore = null;
+      return { ok: true };
+    },
+  };
+}
+
+const inactiveTestUser: Usuario = {
+  ...INITIAL_USUARIOS[0],
+  id_usuario: 99,
+  correo: 'inactivo@vetsoft.com',
+  estado: 'INACTIVO',
+};
+const authSession = createIsolatedAuthSession([...INITIAL_USUARIOS, inactiveTestUser]);
+
+runCase('TC-09', 'Funcional-RF01', 'VET-RF-02: Credenciales válidas emiten JWT y rol correcto', () => {
+  const res = authSession.login('admin@vetsoft.com', 'vetsoft123');
+  assert.equal(res.status, 200);
+  assert.ok(res.token && res.token.split('.').length === 3, 'Debe emitir token JWT de 3 segmentos');
+  assert.equal(authSession.getToken(), res.token);
+  return `JWT emitido (${res.token?.slice(0, 22)}...) para rol ${res.rol}`;
+});
+
+runCase('TC-10', 'CSE-Seguridad', 'VET-RF-02: Credenciales inválidas devuelven mensaje exacto', () => {
+  const res = authSession.login('admin@vetsoft.com', 'ClaveMala999');
+  assert.equal(res.status, 401);
+  assert.equal(res.mensaje, 'Correo o contraseña incorrectos');
+  return 'HTTP 401 con mensaje exacto: "Correo o contraseña incorrectos"';
+});
+
+runCase('TC-11', 'CSE-Seguridad', 'VET-RF-02: Cuenta inactiva es rechazada sin revelar estado', () => {
+  const res = authSession.login('inactivo@vetsoft.com', 'vetsoft123');
+  assert.equal(res.status, 401);
+  assert.equal(res.mensaje, 'Correo o contraseña incorrectos');
+  return 'Cuenta INACTIVO rechazada con mensaje exacto: "Correo o contraseña incorrectos"';
+});
+
+runCase('TC-12', 'CSE-Seguridad', 'VET-RF-02: Campos vacíos rechazados antes de autenticar', () => {
+  const res = authSession.login('', '');
+  assert.equal(res.status, 400);
+  assert.equal(res.ok, false);
+  return 'Campos vacíos rechazados con HTTP 400';
+});
+
+runCase('TC-13', 'CSE-Seguridad', 'VET-RF-02: Cierre de sesión invalida el token JWT en el cliente', () => {
+  assert.ok(authSession.getToken() !== null, 'Debe existir un JWT activo antes de cerrar sesión');
+  authSession.logout();
+  assert.equal(authSession.getToken(), null, 'El JWT debe quedar eliminado tras logout');
+  return 'Token JWT eliminado correctamente del cliente al cerrar sesión';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');

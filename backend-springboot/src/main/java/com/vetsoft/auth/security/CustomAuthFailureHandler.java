@@ -25,7 +25,7 @@ public class CustomAuthFailureHandler implements AuthenticationFailureHandler {
     );
 
     public static final String GENERIC_CREDENTIALS_ERROR =
-            "Credenciales inválidas. Verifique su correo electrónico y contraseña.";
+            "Correo o contraseña incorrectos";
     public static final String INVALID_EMAIL_FORMAT_ERROR =
             "El formato del correo electrónico no es válido.";
 
