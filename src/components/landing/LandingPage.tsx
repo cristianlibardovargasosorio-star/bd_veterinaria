@@ -380,25 +380,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
   return (
     <div className="min-h-screen relative bg-transparent text-[#0f172a] font-sans selection:bg-[#F0FDFA] selection:text-[#0D9488] scroll-smooth">
       <div className="relative z-10">
-      {/* TOP EMERGENCY STRIP (Soft Warm Sand Strip) */}
-      <div className="bg-[#F1F5F9] text-[#475569] text-xs py-2.5 px-4 border-b border-[#cbd5e1]">
+      {/* TOP EMERGENCY STRIP (Deep Slate Contrast Bar) */}
+      <div className="bg-[#0F172A] text-[#CBD5E1] text-xs py-2.5 px-4 border-b border-[#1E293B]">
         <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1.5 font-medium text-[#0369A1] bg-[#E0F2FE] px-2.5 py-0.5 rounded-full text-[11px] border border-[#BAE6FD]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#0284C7]" />
+            <span className="inline-flex items-center gap-1.5 font-medium text-[#5EEAD4] bg-[#134E4A]/70 px-2.5 py-0.5 rounded-full text-[11px] border border-[#0D9488]/40">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]" />
               Urgencias 24 Horas
             </span>
             <span className="text-[#64748B] hidden sm:inline">·</span>
-            <span className="hidden sm:inline text-[#475569] text-[12px]">
+            <span className="hidden sm:inline text-[#CBD5E1] text-[12px]">
               Cra. 45 # 128-22, Bogotá
             </span>
           </div>
 
           <a
             href="tel:+573009123456"
-            className="flex items-center gap-1.5 text-[#0f172a] font-medium hover:text-[#0284C7] transition-colors text-[12px] whitespace-nowrap"
+            className="flex items-center gap-1.5 text-[#F8FAFC] font-medium hover:text-[#38BDF8] transition-colors text-[12px] whitespace-nowrap"
           >
-            <Phone className="w-3.5 h-3.5 text-[#0284C7]" />
+            <Phone className="w-3.5 h-3.5 text-[#38BDF8]" />
             <span>+57 (300) 912-3456</span>
           </a>
         </div>
@@ -604,12 +604,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                     />
                   </picture>
                 </div>
-                <div className="p-5 flex items-center justify-between gap-4 bg-[#ffffff] border-t border-[#e2e8f0]">
+                <div className="p-5 flex items-center justify-between gap-4 bg-[#0F172A] border-t border-[#1E293B]">
                   <div className="min-w-0">
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-[#5c3a21]">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-[#5EEAD4]">
                       Quirófano &amp; Diagnóstico por Imagen
                     </div>
-                    <div className="text-sm font-semibold text-[#0f172a] truncate mt-0.5">
+                    <div className="text-sm font-semibold text-[#F8FAFC] truncate mt-0.5">
                       Monitoreo multiparamétrico 24/7 en sede principal
                     </div>
                   </div>
@@ -1872,43 +1872,43 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
         </div>
       </section>
 
-      {/* SOFT WARM SAND EDITORIAL FOOTER */}
-      <footer className="py-12 bg-[#F1F5F9] text-[#475569] text-xs border-t border-[#cbd5e1]">
+      {/* DEEP SLATE CONTRAST FOOTER */}
+      <footer className="py-12 bg-[#0F172A] text-[#94A3B8] text-xs border-t border-[#1E293B]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#E0F2FE] text-[#0369A1] border border-[#BAE6FD] flex items-center justify-center font-bold text-xs">
+            <div className="w-8 h-8 rounded-full bg-[#0284C7] text-[#ffffff] flex items-center justify-center font-bold text-xs">
               <Stethoscope className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-[#0f172a]">Clínica Veterinaria VetSoft</span>
-              <span className="text-[#475569] block text-[10px]">
+              <span className="font-bold text-[#F8FAFC]">Clínica Veterinaria VetSoft</span>
+              <span className="text-[#94A3B8] block text-[10px]">
                 Impulsado por el Sistema de Gestión VETSOFT &amp; Gemini 3.8 Flash
               </span>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-[#475569]">
-            <a href="#servicios" className="hover:text-[#0f172a] transition-colors">
+          <div className="flex flex-wrap items-center gap-5 text-[#CBD5E1]">
+            <a href="#servicios" className="hover:text-[#ffffff] transition-colors">
               Servicios
             </a>
-            <a href="#agendar" className="hover:text-[#0f172a] transition-colors">
+            <a href="#agendar" className="hover:text-[#ffffff] transition-colors">
               Agendar Cita
             </a>
-            <a href="#carne" className="hover:text-[#0f172a] transition-colors">
+            <a href="#carne" className="hover:text-[#ffffff] transition-colors">
               Carné Digital
             </a>
-            <a href="#equipo" className="hover:text-[#0f172a] transition-colors">
+            <a href="#equipo" className="hover:text-[#ffffff] transition-colors">
               Especialistas
             </a>
-            <a href="#planes" className="hover:text-[#0f172a] transition-colors">
+            <a href="#planes" className="hover:text-[#ffffff] transition-colors">
               Planes
             </a>
-            <button onClick={onEnterERP} className="text-[#0284C7] font-bold hover:underline cursor-pointer">
+            <button onClick={onEnterERP} className="text-[#5EEAD4] font-bold hover:underline cursor-pointer">
               Acceso ERP →
             </button>
           </div>
 
-          <div className="text-center md:text-right text-[#475569]">
+          <div className="text-center md:text-right text-[#94A3B8]">
             <span>© {new Date().getFullYear()} Clínica Veterinaria VetSoft · Todos los derechos reservados.</span>
           </div>
         </div>

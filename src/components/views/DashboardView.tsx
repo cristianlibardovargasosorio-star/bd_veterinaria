@@ -48,21 +48,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
   return (
     <div className="space-y-6">
-      {/* Welcome Banner (Sky Blue + Clinical Mint Harmony) */}
-      <div className="p-6 rounded-[24px] bg-linear-to-r from-[#F0F9FF] via-[#E0F2FE] to-[#ECFDF5] border border-[#BAE6FD] text-[#0f172a] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
+      {/* Welcome Banner (Deep Navy-Teal Contrast Header) */}
+      <div className="p-6 rounded-[24px] bg-linear-to-r from-[#0F172A] via-[#0F4C5C] to-[#0F172A] border border-[#1E293B] text-[#ffffff] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0284C7] text-[#ffffff]">
               {currentRole}
             </span>
-            <span className="text-xs text-[#475569]">VETSOFT v2.4 ACID</span>
+            <span className="text-xs text-[#94A3B8]">VETSOFT v2.4 ACID</span>
           </div>
-          <h1 className="font-serif-editorial text-2xl sm:text-3xl tracking-tight text-[#0f172a]">
+          <h1 className="font-serif-editorial text-2xl sm:text-3xl tracking-tight text-[#ffffff]">
             {currentRole === 'PROPIETARIO'
               ? `Hola, ${ownerRecord?.nombres || 'Tutor'}`
               : `Panel de Control Veterinario`}
           </h1>
-          <p className="text-sm text-[#475569] max-w-xl">
+          <p className="text-sm text-[#CBD5E1] max-w-xl">
             {currentRole === 'PROPIETARIO'
               ? 'Consulta el estado de salud, carné de vacunas e historial clínico con explicaciones claras con IA.'
               : 'Sistema unificado de historias clínicas, control estricto de inventario con lotes y motor clínico asistido.'}
@@ -81,9 +81,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
               </button>
               <button
                 onClick={() => onNavigateTab('facturacion')}
-                className="px-4 py-2 bg-[#ffffff] hover:bg-[#ECFDF5] text-[#0f172a] border border-[#cbd5e1] text-xs font-normal rounded-full flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 py-2 bg-[#1E293B] hover:bg-[#334155] text-[#F8FAFC] border border-[#334155] text-xs font-normal rounded-full flex items-center gap-2 transition-colors cursor-pointer"
               >
-                <Receipt className="w-3.5 h-3.5 text-[#0D9488]" />
+                <Receipt className="w-3.5 h-3.5 text-[#5EEAD4]" />
                 <span>Facturación POS</span>
               </button>
             </>

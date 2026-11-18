@@ -16,14 +16,14 @@ export const LANDING_3D_CONFIG = {
     deepCoffee: '#0D9488', // Verde Esmeralda Clínico
     softCoffee: '#34D399', // Verde Menta Suave
     softBlue: '#38BDF8', // Azul Cielo Luminoso
-    wireframe: '#0D9488', // Wireframe Verde Esmeralda
-    particle: '#0284C7', // Partículas Azul Cerúleo
+    wireframe: '#0F172A', // Wireframe Pizarra Oscuro para contraste sutil
+    particle: '#0F172A', // Partículas Pizarra Oscuro
   },
   /** Transparencia sutil para no interferir con la lectura del contenido */
   opacity: {
-    solid: 0.2,
-    accent: 0.24,
-    wireframe: 0.14,
+    solid: 0.22,
+    accent: 0.25,
+    wireframe: 0.16,
     particle: 0.18,
   },
   /** Velocidades base de animación */
