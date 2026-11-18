@@ -6,10 +6,10 @@ interface VetPageLayoutProps {
 }
 
 /**
- * Contenedor general de página con fondo gris hielo (#F8FAFC) y tipografía oscura (#0F172A).
+ * Contenedor general de página con fondo gris hielo (surface.canvas) y tipografía oscura (brand.ink).
  */
 export const VetPageLayout: React.FC<VetPageLayoutProps> = ({ children, className = '' }) => (
-  <div className={`min-h-screen bg-vet-canvas text-vet-ink antialiased ${className}`}>
+  <div className={`min-h-screen bg-surface-canvas text-brand-ink antialiased ${className}`}>
     {children}
   </div>
 );
@@ -20,10 +20,10 @@ interface VetSurfaceCardProps {
 }
 
 /**
- * Tarjeta blanca (#FFFFFF) con borde fino y discreto (#E2E8F0).
+ * Tarjeta blanca (surface.card) con borde fino y discreto (surface.border).
  */
 export const VetSurfaceCard: React.FC<VetSurfaceCardProps> = ({ children, className = '' }) => (
-  <div className={`bg-vet-surface border border-vet-border rounded-[20px] shadow-xs ${className}`}>
+  <div className={`bg-surface-card border border-surface-border rounded-[20px] shadow-xs ${className}`}>
     {children}
   </div>
 );
@@ -33,7 +33,7 @@ interface VetActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElem
 }
 
 /**
- * Botón de acción principal en esmeralda equilibrado (#0D9488) con contraste WCAG AA y estados hover/focus/disabled.
+ * Botón de acción principal en esmeralda equilibrado (action.DEFAULT) con contraste WCAG AA y estados hover/focus/disabled.
  */
 export const VetActionButton: React.FC<VetActionButtonProps> = ({
   children,
@@ -43,12 +43,52 @@ export const VetActionButton: React.FC<VetActionButtonProps> = ({
 }) => (
   <button
     type={type}
-    className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-vet-action hover:bg-vet-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vet-action/40 disabled:opacity-45 disabled:cursor-not-allowed text-white text-xs font-semibold transition-colors cursor-pointer ${className}`}
+    className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-action hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-action/40 disabled:opacity-45 disabled:cursor-not-allowed text-white text-xs font-semibold transition-colors cursor-pointer ${className}`}
     {...props}
   >
     {children}
   </button>
 );
+
+interface VetInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+/**
+ * Input clínico estándar sobre superficie blanca con foco oscuro sobrio (brand.DEFAULT).
+ */
+export const VetInput: React.FC<VetInputProps> = ({ className = '', ...props }) => (
+  <input
+    className={`w-full px-4 py-2.5 rounded-xl bg-surface-card border border-surface-border text-brand-ink placeholder:text-brand-muted/70 text-sm focus:border-brand focus:outline-none transition-colors ${className}`}
+    {...props}
+  />
+);
+
+interface VetBadgeProps {
+  children: React.ReactNode;
+  variant?: 'neutral' | 'warning';
+  className?: string;
+}
+
+/**
+ * Badge compartido: neutro institucional o ámbar exclusivo para pendiente/stock crítico.
+ */
+export const VetBadge: React.FC<VetBadgeProps> = ({
+  children,
+  variant = 'neutral',
+  className = '',
+}) => {
+  const styles =
+    variant === 'warning'
+      ? 'bg-warning-soft text-warning-ink border-warning/35'
+      : 'bg-surface-canvas text-brand-ink border-surface-border';
+
+  return (
+    <span
+      className={`inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${styles} ${className}`}
+    >
+      {children}
+    </span>
+  );
+};
 
 interface VetWarningAlertProps {
   title: string;
@@ -58,7 +98,7 @@ interface VetWarningAlertProps {
 }
 
 /**
- * Alerta / estado pendiente o stock crítico (#F59E0B) con tinta accesible (#92400E sobre #FFFBEB, WCAG AA).
+ * Alerta de estado pendiente o stock crítico con tinta accesible WCAG AA (warning.ink sobre warning.soft).
  */
 export const VetWarningAlert: React.FC<VetWarningAlertProps> = ({
   title,
@@ -68,14 +108,14 @@ export const VetWarningAlert: React.FC<VetWarningAlertProps> = ({
 }) => (
   <div
     role="status"
-    className={`p-3 rounded-xl border border-vet-warning/35 bg-vet-warning-soft text-vet-warning-ink flex items-center justify-between gap-2 text-xs ${className}`}
+    className={`p-3 rounded-xl border border-warning/35 bg-warning-soft text-warning-ink flex items-center justify-between gap-2 text-xs ${className}`}
   >
     <div className="min-w-0">
-      <div className="font-bold text-vet-ink truncate">{title}</div>
-      {detail && <div className="text-[11px] text-vet-ink-muted truncate">{detail}</div>}
+      <div className="font-bold text-brand-ink truncate">{title}</div>
+      {detail && <div className="text-[11px] text-brand-muted truncate">{detail}</div>}
     </div>
     {badge && (
-      <span className="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-vet-warning text-vet-ink whitespace-nowrap">
+      <span className="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-warning text-brand-ink whitespace-nowrap">
         {badge}
       </span>
     )}

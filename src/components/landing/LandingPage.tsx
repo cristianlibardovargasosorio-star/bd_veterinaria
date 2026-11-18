@@ -1280,7 +1280,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               {aiLoading ? (
                 <div className="py-6 flex items-center justify-center gap-3 text-vet-muted text-xs animate-pulse">
-                  <div className="w-4 h-4 rounded-full border-2 border-[#0369A1] border-t-transparent animate-spin" />
+                  <div className="w-4 h-4 rounded-full border-2 border-brand border-t-transparent animate-spin" />
                   <span>Analizando consulta y literatura veterinaria...</span>
                 </div>
               ) : (
@@ -1310,7 +1310,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   if (e.key === 'Enter') handleAskAI();
                 }}
                 placeholder="Escribe tu consulta sobre síntomas, alimentación o prevención..."
-                className="flex-1 px-4 py-3 bg-vet-surface rounded-[16px] border border-vet-border text-vet-navy placeholder:text-[#a3a6af] text-sm focus:border-[#0369A1] focus:outline-none"
+                className="flex-1 px-4 py-3 bg-surface-card rounded-[16px] border border-surface-border text-brand-ink placeholder:text-vet-placeholder text-sm focus:border-brand focus:outline-none"
               />
               <button
                 onClick={() => handleAskAI()}

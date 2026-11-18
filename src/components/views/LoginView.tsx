@@ -296,8 +296,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     placeholder="nombre@clinica.com"
                     className={`w-full px-4 py-3 rounded-[16px] bg-vet-surface border text-vet-navy placeholder-vet-placeholder text-sm outline-none transition-colors ${
                       emailError
-                        ? 'border-[#0369A1] bg-vet-ice/20'
-                        : 'border-vet-border focus:border-vet-navy'
+                        ? 'border-vet-danger bg-vet-danger-soft/50'
+                        : 'border-surface-border focus:border-brand'
                     }`}
                   />
 

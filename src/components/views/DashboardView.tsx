@@ -104,7 +104,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div
           onClick={() => onNavigateTab('pacientes')}
-          className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
+          className="p-5 bg-surface-card rounded-[20px] border border-surface-border shadow-xs hover:border-brand/40 transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-vet-muted uppercase">
@@ -125,7 +125,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
         <div
           onClick={() => onNavigateTab('citas')}
-          className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
+          className="p-5 bg-surface-card rounded-[20px] border border-surface-border shadow-xs hover:border-brand/40 transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-vet-muted uppercase">Citas en Agenda</span>
