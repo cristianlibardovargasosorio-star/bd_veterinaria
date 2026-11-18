@@ -1,26 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { StoreProvider } from './db/store';
 import { UserRole } from './types';
-import { LandingPage } from './components/landing/LandingPage';
-import { LoginView } from './components/views/LoginView';
 import { Navbar } from './components/Navbar';
 import { Sidebar, ActiveTab } from './components/Sidebar';
-import { DashboardView } from './components/views/DashboardView';
-import { PacientesView } from './components/views/PacientesView';
-import { CitasView } from './components/views/CitasView';
-import { ConsultasView } from './components/views/ConsultasView';
-import { VacunacionView } from './components/views/VacunacionView';
-import { FichasIAView } from './components/views/FichasIAView';
-import { FacturacionPOSView } from './components/views/FacturacionPOSView';
-import { InventarioView } from './components/views/InventarioView';
-import { ReportesIAView } from './components/views/ReportesIAView';
-import { AsistenteClinicoView } from './components/views/AsistenteClinicoView';
-import { AdminUsuariosView } from './components/views/AdminUsuariosView';
-import { AuditoriaSRSView } from './components/views/AuditoriaSRSView';
-import { SecurityModal } from './components/modals/SecurityModal';
-import { TraceabilityModal } from './components/modals/TraceabilityModal';
 import { SkeletonKPI, SkeletonCard, SkeletonTable } from './components/common/Skeleton';
-import { BackgroundThreeCanvas } from './components/common/BackgroundThreeCanvas';
+
+// Carga diferida (Code Splitting) bajo demanda para mantener respuesta < 1s
+const LandingPage = lazy(() =>
+  import('./components/landing/LandingPage').then((m) => ({ default: m.LandingPage }))
+);
+const LoginView = lazy(() =>
+  import('./components/views/LoginView').then((m) => ({ default: m.LoginView }))
+);
+const DashboardView = lazy(() =>
+  import('./components/views/DashboardView').then((m) => ({ default: m.DashboardView }))
+);
+const PacientesView = lazy(() =>
+  import('./components/views/PacientesView').then((m) => ({ default: m.PacientesView }))
+);
+const CitasView = lazy(() =>
+  import('./components/views/CitasView').then((m) => ({ default: m.CitasView }))
+);
+const ConsultasView = lazy(() =>
+  import('./components/views/ConsultasView').then((m) => ({ default: m.ConsultasView }))
+);
+const VacunacionView = lazy(() =>
+  import('./components/views/VacunacionView').then((m) => ({ default: m.VacunacionView }))
+);
+const FichasIAView = lazy(() =>
+  import('./components/views/FichasIAView').then((m) => ({ default: m.FichasIAView }))
+);
+const FacturacionPOSView = lazy(() =>
+  import('./components/views/FacturacionPOSView').then((m) => ({ default: m.FacturacionPOSView }))
+);
+const InventarioView = lazy(() =>
+  import('./components/views/InventarioView').then((m) => ({ default: m.InventarioView }))
+);
+const ReportesIAView = lazy(() =>
+  import('./components/views/ReportesIAView').then((m) => ({ default: m.ReportesIAView }))
+);
+const AsistenteClinicoView = lazy(() =>
+  import('./components/views/AsistenteClinicoView').then((m) => ({ default: m.AsistenteClinicoView }))
+);
+const AdminUsuariosView = lazy(() =>
+  import('./components/views/AdminUsuariosView').then((m) => ({ default: m.AdminUsuariosView }))
+);
+const AuditoriaSRSView = lazy(() =>
+  import('./components/views/AuditoriaSRSView').then((m) => ({ default: m.AuditoriaSRSView }))
+);
+const SecurityModal = lazy(() =>
+  import('./components/modals/SecurityModal').then((m) => ({ default: m.SecurityModal }))
+);
+const TraceabilityModal = lazy(() =>
+  import('./components/modals/TraceabilityModal').then((m) => ({ default: m.TraceabilityModal }))
+);
+const BackgroundThreeCanvas = lazy(() =>
+  import('./components/common/BackgroundThreeCanvas').then((m) => ({ default: m.BackgroundThreeCanvas }))
+);
 
 export default function App() {
   // Navigation mode: Landing Page first, with dedicated /login and seamless access to ERP
@@ -57,10 +93,9 @@ export default function App() {
     setIsSkeletonLoading(true);
     setAppMode('erp');
     window.location.hash = '#erp';
-    // Brief natural skeleton transition to showcase skeleton architecture
     setTimeout(() => {
       setIsSkeletonLoading(false);
-    }, 450);
+    }, 120);
   };
 
   const handleOpenLogin = () => {
@@ -75,7 +110,7 @@ export default function App() {
     window.location.hash = '#erp';
     setTimeout(() => {
       setIsSkeletonLoading(false);
-    }, 350);
+    }, 120);
   };
 
   const handleReturnToLanding = () => {
@@ -83,19 +118,45 @@ export default function App() {
     window.location.hash = '';
   };
 
+  const erpFallback = (
+    <div className="space-y-6 animate-pulse">
+      <div className="p-6 rounded-[24px] bg-[#e3d7ca] h-28" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <SkeletonKPI />
+        <SkeletonKPI />
+        <SkeletonKPI />
+        <SkeletonKPI />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <SkeletonTable rows={4} />
+        </div>
+        <div>
+          <SkeletonCard />
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <StoreProvider>
-      <BackgroundThreeCanvas />
+      <Suspense fallback={null}>
+        <BackgroundThreeCanvas />
+      </Suspense>
       {appMode === 'login' ? (
-        <LoginView
-          onLoginSuccess={handleLoginSuccess}
-          onReturnToLanding={handleReturnToLanding}
-        />
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-[#634b3b]">Cargando acceso...</div>}>
+          <LoginView
+            onLoginSuccess={handleLoginSuccess}
+            onReturnToLanding={handleReturnToLanding}
+          />
+        </Suspense>
       ) : appMode === 'landing' ? (
-        <LandingPage
-          onEnterERP={handleEnterERP}
-          onOpenLogin={handleOpenLogin}
-        />
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-[#634b3b]">Cargando VetSoft...</div>}>
+          <LandingPage
+            onEnterERP={handleEnterERP}
+            onOpenLogin={handleOpenLogin}
+          />
+        </Suspense>
       ) : (
         <div className="min-h-screen relative z-10 bg-transparent flex flex-col font-sans text-[#0f172a] antialiased selection:bg-[#F0FDFA] selection:text-[#0D9488]">
           {/* Top Navbar */}
@@ -116,26 +177,9 @@ export default function App() {
             {/* Main View Area */}
             <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
               {isSkeletonLoading ? (
-                /* Skeleton Presentation Mode */
-                <div className="space-y-6 animate-pulse">
-                  <div className="p-6 rounded-[24px] bg-[#e3d7ca] h-28" />
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <SkeletonKPI />
-                    <SkeletonKPI />
-                    <SkeletonKPI />
-                    <SkeletonKPI />
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2">
-                      <SkeletonTable rows={4} />
-                    </div>
-                    <div>
-                      <SkeletonCard />
-                    </div>
-                  </div>
-                </div>
+                erpFallback
               ) : (
-                <>
+                <Suspense fallback={erpFallback}>
                   {activeTab === 'dashboard' && <DashboardView onNavigateTab={setActiveTab} />}
 
                   {activeTab === 'pacientes' && (
@@ -184,25 +228,31 @@ export default function App() {
                   {activeTab === 'usuarios' && <AdminUsuariosView />}
 
                   {activeTab === 'auditoria' && <AuditoriaSRSView />}
-                </>
+                </Suspense>
               )}
             </main>
           </div>
 
-          {/* Interactive Modals */}
-          <TraceabilityModal
-            isOpen={showTraceability}
-            onClose={() => setShowTraceability(false)}
-            onNavigateTab={(tab) => {
-              setActiveTab(tab);
-              setShowTraceability(false);
-            }}
-          />
+          {/* Interactive Modals (Lazy-loaded bajo demanda) */}
+          <Suspense fallback={null}>
+            {showTraceability && (
+              <TraceabilityModal
+                isOpen={showTraceability}
+                onClose={() => setShowTraceability(false)}
+                onNavigateTab={(tab) => {
+                  setActiveTab(tab);
+                  setShowTraceability(false);
+                }}
+              />
+            )}
 
-          <SecurityModal
-            isOpen={showSecurityModal}
-            onClose={() => setShowSecurityModal(false)}
-          />
+            {showSecurityModal && (
+              <SecurityModal
+                isOpen={showSecurityModal}
+                onClose={() => setShowSecurityModal(false)}
+              />
+            )}
+          </Suspense>
         </div>
       )}
     </StoreProvider>

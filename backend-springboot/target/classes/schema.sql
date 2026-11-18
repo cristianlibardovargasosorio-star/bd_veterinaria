@@ -17,6 +17,15 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Índice B-Tree para optimizar la búsqueda de usuario por correo en el login
 CREATE UNIQUE INDEX IF NOT EXISTS idx_usuarios_correo_lower ON usuarios (LOWER(correo));
 
+-- Tabla de auditoría de accesos relacionada con FetchType.LAZY
+CREATE TABLE IF NOT EXISTS auditoria_accesos (
+    id_auditoria BIGSERIAL PRIMARY KEY,
+    id_usuario BIGINT NOT NULL REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    evento VARCHAR(80) NOT NULL,
+    fecha_evento TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_auditoria_accesos_usuario ON auditoria_accesos (id_usuario);
+
 -- =============================================================================
 -- DATOS SEMILLA DE PRUEBA (Contraseñas cifradas con BCrypt strength 12)
 -- Contraseña original para todos los usuarios de prueba: "VetSoft2026*"

@@ -5,10 +5,11 @@ import com.vetsoft.auth.dto.UsuarioResponseDto;
 import com.vetsoft.auth.exception.CorreoDuplicadoException;
 import com.vetsoft.auth.model.Usuario;
 import com.vetsoft.auth.repository.UsuarioRepository;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,11 +63,9 @@ public class AdminUsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public List<UsuarioResponseDto> listarUsuarios() {
-        return usuarioRepository.findAll()
-                .stream()
-                .map(UsuarioResponseDto::fromEntity)
-                .toList();
+    public Page<UsuarioResponseDto> listarUsuariosPaginados(Pageable pageable) {
+        return usuarioRepository.findAllByOrderByIdUsuarioDesc(pageable)
+                .map(UsuarioResponseDto::fromEntity);
     }
 }
 

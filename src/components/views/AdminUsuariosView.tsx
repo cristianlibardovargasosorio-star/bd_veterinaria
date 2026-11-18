@@ -47,8 +47,12 @@ export const AdminUsuariosView: React.FC = () => {
   const [serverError, setServerError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   const internalUsers = usuarios.filter((u) => u.rol_nombre !== 'PROPIETARIO');
+  const totalPages = Math.max(1, Math.ceil(internalUsers.length / pageSize));
+  const paginatedUsers = internalUsers.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const validateBeforeSubmit = () => {
     const errors: { nombreCompleto?: string; correo?: string; contrasena?: string } = {};
@@ -336,7 +340,7 @@ export const AdminUsuariosView: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#ececec]">
-                {internalUsers.map((u) => (
+                {paginatedUsers.map((u) => (
                   <tr key={u.id_usuario} className="hover:bg-[#eff6ff]">
                     <td className="py-3 px-3">
                       <div className="font-semibold text-[#0f172a]">
@@ -362,6 +366,32 @@ export const AdminUsuariosView: React.FC = () => {
               </tbody>
             </table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="mt-4 pt-3 border-t border-[#cbd5e1] flex items-center justify-between text-xs text-[#634b3b]">
+              <span>
+                Página {currentPage} de {totalPages} ({internalUsers.length} registros)
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="px-3 py-1 rounded-full border border-[#cbd5e1] disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
+                >
+                  Anterior
+                </button>
+                <button
+                  type="button"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="px-3 py-1 rounded-full border border-[#cbd5e1] disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

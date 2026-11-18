@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entidad JPA mapeada a la tabla "usuarios" en PostgreSQL para el requisito RF-01.
@@ -54,6 +56,10 @@ public class Usuario {
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private OffsetDateTime fechaCreacion = OffsetDateTime.now();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    private List<RegistroAuditoriaAcceso> auditorias = new ArrayList<>();
 
     public Usuario() {
     }

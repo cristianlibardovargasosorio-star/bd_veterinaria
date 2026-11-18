@@ -6,8 +6,10 @@ import com.vetsoft.auth.exception.CorreoDuplicadoException;
 import com.vetsoft.auth.service.AdminUsuarioService;
 import jakarta.validation.Valid;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -43,8 +45,10 @@ public class AdminUsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios() {
-        return ResponseEntity.ok(adminUsuarioService.listarUsuarios());
+    public ResponseEntity<Page<UsuarioResponseDto>> listarUsuarios(
+            @PageableDefault(size = 10, sort = "idUsuario") Pageable pageable
+    ) {
+        return ResponseEntity.ok(adminUsuarioService.listarUsuariosPaginados(pageable));
     }
 
     @ExceptionHandler(CorreoDuplicadoException.class)

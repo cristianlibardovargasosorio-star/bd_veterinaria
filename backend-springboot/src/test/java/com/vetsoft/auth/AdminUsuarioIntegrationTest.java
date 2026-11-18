@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -17,6 +18,7 @@ import com.vetsoft.auth.security.RoleBasedAuthSuccessHandler;
 import com.vetsoft.auth.security.SecurityConfig;
 import com.vetsoft.auth.service.AdminUsuarioService;
 import com.vetsoft.auth.service.CustomUserDetailsService;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -163,6 +168,24 @@ class AdminUsuarioIntegrationTest {
                 .andExpect(jsonPath("$.error").value("VALIDACION_FALLIDA"));
 
         verify(usuarioRepository, never()).save(any());
+    }
+
+    @Test
+    @WithMockUser(username = "admin@vetsoft.com", roles = "ADMINISTRADOR")
+    @DisplayName("Lazy Loading: Consulta paginada en GET /admin/usuarios evita cargar registros innecesarios")
+    void listarUsuariosPaginadosRetornaPaginaAcotada() throws Exception {
+        Usuario vet = new Usuario(1L, "Dra. Laura Gómez", "laura@vetsoft.com", "$2a$12$hash", RolUsuario.VETERINARIO, true);
+        when(usuarioRepository.findAllByOrderByIdUsuarioDesc(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(vet), PageRequest.of(0, 5), 1));
+
+        mockMvc.perform(get("/admin/usuarios")
+                        .param("page", "0")
+                        .param("size", "5"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(1))
+                .andExpect(jsonPath("$.content[0].correo").value("laura@vetsoft.com"))
+                .andExpect(jsonPath("$.size").value(5))
+                .andExpect(jsonPath("$.totalElements").value(1));
     }
 }
 
