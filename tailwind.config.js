@@ -5,21 +5,21 @@ export default {
     extend: {
       colors: {
         // Tokens semánticos principales del sistema VetSoft
-        'vet-sidebar': '#0F172A',
-        'vet-sidebar-surface': '#1E293B',
-        'vet-ink': '#0F172A',
-        'vet-ink-muted': '#475569',
-        'vet-canvas': '#F8FAFC',
-        'vet-surface': '#FFFFFF',
-        'vet-border': '#E2E8F0',
-        'vet-action': '#0D9488',
-        'vet-action-hover': '#0F766E',
-        'vet-action-mint': '#10B981',
-        'vet-warning': '#F59E0B',
-        'vet-warning-ink': '#92400E',
-        'vet-warning-soft': '#FFFBEB',
+        'vet-sidebar': '#0F172A', // Azul petróleo profundo exclusivo para Sidebar y logotipos
+        'vet-sidebar-surface': '#1E293B', // Gris carbón para tarjetas internas y estado activo en Sidebar
+        'vet-ink': '#0F172A', // Tipografía principal de alto contraste sobre fondos claros
+        'vet-ink-muted': '#475569', // Neutro añadido: texto secundario y subtítulos (contraste > 7:1 sobre #F8FAFC)
+        'vet-canvas': '#F8FAFC', // Fondo general gris hielo / blanco perlado
+        'vet-surface': '#FFFFFF', // Neutro añadido: superficie pura de tarjetas y contenedores
+        'vet-border': '#E2E8F0', // Neutro añadido: bordes finos y discretos para tarjetas/tablas
+        'vet-action': '#0D9488', // Verde esmeralda exclusivo para botones clave de acción
+        'vet-action-hover': '#0F766E', // Estado hover/active oscuro para garantizar contraste AA con texto blanco
+        'vet-action-mint': '#10B981', // Variante menta equilibrada del acento de acción
+        'vet-warning': '#F59E0B', // Ámbar exclusivo para stock crítico y estados pendientes
+        'vet-warning-ink': '#92400E', // Neutro/ámbar oscuro añadido: texto sobre fondo ámbar suave (contraste > 6:1, WCAG AA)
+        'vet-warning-soft': '#FFFBEB', // Fondo suave derivado del ámbar para alertas legibles sin saturar
 
-        // Alias de compatibilidad
+        // Alias de compatibilidad existentes
         'vet-navy': '#0F172A',
         'vet-slate': '#1E293B',
         'vet-emerald': '#0D9488',

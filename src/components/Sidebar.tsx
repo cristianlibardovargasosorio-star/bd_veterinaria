@@ -159,10 +159,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`shrink-0 md:shrink md:w-full flex items-center justify-between px-3.5 py-2.5 rounded-[16px] text-left transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vet-mint ${
+              className={`shrink-0 md:shrink md:w-full flex items-center justify-between px-3.5 py-2.5 rounded-[16px] text-left transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 ${
                 isActive
-                  ? 'bg-vet-emerald text-white shadow-xs'
-                  : 'bg-transparent text-slate-200 hover:bg-vet-slate hover:text-white'
+                  ? 'bg-vet-sidebar-surface text-white border border-slate-600 shadow-xs'
+                  : 'bg-transparent text-slate-200 hover:bg-vet-sidebar-surface/70 hover:text-white'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
@@ -177,7 +177,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
                   </div>
                   <div
                     className={`hidden md:block text-[10px] mt-0.5 leading-tight truncate ${
-                      isActive ? 'text-teal-50' : 'text-slate-400'
+                      isActive ? 'text-slate-300' : 'text-slate-400'
                     }`}
                   >
                     {item.sublabel}
@@ -198,7 +198,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       {/* Footer status */}
       <div className="hidden md:flex mt-4 px-4 py-3 rounded-[20px] bg-vet-slate border border-slate-700 text-[11px] text-slate-200 font-medium items-center justify-between">
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-vet-mint"></span>
+          <span className="w-2 h-2 rounded-full bg-slate-300"></span>
           <span>Motor IA · BD Activa</span>
         </div>
         <span className="text-[10px] text-slate-400">Activo</span>
