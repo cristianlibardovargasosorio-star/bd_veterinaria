@@ -114,11 +114,11 @@ export const ReportesIAView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-[#0369A1]" />
+          <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
+            <TrendingUp className="w-6 h-6 text-vet-navy" />
             <span>Reportes Ejecutivos e Inteligencia de Negocio con IA (RF11)</span>
           </h2>
-          <p className="text-xs text-[#475569] mt-0.5">
+          <p className="text-xs text-vet-muted mt-0.5">
             Consolidación gerencial de ingresos, epidemiología y stock con análisis narrativo redactado por Gemini 3.8 Flash.
           </p>
         </div>
@@ -150,18 +150,18 @@ export const ReportesIAView: React.FC = () => {
       )}
 
       {/* Control Panel: Parameters */}
-      <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs space-y-4">
-        <span className="font-bold text-xs text-[#475569] uppercase tracking-wider block">
+      <div className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs space-y-4">
+        <span className="font-bold text-xs text-vet-muted uppercase tracking-wider block">
           Parámetros del Análisis Gerencial
         </span>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
           <div>
-            <label className="block text-[#475569] font-semibold mb-1">Tipo de Enfoque</label>
+            <label className="block text-vet-muted font-semibold mb-1">Tipo de Enfoque</label>
             <select
               value={tipoReporte}
               onChange={(e) => setTipoReporte(e.target.value as TipoReporteIA)}
-              className="w-full p-2 border border-[#e2e2e5] rounded-lg bg-[#ffffff]"
+              className="w-full p-2 border border-vet-border rounded-lg bg-vet-surface"
             >
               <option value="GENERAL">GENERAL (Integral)</option>
               <option value="EPIDEMIOLOGICO">EPIDEMIOLÓGICO (Patologías y Vacunas)</option>
@@ -171,46 +171,46 @@ export const ReportesIAView: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-[#475569] font-semibold mb-1">Fecha de Inicio</label>
+            <label className="block text-vet-muted font-semibold mb-1">Fecha de Inicio</label>
             <input
               type="date"
               value={fechaInicio}
               onChange={(e) => setFechaInicio(e.target.value)}
-              className="w-full p-2 border border-[#e2e2e5] rounded-lg bg-[#ffffff]"
+              className="w-full p-2 border border-vet-border rounded-lg bg-vet-surface"
             />
           </div>
 
           <div>
-            <label className="block text-[#475569] font-semibold mb-1">Fecha de Fin</label>
+            <label className="block text-vet-muted font-semibold mb-1">Fecha de Fin</label>
             <input
               type="date"
               value={fechaFin}
               onChange={(e) => setFechaFin(e.target.value)}
-              className="w-full p-2 border border-[#e2e2e5] rounded-lg bg-[#ffffff]"
+              className="w-full p-2 border border-vet-border rounded-lg bg-vet-surface"
             />
           </div>
         </div>
 
         {/* Live Metrics Preview Pill */}
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-3 border-t border-slate-100 text-xs">
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-            <span className="text-[#475569] block text-[10px]">Citas Atendidas</span>
-            <strong className="text-[#0f172a] text-sm">{totalCitasAtendidas}</strong>
+          <div className="p-2.5 bg-vet-surface rounded-xl border border-vet-border">
+            <span className="text-vet-muted block text-[10px]">Citas Atendidas</span>
+            <strong className="text-vet-navy text-sm">{totalCitasAtendidas}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-            <span className="text-[#475569] block text-[10px]">Facturación</span>
-            <strong className="text-[#0369A1] text-sm">${ingresosTotales.toFixed(2)}</strong>
+          <div className="p-2.5 bg-vet-surface rounded-xl border border-vet-border">
+            <span className="text-vet-muted block text-[10px]">Facturación</span>
+            <strong className="text-vet-navy text-sm">${ingresosTotales.toFixed(2)}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-            <span className="text-[#475569] block text-[10px]">Dosis de Vacunas</span>
-            <strong className="text-[#0f172a] text-sm">{vacunasAplicadas}</strong>
+          <div className="p-2.5 bg-vet-surface rounded-xl border border-vet-border">
+            <span className="text-vet-muted block text-[10px]">Dosis de Vacunas</span>
+            <strong className="text-vet-navy text-sm">{vacunasAplicadas}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-            <span className="text-[#475569] block text-[10px]">Top Diagnóstico</span>
+          <div className="p-2.5 bg-vet-surface rounded-xl border border-vet-border">
+            <span className="text-vet-muted block text-[10px]">Top Diagnóstico</span>
             <strong className="text-purple-700 text-xs truncate block">{topDiagnosticoFrecuente}</strong>
           </div>
-          <div className="p-2.5 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-            <span className="text-[#475569] block text-[10px]">Alertas Stock</span>
+          <div className="p-2.5 bg-vet-surface rounded-xl border border-vet-border">
+            <span className="text-vet-muted block text-[10px]">Alertas Stock</span>
             <strong className="text-red-600 text-sm">{alertasStockCritico}</strong>
           </div>
         </div>
@@ -219,19 +219,19 @@ export const ReportesIAView: React.FC = () => {
       {/* Generated Report Display */}
       {latestReport && (
         <div className="space-y-6">
-          <div className="bg-[#ffffff] rounded-[24px] border-2 border-emerald-400 p-6 md:p-8 shadow-xl space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-emerald-100 pb-4">
+          <div className="bg-vet-surface rounded-[24px] border border-vet-border p-6 md:p-8 shadow-xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-vet-border pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold uppercase tracking-widest text-[#0369A1] bg-[#E0F2FE] text-[#0369A1] px-2.5 py-0.5 rounded-full border border-[#cbd5e1]">
+                  <span className="text-xs font-bold uppercase tracking-widest text-vet-navy bg-vet-ice text-vet-navy px-2.5 py-0.5 rounded-full border border-vet-border">
                     Reporte Ejecutivo IA ({latestReport.tipo_reporte})
                   </span>
-                  <span className="text-[11px] font-mono text-[#475569]">Gemini 3.8 Flash</span>
+                  <span className="text-[11px] font-mono text-vet-muted">Gemini 3.8 Flash</span>
                 </div>
-                <h3 className="text-xl font-black text-[#0f172a] mt-1">
+                <h3 className="text-xl font-black text-vet-navy mt-1">
                   Evaluación de Desempeño Clínico y Operativo
                 </h3>
-                <p className="text-xs text-[#475569]">
+                <p className="text-xs text-vet-muted">
                   Periodo auditado: <strong>{latestReport.periodo_inicio}</strong> a{' '}
                   <strong>{latestReport.periodo_fin}</strong>
                 </p>
@@ -239,7 +239,7 @@ export const ReportesIAView: React.FC = () => {
 
               <button
                 onClick={() => window.print()}
-                className="px-3.5 py-2 rounded-xl bg-[#0D9488] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto transition-colors"
+                className="px-3.5 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto transition-colors"
               >
                 <Printer className="w-4 h-4" />
                 <span>Imprimir Reporte</span>
@@ -247,49 +247,49 @@ export const ReportesIAView: React.FC = () => {
             </div>
 
             {/* Narrative Analysis */}
-            <div className="p-5 rounded-[20px] bg-[#ffffff] border border-[#cbd5e1] space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#0f172a] uppercase tracking-wider">
-                <BarChart3 className="w-4 h-4 text-[#0369A1]" />
+            <div className="p-5 rounded-[20px] bg-vet-surface border border-vet-border space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-vet-navy uppercase tracking-wider">
+                <BarChart3 className="w-4 h-4 text-vet-navy" />
                 <span>Análisis Narrativo Cuantitativo y Clínico</span>
               </div>
-              <p className="text-xs text-[#0f172a] leading-relaxed font-sans">
+              <p className="text-xs text-vet-navy leading-relaxed font-sans">
                 {latestReport.analisis_narrativo}
               </p>
             </div>
 
             {/* Operational Recommendations */}
-            <div className="p-5 rounded-[20px] bg-linear-to-br from-emerald-50 to-teal-50 border border-[#cbd5e1] space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold text-emerald-950 uppercase tracking-wider">
-                <Lightbulb className="w-4 h-4 text-[#0369A1]" />
+            <div className="p-5 rounded-[20px] bg-vet-ice border border-vet-border space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-vet-navy uppercase tracking-wider">
+                <Lightbulb className="w-4 h-4 text-vet-navy" />
                 <span>Estrategias y Recomendaciones Operativas Inmediatas</span>
               </div>
-              <div className="text-xs text-emerald-900 leading-relaxed font-medium">
+              <div className="text-xs text-vet-navy leading-relaxed font-medium">
                 {latestReport.recomendacion_operativa}
               </div>
             </div>
 
             {/* Metrics Snapshot */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 text-xs">
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-                <span className="text-[#475569] block text-[10px]">Citas Procesadas</span>
-                <span className="font-black text-lg text-[#0f172a]">
+              <div className="p-3 bg-vet-surface rounded-xl border border-vet-border">
+                <span className="text-vet-muted block text-[10px]">Citas Procesadas</span>
+                <span className="font-black text-lg text-vet-navy">
                   {latestReport.metricas_json.total_citas_atendidas}
                 </span>
               </div>
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-                <span className="text-[#475569] block text-[10px]">Ingresos del Periodo</span>
-                <span className="font-black text-lg text-[#0369A1]">
+              <div className="p-3 bg-vet-surface rounded-xl border border-vet-border">
+                <span className="text-vet-muted block text-[10px]">Ingresos del Periodo</span>
+                <span className="font-black text-lg text-vet-navy">
                   ${latestReport.metricas_json.ingresos_totales.toLocaleString()}
                 </span>
               </div>
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-                <span className="text-[#475569] block text-[10px]">Vacunas Aplicadas</span>
-                <span className="font-black text-lg text-[#0f172a]">
+              <div className="p-3 bg-vet-surface rounded-xl border border-vet-border">
+                <span className="text-vet-muted block text-[10px]">Vacunas Aplicadas</span>
+                <span className="font-black text-lg text-vet-navy">
                   {latestReport.metricas_json.vacunas_aplicadas}
                 </span>
               </div>
-              <div className="p-3 bg-[#ffffff] rounded-xl border border-[#cbd5e1]">
-                <span className="text-[#475569] block text-[10px]">Alertas de Stock</span>
+              <div className="p-3 bg-vet-surface rounded-xl border border-vet-border">
+                <span className="text-vet-muted block text-[10px]">Alertas de Stock</span>
                 <span className="font-black text-lg text-red-600">
                   {latestReport.metricas_json.alertas_stock_critico}
                 </span>
@@ -297,7 +297,7 @@ export const ReportesIAView: React.FC = () => {
             </div>
 
             {/* Footer */}
-            <div className="pt-4 border-t border-[#cbd5e1] flex items-center justify-between text-xs text-[#475569]">
+            <div className="pt-4 border-t border-vet-border flex items-center justify-between text-xs text-vet-muted">
               <span>Registrado en tabla reportes_ejecutivos_ia</span>
               <span>Generado: {new Date(latestReport.fecha_generacion).toLocaleString()}</span>
             </div>
@@ -307,21 +307,21 @@ export const ReportesIAView: React.FC = () => {
 
       {/* Historical Reports */}
       {reportesIA.length > 1 && (
-        <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-5 shadow-xs space-y-3">
-          <h3 className="font-bold text-sm text-[#0f172a]">Historial de Reportes Generados</h3>
+        <div className="bg-vet-surface rounded-[20px] border border-vet-border p-5 shadow-xs space-y-3">
+          <h3 className="font-bold text-sm text-vet-navy">Historial de Reportes Generados</h3>
           <div className="space-y-2">
             {reportesIA.slice(0, -1).map((rep) => (
               <div
                 key={rep.id_reporte}
-                className="p-3.5 rounded-xl border border-[#cbd5e1] hover:bg-[#ffffff] transition-all text-xs space-y-1"
+                className="p-3.5 rounded-xl border border-vet-border hover:bg-vet-surface transition-all text-xs space-y-1"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-[#0f172a]">
+                  <span className="font-bold text-vet-navy">
                     Reporte #{rep.id_reporte} ({rep.tipo_reporte})
                   </span>
-                  <span className="text-[#475569]">{new Date(rep.fecha_generacion).toLocaleDateString()}</span>
+                  <span className="text-vet-muted">{new Date(rep.fecha_generacion).toLocaleDateString()}</span>
                 </div>
-                <p className="text-[#475569] line-clamp-2">{rep.analisis_narrativo}</p>
+                <p className="text-vet-muted line-clamp-2">{rep.analisis_narrativo}</p>
               </div>
             ))}
           </div>

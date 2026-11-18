@@ -170,15 +170,15 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
         <div className="max-w-[1100px] w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Editorial Headline + Peach Callout */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="text-[14px] text-[#475569] font-normal">
+            <div className="text-[14px] text-vet-muted font-normal">
               Seguridad & Control RBAC · Spring Security 6
             </div>
 
-            <h1 className="font-serif-editorial text-4xl sm:text-5xl text-[#0f172a] tracking-tight leading-[1.18]">
+            <h1 className="font-serif-editorial text-4xl sm:text-5xl text-vet-navy tracking-tight leading-[1.18]">
               Acceso clínico con <span className="italic">integridad</span> criptográfica.
             </h1>
 
-            <p className="text-[16px] text-[#475569] leading-relaxed">
+            <p className="text-[16px] text-vet-muted leading-relaxed">
               Autenticación respaldada por PostgreSQL y comparación de hash BCrypt mediante Spring Security, con redirección automática según el rol.
             </p>
 
@@ -235,7 +235,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
               {/* Demo Account Neutral Cards */}
               <div className="mb-6 space-y-2">
-                <span className="text-[12px] text-[#475569]">
+                <span className="text-[12px] text-vet-muted">
                   Cuentas de prueba rápida (Contraseña: vetsoft123):
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -244,11 +244,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     onClick={() => handleSelectDemoAccount('admin@vetsoft.com', 'vetsoft123')}
                     className="p-3 rounded-[16px] text-left bg-[#FDE68A] hover:bg-[#FCD34D] border border-[#F59E0B]/40 transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center justify-between text-[#78350F]">
+                    <div className="flex items-center justify-between text-vet-amber-ink">
                       <span className="text-[11px] font-semibold text-[#451A03]">ADMINISTRADOR</span>
-                      <Shield className="w-3.5 h-3.5 text-[#92400E]" />
+                      <Shield className="w-3.5 h-3.5 text-vet-amber-ink" />
                     </div>
-                    <div className="text-xs text-[#78350F] truncate mt-1">admin@vetsoft.com</div>
+                    <div className="text-xs text-vet-amber-ink truncate mt-1">admin@vetsoft.com</div>
                   </button>
 
                   <button
@@ -256,11 +256,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     onClick={() => handleSelectDemoAccount('camilo.vet@vetsoft.com', 'vetsoft123')}
                     className="p-3 rounded-[16px] text-left bg-[#FDE68A] hover:bg-[#FCD34D] border border-[#F59E0B]/40 transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center justify-between text-[#78350F]">
+                    <div className="flex items-center justify-between text-vet-amber-ink">
                       <span className="text-[11px] font-semibold text-[#451A03]">VETERINARIO</span>
-                      <Stethoscope className="w-3.5 h-3.5 text-[#92400E]" />
+                      <Stethoscope className="w-3.5 h-3.5 text-vet-amber-ink" />
                     </div>
-                    <div className="text-xs text-[#78350F] truncate mt-1">camilo.vet@vetsoft.com</div>
+                    <div className="text-xs text-vet-amber-ink truncate mt-1">camilo.vet@vetsoft.com</div>
                   </button>
 
                   <button
@@ -268,11 +268,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     onClick={() => handleSelectDemoAccount('carlos.mendoza@email.com', 'vetsoft123')}
                     className="p-3 rounded-[16px] text-left bg-[#FDE68A] hover:bg-[#FCD34D] border border-[#F59E0B]/40 transition-colors cursor-pointer"
                   >
-                    <div className="flex items-center justify-between text-[#78350F]">
+                    <div className="flex items-center justify-between text-vet-amber-ink">
                       <span className="text-[11px] font-semibold text-[#451A03]">PROPIETARIO</span>
-                      <Sparkles className="w-3.5 h-3.5 text-[#92400E]" />
+                      <Sparkles className="w-3.5 h-3.5 text-vet-amber-ink" />
                     </div>
-                    <div className="text-xs text-[#78350F] truncate mt-1">carlos.mendoza...</div>
+                    <div className="text-xs text-vet-amber-ink truncate mt-1">carlos.mendoza...</div>
                   </button>
                 </div>
               </div>
@@ -282,11 +282,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                 {/* Email Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-medium text-[#0f172a] flex items-center gap-1.5">
-                      <Mail className="w-3.5 h-3.5 text-[#475569]" />
+                    <label className="text-xs font-medium text-vet-navy flex items-center gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-vet-muted" />
                       <span>Correo Electrónico</span>
                     </label>
-                    <span className="text-[11px] text-[#475569]">Validación previa de formato</span>
+                    <span className="text-[11px] text-vet-muted">Validación previa de formato</span>
                   </div>
 
                   <input
@@ -294,15 +294,15 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     value={email}
                     onChange={(e) => handleEmailChange(e.target.value)}
                     placeholder="nombre@clinica.com"
-                    className={`w-full px-4 py-3 rounded-[16px] bg-[#ffffff] border text-[#0f172a] placeholder-[#a3a6af] text-sm outline-none transition-colors ${
+                    className={`w-full px-4 py-3 rounded-[16px] bg-vet-surface border text-vet-navy placeholder-[#a3a6af] text-sm outline-none transition-colors ${
                       emailError
-                        ? 'border-[#0369A1] bg-[#E0F2FE]/20'
-                        : 'border-[#cbd5e1] focus:border-[#0f172a]'
+                        ? 'border-[#0369A1] bg-vet-ice/20'
+                        : 'border-vet-border focus:border-vet-navy'
                     }`}
                   />
 
                   {emailError && (
-                    <div className="mt-1.5 flex items-center gap-1.5 text-[#0369A1] text-xs">
+                    <div className="mt-1.5 flex items-center gap-1.5 text-vet-navy text-xs">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       <span>{emailError}</span>
                     </div>
@@ -312,11 +312,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                 {/* Password Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-medium text-[#0f172a] flex items-center gap-1.5">
-                      <KeyRound className="w-3.5 h-3.5 text-[#475569]" />
+                    <label className="text-xs font-medium text-vet-navy flex items-center gap-1.5">
+                      <KeyRound className="w-3.5 h-3.5 text-vet-muted" />
                       <span>Contraseña</span>
                     </label>
-                    <span className="text-[11px] text-[#475569]">Hash BCrypt en PostgreSQL</span>
+                    <span className="text-[11px] text-vet-muted">Hash BCrypt en PostgreSQL</span>
                   </div>
 
                   <div className="relative">
@@ -328,13 +328,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                         setLoginError(null);
                       }}
                       placeholder="••••••••••••"
-                      className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-[#ffffff] border border-[#cbd5e1] focus:border-[#0f172a] text-[#0f172a] placeholder-[#a3a6af] outline-none text-sm transition-colors"
+                      className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-vet-surface border border-vet-border focus:border-vet-navy text-vet-navy placeholder-[#a3a6af] outline-none text-sm transition-colors"
                     />
 
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#475569] hover:text-[#0f172a] transition-colors cursor-pointer"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-vet-muted hover:text-vet-navy transition-colors cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -343,8 +343,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
                 {/* Error Banner */}
                 {loginError && (
-                  <div className="p-3.5 rounded-[16px] bg-[#E0F2FE] text-[#0369A1] text-xs flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 shrink-0 text-[#0369A1] mt-0.5" />
+                  <div className="p-3.5 rounded-[16px] bg-vet-ice text-vet-navy text-xs flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-vet-navy mt-0.5" />
                     <div>
                       <strong className="block font-medium">Aviso de Autenticación:</strong>
                       <span>{loginError}</span>
@@ -375,7 +375,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={onReturnToLanding}
-                    className="py-3 px-6 bg-transparent hover:bg-[#F1F5F9] text-[#0f172a] border border-[#0f172a] font-normal text-sm rounded-full transition-colors cursor-pointer"
+                    className="py-3 px-6 bg-transparent hover:bg-vet-ice text-vet-navy border border-vet-navy font-normal text-sm rounded-full transition-colors cursor-pointer"
                   >
                     Cancelar
                   </button>
@@ -383,7 +383,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
               </form>
 
               {/* Tech Architecture Footnote */}
-              <div className="mt-6 pt-4 border-t border-[#cbd5e1] text-[12px] text-[#475569] flex flex-wrap items-center justify-between gap-2">
+              <div className="mt-6 pt-4 border-t border-vet-border text-[12px] text-vet-muted flex flex-wrap items-center justify-between gap-2">
                 <span>PostgreSQL · Spring Security 6</span>
                 <span>BCryptPasswordEncoder (strength 12)</span>
               </div>
@@ -393,7 +393,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-6 text-center text-xs text-[#475569]">
+      <div className="px-6 py-6 text-center text-xs text-vet-muted">
         <span>VetSoft · Especificación IEEE 830 RF-01</span>
       </div>
     </div>

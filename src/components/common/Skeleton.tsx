@@ -21,7 +21,7 @@ export const SkeletonText: React.FC<{ lines?: number; className?: string }> = ({
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
-          className={`h-3.5 bg-[#F1F5F9] rounded-md animate-pulse ${
+          className={`h-3.5 bg-vet-ice rounded-md animate-pulse ${
             i === lines - 1 ? 'w-2/3' : 'w-full'
           }`}
         />
@@ -32,7 +32,7 @@ export const SkeletonText: React.FC<{ lines?: number; className?: string }> = ({
 
 export const SkeletonKPI: React.FC = () => {
   return (
-    <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs space-y-3">
+    <div className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs space-y-3">
       <div className="flex justify-between items-center">
         <Skeleton className="w-24 h-3" />
         <Skeleton className="w-8 h-8 rounded-xl" />
@@ -45,7 +45,7 @@ export const SkeletonKPI: React.FC = () => {
 
 export const SkeletonCard: React.FC = () => {
   return (
-    <div className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs space-y-4">
+    <div className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs space-y-4">
       <Skeleton className="w-full h-36 rounded-xl" />
       <div className="space-y-2">
         <Skeleton className="w-3/4 h-5" />
@@ -61,7 +61,7 @@ export const SkeletonCard: React.FC = () => {
 
 export const SkeletonTable: React.FC<{ rows?: number }> = ({ rows = 5 }) => {
   return (
-    <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-4 space-y-3">
+    <div className="bg-vet-surface rounded-[20px] border border-vet-border p-4 space-y-3">
       <div className="flex justify-between pb-2 border-b border-slate-100">
         <Skeleton className="w-32 h-4" />
         <Skeleton className="w-20 h-4" />

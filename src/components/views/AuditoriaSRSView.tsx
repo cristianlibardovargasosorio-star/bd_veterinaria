@@ -45,7 +45,7 @@ export const AuditoriaSRSView: React.FC = () => {
   });
 
   const opBadges: Record<OperacionAuditoria, { bg: string; text: string }> = {
-    INSERT: { bg: 'bg-[#E0F2FE] text-[#0369A1]', text: 'text-[#0369A1]' },
+    INSERT: { bg: 'bg-vet-ice text-vet-navy', text: 'text-vet-navy' },
     UPDATE: { bg: 'bg-blue-100', text: 'text-blue-800' },
     DELETE: { bg: 'bg-red-100', text: 'text-red-800' },
   };
@@ -55,42 +55,42 @@ export const AuditoriaSRSView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-[#0369A1]" />
+          <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
+            <ShieldCheck className="w-6 h-6 text-vet-navy" />
             <span>Auditoría del Sistema y Garantías ACID (Script 02)</span>
           </h2>
-          <p className="text-xs text-[#475569] mt-0.5">
+          <p className="text-xs text-vet-muted mt-0.5">
             Registro cronológico inmutable de operaciones (INSERT, UPDATE, DELETE) en la tabla <code>auditoria_sistema</code>.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#E0F2FE] text-[#0369A1] border border-[#cbd5e1] text-xs font-bold">
-            <Database className="w-4 h-4 text-[#0369A1]" />
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-vet-ice text-vet-navy border border-vet-border text-xs font-bold">
+            <Database className="w-4 h-4 text-vet-navy" />
             <span>{auditoria.length} Eventos Auditados</span>
           </div>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="p-4 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between">
+      <div className="p-4 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-[#475569] absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-vet-muted absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar en detalles o usuario..."
-            className="w-full pl-9 pr-3 py-2 rounded-xl border border-[#cbd5e1] text-xs focus:outline-hidden"
+            className="w-full pl-9 pr-3 py-2 rounded-xl border border-vet-border text-xs focus:outline-hidden"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto text-xs">
-          <span className="text-[#475569] font-semibold">Tabla:</span>
+          <span className="text-vet-muted font-semibold">Tabla:</span>
           <select
             value={filterTabla}
             onChange={(e) => setFilterTabla(e.target.value)}
-            className="p-1.5 border border-[#e2e2e5] rounded-lg bg-[#ffffff]"
+            className="p-1.5 border border-vet-border rounded-lg bg-vet-surface"
           >
             {tableList.map((t) => (
               <option key={t} value={t}>
@@ -99,11 +99,11 @@ export const AuditoriaSRSView: React.FC = () => {
             ))}
           </select>
 
-          <span className="text-[#475569] font-semibold ml-2">Operación:</span>
+          <span className="text-vet-muted font-semibold ml-2">Operación:</span>
           <select
             value={filterOp}
             onChange={(e) => setFilterOp(e.target.value)}
-            className="p-1.5 border border-[#e2e2e5] rounded-lg bg-[#ffffff]"
+            className="p-1.5 border border-vet-border rounded-lg bg-vet-surface"
           >
             <option value="TODAS">TODAS</option>
             <option value="INSERT">INSERT</option>
@@ -114,11 +114,11 @@ export const AuditoriaSRSView: React.FC = () => {
       </div>
 
       {/* Log Table */}
-      <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs overflow-hidden">
+      <div className="bg-vet-surface rounded-[20px] border border-vet-border shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b border-[#cbd5e1] text-[#475569] bg-[#ffffff] font-bold uppercase tracking-wider text-[11px]">
+              <tr className="border-b border-vet-border text-vet-muted bg-vet-surface font-bold uppercase tracking-wider text-[11px]">
                 <th className="py-3 px-4">ID</th>
                 <th className="py-3 px-4">Fecha y Hora</th>
                 <th className="py-3 px-4">Usuario</th>
@@ -129,21 +129,21 @@ export const AuditoriaSRSView: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredLogs.map((log) => {
-                const badge = opBadges[log.operacion] || { bg: 'bg-[#F1F5F9]', text: 'text-[#0f172a]' };
+                const badge = opBadges[log.operacion] || { bg: 'bg-vet-ice', text: 'text-vet-navy' };
 
                 return (
-                  <tr key={log.id_auditoria} className="hover:bg-[#ffffff]/80">
-                    <td className="py-3 px-4 font-mono font-bold text-[#475569]">
+                  <tr key={log.id_auditoria} className="hover:bg-vet-surface/80">
+                    <td className="py-3 px-4 font-mono font-bold text-vet-muted">
                       #{log.id_auditoria}
                     </td>
-                    <td className="py-3 px-4 text-[#475569] font-mono text-[11px] whitespace-nowrap">
+                    <td className="py-3 px-4 text-vet-muted font-mono text-[11px] whitespace-nowrap">
                       {new Date(log.fecha).toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 font-medium text-[#0f172a] whitespace-nowrap">
+                    <td className="py-3 px-4 font-medium text-vet-navy whitespace-nowrap">
                       {log.usuario_nombre || `ID #${log.id_usuario}`}
                     </td>
                     <td className="py-3 px-4">
-                      <code className="px-2 py-0.5 rounded bg-[#F1F5F9] text-[#0369A1] font-mono font-bold text-[11px]">
+                      <code className="px-2 py-0.5 rounded bg-vet-ice text-vet-navy font-mono font-bold text-[11px]">
                         {log.tabla_afectada}
                       </code>
                     </td>
@@ -152,7 +152,7 @@ export const AuditoriaSRSView: React.FC = () => {
                         {log.operacion}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-[#475569] leading-relaxed max-w-lg">
+                    <td className="py-3 px-4 text-vet-muted leading-relaxed max-w-lg">
                       {log.detalles}
                     </td>
                   </tr>
@@ -163,7 +163,7 @@ export const AuditoriaSRSView: React.FC = () => {
         </div>
 
         {filteredLogs.length === 0 && (
-          <div className="p-8 text-center text-xs text-[#475569]">
+          <div className="p-8 text-center text-xs text-vet-muted">
             No hay registros de auditoría que coincidan con los filtros.
           </div>
         )}

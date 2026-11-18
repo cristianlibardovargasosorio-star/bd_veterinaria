@@ -184,19 +184,19 @@ export const AdminUsuariosView: React.FC = () => {
               <UserPlus className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#0f172a]">Nuevo Usuario Interno</h2>
-              <p className="text-xs text-[#475569]">Veterinario, Recepcionista o Administrador</p>
+              <h2 className="text-base font-bold text-vet-navy">Nuevo Usuario Interno</h2>
+              <p className="text-xs text-vet-muted">Veterinario, Recepcionista o Administrador</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} noValidate className="space-y-4">
             {/* Nombre completo */}
             <div>
-              <label htmlFor="reg-nombre" className="block text-xs font-semibold text-[#0f172a] mb-1.5">
+              <label htmlFor="reg-nombre" className="block text-xs font-semibold text-vet-navy mb-1.5">
                 Nombre completo
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <User className="w-4 h-4 text-vet-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="reg-nombre"
                   type="text"
@@ -206,7 +206,7 @@ export const AdminUsuariosView: React.FC = () => {
                     if (fieldErrors.nombreCompleto) setFieldErrors((p) => ({ ...p, nombreCompleto: undefined }));
                   }}
                   placeholder="Ej. Dra. Laura Gómez"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-[#cbd5e1] text-sm text-[#0f172a] placeholder:text-[#a3a6af] focus:outline-none focus:border-[#0f172a]"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
                 />
               </div>
               {fieldErrors.nombreCompleto && (
@@ -216,11 +216,11 @@ export const AdminUsuariosView: React.FC = () => {
 
             {/* Correo electrónico */}
             <div>
-              <label htmlFor="reg-correo" className="block text-xs font-semibold text-[#0f172a] mb-1.5">
+              <label htmlFor="reg-correo" className="block text-xs font-semibold text-vet-navy mb-1.5">
                 Correo electrónico
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-vet-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="reg-correo"
                   type="email"
@@ -231,7 +231,7 @@ export const AdminUsuariosView: React.FC = () => {
                     if (fieldErrors.correo) setFieldErrors((p) => ({ ...p, correo: undefined }));
                   }}
                   placeholder="nombre@vetsoft.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-[#cbd5e1] text-sm text-[#0f172a] placeholder:text-[#a3a6af] focus:outline-none focus:border-[#0f172a]"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
                 />
               </div>
               {fieldErrors.correo && (
@@ -241,11 +241,11 @@ export const AdminUsuariosView: React.FC = () => {
 
             {/* Contraseña */}
             <div>
-              <label htmlFor="reg-password" className="block text-xs font-semibold text-[#0f172a] mb-1.5">
+              <label htmlFor="reg-password" className="block text-xs font-semibold text-vet-navy mb-1.5">
                 Contraseña (mínimo 6 caracteres)
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-vet-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="reg-password"
                   type={showPassword ? 'text' : 'password'}
@@ -255,13 +255,13 @@ export const AdminUsuariosView: React.FC = () => {
                     if (fieldErrors.contrasena) setFieldErrors((p) => ({ ...p, contrasena: undefined }));
                   }}
                   placeholder="Mínimo 6 caracteres"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-[#eff6ff] border border-[#cbd5e1] text-sm text-[#0f172a] placeholder:text-[#a3a6af] focus:outline-none focus:border-[#0f172a]"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label="Mostrar u ocultar contraseña"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#475569] hover:text-[#0f172a]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-vet-muted hover:text-vet-navy"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -273,16 +273,16 @@ export const AdminUsuariosView: React.FC = () => {
 
             {/* Rol ENUM */}
             <div>
-              <label htmlFor="reg-rol" className="block text-xs font-semibold text-[#0f172a] mb-1.5">
+              <label htmlFor="reg-rol" className="block text-xs font-semibold text-vet-navy mb-1.5">
                 Rol asignado (ENUM)
               </label>
               <div className="relative">
-                <Shield className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Shield className="w-4 h-4 text-vet-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <select
                   id="reg-rol"
                   value={rol}
                   onChange={(e) => setRol(e.target.value as RolInterno)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-[#cbd5e1] text-sm text-[#0f172a] focus:outline-none focus:border-[#0f172a]"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy focus:outline-none focus:border-vet-navy"
                 >
                   <option value="Veterinario">Veterinario</option>
                   <option value="Recepcionista">Recepcionista</option>
@@ -323,16 +323,16 @@ export const AdminUsuariosView: React.FC = () => {
         </div>
 
         {/* Listado de Personal Registrado */}
-        <div className="lg:col-span-7 bg-[#ffffff] rounded-[24px] border border-[#cbd5e1] p-6 shadow-xs">
+        <div className="lg:col-span-7 bg-vet-surface rounded-[24px] border border-vet-border p-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-bold text-[#0f172a]">Personal Interno Registrado</h2>
-            <span className="text-xs text-[#475569]">Tabla PostgreSQL: usuarios (UNIQUE correo)</span>
+            <h2 className="text-base font-bold text-vet-navy">Personal Interno Registrado</h2>
+            <span className="text-xs text-vet-muted">Tabla PostgreSQL: usuarios (UNIQUE correo)</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-[#cbd5e1] text-[#475569]">
+                <tr className="border-b border-vet-border text-vet-muted">
                   <th className="py-2.5 px-3">Nombre / Correo</th>
                   <th className="py-2.5 px-3">Rol</th>
                   <th className="py-2.5 px-3">Estado</th>
@@ -343,13 +343,13 @@ export const AdminUsuariosView: React.FC = () => {
                 {paginatedUsers.map((u) => (
                   <tr key={u.id_usuario} className="hover:bg-[#eff6ff]">
                     <td className="py-3 px-3">
-                      <div className="font-semibold text-[#0f172a]">
+                      <div className="font-semibold text-vet-navy">
                         {u.nombre_completo || ROLE_LABELS[u.rol_nombre] || 'Personal VetSoft'}
                       </div>
-                      <div className="text-[11px] text-[#475569] font-mono">{u.correo}</div>
+                      <div className="text-[11px] text-vet-muted font-mono">{u.correo}</div>
                     </td>
                     <td className="py-3 px-3 whitespace-nowrap">
-                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F1F5F9] text-[#0f172a]">
+                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-vet-ice text-vet-navy">
                         {ROLE_LABELS[u.rol_nombre] || u.rol_nombre}
                       </span>
                     </td>
@@ -358,7 +358,7 @@ export const AdminUsuariosView: React.FC = () => {
                         {u.estado}
                       </span>
                     </td>
-                    <td className="py-3 px-3 font-mono text-[11px] text-[#475569] whitespace-nowrap">
+                    <td className="py-3 px-3 font-mono text-[11px] text-vet-muted whitespace-nowrap">
                       BCrypt ($2a$)
                     </td>
                   </tr>
@@ -368,7 +368,7 @@ export const AdminUsuariosView: React.FC = () => {
           </div>
 
           {totalPages > 1 && (
-            <div className="mt-4 pt-3 border-t border-[#cbd5e1] flex items-center justify-between text-xs text-[#475569]">
+            <div className="mt-4 pt-3 border-t border-vet-border flex items-center justify-between text-xs text-vet-muted">
               <span>
                 Página {currentPage} de {totalPages} ({internalUsers.length} registros)
               </span>
@@ -377,7 +377,7 @@ export const AdminUsuariosView: React.FC = () => {
                   type="button"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  className="px-3 py-1 rounded-full border border-[#cbd5e1] disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
+                  className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
                 >
                   Anterior
                 </button>
@@ -385,7 +385,7 @@ export const AdminUsuariosView: React.FC = () => {
                   type="button"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  className="px-3 py-1 rounded-full border border-[#cbd5e1] disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
+                  className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
                 >
                   Siguiente
                 </button>

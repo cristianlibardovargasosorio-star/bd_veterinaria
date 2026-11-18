@@ -125,11 +125,11 @@ export const InventarioView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-black text-[#0f172a] tracking-tight flex items-center gap-2">
-            <Boxes className="w-6 h-6 text-[#0369A1]" />
+          <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
+            <Boxes className="w-6 h-6 text-vet-navy" />
             <span>Inventario por Lotes y Vencimientos (Script 02)</span>
           </h2>
-          <p className="text-xs text-[#475569] mt-0.5">
+          <p className="text-xs text-vet-muted mt-0.5">
             Triggers de vencimiento (trg_lote_vencimiento_bi), vistas SQL automáticas (vw_existencias, vw_alertas_stock) y kárdex.
           </p>
         </div>
@@ -137,23 +137,23 @@ export const InventarioView: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setShowAjusteModal(true)}
-            className="px-3.5 py-2 rounded-xl border border-[#e2e2e5] bg-[#ffffff] hover:bg-[#ffffff] text-[#475569] text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
+            className="px-3.5 py-2 rounded-xl border border-vet-border bg-vet-surface hover:bg-vet-surface text-vet-muted text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
           >
-            <ArrowUpDown className="w-4 h-4 text-[#475569]" />
+            <ArrowUpDown className="w-4 h-4 text-vet-muted" />
             <span>Ajuste Kárdex</span>
           </button>
 
           <button
             onClick={() => setShowLoteModal(true)}
-            className="px-3.5 py-2 rounded-xl bg-[#0D9488] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
+            className="px-3.5 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
           >
-            <Plus className="w-4 h-4 text-[#0369A1]" />
+            <Plus className="w-4 h-4 text-vet-navy" />
             <span>Nuevo Lote</span>
           </button>
 
           <button
             onClick={() => setShowProductModal(true)}
-            className="px-4 py-2 rounded-xl bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
+            className="px-4 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
           >
             <Plus className="w-4 h-4" />
             <span>Nuevo Producto</span>
@@ -166,24 +166,24 @@ export const InventarioView: React.FC = () => {
           className={`p-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 ${
             feedback.isError
               ? 'bg-[#FEF2F2] text-[#DC2626] border border-[#DC2626]/25'
-              : 'bg-[#E0F2FE] text-[#0369A1] border border-[#0369A1]/25'
+              : 'bg-vet-ice text-vet-navy border border-[#0369A1]/25'
           }`}
         >
           {feedback.isError ? (
             <AlertTriangle className="w-4 h-4 shrink-0 text-[#DC2626]" />
           ) : (
-            <CheckCircle2 className="w-4 h-4 shrink-0 text-[#0369A1]" />
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-vet-navy" />
           )}
           <span>{feedback.text}</span>
         </div>
       )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#cbd5e1] pb-2">
+      <div className="flex items-center gap-2 border-b border-vet-border pb-2">
         <button
           onClick={() => setActiveSubTab('lotes')}
           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-            activeSubTab === 'lotes' ? 'bg-[#0D9488] text-[#ffffff] shadow-xs' : 'text-[#475569] hover:bg-[#F1F5F9]'
+            activeSubTab === 'lotes' ? 'bg-vet-emerald text-white shadow-xs' : 'text-vet-muted hover:bg-vet-ice'
           }`}
         >
           Lotes y Catálogo
@@ -193,8 +193,8 @@ export const InventarioView: React.FC = () => {
           onClick={() => setActiveSubTab('existencias')}
           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
             activeSubTab === 'existencias'
-              ? 'bg-[#0D9488] text-[#ffffff] shadow-xs'
-              : 'text-[#475569] hover:bg-[#F1F5F9]'
+              ? 'bg-vet-emerald text-white shadow-xs'
+              : 'text-vet-muted hover:bg-vet-ice'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -206,7 +206,7 @@ export const InventarioView: React.FC = () => {
           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
             activeSubTab === 'alertas'
               ? 'bg-amber-600 text-white shadow-xs'
-              : 'text-[#475569] hover:bg-[#F1F5F9]'
+              : 'text-vet-muted hover:bg-vet-ice'
           }`}
         >
           <ShieldAlert className="w-3.5 h-3.5" />
@@ -218,7 +218,7 @@ export const InventarioView: React.FC = () => {
           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
             activeSubTab === 'movimientos'
               ? 'bg-purple-600 text-white shadow-xs'
-              : 'text-[#475569] hover:bg-[#F1F5F9]'
+              : 'text-vet-muted hover:bg-vet-ice'
           }`}
         >
           <History className="w-3.5 h-3.5" />
@@ -230,12 +230,12 @@ export const InventarioView: React.FC = () => {
       {activeSubTab === 'lotes' && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-5 shadow-xs">
-              <h3 className="font-bold text-sm text-[#0f172a] mb-3">Lotes Activos en Bodega</h3>
+            <div className="bg-vet-surface rounded-[20px] border border-vet-border p-5 shadow-xs">
+              <h3 className="font-bold text-sm text-vet-navy mb-3">Lotes Activos en Bodega</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-[#cbd5e1] text-[#475569] bg-[#ffffff]">
+                    <tr className="border-b border-vet-border text-vet-muted bg-vet-surface">
                       <th className="py-2.5 px-3">Producto / SKU</th>
                       <th className="py-2.5 px-3 font-mono">Código Lote</th>
                       <th className="py-2.5 px-3">Fecha Vencimiento</th>
@@ -253,16 +253,16 @@ export const InventarioView: React.FC = () => {
                         new Date(l.fecha_vencimiento).getTime() - new Date().getTime() < 60 * 24 * 3600 * 1000;
 
                       return (
-                        <tr key={l.id_lote} className={isExpired ? 'bg-[#FEF2F2]/60' : 'hover:bg-[#ffffff]'}>
+                        <tr key={l.id_lote} className={isExpired ? 'bg-[#FEF2F2]/60' : 'hover:bg-vet-surface'}>
                           <td className="py-3 px-3">
-                            <span className="font-bold text-[#0f172a] block">{prod?.nombre}</span>
-                            <span className="text-[10px] text-[#475569] font-mono">{prod?.sku}</span>
+                            <span className="font-bold text-vet-navy block">{prod?.nombre}</span>
+                            <span className="text-[10px] text-vet-muted font-mono">{prod?.sku}</span>
                           </td>
-                          <td className="py-3 px-3 font-mono font-bold text-[#0369A1]">{l.codigo_lote}</td>
-                          <td className="py-3 px-3 font-medium text-[#475569] whitespace-nowrap">
+                          <td className="py-3 px-3 font-mono font-bold text-vet-navy">{l.codigo_lote}</td>
+                          <td className="py-3 px-3 font-medium text-vet-muted whitespace-nowrap">
                             {l.fecha_vencimiento ? l.fecha_vencimiento : 'No aplica'}
                           </td>
-                          <td className="py-3 px-3 text-center font-black text-[#0f172a] text-sm">
+                          <td className="py-3 px-3 text-center font-black text-vet-navy text-sm">
                             {l.stock_actual}
                           </td>
                           <td className="py-3 px-3 whitespace-nowrap">
@@ -291,23 +291,23 @@ export const InventarioView: React.FC = () => {
 
           {/* Products Sidebar Catalog */}
           <div className="space-y-4">
-            <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-5 shadow-xs">
-              <h3 className="font-bold text-sm text-[#0f172a] mb-3">Catálogo de Productos ({productos.length})</h3>
+            <div className="bg-vet-surface rounded-[20px] border border-vet-border p-5 shadow-xs">
+              <h3 className="font-bold text-sm text-vet-navy mb-3">Catálogo de Productos ({productos.length})</h3>
               <div className="space-y-2 max-h-[440px] overflow-y-auto">
                 {productos.map((p) => (
-                  <div key={p.id_producto} className="p-3 rounded-xl border border-[#cbd5e1] text-xs space-y-1">
+                  <div key={p.id_producto} className="p-3 rounded-xl border border-vet-border text-xs space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-[#0f172a]">{p.nombre}</span>
-                      <strong className="text-[#0369A1] font-mono">${p.precio_venta.toFixed(2)}</strong>
+                      <span className="font-bold text-vet-navy">{p.nombre}</span>
+                      <strong className="text-vet-navy font-mono">${p.precio_venta.toFixed(2)}</strong>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-[#475569]">
+                    <div className="flex items-center justify-between text-[11px] text-vet-muted">
                       <span className="font-mono">{p.sku}</span>
                       <span>Mínimo: {p.stock_minimo}</span>
                     </div>
                     <div className="flex items-center gap-2 pt-0.5 text-[10px]">
                       <span
                         className={`px-1.5 py-0.2 rounded font-semibold ${
-                          p.requiere_vencimiento ? 'bg-amber-100 text-amber-800' : 'bg-[#F1F5F9] text-[#475569]'
+                          p.requiere_vencimiento ? 'bg-amber-100 text-amber-800' : 'bg-vet-ice text-vet-muted'
                         }`}
                       >
                         {p.requiere_vencimiento ? 'Requiere Vencimiento' : 'Sin Vencimiento'}
@@ -323,15 +323,15 @@ export const InventarioView: React.FC = () => {
 
       {/* Subtab 2: Vista vw_existencias */}
       {activeSubTab === 'existencias' && (
-        <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-6 shadow-xs space-y-4">
+        <div className="bg-vet-surface rounded-[20px] border border-vet-border p-6 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-base text-[#0f172a]">Vista Calculada: vw_existencias</h3>
-              <p className="text-xs text-[#475569]">
+              <h3 className="font-bold text-base text-vet-navy">Vista Calculada: vw_existencias</h3>
+              <p className="text-xs text-vet-muted">
                 Consolidación de stock físico en bodega vs stock vendible (vigente) vs stock vencido descartado.
               </p>
             </div>
-            <code className="px-2.5 py-1 rounded bg-[#ffffff] text-[#0369A1] font-mono text-xs">
+            <code className="px-2.5 py-1 rounded bg-vet-surface text-vet-navy font-mono text-xs">
               VIEW vw_existencias
             </code>
           </div>
@@ -339,12 +339,12 @@ export const InventarioView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-[#cbd5e1] text-[#475569] bg-[#ffffff]">
+                <tr className="border-b border-vet-border text-vet-muted bg-vet-surface">
                   <th className="py-2.5 px-3">SKU</th>
                   <th className="py-2.5 px-3">Nombre Producto</th>
                   <th className="py-2.5 px-3 text-center">Stock Mínimo</th>
                   <th className="py-2.5 px-3 text-center">Stock Físico Total</th>
-                  <th className="py-2.5 px-3 text-center font-bold text-[#0369A1]">Stock Vendible</th>
+                  <th className="py-2.5 px-3 text-center font-bold text-vet-navy">Stock Vendible</th>
                   <th className="py-2.5 px-3 text-center font-bold text-red-600">Stock Vencido</th>
                   <th className="py-2.5 px-3">Estado Alerta</th>
                 </tr>
@@ -353,12 +353,12 @@ export const InventarioView: React.FC = () => {
                 {vwExistencias.map((e) => {
                   const isAlert = e.stock_vendible <= e.stock_minimo;
                   return (
-                    <tr key={e.id_producto} className={isAlert ? 'bg-amber-50/40' : ''}>
-                      <td className="py-3 px-3 font-mono font-bold text-[#475569]">{e.sku}</td>
-                      <td className="py-3 px-3 font-bold text-[#0f172a]">{e.nombre}</td>
+                    <tr key={e.id_producto} className={isAlert ? 'bg-vet-amber-soft/40' : ''}>
+                      <td className="py-3 px-3 font-mono font-bold text-vet-muted">{e.sku}</td>
+                      <td className="py-3 px-3 font-bold text-vet-navy">{e.nombre}</td>
                       <td className="py-3 px-3 text-center">{e.stock_minimo}</td>
                       <td className="py-3 px-3 text-center font-bold">{e.stock_fisico}</td>
-                      <td className="py-3 px-3 text-center font-black text-[#0369A1] text-sm">
+                      <td className="py-3 px-3 text-center font-black text-vet-navy text-sm">
                         {e.stock_vendible}
                       </td>
                       <td className="py-3 px-3 text-center font-bold text-red-600">
@@ -367,11 +367,11 @@ export const InventarioView: React.FC = () => {
                       <td className="py-3 px-3">
                         {isAlert ? (
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1 w-max">
-                            <AlertTriangle className="w-3 h-3 text-amber-600" />
+                            <AlertTriangle className="w-3 h-3 text-vet-amber-ink" />
                             Stock Crítico
                           </span>
                         ) : (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#E0F2FE] text-[#0369A1]">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-vet-ice text-vet-navy">
                             Normal
                           </span>
                         )}
@@ -387,15 +387,15 @@ export const InventarioView: React.FC = () => {
 
       {/* Subtab 3: Vista vw_alertas_stock */}
       {activeSubTab === 'alertas' && (
-        <div className="bg-[#ffffff] rounded-[20px] border-2 border-amber-300 p-6 shadow-xs space-y-4">
+        <div className="bg-vet-surface rounded-[20px] border-2 border-amber-300 p-6 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-bold text-base text-[#0f172a]">Vista: vw_alertas_stock</h3>
-                <p className="text-xs text-[#475569]">
+                <h3 className="font-bold text-base text-vet-navy">Vista: vw_alertas_stock</h3>
+                <p className="text-xs text-vet-muted">
                   Filtro automático de productos donde <code>stock_vendible &lt;= stock_minimo</code>.
                 </p>
               </div>
@@ -409,26 +409,26 @@ export const InventarioView: React.FC = () => {
             {vwAlertasStock.map((item) => (
               <div
                 key={item.id_producto}
-                className="p-4 rounded-xl border border-amber-300 bg-amber-50/50 space-y-2 shadow-xs"
+                className="p-4 rounded-xl border border-amber-300 bg-vet-amber-soft/50 space-y-2 shadow-xs"
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <h4 className="font-bold text-sm text-[#0f172a]">{item.nombre}</h4>
-                    <span className="font-mono text-[10px] text-[#475569]">SKU: {item.sku}</span>
+                    <h4 className="font-bold text-sm text-vet-navy">{item.nombre}</h4>
+                    <span className="font-mono text-[10px] text-vet-muted">SKU: {item.sku}</span>
                   </div>
                   <span className="text-[10px] uppercase font-black text-red-600 bg-red-100 px-2 py-0.5 rounded">
                     Reorden
                   </span>
                 </div>
 
-                <div className="p-3 bg-[#ffffff] rounded-lg border border-amber-200 grid grid-cols-2 gap-2 text-xs">
+                <div className="p-3 bg-vet-surface rounded-lg border border-amber-200 grid grid-cols-2 gap-2 text-xs">
                   <div>
-                    <span className="text-[#475569] block text-[10px]">Stock Vendible</span>
+                    <span className="text-vet-muted block text-[10px]">Stock Vendible</span>
                     <strong className="text-amber-800 text-base">{item.stock_vendible}</strong>
                   </div>
                   <div>
-                    <span className="text-[#475569] block text-[10px]">Stock Mínimo</span>
-                    <strong className="text-[#0f172a] text-base">{item.stock_minimo}</strong>
+                    <span className="text-vet-muted block text-[10px]">Stock Mínimo</span>
+                    <strong className="text-vet-navy text-base">{item.stock_minimo}</strong>
                   </div>
                 </div>
 
@@ -443,19 +443,19 @@ export const InventarioView: React.FC = () => {
 
       {/* Subtab 4: Movimientos de Inventario */}
       {activeSubTab === 'movimientos' && (
-        <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-6 shadow-xs space-y-4">
+        <div className="bg-vet-surface rounded-[20px] border border-vet-border p-6 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-base text-[#0f172a]">
+              <h3 className="font-bold text-base text-vet-navy">
                 Kárdex de Movimientos (movimientos_inventario)
               </h3>
-              <p className="text-xs text-[#475569]">
+              <p className="text-xs text-vet-muted">
                 Auditoría inmutable de ingresos de lote (APERTURA), deducciones POS (VENTA) y conteos físicos (AJUSTE).
               </p>
             </div>
             <button
               onClick={() => setShowAjusteModal(true)}
-              className="px-3 py-1.5 bg-[#0D9488] hover:opacity-90 text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Registrar Movimiento</span>
@@ -465,7 +465,7 @@ export const InventarioView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-[#cbd5e1] text-[#475569] bg-[#ffffff]">
+                <tr className="border-b border-vet-border text-vet-muted bg-vet-surface">
                   <th className="py-2.5 px-3">Fecha y Hora</th>
                   <th className="py-2.5 px-3">Tipo</th>
                   <th className="py-2.5 px-3 font-mono">Lote</th>
@@ -481,13 +481,13 @@ export const InventarioView: React.FC = () => {
 
                   const typeColors = {
                     APERTURA: 'bg-blue-100 text-blue-800',
-                    VENTA: 'bg-[#E0F2FE] text-[#0369A1]',
+                    VENTA: 'bg-vet-ice text-vet-navy',
                     AJUSTE: 'bg-purple-100 text-purple-800',
                   };
 
                   return (
-                    <tr key={mov.id_movimiento} className="hover:bg-[#ffffff]">
-                      <td className="py-2.5 px-3 text-[#475569]">
+                    <tr key={mov.id_movimiento} className="hover:bg-vet-surface">
+                      <td className="py-2.5 px-3 text-vet-muted">
                         {new Date(mov.fecha).toLocaleString()}
                       </td>
                       <td className="py-2.5 px-3">
@@ -496,17 +496,17 @@ export const InventarioView: React.FC = () => {
                         </span>
                       </td>
                       <td className="py-2.5 px-3 font-mono">
-                        <strong className="text-[#0f172a]">{prod?.nombre}</strong> ({lote?.codigo_lote})
+                        <strong className="text-vet-navy">{prod?.nombre}</strong> ({lote?.codigo_lote})
                       </td>
                       <td
                         className={`py-2.5 px-3 text-center font-black ${
-                          mov.cantidad_delta > 0 ? 'text-[#0369A1]' : 'text-rose-600'
+                          mov.cantidad_delta > 0 ? 'text-vet-navy' : 'text-rose-600'
                         }`}
                       >
                         {mov.cantidad_delta > 0 ? `+${mov.cantidad_delta}` : mov.cantidad_delta}
                       </td>
-                      <td className="py-2.5 px-3 text-[#475569] font-medium">{mov.motivo}</td>
-                      <td className="py-2.5 px-3 text-[#475569] font-mono text-[11px]">
+                      <td className="py-2.5 px-3 text-vet-muted font-medium">{mov.motivo}</td>
+                      <td className="py-2.5 px-3 text-vet-muted font-mono text-[11px]">
                         ID #{mov.id_usuario_responsable || 1}
                       </td>
                     </tr>
@@ -520,59 +520,59 @@ export const InventarioView: React.FC = () => {
 
       {/* Modal: Nuevo Producto */}
       {showProductModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-md w-full border border-[#cbd5e1] overflow-hidden">
-            <div className="px-6 py-4 bg-[#F1F5F9] text-[#0f172a] border-b border-[#cbd5e1] flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
+          <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-md w-full border border-vet-border overflow-hidden">
+            <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
               <h3 className="font-bold text-base">Crear Producto (Catálogo)</h3>
-              <button onClick={() => setShowProductModal(false)} className="text-[#475569] hover:text-white">
+              <button onClick={() => setShowProductModal(false)} className="text-vet-muted hover:text-white">
                 ✕
               </button>
             </div>
 
             <form onSubmit={handleCreateProd} className="p-6 space-y-3 text-xs">
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">SKU (Único)</label>
+                <label className="block font-semibold text-vet-muted mb-1">SKU (Único)</label>
                 <input
                   type="text"
                   required
                   value={prodForm.sku}
                   onChange={(e) => setProdForm({ ...prodForm, sku: e.target.value })}
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg font-mono font-bold"
+                  className="w-full p-2 border border-vet-border rounded-lg font-mono font-bold"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">Nombre Comercial</label>
+                <label className="block font-semibold text-vet-muted mb-1">Nombre Comercial</label>
                 <input
                   type="text"
                   required
                   value={prodForm.nombre}
                   onChange={(e) => setProdForm({ ...prodForm, nombre: e.target.value })}
                   placeholder="ej. Enrofloxacina 50mg"
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg font-medium"
+                  className="w-full p-2 border border-vet-border rounded-lg font-medium"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-[#475569] mb-1">Precio Venta (USD)</label>
+                  <label className="block font-semibold text-vet-muted mb-1">Precio Venta (USD)</label>
                   <input
                     type="number"
                     step="0.01"
                     required
                     value={prodForm.precio_venta}
                     onChange={(e) => setProdForm({ ...prodForm, precio_venta: parseFloat(e.target.value) || 0 })}
-                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
+                    className="w-full p-2 border border-vet-border rounded-lg"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-[#475569] mb-1">Stock Mínimo</label>
+                  <label className="block font-semibold text-vet-muted mb-1">Stock Mínimo</label>
                   <input
                     type="number"
                     required
                     value={prodForm.stock_minimo}
                     onChange={(e) => setProdForm({ ...prodForm, stock_minimo: parseInt(e.target.value) || 0 })}
-                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
+                    className="w-full p-2 border border-vet-border rounded-lg"
                   />
                 </div>
               </div>
@@ -583,9 +583,9 @@ export const InventarioView: React.FC = () => {
                   id="requiereVencimiento"
                   checked={prodForm.requiere_vencimiento}
                   onChange={(e) => setProdForm({ ...prodForm, requiere_vencimiento: e.target.checked })}
-                  className="rounded border-[#e2e2e5] text-[#0369A1] focus:ring-emerald-500"
+                  className="rounded border-vet-border text-vet-navy focus:ring-vet-emerald/40"
                 />
-                <label htmlFor="requiereVencimiento" className="font-semibold text-[#475569]">
+                <label htmlFor="requiereVencimiento" className="font-semibold text-vet-muted">
                   Requiere control de fecha de vencimiento por lote (trg_lote_vencimiento_bi)
                 </label>
               </div>
@@ -594,13 +594,13 @@ export const InventarioView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowProductModal(false)}
-                  className="px-4 py-2 border border-[#e2e2e5] text-[#475569] rounded-lg font-bold"
+                  className="px-4 py-2 border border-vet-border text-vet-muted rounded-lg font-bold"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg font-bold"
+                  className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg font-bold"
                 >
                   Guardar Producto
                 </button>
@@ -612,22 +612,22 @@ export const InventarioView: React.FC = () => {
 
       {/* Modal: Nuevo Lote (con Trigger Demo) */}
       {showLoteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-md w-full border border-[#cbd5e1] overflow-hidden">
-            <div className="px-6 py-4 bg-[#F1F5F9] text-[#0f172a] border-b border-[#cbd5e1] flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
+          <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-md w-full border border-vet-border overflow-hidden">
+            <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
               <h3 className="font-bold text-base">Crear Lote (Validación de Triggers)</h3>
-              <button onClick={() => setShowLoteModal(false)} className="text-[#475569] hover:text-white">
+              <button onClick={() => setShowLoteModal(false)} className="text-vet-muted hover:text-white">
                 ✕
               </button>
             </div>
 
             <form onSubmit={handleCreateLote} className="p-6 space-y-3 text-xs">
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">Producto</label>
+                <label className="block font-semibold text-vet-muted mb-1">Producto</label>
                 <select
                   value={loteForm.id_producto}
                   onChange={(e) => setLoteForm({ ...loteForm, id_producto: Number(e.target.value) })}
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg bg-[#ffffff]"
+                  className="w-full p-2 border border-vet-border rounded-lg bg-vet-surface"
                 >
                   {productos.map((p) => (
                     <option key={p.id_producto} value={p.id_producto}>
@@ -638,41 +638,41 @@ export const InventarioView: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">Código de Lote</label>
+                <label className="block font-semibold text-vet-muted mb-1">Código de Lote</label>
                 <input
                   type="text"
                   required
                   value={loteForm.codigo_lote}
                   onChange={(e) => setLoteForm({ ...loteForm, codigo_lote: e.target.value })}
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg font-mono font-bold"
+                  className="w-full p-2 border border-vet-border rounded-lg font-mono font-bold"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">
+                <label className="block font-semibold text-vet-muted mb-1">
                   Fecha de Vencimiento (Prueba dejar vacía si requiere vencimiento)
                 </label>
                 <input
                   type="date"
                   value={loteForm.fecha_vencimiento}
                   onChange={(e) => setLoteForm({ ...loteForm, fecha_vencimiento: e.target.value })}
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg"
+                  className="w-full p-2 border border-vet-border rounded-lg"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">Stock Inicial de Apertura</label>
+                <label className="block font-semibold text-vet-muted mb-1">Stock Inicial de Apertura</label>
                 <input
                   type="number"
                   min="0"
                   required
                   value={loteForm.stock_actual}
                   onChange={(e) => setLoteForm({ ...loteForm, stock_actual: parseInt(e.target.value) || 0 })}
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg font-bold"
+                  className="w-full p-2 border border-vet-border rounded-lg font-bold"
                 />
               </div>
 
-              <div className="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-[11px] text-amber-950">
+              <div className="p-2.5 bg-vet-amber-soft rounded-lg border border-amber-200 text-[11px] text-amber-950">
                 <strong>Trigger trg_lote_vencimiento_bi:</strong> Si el producto tiene{' '}
                 <code>requiere_vencimiento = TRUE</code> y la fecha está en blanco, el trigger SQL aborta la operación con SIGNAL SQLSTATE '45000'.
               </div>
@@ -681,13 +681,13 @@ export const InventarioView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowLoteModal(false)}
-                  className="px-4 py-2 border border-[#e2e2e5] text-[#475569] rounded-lg font-bold"
+                  className="px-4 py-2 border border-vet-border text-vet-muted rounded-lg font-bold"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg font-bold"
+                  className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg font-bold"
                 >
                   Crear Lote
                 </button>
@@ -699,22 +699,22 @@ export const InventarioView: React.FC = () => {
 
       {/* Modal: Ajuste Manual de Inventario */}
       {showAjusteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#ffffff]/60 backdrop-blur-xs p-4">
-          <div className="bg-[#ffffff] rounded-[20px] shadow-2xl max-w-md w-full border border-[#cbd5e1] overflow-hidden">
-            <div className="px-6 py-4 bg-[#F1F5F9] text-[#0f172a] border-b border-[#cbd5e1] flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
+          <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-md w-full border border-vet-border overflow-hidden">
+            <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
               <h3 className="font-bold text-base">Ajuste de Kárdex Manual (Auditoría)</h3>
-              <button onClick={() => setShowAjusteModal(false)} className="text-[#475569] hover:text-white">
+              <button onClick={() => setShowAjusteModal(false)} className="text-vet-muted hover:text-white">
                 ✕
               </button>
             </div>
 
             <form onSubmit={handleAjuste} className="p-6 space-y-3 text-xs">
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">Lote a Modificar</label>
+                <label className="block font-semibold text-vet-muted mb-1">Lote a Modificar</label>
                 <select
                   value={ajusteForm.id_lote}
                   onChange={(e) => setAjusteForm({ ...ajusteForm, id_lote: Number(e.target.value) })}
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg bg-[#ffffff]"
+                  className="w-full p-2 border border-vet-border rounded-lg bg-vet-surface"
                 >
                   {lotes.map((l) => {
                     const prod = productos.find((p) => p.id_producto === l.id_producto);
@@ -729,11 +729,11 @@ export const InventarioView: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-[#475569] mb-1">Tipo de Movimiento</label>
+                  <label className="block font-semibold text-vet-muted mb-1">Tipo de Movimiento</label>
                   <select
                     value={ajusteForm.tipo}
                     onChange={(e) => setAjusteForm({ ...ajusteForm, tipo: e.target.value as any })}
-                    className="w-full p-2 border border-[#e2e2e5] rounded-lg"
+                    className="w-full p-2 border border-vet-border rounded-lg"
                   >
                     <option value="AJUSTE">AJUSTE</option>
                     <option value="APERTURA">APERTURA</option>
@@ -741,25 +741,25 @@ export const InventarioView: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-[#475569] mb-1">Delta (+ ó -)</label>
+                  <label className="block font-semibold text-vet-muted mb-1">Delta (+ ó -)</label>
                   <input
                     type="number"
                     required
                     value={ajusteForm.cantidad_delta}
                     onChange={(e) => setAjusteForm({ ...ajusteForm, cantidad_delta: parseInt(e.target.value) || 0 })}
-                    className="w-full p-2 border border-[#e2e2e5] rounded-lg font-bold"
+                    className="w-full p-2 border border-vet-border rounded-lg font-bold"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-[#475569] mb-1">Motivo Justificado (Auditoría)</label>
+                <label className="block font-semibold text-vet-muted mb-1">Motivo Justificado (Auditoría)</label>
                 <input
                   type="text"
                   required
                   value={ajusteForm.motivo}
                   onChange={(e) => setAjusteForm({ ...ajusteForm, motivo: e.target.value })}
-                  className="w-full p-2 border border-[#e2e2e5] rounded-lg"
+                  className="w-full p-2 border border-vet-border rounded-lg"
                 />
               </div>
 
@@ -767,7 +767,7 @@ export const InventarioView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowAjusteModal(false)}
-                  className="px-4 py-2 border border-[#e2e2e5] text-[#475569] rounded-lg font-bold"
+                  className="px-4 py-2 border border-vet-border text-vet-muted rounded-lg font-bold"
                 >
                   Cancelar
                 </button>

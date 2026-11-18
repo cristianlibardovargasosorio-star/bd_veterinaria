@@ -104,59 +104,59 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div
           onClick={() => onNavigateTab('pacientes')}
-          className="p-5 bg-[#FFFFFF] rounded-[20px] border border-[#CBD5E1] shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
+          className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#475569] uppercase">
+            <span className="text-xs font-semibold text-vet-muted uppercase">
               {currentRole === 'PROPIETARIO' ? 'Mis Mascotas' : 'Pacientes Registrados'}
             </span>
-            <div className="w-9 h-9 rounded-xl bg-[#F1F5F9] text-[#1E293B] flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-vet-ice text-vet-navy flex items-center justify-center group-hover:scale-110 transition-transform">
               <PawPrint className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#0F172A]">
+          <div className="text-2xl font-black text-vet-navy">
             {currentRole === 'PROPIETARIO' ? userPets.length : activePets}
           </div>
           <div className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
-            <span className="text-[#0284C7] font-semibold">RF05</span>
+            <span className="text-vet-slate font-semibold">RF05</span>
             <span>Expedientes con microchip</span>
           </div>
         </div>
 
         <div
           onClick={() => onNavigateTab('citas')}
-          className="p-5 bg-[#FFFFFF] rounded-[20px] border border-[#CBD5E1] shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
+          className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#475569] uppercase">Citas en Agenda</span>
-            <div className="w-9 h-9 rounded-xl bg-[#F0F9FF] text-[#0284C7] flex items-center justify-center group-hover:scale-110 transition-transform">
+            <span className="text-xs font-semibold text-vet-muted uppercase">Citas en Agenda</span>
+            <div className="w-9 h-9 rounded-xl bg-[#F0F9FF] text-vet-slate flex items-center justify-center group-hover:scale-110 transition-transform">
               <CalendarCheck2 className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#0F172A]">{todayCitas.length}</div>
+          <div className="text-2xl font-black text-vet-navy">{todayCitas.length}</div>
           <div className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
-            <span className="text-[#0284C7] font-semibold">{pendingCitas.length} pendientes</span>
+            <span className="text-vet-slate font-semibold">{pendingCitas.length} pendientes</span>
             <span>de confirmación</span>
           </div>
         </div>
 
         <div
           onClick={() => onNavigateTab(currentRole === 'PROPIETARIO' ? 'fichas-ia' : 'facturacion')}
-          className="p-5 bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] shadow-xs hover:border-[#cbd5e1] transition-all cursor-pointer group"
+          className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs hover:border-vet-border transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#475569] uppercase">
+            <span className="text-xs font-semibold text-vet-muted uppercase">
               {currentRole === 'PROPIETARIO' ? 'Fichas IA Disponibles' : 'Facturación Total'}
             </span>
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-vet-amber-soft text-vet-amber-ink flex items-center justify-center group-hover:scale-110 transition-transform">
               {currentRole === 'PROPIETARIO' ? <Sparkles className="w-5 h-5" /> : <DollarSign className="w-5 h-5" />}
             </div>
           </div>
-          <div className="text-2xl font-black text-[#0f172a]">
+          <div className="text-2xl font-black text-vet-navy">
             {currentRole === 'PROPIETARIO' ? fichasIA.length : `$${totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
           </div>
-          <div className="text-xs text-[#475569] mt-1 flex items-center gap-1">
-            <span className="text-amber-600 font-semibold">
+          <div className="text-xs text-vet-muted mt-1 flex items-center gap-1">
+            <span className="text-vet-amber-ink font-semibold">
               {currentRole === 'PROPIETARIO' ? 'Gemini 3.8 Flash' : 'Script 02 SP'}
             </span>
             <span>{currentRole === 'PROPIETARIO' ? 'Resúmenes clínicos' : 'Facturas pagadas'}</span>
@@ -186,15 +186,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
         {/* Left Column (2 cols): Citas y Actividad */}
         <div className="lg:col-span-2 space-y-6">
           {/* Citas del Día */}
-          <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-5 shadow-xs">
+          <div className="bg-vet-surface rounded-[20px] border border-vet-border p-5 shadow-xs">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <CalendarCheck2 className="w-5 h-5 text-[#0369A1]" />
-                <h3 className="font-bold text-base text-[#0f172a]">Agenda Próxima</h3>
+                <CalendarCheck2 className="w-5 h-5 text-vet-navy" />
+                <h3 className="font-bold text-base text-vet-navy">Agenda Próxima</h3>
               </div>
               <button
                 onClick={() => onNavigateTab('citas')}
-                className="text-xs font-semibold text-[#0369A1] hover:text-[#0369A1] flex items-center gap-1"
+                className="text-xs font-semibold text-vet-navy hover:text-vet-navy flex items-center gap-1"
               >
                 <span>Ver toda la agenda</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -219,31 +219,31 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                     className="p-3.5 rounded-xl border border-vet-border hover:bg-vet-ice/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#E0F2FE] text-[#0369A1] font-bold flex items-center justify-center shrink-0 text-xs">
+                      <div className="w-10 h-10 rounded-xl bg-vet-ice text-vet-navy font-bold flex items-center justify-center shrink-0 text-xs">
                         {cita.tipo_cita.substring(0, 3)}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-sm text-[#0f172a]">
+                          <span className="font-bold text-sm text-vet-navy">
                             {pet?.nombre || 'Paciente'} ({pet?.especie || 'Mascota'})
                           </span>
                           <span className={`inline-flex items-center whitespace-nowrap text-[10px] font-bold px-2 py-0.5 rounded-full border ${statusColors[cita.estado]}`}>
                             {cita.estado}
                           </span>
                         </div>
-                        <p className="text-xs text-[#475569] mt-0.5">
-                          Tutor: <strong className="text-[#475569]">{owner ? `${owner.nombres} ${owner.apellidos}` : 'N/A'}</strong> • Motivo: {cita.motivo_general}
+                        <p className="text-xs text-vet-muted mt-0.5">
+                          Tutor: <strong className="text-vet-muted">{owner ? `${owner.nombres} ${owner.apellidos}` : 'N/A'}</strong> • Motivo: {cita.motivo_general}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 sm:self-center">
                       <div className="text-right text-xs">
-                        <div className="font-bold text-[#0f172a] flex items-center gap-1 justify-end">
-                          <Clock className="w-3.5 h-3.5 text-[#475569]" />
+                        <div className="font-bold text-vet-navy flex items-center gap-1 justify-end">
+                          <Clock className="w-3.5 h-3.5 text-vet-muted" />
                           <span>{new Date(cita.fecha_hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
-                        <span className="text-[10px] text-[#475569]">{new Date(cita.fecha_hora).toLocaleDateString()}</span>
+                        <span className="text-[10px] text-vet-muted">{new Date(cita.fecha_hora).toLocaleDateString()}</span>
                       </div>
                       {cita.estado === 'CONFIRMADA' && currentRole !== 'PROPIETARIO' && (
                         <button
@@ -347,13 +347,13 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
           </div>
 
           {/* Últimos eventos de auditoría (Script 02) */}
-          <div className="bg-[#ffffff] rounded-[20px] border border-[#cbd5e1] p-5 shadow-xs">
+          <div className="bg-vet-surface rounded-[20px] border border-vet-border p-5 shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <FileCheck2 className="w-4 h-4 text-[#475569]" />
-                <h3 className="font-bold text-sm text-[#0f172a]">Auditoría del Sistema</h3>
+                <FileCheck2 className="w-4 h-4 text-vet-muted" />
+                <h3 className="font-bold text-sm text-vet-navy">Auditoría del Sistema</h3>
               </div>
-              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-[#F1F5F9] text-[#475569]">
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-vet-ice text-vet-muted">
                 ACID
               </span>
             </div>
@@ -362,17 +362,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
               {auditoria.slice(0, 4).map((a) => (
                 <div key={a.id_auditoria} className="text-xs border-b border-slate-100 pb-2">
                   <div className="flex items-center justify-between text-[10px]">
-                    <span className="font-mono font-bold text-[#0369A1]">{a.tabla_afectada}</span>
-                    <span className="text-[#475569]">{new Date(a.fecha).toLocaleTimeString()}</span>
+                    <span className="font-mono font-bold text-vet-navy">{a.tabla_afectada}</span>
+                    <span className="text-vet-muted">{new Date(a.fecha).toLocaleTimeString()}</span>
                   </div>
-                  <p className="text-[#475569] mt-0.5 text-[11px] line-clamp-2">{a.detalles}</p>
+                  <p className="text-vet-muted mt-0.5 text-[11px] line-clamp-2">{a.detalles}</p>
                 </div>
               ))}
             </div>
 
             <button
               onClick={() => onNavigateTab('auditoria')}
-              className="w-full mt-3 py-1.5 text-center text-xs font-semibold text-[#475569] hover:text-[#0f172a] bg-[#F1F5F9] rounded-lg transition-colors"
+              className="w-full mt-3 py-1.5 text-center text-xs font-semibold text-vet-muted hover:text-vet-navy bg-vet-ice rounded-lg transition-colors"
             >
               Ver Log Completo de Auditoría
             </button>
