@@ -292,40 +292,47 @@ export const BackgroundThreeCanvas: React.FC = () => {
 
     interface FloatingShape {
       group: THREE.Group;
+      normX: number; // Fracción normalizada fuera de la zona de lectura central
+      normY: number;
       basePos: THREE.Vector3;
       offset: THREE.Vector3;
       rotSpeed: { x: number; y: number; z: number };
       phase: number;
       speedFactor: number;
       baseScale: number;
+      responsiveScale: number;
       currentScale: number;
     }
 
     const shapes: FloatingShape[] = [];
-    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // Dispersión orgánica sin cuadrícula rígida
 
+    // Posicionamiento orgánico en el perímetro y márgenes laterales para no tapar las letras centrales
     for (let i = 0; i < LANDING_3D_CONFIG.shapeCount; i++) {
       const group = builders[i % builders.length](i);
+      const isLeft = i % 2 === 0;
+      const sideSign = isLeft ? -1 : 1;
 
-      const radiusNorm = Math.sqrt((i + 0.5) / LANDING_3D_CONFIG.shapeCount);
-      const angle = i * goldenAngle + (Math.random() - 0.5) * 0.45;
-      const spreadX = Math.cos(angle) * radiusNorm * 11.5 + (Math.random() - 0.5) * 1.4;
-      const spreadY = Math.sin(angle) * radiusNorm * 6.4 + (Math.random() - 0.5) * 1.0;
-      const depthZ = -2.2 - Math.random() * 6.0;
+      // Distribuir orgánicamente en los bordes laterales (76%-94% del semiancho) y esquinas superior/inferior
+      const laneProgress = (Math.floor(i / 2) + 0.5) / Math.ceil(LANDING_3D_CONFIG.shapeCount / 2);
+      const jitterX = (Math.random() - 0.5) * 0.08;
+      const jitterY = (Math.random() - 0.5) * 0.14;
+      const normX = sideSign * (0.78 + Math.random() * 0.15 + jitterX);
+      const normY = (laneProgress * 2 - 1) * 0.88 + jitterY;
+      const depthZ = -1.8 - Math.random() * 4.5;
 
-      const scale = 0.68 + Math.random() * 0.52;
-      group.position.set(spreadX, spreadY, depthZ);
+      const scale = 0.65 + Math.random() * 0.4;
       group.rotation.set(
         (Math.random() - 0.5) * 0.6,
         (Math.random() - 0.5) * 0.9,
         (Math.random() - 0.5) * 0.4
       );
-      group.scale.setScalar(scale);
       scene.add(group);
 
       shapes.push({
         group,
-        basePos: new THREE.Vector3(spreadX, spreadY, depthZ),
+        normX,
+        normY,
+        basePos: new THREE.Vector3(0, 0, depthZ),
         offset: new THREE.Vector3(0, 0, 0),
         rotSpeed: {
           x: (Math.random() > 0.5 ? 1 : -1) * (LANDING_3D_CONFIG.rotationSpeed * (0.5 + Math.random() * 0.8)),
@@ -335,17 +342,25 @@ export const BackgroundThreeCanvas: React.FC = () => {
         phase: Math.random() * Math.PI * 2,
         speedFactor: 0.75 + Math.random() * 0.55,
         baseScale: scale,
+        responsiveScale: scale,
         currentScale: scale,
       });
     }
 
-    // Partículas ambientales sutiles
+    // Partículas ambientales sutiles confinadas a los márgenes laterales
     const pCount = LANDING_3D_CONFIG.particleCount;
     const pPositions = new Float32Array(pCount * 3);
+    const pNormX: number[] = [];
+    const pNormY: number[] = [];
     for (let i = 0; i < pCount; i++) {
-      pPositions[i * 3] = (Math.random() - 0.5) * 24;
-      pPositions[i * 3 + 1] = (Math.random() - 0.5) * 14;
-      pPositions[i * 3 + 2] = -1.5 - Math.random() * 7.5;
+      const side = i % 2 === 0 ? -1 : 1;
+      const nx = side * (0.74 + Math.random() * 0.23);
+      const ny = (Math.random() - 0.5) * 1.85;
+      pNormX.push(nx);
+      pNormY.push(ny);
+      pPositions[i * 3] = nx * 10;
+      pPositions[i * 3 + 1] = ny * 5;
+      pPositions[i * 3 + 2] = -1.5 - Math.random() * 5.5;
     }
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
@@ -357,6 +372,35 @@ export const BackgroundThreeCanvas: React.FC = () => {
     });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
+
+    const updatePerimeterLayout = () => {
+      const halfH = Math.tan(THREE.MathUtils.degToRad(fov / 2)) * camZ;
+      const halfW = halfH * (width / height);
+      const isNarrow = width < 1024;
+      const isMobile = width < 640;
+
+      shapes.forEach((item) => {
+        const depthScale = (camZ - item.basePos.z) / camZ;
+        // En pantallas estrechas empujar más al borde y reducir ligeramente la escala para despejar el texto
+        const edgeBoost = isMobile ? 1.04 : isNarrow ? 1.02 : 1;
+        const xClamped = Math.sign(item.normX) * Math.min(0.95, Math.abs(item.normX) * edgeBoost);
+        item.basePos.x = xClamped * halfW * depthScale;
+        item.basePos.y = item.normY * halfH * depthScale;
+        item.responsiveScale = item.baseScale * (isMobile ? 0.52 : isNarrow ? 0.72 : 1);
+        item.currentScale = item.responsiveScale;
+        item.group.position.set(item.basePos.x, item.basePos.y, item.basePos.z);
+        item.group.scale.setScalar(item.responsiveScale);
+      });
+
+      const posAttr = pGeo.attributes.position as THREE.BufferAttribute;
+      for (let i = 0; i < pCount; i++) {
+        posAttr.setX(i, pNormX[i] * halfW);
+        posAttr.setY(i, pNormY[i] * halfH);
+      }
+      posAttr.needsUpdate = true;
+    };
+
+    updatePerimeterLayout();
 
     let mouseNdcX = 0;
     let mouseNdcY = 0;
@@ -394,6 +438,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
+      updatePerimeterLayout();
       updateCursorWorld();
       if (prefersReducedMotion) {
         renderer.render(scene, camera);
@@ -421,11 +466,11 @@ export const BackgroundThreeCanvas: React.FC = () => {
       shapes.forEach((item) => {
         const floatT = t * LANDING_3D_CONFIG.floatSpeed * item.speedFactor + item.phase;
         const floatY = Math.sin(floatT) * LANDING_3D_CONFIG.floatAmplitude;
-        const floatX = Math.cos(floatT * 0.7) * (LANDING_3D_CONFIG.floatAmplitude * 0.45);
+        const floatX = Math.cos(floatT * 0.7) * (LANDING_3D_CONFIG.floatAmplitude * 0.25);
 
         let targetOffX = 0;
         let targetOffY = 0;
-        let targetScale = item.baseScale;
+        let targetScale = item.responsiveScale;
         let rotBoost = 1;
 
         if (cursorActive) {
@@ -436,9 +481,10 @@ export const BackgroundThreeCanvas: React.FC = () => {
 
           if (dist < radius && dist > 0.001) {
             const strength = 1 - dist / radius;
-            targetOffX = (dx / dist) * strength * LANDING_3D_CONFIG.cursorRepulsionStrength;
-            targetOffY = (dy / dist) * strength * LANDING_3D_CONFIG.cursorRepulsionStrength;
-            targetScale = item.baseScale * (1 + strength * 0.2);
+            // Empuje suave manteniendo la figura hacia el borde exterior, nunca hacia las letras centrales
+            targetOffX = Math.sign(item.normX) * Math.abs(dx / dist) * strength * 0.75;
+            targetOffY = (dy / dist) * strength * 0.85;
+            targetScale = item.responsiveScale * (1 + strength * 0.18);
             rotBoost = 1 + strength * 2.8;
           }
         }
