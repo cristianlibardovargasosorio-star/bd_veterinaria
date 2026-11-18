@@ -8,19 +8,19 @@
   --color-vet-emerald: #0D9488;
   --color-vet-emerald-hover: #0F766E;
   --color-vet-mint: #10B981;
-  --color-vet-ice: #F8FAFC;
-  --color-vet-surface: #FFFFFF;
-  --color-vet-border: #E2E8F0;
+  --color-vet-ice: #E2E8F0;
+  --color-vet-surface: #F1F5F9;
+  --color-vet-border: #B8C5D6;
   --color-vet-muted: #475569;
   --color-vet-amber: #F59E0B;
   --color-vet-amber-ink: #92400E;
-  --color-vet-amber-soft: #FFFBEB;
+  --color-vet-amber-soft: #FEF3C7;
 
   /* Base Aliases */
   --color-ink-black: #0F172A;
-  --color-paper-white: #FFFFFF;
-  --color-mist-gray: #F8FAFC;
-  --color-fog-white: #F8FAFC;
+  --color-paper-white: #F1F5F9;
+  --color-mist-gray: #E2E8F0;
+  --color-fog-white: #E2E8F0;
   --color-slate-gray: #475569;
   --color-ash-gray: #64748B;
   --color-smoke-gray: #94A3B8;
@@ -89,27 +89,27 @@
   --vet-emerald-600: #0D9488;
   --vet-emerald-700: #0F766E;
   --vet-blue-600: #0284C7;
-  --vet-bg-ice: #F8FAFC;
-  --vet-bg-ice-alt: #F1F5F9;
-  --vet-surface-card: #FFFFFF;
-  --vet-border-subtle: #CBD5E1;
+  --vet-bg-ice: #E2E8F0;
+  --vet-bg-ice-alt: #DCE4EE;
+  --vet-surface-card: #F1F5F9;
+  --vet-border-subtle: #B8C5D6;
   --vet-amber-500: #F59E0B;
 
   --color-ink-black: #0F172A;
-  --color-paper-white: #FFFFFF;
-  --color-mist-gray: #F1F5F9;
-  --color-fog-white: #F8FAFC;
+  --color-paper-white: #F1F5F9;
+  --color-mist-gray: #DCE4EE;
+  --color-fog-white: #E2E8F0;
   --color-slate-gray: #475569;
   --color-ash-gray: #64748B;
   --color-smoke-gray: #94A3B8;
-  --color-blush-peach: #E0F2FE;
-  --color-sienna-brown: #0284C7;
+  --color-blush-peach: #E2E8F0;
+  --color-sienna-brown: #0F172A;
 
-  --surface-canvas: #F8FAFC;
-  --surface-card-mist: #F1F5F9;
-  --surface-section-fog: #F8FAFC;
-  --surface-accent-blush: #E0F2FE;
-  --surface-elevated-white: #FFFFFF;
+  --surface-canvas: #E2E8F0;
+  --surface-card-mist: #DCE4EE;
+  --surface-section-fog: #E2E8F0;
+  --surface-accent-blush: #E2E8F0;
+  --surface-elevated-white: #F1F5F9;
 
   --radius-cards: 24px;
   --radius-images: 12px;
