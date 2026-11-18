@@ -294,7 +294,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                     value={email}
                     onChange={(e) => handleEmailChange(e.target.value)}
                     placeholder="nombre@clinica.com"
-                    className={`w-full px-4 py-3 rounded-[16px] bg-vet-surface border text-vet-navy placeholder-[#a3a6af] text-sm outline-none transition-colors ${
+                    className={`w-full px-4 py-3 rounded-[16px] bg-vet-surface border text-vet-navy placeholder-vet-placeholder text-sm outline-none transition-colors ${
                       emailError
                         ? 'border-[#0369A1] bg-vet-ice/20'
                         : 'border-vet-border focus:border-vet-navy'
@@ -328,7 +328,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                         setLoginError(null);
                       }}
                       placeholder="••••••••••••"
-                      className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-vet-surface border border-vet-border focus:border-vet-navy text-vet-navy placeholder-[#a3a6af] outline-none text-sm transition-colors"
+                      className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-vet-surface border border-vet-border focus:border-vet-navy text-vet-navy placeholder-vet-placeholder outline-none text-sm transition-colors"
                     />
 
                     <button

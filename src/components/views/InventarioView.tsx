@@ -165,12 +165,12 @@ export const InventarioView: React.FC = () => {
         <div
           className={`p-3.5 rounded-xl text-xs font-semibold flex items-center gap-2 ${
             feedback.isError
-              ? 'bg-[#FEF2F2] text-[#DC2626] border border-[#DC2626]/25'
+              ? 'bg-vet-danger-soft text-vet-danger-ink border border-vet-danger/25'
               : 'bg-vet-ice text-vet-navy border border-[#0369A1]/25'
           }`}
         >
           {feedback.isError ? (
-            <AlertTriangle className="w-4 h-4 shrink-0 text-[#DC2626]" />
+            <AlertTriangle className="w-4 h-4 shrink-0 text-vet-danger-ink" />
           ) : (
             <CheckCircle2 className="w-4 h-4 shrink-0 text-vet-navy" />
           )}
@@ -253,7 +253,7 @@ export const InventarioView: React.FC = () => {
                         new Date(l.fecha_vencimiento).getTime() - new Date().getTime() < 60 * 24 * 3600 * 1000;
 
                       return (
-                        <tr key={l.id_lote} className={isExpired ? 'bg-[#FEF2F2]/60' : 'hover:bg-vet-surface'}>
+                        <tr key={l.id_lote} className={isExpired ? 'bg-vet-danger-soft/60' : 'hover:bg-vet-surface'}>
                           <td className="py-3 px-3">
                             <span className="font-bold text-vet-navy block">{prod?.nombre}</span>
                             <span className="text-[10px] text-vet-muted font-mono">{prod?.sku}</span>
@@ -267,7 +267,7 @@ export const InventarioView: React.FC = () => {
                           </td>
                           <td className="py-3 px-3 whitespace-nowrap">
                             {isExpired ? (
-                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#FEF2F2] text-[#B91C1C] border border-[#DC2626]/25">
+                              <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-vet-danger-soft text-vet-danger-ink border border-vet-danger/25">
                                 Vencido (No vendible)
                               </span>
                             ) : isNear ? (

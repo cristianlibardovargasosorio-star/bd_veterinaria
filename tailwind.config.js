@@ -18,6 +18,12 @@ export default {
         'vet-warning': '#F59E0B', // Ámbar exclusivo para stock crítico y estados pendientes
         'vet-warning-ink': '#92400E', // Neutro/ámbar oscuro añadido: texto sobre fondo ámbar suave (contraste > 6:1, WCAG AA)
         'vet-warning-soft': '#FFFBEB', // Fondo suave derivado del ámbar para alertas legibles sin saturar
+        'vet-divider': '#E2E8F0', // Neutro añadido: divisores de tablas y listas
+        'vet-hover': '#F1F5F9', // Neutro añadido: realce sutil en filas e ítems secundarios
+        'vet-placeholder': '#64748B', // Neutro añadido: placeholders legibles sobre #FFFFFF
+        'vet-danger': '#DC2626', // Borde/acento de error o cancelación
+        'vet-danger-ink': '#B91C1C', // Texto de error con contraste AA sobre fondo suave
+        'vet-danger-soft': '#FEF2F2', // Fondo suave de error o cancelación
 
         // Alias de compatibilidad existentes
         'vet-navy': '#0F172A',

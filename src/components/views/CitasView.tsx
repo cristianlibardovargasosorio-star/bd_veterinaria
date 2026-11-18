@@ -107,7 +107,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
     PENDIENTE: { label: 'Pendiente', bg: 'bg-vet-amber-soft', text: 'text-vet-amber-ink', border: 'border-vet-amber/35' },
     CONFIRMADA: { label: 'Confirmada', bg: 'bg-vet-ice', text: 'text-vet-emerald-hover', border: 'border-vet-emerald/30' },
     ATENDIDA: { label: 'Atendida', bg: 'bg-vet-ice', text: 'text-vet-navy', border: 'border-vet-border' },
-    CANCELADA: { label: 'Cancelada', bg: 'bg-[#FEF2F2]', text: 'text-[#B91C1C]', border: 'border-[#DC2626]/25' },
+    CANCELADA: { label: 'Cancelada', bg: 'bg-vet-danger-soft', text: 'text-vet-danger-ink', border: 'border-vet-danger/25' },
   };
 
   return (

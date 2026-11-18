@@ -117,7 +117,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
           <div className="text-2xl font-black text-vet-navy">
             {currentRole === 'PROPIETARIO' ? userPets.length : activePets}
           </div>
-          <div className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
+          <div className="text-xs text-vet-ink-muted mt-1 flex items-center gap-1">
             <span className="text-vet-slate font-semibold">RF05</span>
             <span>Expedientes con microchip</span>
           </div>
@@ -129,12 +129,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-vet-muted uppercase">Citas en Agenda</span>
-            <div className="w-9 h-9 rounded-xl bg-[#F0F9FF] text-vet-slate flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-vet-ice text-vet-slate flex items-center justify-center group-hover:scale-110 transition-transform">
               <CalendarCheck2 className="w-5 h-5" />
             </div>
           </div>
           <div className="text-2xl font-black text-vet-navy">{todayCitas.length}</div>
-          <div className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
+          <div className="text-xs text-vet-ink-muted mt-1 flex items-center gap-1">
             <span className="text-vet-slate font-semibold">{pendingCitas.length} pendientes</span>
             <span>de confirmación</span>
           </div>
@@ -210,7 +210,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                   PENDIENTE: 'bg-vet-amber-soft text-vet-amber-ink border-vet-amber/35',
                   CONFIRMADA: 'bg-vet-ice text-vet-navy border-vet-border',
                   ATENDIDA: 'bg-vet-ice text-vet-navy border-vet-border',
-                  CANCELADA: 'bg-[#FEF2F2] text-[#B91C1C] border-[#DC2626]/25',
+                  CANCELADA: 'bg-vet-danger-soft text-vet-danger-ink border-vet-danger/25',
                 };
 
                 return (
@@ -331,7 +331,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                       <div className="font-extrabold text-vet-amber-ink text-sm whitespace-nowrap">
                         {prod.stock_vendible} / {prod.stock_minimo} min
                       </div>
-                      <span className="text-[9px] uppercase font-bold text-[#B91C1C]">Crítico</span>
+                      <span className="text-[9px] uppercase font-bold text-vet-danger-ink">Crítico</span>
                     </div>
                   </div>
                 ))}

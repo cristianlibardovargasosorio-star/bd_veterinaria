@@ -117,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 logout();
                 onLogout();
               }}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-[#FEF2F2] text-[#DC2626] text-xs font-medium border border-[#DC2626]/30 transition-colors cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-vet-danger-soft text-vet-danger-ink text-xs font-medium border border-[#DC2626]/30 transition-colors cursor-pointer whitespace-nowrap"
               title="Cerrar sesión e invalidar token JWT"
             >
               <LogOut className="w-3.5 h-3.5" />

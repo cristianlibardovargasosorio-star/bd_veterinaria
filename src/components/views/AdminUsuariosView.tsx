@@ -141,7 +141,7 @@ export const AdminUsuariosView: React.FC = () => {
 
   if (currentRole !== 'ADMINISTRADOR') {
     return (
-      <div className="p-6 rounded-[24px] bg-[#FEF2F2] border border-[#DC2626]/25 text-[#DC2626] flex items-center gap-3">
+      <div className="p-6 rounded-[24px] bg-vet-danger-soft border border-vet-danger/25 text-vet-danger-ink flex items-center gap-3">
         <AlertCircle className="w-5 h-5 shrink-0" />
         <div className="text-sm font-medium">
           Acceso restringido: solo el rol <strong>Administrador</strong> puede registrar personal interno en{' '}
@@ -206,11 +206,11 @@ export const AdminUsuariosView: React.FC = () => {
                     if (fieldErrors.nombreCompleto) setFieldErrors((p) => ({ ...p, nombreCompleto: undefined }));
                   }}
                   placeholder="Ej. Dra. Laura Gómez"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-vet-hover border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
                 />
               </div>
               {fieldErrors.nombreCompleto && (
-                <p className="mt-1 text-xs text-[#DC2626] font-medium">{fieldErrors.nombreCompleto}</p>
+                <p className="mt-1 text-xs text-vet-danger-ink font-medium">{fieldErrors.nombreCompleto}</p>
               )}
             </div>
 
@@ -231,11 +231,11 @@ export const AdminUsuariosView: React.FC = () => {
                     if (fieldErrors.correo) setFieldErrors((p) => ({ ...p, correo: undefined }));
                   }}
                   placeholder="nombre@vetsoft.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-vet-hover border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
                 />
               </div>
               {fieldErrors.correo && (
-                <p className="mt-1 text-xs text-[#DC2626] font-medium">{fieldErrors.correo}</p>
+                <p className="mt-1 text-xs text-vet-danger-ink font-medium">{fieldErrors.correo}</p>
               )}
             </div>
 
@@ -255,7 +255,7 @@ export const AdminUsuariosView: React.FC = () => {
                     if (fieldErrors.contrasena) setFieldErrors((p) => ({ ...p, contrasena: undefined }));
                   }}
                   placeholder="Mínimo 6 caracteres"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-vet-hover border border-vet-border text-sm text-vet-navy placeholder:text-[#a3a6af] focus:outline-none focus:border-vet-navy"
                 />
                 <button
                   type="button"
@@ -267,7 +267,7 @@ export const AdminUsuariosView: React.FC = () => {
                 </button>
               </div>
               {fieldErrors.contrasena && (
-                <p className="mt-1 text-xs text-[#DC2626] font-medium">{fieldErrors.contrasena}</p>
+                <p className="mt-1 text-xs text-vet-danger-ink font-medium">{fieldErrors.contrasena}</p>
               )}
             </div>
 
@@ -282,7 +282,7 @@ export const AdminUsuariosView: React.FC = () => {
                   id="reg-rol"
                   value={rol}
                   onChange={(e) => setRol(e.target.value as RolInterno)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-[#eff6ff] border border-vet-border text-sm text-vet-navy focus:outline-none focus:border-vet-navy"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-vet-hover border border-vet-border text-sm text-vet-navy focus:outline-none focus:border-vet-navy"
                 >
                   <option value="Veterinario">Veterinario</option>
                   <option value="Recepcionista">Recepcionista</option>
@@ -295,7 +295,7 @@ export const AdminUsuariosView: React.FC = () => {
             {serverError && (
               <div
                 role="alert"
-                className="p-3 rounded-2xl bg-[#FEF2F2] border border-[#DC2626]/25 text-xs text-[#DC2626] font-medium flex items-center gap-2"
+                className="p-3 rounded-2xl bg-vet-danger-soft border border-vet-danger/25 text-xs text-vet-danger-ink font-medium flex items-center gap-2"
               >
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{serverError}</span>
@@ -339,9 +339,9 @@ export const AdminUsuariosView: React.FC = () => {
                   <th className="py-2.5 px-3">Cifrado</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#ececec]">
+              <tbody className="divide-y divide-vet-divider">
                 {paginatedUsers.map((u) => (
-                  <tr key={u.id_usuario} className="hover:bg-[#eff6ff]">
+                  <tr key={u.id_usuario} className="hover:bg-vet-hover">
                     <td className="py-3 px-3">
                       <div className="font-semibold text-vet-navy">
                         {u.nombre_completo || ROLE_LABELS[u.rol_nombre] || 'Personal VetSoft'}
@@ -377,7 +377,7 @@ export const AdminUsuariosView: React.FC = () => {
                   type="button"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
+                  className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-vet-hover cursor-pointer"
                 >
                   Anterior
                 </button>
@@ -385,7 +385,7 @@ export const AdminUsuariosView: React.FC = () => {
                   type="button"
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-[#eff6ff] cursor-pointer"
+                  className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-vet-hover cursor-pointer"
                 >
                   Siguiente
                 </button>

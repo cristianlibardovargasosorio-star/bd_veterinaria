@@ -1202,7 +1202,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
       </section>
 
       {/* AI VIRTUAL HEALTH ASSISTANT FOR PET PARENTS — Steep Light Editorial Section */}
-      <section id="asistente-ia" className="py-20 bg-[#eff6ff]/90 border-b border-vet-border text-vet-navy">
+      <section id="asistente-ia" className="py-20 bg-vet-hover/90 border-b border-vet-border text-vet-navy">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <LazyScrollSection className="text-center space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-vet-ice text-vet-navy text-xs font-medium">
@@ -1275,7 +1275,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   <Sparkles className="w-4 h-4" />
                   <span>Respuesta del Asistente Clínico VETSOFT</span>
                 </div>
-                <span className="text-[#979799] font-mono text-[11px]">Motor Gemini 3.8 Flash</span>
+                <span className="text-vet-ink-muted font-mono text-[11px]">Motor Gemini 3.8 Flash</span>
               </div>
 
               {aiLoading ? (
