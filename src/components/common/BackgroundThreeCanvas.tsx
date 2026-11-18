@@ -10,21 +10,21 @@ export const LANDING_3D_CONFIG = {
   shapeCount: 16,
   /** Cantidad de partículas ambientales flotantes */
   particleCount: 45,
-  /** Colores armónicos con la paleta actual del sitio (azules, cafés y blancos) */
+  /** Colores armónicos combinando Azul Cerúleo/Cielo y Verde Esmeralda Clínico */
   palette: {
-    primaryTint: '#2563EB', // Azul Clínico
-    deepCoffee: '#8B5E3C', // Café Caramelo
-    softCoffee: '#C4A488', // Capuchino Suave
-    softBlue: '#60A5FA', // Azul Cielo
-    wireframe: '#1D4ED8', // Wireframe Azul Real
-    particle: '#64748B', // Partículas sutiles
+    primaryTint: '#0284C7', // Azul Cerúleo Clínico
+    deepCoffee: '#0D9488', // Verde Esmeralda Clínico
+    softCoffee: '#34D399', // Verde Menta Suave
+    softBlue: '#38BDF8', // Azul Cielo Luminoso
+    wireframe: '#0D9488', // Wireframe Verde Esmeralda
+    particle: '#0284C7', // Partículas Azul Cerúleo
   },
   /** Transparencia sutil para no interferir con la lectura del contenido */
   opacity: {
     solid: 0.2,
     accent: 0.24,
-    wireframe: 0.11,
-    particle: 0.15,
+    wireframe: 0.14,
+    particle: 0.18,
   },
   /** Velocidades base de animación */
   rotationSpeed: 0.002,
@@ -575,12 +575,12 @@ export const BackgroundThreeCanvas: React.FC = () => {
     };
   }, [useFallback]);
 
-  // Fallback limpio cuando WebGL no está disponible (sin cambiar el color de fondo del sitio)
+  // Fallback limpio cuando WebGL no está disponible
   if (useFallback) {
     return (
       <div
         aria-hidden="true"
-        className="fixed inset-0 pointer-events-none z-0 bg-transparent"
+        className="fixed inset-0 pointer-events-none z-0 bg-linear-to-br from-[#f0f9ff] via-[#ffffff] to-[#ecfdf5]/60"
       />
     );
   }
@@ -589,7 +589,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-transparent"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-linear-to-br from-[#f0f9ff] via-[#ffffff] to-[#ecfdf5]/60"
     />
   );
 };

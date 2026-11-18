@@ -154,9 +154,9 @@ export const AdminUsuariosView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="p-6 rounded-[24px] bg-[#e3d7ca] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-[24px] bg-[#F1F5F9] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs text-[#634b3b] mb-1">
+          <div className="flex items-center gap-2 text-xs text-[#475569] mb-1">
             <span className="px-2.5 py-0.5 rounded-full bg-[#F0FDFA] text-[#0D9488] font-semibold border border-[#0D9488]/20">
               VET-RF-01
             </span>
@@ -165,7 +165,7 @@ export const AdminUsuariosView: React.FC = () => {
           <h1 className="font-serif-editorial text-2xl sm:text-3xl text-[#0f172a] tracking-tight">
             Registro de Usuarios Internos
           </h1>
-          <p className="text-sm text-[#634b3b] mt-1">
+          <p className="text-sm text-[#475569] mt-1">
             Alta de personal clínico y administrativo con validación de unicidad y cifrado BCrypt.
           </p>
         </div>
@@ -185,7 +185,7 @@ export const AdminUsuariosView: React.FC = () => {
             </div>
             <div>
               <h2 className="text-base font-bold text-[#0f172a]">Nuevo Usuario Interno</h2>
-              <p className="text-xs text-[#634b3b]">Veterinario, Recepcionista o Administrador</p>
+              <p className="text-xs text-[#475569]">Veterinario, Recepcionista o Administrador</p>
             </div>
           </div>
 
@@ -196,7 +196,7 @@ export const AdminUsuariosView: React.FC = () => {
                 Nombre completo
               </label>
               <div className="relative">
-                <User className="w-4 h-4 text-[#634b3b] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <User className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="reg-nombre"
                   type="text"
@@ -220,7 +220,7 @@ export const AdminUsuariosView: React.FC = () => {
                 Correo electrónico
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-[#634b3b] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="reg-correo"
                   type="email"
@@ -245,7 +245,7 @@ export const AdminUsuariosView: React.FC = () => {
                 Contraseña (mínimo 6 caracteres)
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-[#634b3b] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   id="reg-password"
                   type={showPassword ? 'text' : 'password'}
@@ -261,7 +261,7 @@ export const AdminUsuariosView: React.FC = () => {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label="Mostrar u ocultar contraseña"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#634b3b] hover:text-[#0f172a]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#475569] hover:text-[#0f172a]"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -277,7 +277,7 @@ export const AdminUsuariosView: React.FC = () => {
                 Rol asignado (ENUM)
               </label>
               <div className="relative">
-                <Shield className="w-4 h-4 text-[#634b3b] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Shield className="w-4 h-4 text-[#475569] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <select
                   id="reg-rol"
                   value={rol}
@@ -315,7 +315,7 @@ export const AdminUsuariosView: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-2.5 px-5 rounded-full bg-[#1d4ed8] hover:bg-[#1e40af] text-[#ffffff] text-sm font-medium transition-colors disabled:opacity-60 cursor-pointer"
+              className="w-full py-2.5 px-5 rounded-full bg-[#0284C7] hover:bg-[#0369A1] text-[#ffffff] text-sm font-medium transition-colors disabled:opacity-60 cursor-pointer"
             >
               {isSubmitting ? 'Registrando...' : 'Registrar usuario interno'}
             </button>
@@ -326,13 +326,13 @@ export const AdminUsuariosView: React.FC = () => {
         <div className="lg:col-span-7 bg-[#ffffff] rounded-[24px] border border-[#cbd5e1] p-6 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-base font-bold text-[#0f172a]">Personal Interno Registrado</h2>
-            <span className="text-xs text-[#634b3b]">Tabla PostgreSQL: usuarios (UNIQUE correo)</span>
+            <span className="text-xs text-[#475569]">Tabla PostgreSQL: usuarios (UNIQUE correo)</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-[#cbd5e1] text-[#634b3b]">
+                <tr className="border-b border-[#cbd5e1] text-[#475569]">
                   <th className="py-2.5 px-3">Nombre / Correo</th>
                   <th className="py-2.5 px-3">Rol</th>
                   <th className="py-2.5 px-3">Estado</th>
@@ -346,10 +346,10 @@ export const AdminUsuariosView: React.FC = () => {
                       <div className="font-semibold text-[#0f172a]">
                         {u.nombre_completo || ROLE_LABELS[u.rol_nombre] || 'Personal VetSoft'}
                       </div>
-                      <div className="text-[11px] text-[#634b3b] font-mono">{u.correo}</div>
+                      <div className="text-[11px] text-[#475569] font-mono">{u.correo}</div>
                     </td>
                     <td className="py-3 px-3 whitespace-nowrap">
-                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#e3d7ca] text-[#0f172a]">
+                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#F1F5F9] text-[#0f172a]">
                         {ROLE_LABELS[u.rol_nombre] || u.rol_nombre}
                       </span>
                     </td>
@@ -358,7 +358,7 @@ export const AdminUsuariosView: React.FC = () => {
                         {u.estado}
                       </span>
                     </td>
-                    <td className="py-3 px-3 font-mono text-[11px] text-[#634b3b] whitespace-nowrap">
+                    <td className="py-3 px-3 font-mono text-[11px] text-[#475569] whitespace-nowrap">
                       BCrypt ($2a$)
                     </td>
                   </tr>
@@ -368,7 +368,7 @@ export const AdminUsuariosView: React.FC = () => {
           </div>
 
           {totalPages > 1 && (
-            <div className="mt-4 pt-3 border-t border-[#cbd5e1] flex items-center justify-between text-xs text-[#634b3b]">
+            <div className="mt-4 pt-3 border-t border-[#cbd5e1] flex items-center justify-between text-xs text-[#475569]">
               <span>
                 Página {currentPage} de {totalPages} ({internalUsers.length} registros)
               </span>

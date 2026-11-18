@@ -21,7 +21,7 @@ export const SkeletonText: React.FC<{ lines?: number; className?: string }> = ({
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
-          className={`h-3.5 bg-[#e3d7ca] rounded-md animate-pulse ${
+          className={`h-3.5 bg-[#F1F5F9] rounded-md animate-pulse ${
             i === lines - 1 ? 'w-2/3' : 'w-full'
           }`}
         />

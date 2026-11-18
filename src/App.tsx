@@ -120,7 +120,7 @@ export default function App() {
 
   const erpFallback = (
     <div className="space-y-6 animate-pulse">
-      <div className="p-6 rounded-[24px] bg-[#e3d7ca] h-28" />
+      <div className="p-6 rounded-[24px] bg-[#F1F5F9] h-28" />
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <SkeletonKPI />
         <SkeletonKPI />
@@ -144,14 +144,14 @@ export default function App() {
         <BackgroundThreeCanvas />
       </Suspense>
       {appMode === 'login' ? (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-[#634b3b]">Cargando acceso...</div>}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-[#475569]">Cargando acceso...</div>}>
           <LoginView
             onLoginSuccess={handleLoginSuccess}
             onReturnToLanding={handleReturnToLanding}
           />
         </Suspense>
       ) : appMode === 'landing' ? (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-[#634b3b]">Cargando VetSoft...</div>}>
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-[#475569]">Cargando VetSoft...</div>}>
           <LandingPage
             onEnterERP={handleEnterERP}
             onOpenLogin={handleOpenLogin}

@@ -6,11 +6,11 @@
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #634b3b;
-  --color-ash-gray: #634b3b;
+  --color-slate-gray: #475569;
+  --color-ash-gray: #475569;
   --color-smoke-gray: #a3a6af;
-  --color-blush-peach: #dcc3ad;
-  --color-sienna-brown: #1e40af;
+  --color-blush-peach: #E0F2FE;
+  --color-sienna-brown: #0369A1;
 
   /* Typography â€” Font Families */
   --font-signifier: 'Signifier', 'Source Serif 4', Georgia, Cambria, "Times New Roman", Times, serif;
@@ -73,16 +73,16 @@
   --color-paper-white: #ffffff;
   --color-mist-gray: #f2f2f3;
   --color-fog-white: #fafafb;
-  --color-slate-gray: #634b3b;
-  --color-ash-gray: #634b3b;
+  --color-slate-gray: #475569;
+  --color-ash-gray: #475569;
   --color-smoke-gray: #a3a6af;
-  --color-blush-peach: #dcc3ad;
-  --color-sienna-brown: #1e40af;
+  --color-blush-peach: #E0F2FE;
+  --color-sienna-brown: #0369A1;
 
   --surface-canvas: #ffffff;
   --surface-card-mist: #f2f2f3;
   --surface-section-fog: #fafafb;
-  --surface-accent-blush: #dcc3ad;
+  --surface-accent-blush: #E0F2FE;
   --surface-elevated-white: #ffffff;
 
   --radius-cards: 24px;
@@ -131,7 +131,7 @@ h1, h2, .font-serif-editorial {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #634b3b;
+  background: #475569;
 }
 
 /* Steep Component Classes */
@@ -177,8 +177,8 @@ h1, h2, .font-serif-editorial {
 }
 
 .steep-peach-card {
-  background-color: #dcc3ad;
-  color: #1e40af;
+  background-color: #E0F2FE;
+  color: #0369A1;
   border-radius: 24px;
   border: none;
   box-shadow: none;
