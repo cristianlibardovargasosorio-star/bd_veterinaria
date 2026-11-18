@@ -182,13 +182,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
               Autenticación respaldada por PostgreSQL y comparación de hash BCrypt mediante Spring Security, con redirección automática según el rol.
             </p>
 
-            {/* Criterios de Aceptación — Tarjeta blanca limpia con borde discreto */}
-            <div className="p-6 rounded-[24px] bg-vet-surface border border-vet-border text-vet-navy space-y-3 shadow-xs">
-              <div className="flex items-center gap-2 text-sm font-semibold text-vet-navy">
-                <ShieldCheck className="w-4 h-4 text-vet-slate" />
+            {/* Criterios de Aceptación — Azul médico sereno de alto contraste */}
+            <div className="p-6 rounded-[24px] bg-info-soft border border-info/25 text-info-ink space-y-3 shadow-xs">
+              <div className="flex items-center gap-2 text-sm font-semibold text-info-ink">
+                <ShieldCheck className="w-4 h-4 text-info" />
                 <span>Criterios de Aceptación RF-01 &amp; VET-RF-02</span>
               </div>
-              <ul className="text-xs text-vet-muted space-y-1.5 leading-relaxed">
+              <ul className="text-xs text-info-ink/90 space-y-1.5 leading-relaxed">
                 <li>1. Validación previa de formato de correo electrónico (RFC 5322).</li>
                 <li>2. Verificación de hash BCrypt en PostgreSQL sin exponer contraseñas.</li>
                 <li>3. Emisión de token JWT y redirección automática según rol ENUM.</li>
@@ -242,11 +242,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('admin@vetsoft.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border transition-colors cursor-pointer"
+                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-brand transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-vet-navy">
                       <span className="text-[11px] font-semibold text-vet-navy">ADMINISTRADOR</span>
-                      <Shield className="w-3.5 h-3.5 text-vet-muted" />
+                      <Shield className="w-3.5 h-3.5 text-brand" />
                     </div>
                     <div className="text-xs text-vet-muted truncate mt-1">admin@vetsoft.com</div>
                   </button>
@@ -254,11 +254,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('camilo.vet@vetsoft.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border transition-colors cursor-pointer"
+                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-action transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-vet-navy">
-                      <span className="text-[11px] font-semibold text-vet-navy">VETERINARIO</span>
-                      <Stethoscope className="w-3.5 h-3.5 text-vet-muted" />
+                      <span className="text-[11px] font-semibold text-action-hover">VETERINARIO</span>
+                      <Stethoscope className="w-3.5 h-3.5 text-action" />
                     </div>
                     <div className="text-xs text-vet-muted truncate mt-1">camilo.vet@vetsoft.com</div>
                   </button>
@@ -266,11 +266,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('carlos.mendoza@email.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border transition-colors cursor-pointer"
+                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-info transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-vet-navy">
-                      <span className="text-[11px] font-semibold text-vet-navy">PROPIETARIO</span>
-                      <Sparkles className="w-3.5 h-3.5 text-vet-muted" />
+                      <span className="text-[11px] font-semibold text-info-ink">PROPIETARIO</span>
+                      <Sparkles className="w-3.5 h-3.5 text-info" />
                     </div>
                     <div className="text-xs text-vet-muted truncate mt-1">carlos.mendoza...</div>
                   </button>

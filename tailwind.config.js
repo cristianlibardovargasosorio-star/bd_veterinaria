@@ -27,6 +27,11 @@ export default {
           ink: '#92400E', // Neutro/ámbar oscuro añadido: texto AA (> 6:1) sobre fondo suave
           soft: '#FEF3C7', // Fondo ámbar mate suave para alertas sin brillo excesivo
         },
+        info: {
+          DEFAULT: '#0284C7', // Azul médico informativo para contraste clínico sereno
+          ink: '#075985', // Azul petróleo oscuro con contraste WCAG AA sobre fondo suave
+          soft: '#DBEAFE', // Azul hielo suave para KPIs y bloques informativos
+        },
 
         // Tokens planos de compatibilidad (mismo origen de verdad)
         'vet-sidebar': '#0F172A',

@@ -110,7 +110,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             <span className="text-xs font-semibold text-vet-muted uppercase">
               {currentRole === 'PROPIETARIO' ? 'Mis Mascotas' : 'Pacientes Registrados'}
             </span>
-            <div className="w-9 h-9 rounded-xl bg-vet-ice text-vet-navy flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-info-soft text-info-ink border border-info/20 flex items-center justify-center group-hover:scale-110 transition-transform">
               <PawPrint className="w-5 h-5" />
             </div>
           </div>
@@ -118,24 +118,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             {currentRole === 'PROPIETARIO' ? userPets.length : activePets}
           </div>
           <div className="text-xs text-vet-ink-muted mt-1 flex items-center gap-1">
-            <span className="text-vet-slate font-semibold">RF05</span>
+            <span className="text-info-ink font-semibold">RF05</span>
             <span>Expedientes con microchip</span>
           </div>
         </div>
 
         <div
           onClick={() => onNavigateTab('citas')}
-          className="p-5 bg-surface-card rounded-[20px] border border-surface-border shadow-xs hover:border-brand/40 transition-all cursor-pointer group"
+          className="p-5 bg-surface-card rounded-[20px] border border-surface-border shadow-xs hover:border-info/50 transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-vet-muted uppercase">Citas en Agenda</span>
-            <div className="w-9 h-9 rounded-xl bg-vet-ice text-vet-slate flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-action/15 text-action-hover border border-action/20 flex items-center justify-center group-hover:scale-110 transition-transform">
               <CalendarCheck2 className="w-5 h-5" />
             </div>
           </div>
           <div className="text-2xl font-black text-vet-navy">{todayCitas.length}</div>
           <div className="text-xs text-vet-ink-muted mt-1 flex items-center gap-1">
-            <span className="text-vet-slate font-semibold">{pendingCitas.length} pendientes</span>
+            <span className="text-warning-ink font-semibold">{pendingCitas.length} pendientes</span>
             <span>de confirmación</span>
           </div>
         </div>
@@ -148,7 +148,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             <span className="text-xs font-semibold text-vet-muted uppercase">
               {currentRole === 'PROPIETARIO' ? 'Fichas IA Disponibles' : 'Facturación Total'}
             </span>
-            <div className="w-9 h-9 rounded-xl bg-vet-amber-soft text-vet-amber-ink flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-action/15 text-action-hover border border-action/20 flex items-center justify-center group-hover:scale-110 transition-transform">
               {currentRole === 'PROPIETARIO' ? <Sparkles className="w-5 h-5" /> : <DollarSign className="w-5 h-5" />}
             </div>
           </div>
@@ -156,7 +156,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             {currentRole === 'PROPIETARIO' ? fichasIA.length : `$${totalSales.toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
           </div>
           <div className="text-xs text-vet-muted mt-1 flex items-center gap-1">
-            <span className="text-vet-amber-ink font-semibold">
+            <span className="text-action-hover font-semibold">
               {currentRole === 'PROPIETARIO' ? 'Gemini 3.8 Flash' : 'Script 02 SP'}
             </span>
             <span>{currentRole === 'PROPIETARIO' ? 'Resúmenes clínicos' : 'Facturas pagadas'}</span>
@@ -208,8 +208,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
                 const statusColors: Record<string, string> = {
                   PENDIENTE: 'bg-vet-amber-soft text-vet-amber-ink border-vet-amber/35',
-                  CONFIRMADA: 'bg-vet-ice text-vet-navy border-vet-border',
-                  ATENDIDA: 'bg-vet-ice text-vet-navy border-vet-border',
+                  CONFIRMADA: 'bg-info-soft text-info-ink border-info/25',
+                  ATENDIDA: 'bg-action/12 text-action-hover border-action/25',
                   CANCELADA: 'bg-vet-danger-soft text-vet-danger-ink border-vet-danger/25',
                 };
 
@@ -219,7 +219,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                     className="p-3.5 rounded-xl border border-vet-border hover:bg-vet-ice/60 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-vet-ice text-vet-navy font-bold flex items-center justify-center shrink-0 text-xs">
+                      <div className="w-10 h-10 rounded-xl bg-info-soft text-info-ink border border-info/20 font-bold flex items-center justify-center shrink-0 text-xs">
                         {cita.tipo_cita.substring(0, 3)}
                       </div>
                       <div>
