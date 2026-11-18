@@ -111,7 +111,7 @@ export const FacturacionPOSView: React.FC = () => {
         {!activeFactura && (
           <button
             onClick={handleNuevaFactura}
-            className="px-4 py-2 rounded-xl bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
+            className="px-4 py-2 rounded-xl bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md "
           >
             <Plus className="w-4 h-4" />
             <span>Nueva Factura POS</span>
@@ -214,7 +214,7 @@ export const FacturacionPOSView: React.FC = () => {
                       />
                       <button
                         type="submit"
-                        className="px-4 py-2 bg-[#0284C7] hover:opacity-90 text-[#ffffff] rounded-lg font-bold shrink-0 transition-colors"
+                        className="px-4 py-2 bg-[#0D9488] hover:opacity-90 text-[#ffffff] rounded-lg font-bold shrink-0 transition-colors"
                       >
                         + Agregar
                       </button>
@@ -291,7 +291,7 @@ export const FacturacionPOSView: React.FC = () => {
                   <button
                     onClick={handleConfirmarVenta}
                     disabled={activeDetalles.length === 0}
-                    className="px-6 py-2.5 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
+                    className="px-6 py-2.5 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>Confirmar Venta y Cobrar (sp_confirmar_factura)</span>
@@ -329,7 +329,7 @@ export const FacturacionPOSView: React.FC = () => {
 
               <button
                 onClick={handleNuevaFactura}
-                className="px-6 py-3 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
+                className="px-6 py-3 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 <span>Iniciar Factura POS (sp_crear_factura)</span>
@@ -473,7 +473,7 @@ export const FacturacionPOSView: React.FC = () => {
               </button>
               <button
                 onClick={() => window.print()}
-                className="px-4 py-2 bg-[#0284C7] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
+                className="px-4 py-2 bg-[#0D9488] text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Imprimir Ticket</span>

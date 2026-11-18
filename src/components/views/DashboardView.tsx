@@ -48,16 +48,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
   return (
     <div className="space-y-6">
-      {/* Welcome Banner (Deep Navy-Teal Contrast Header) */}
-      <div className="p-6 rounded-[24px] bg-linear-to-r from-[#0F172A] via-[#0F4C5C] to-[#0F172A] border border-[#1E293B] text-[#ffffff] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
+      {/* Welcome Banner (Sobrio Azul Petróleo #0F172A -> #1E293B con CTA Verde Esmeralda #0D9488) */}
+      <div className="p-6 rounded-[24px] bg-linear-to-r from-[#0F172A] to-[#1E293B] border border-[#334155] text-[#FFFFFF] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0284C7] text-[#ffffff]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0284C7] text-[#FFFFFF]">
               {currentRole}
             </span>
             <span className="text-xs text-[#94A3B8]">VETSOFT v2.4 ACID</span>
           </div>
-          <h1 className="font-serif-editorial text-2xl sm:text-3xl tracking-tight text-[#ffffff]">
+          <h1 className="font-serif-editorial text-2xl sm:text-3xl tracking-tight text-[#FFFFFF]">
             {currentRole === 'PROPIETARIO'
               ? `Hola, ${ownerRecord?.nombres || 'Tutor'}`
               : `Panel de Control Veterinario`}
@@ -74,16 +74,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             <>
               <button
                 onClick={() => onNavigateTab('consultas')}
-                className="px-4 py-2 bg-[#0284C7] hover:bg-[#0369A1] text-[#ffffff] text-xs font-medium rounded-full flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 py-2 bg-[#0D9488] hover:bg-[#0F766E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#14B8A6] text-[#FFFFFF] text-xs font-semibold rounded-full flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <Stethoscope className="w-3.5 h-3.5" />
                 <span>Nueva Consulta</span>
               </button>
               <button
                 onClick={() => onNavigateTab('facturacion')}
-                className="px-4 py-2 bg-[#1E293B] hover:bg-[#334155] text-[#F8FAFC] border border-[#334155] text-xs font-normal rounded-full flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-4 py-2 bg-[#1E293B] hover:bg-[#334155] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0284C7] text-[#F8FAFC] border border-[#475569] text-xs font-medium rounded-full flex items-center gap-2 transition-colors cursor-pointer"
               >
-                <Receipt className="w-3.5 h-3.5 text-[#5EEAD4]" />
+                <Receipt className="w-3.5 h-3.5 text-[#38BDF8]" />
                 <span>Facturación POS</span>
               </button>
             </>
@@ -91,7 +91,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
           {currentRole === 'PROPIETARIO' && (
             <button
               onClick={() => onNavigateTab('citas')}
-              className="px-4 py-2.5 bg-[#0284C7] hover:bg-[#0369A1] text-[#ffffff] text-xs font-bold rounded-full flex items-center gap-2 transition-all cursor-pointer"
+              className="px-4 py-2.5 bg-[#0D9488] hover:bg-[#0F766E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#14B8A6] text-[#FFFFFF] text-xs font-semibold rounded-full flex items-center gap-2 transition-all cursor-pointer"
             >
               <CalendarCheck2 className="w-4 h-4" />
               <span>Solicitar Cita Médica</span>
@@ -100,41 +100,41 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* KPI Cards — Contenedores blancos sobre gris hielo con bordes sutiles #CBD5E1 */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div
           onClick={() => onNavigateTab('pacientes')}
-          className="p-5 bg-[#ECFDF5] rounded-[20px] border border-[#A7F3D0] shadow-xs hover:border-[#0D9488]/50 transition-all cursor-pointer group"
+          className="p-5 bg-[#FFFFFF] rounded-[20px] border border-[#CBD5E1] shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#0F766E] uppercase">
+            <span className="text-xs font-semibold text-[#475569] uppercase">
               {currentRole === 'PROPIETARIO' ? 'Mis Mascotas' : 'Pacientes Registrados'}
             </span>
-            <div className="w-9 h-9 rounded-xl bg-[#ffffff] text-[#0D9488] flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-[#F1F5F9] text-[#1E293B] flex items-center justify-center group-hover:scale-110 transition-transform">
               <PawPrint className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#0f172a]">
+          <div className="text-2xl font-black text-[#0F172A]">
             {currentRole === 'PROPIETARIO' ? userPets.length : activePets}
           </div>
-          <div className="text-xs text-[#475569] mt-1 flex items-center gap-1">
-            <span className="text-[#0D9488] font-semibold">RF05</span>
+          <div className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
+            <span className="text-[#0284C7] font-semibold">RF05</span>
             <span>Expedientes con microchip</span>
           </div>
         </div>
 
         <div
           onClick={() => onNavigateTab('citas')}
-          className="p-5 bg-[#F0F9FF] rounded-[20px] border border-[#BAE6FD] shadow-xs hover:border-[#0284C7]/50 transition-all cursor-pointer group"
+          className="p-5 bg-[#FFFFFF] rounded-[20px] border border-[#CBD5E1] shadow-xs hover:border-[#0284C7] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#0369A1] uppercase">Citas en Agenda</span>
-            <div className="w-9 h-9 rounded-xl bg-[#ffffff] text-[#0284C7] flex items-center justify-center group-hover:scale-110 transition-transform">
+            <span className="text-xs font-semibold text-[#475569] uppercase">Citas en Agenda</span>
+            <div className="w-9 h-9 rounded-xl bg-[#F0F9FF] text-[#0284C7] flex items-center justify-center group-hover:scale-110 transition-transform">
               <CalendarCheck2 className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#0f172a]">{todayCitas.length}</div>
-          <div className="text-xs text-[#475569] mt-1 flex items-center gap-1">
+          <div className="text-2xl font-black text-[#0F172A]">{todayCitas.length}</div>
+          <div className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
             <span className="text-[#0284C7] font-semibold">{pendingCitas.length} pendientes</span>
             <span>de confirmación</span>
           </div>
@@ -165,17 +165,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
         <div
           onClick={() => onNavigateTab('inventario')}
-          className="p-5 bg-[#FEF2F2] rounded-[20px] border border-[#DC2626]/20 shadow-xs hover:border-[#DC2626]/40 transition-all cursor-pointer group"
+          className="p-5 bg-[#FFFFFF] rounded-[20px] border border-[#CBD5E1] shadow-xs hover:border-[#F59E0B] transition-all cursor-pointer group"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#DC2626] uppercase">Stock Crítico</span>
-            <div className="w-9 h-9 rounded-xl bg-[#ffffff] text-[#DC2626] flex items-center justify-center group-hover:scale-110 transition-transform">
+            <span className="text-xs font-semibold text-[#B45309] uppercase">Stock Crítico</span>
+            <div className="w-9 h-9 rounded-xl bg-[#FFFBEB] text-[#F59E0B] flex items-center justify-center group-hover:scale-110 transition-transform">
               <AlertTriangle className="w-5 h-5" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#0f172a]">{vwAlertasStock.length}</div>
-          <div className="text-xs text-[#475569] mt-1 flex items-center gap-1">
-            <span className="text-[#DC2626] font-semibold">vw_alertas_stock</span>
+          <div className="text-2xl font-black text-[#0F172A]">{vwAlertasStock.length}</div>
+          <div className="text-xs text-[#64748B] mt-1 flex items-center gap-1">
+            <span className="text-[#D97706] font-semibold">vw_alertas_stock</span>
             <span>Reposición inmediata</span>
           </div>
         </div>
@@ -248,7 +248,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                       {cita.estado === 'CONFIRMADA' && currentRole !== 'PROPIETARIO' && (
                         <button
                           onClick={() => onNavigateTab('consultas')}
-                          className="px-2.5 py-1.5 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg text-xs font-semibold transition-colors"
+                          className="px-2.5 py-1.5 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg text-xs font-semibold transition-colors"
                         >
                           Atender
                         </button>

@@ -114,7 +114,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
               <div className="md:col-span-2 flex items-center gap-2">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
+                  className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
                 >
                   Simular Verificación
                 </button>
@@ -237,7 +237,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
         <div className="px-6 py-3 bg-[#F1F5F9] border-t border-[#cbd5e1] flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#eff6ff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
+            className="px-4 py-2 bg-[#eff6ff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
           >
             Cerrar Demostrador
           </button>

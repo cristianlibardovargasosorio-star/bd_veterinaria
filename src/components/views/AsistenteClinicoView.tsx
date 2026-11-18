@@ -138,7 +138,7 @@ export const AsistenteClinicoView: React.FC = () => {
               }`}
             >
               {msg.sender === 'ia' && (
-                <div className="w-8 h-8 rounded-xl bg-[#0284C7] text-[#ffffff] flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-[#0D9488] text-[#ffffff] flex items-center justify-center shrink-0 shadow-xs">
                   <Sparkles className="w-4 h-4" />
                 </div>
               )}
@@ -146,7 +146,7 @@ export const AsistenteClinicoView: React.FC = () => {
               <div
                 className={`p-4 rounded-[20px] max-w-xl leading-relaxed ${
                   msg.sender === 'user'
-                    ? 'bg-[#0284C7] text-[#ffffff] rounded-tr-xs'
+                    ? 'bg-[#0D9488] text-[#ffffff] rounded-tr-xs'
                     : 'bg-[#ffffff] text-[#0f172a] rounded-tl-xs border border-[#cbd5e1] shadow-2xs'
                 }`}
               >
@@ -196,7 +196,7 @@ export const AsistenteClinicoView: React.FC = () => {
           <button
             type="submit"
             disabled={loading || !pregunta.trim()}
-            className="px-4 py-2.5 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-4 py-2.5 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Send className="w-4 h-4" />
             <span>Enviar</span>

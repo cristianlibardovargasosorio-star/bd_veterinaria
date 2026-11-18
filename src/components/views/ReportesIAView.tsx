@@ -239,7 +239,7 @@ export const ReportesIAView: React.FC = () => {
 
               <button
                 onClick={() => window.print()}
-                className="px-3.5 py-2 rounded-xl bg-[#0284C7] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto transition-colors"
+                className="px-3.5 py-2 rounded-xl bg-[#0D9488] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto transition-colors"
               >
                 <Printer className="w-4 h-4" />
                 <span>Imprimir Reporte</span>

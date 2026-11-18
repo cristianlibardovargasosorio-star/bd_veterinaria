@@ -1,16 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  /* Steep Design System — Colors */
-  --color-ink-black: #0f172a;
-  --color-paper-white: #ffffff;
-  --color-mist-gray: #f2f2f3;
-  --color-fog-white: #fafafb;
+  /* VetSoft Clinical Design System — Reusable Color Tokens */
+  --color-vet-navy: #0F172A;
+  --color-vet-slate: #1E293B;
+  --color-vet-emerald: #0D9488;
+  --color-vet-emerald-hover: #0F766E;
+  --color-vet-blue: #0284C7;
+  --color-vet-ice: #F8FAFC;
+  --color-vet-ice-alt: #F1F5F9;
+  --color-vet-border: #CBD5E1;
+  --color-vet-amber: #F59E0B;
+
+  /* Base Aliases */
+  --color-ink-black: #0F172A;
+  --color-paper-white: #FFFFFF;
+  --color-mist-gray: #F1F5F9;
+  --color-fog-white: #F8FAFC;
   --color-slate-gray: #475569;
-  --color-ash-gray: #475569;
-  --color-smoke-gray: #a3a6af;
+  --color-ash-gray: #64748B;
+  --color-smoke-gray: #94A3B8;
   --color-blush-peach: #E0F2FE;
-  --color-sienna-brown: #0369A1;
+  --color-sienna-brown: #0284C7;
 
   /* Typography â€” Font Families */
   --font-signifier: 'Signifier', 'Source Serif 4', Georgia, Cambria, "Times New Roman", Times, serif;
@@ -69,21 +80,32 @@
 }
 
 :root {
-  --color-ink-black: #0f172a;
-  --color-paper-white: #ffffff;
-  --color-mist-gray: #f2f2f3;
-  --color-fog-white: #fafafb;
-  --color-slate-gray: #475569;
-  --color-ash-gray: #475569;
-  --color-smoke-gray: #a3a6af;
-  --color-blush-peach: #E0F2FE;
-  --color-sienna-brown: #0369A1;
+  --vet-navy-950: #0F172A;
+  --vet-slate-800: #1E293B;
+  --vet-emerald-600: #0D9488;
+  --vet-emerald-700: #0F766E;
+  --vet-blue-600: #0284C7;
+  --vet-bg-ice: #F8FAFC;
+  --vet-bg-ice-alt: #F1F5F9;
+  --vet-surface-card: #FFFFFF;
+  --vet-border-subtle: #CBD5E1;
+  --vet-amber-500: #F59E0B;
 
-  --surface-canvas: #ffffff;
-  --surface-card-mist: #f2f2f3;
-  --surface-section-fog: #fafafb;
+  --color-ink-black: #0F172A;
+  --color-paper-white: #FFFFFF;
+  --color-mist-gray: #F1F5F9;
+  --color-fog-white: #F8FAFC;
+  --color-slate-gray: #475569;
+  --color-ash-gray: #64748B;
+  --color-smoke-gray: #94A3B8;
+  --color-blush-peach: #E0F2FE;
+  --color-sienna-brown: #0284C7;
+
+  --surface-canvas: #F8FAFC;
+  --surface-card-mist: #F1F5F9;
+  --surface-section-fog: #F8FAFC;
   --surface-accent-blush: #E0F2FE;
-  --surface-elevated-white: #ffffff;
+  --surface-elevated-white: #FFFFFF;
 
   --radius-cards: 24px;
   --radius-images: 12px;
@@ -92,8 +114,8 @@
   --radius-smallcards: 16px;
   --radius-elevatedcards: 20px;
 
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--vet-bg-ice);
+  color: var(--vet-navy-950);
   font-family: var(--font-sohne);
 }
 

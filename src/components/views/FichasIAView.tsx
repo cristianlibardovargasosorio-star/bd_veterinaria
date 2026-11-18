@@ -251,7 +251,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
 
                 <button
                   onClick={handlePrint}
-                  className="px-3 py-1.5 rounded-lg bg-[#0284C7] hover:opacity-90 text-[#ffffff] text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                  className="px-3 py-1.5 rounded-lg bg-[#0D9488] hover:opacity-90 text-[#ffffff] text-xs font-semibold flex items-center gap-1.5 transition-colors"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Imprimir para el Cliente</span>
@@ -339,7 +339,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                 className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
                   existingFicha.aprobado_por_veterinario
                     ? 'bg-[#F1F5F9] hover:bg-[#F1F5F9] text-[#475569] border border-[#e2e2e5]'
-                    : 'bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] '
+                    : 'bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] '
                 }`}
               >
                 {existingFicha.aprobado_por_veterinario
@@ -367,7 +367,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
           <button
             onClick={handleGenerateAI}
             disabled={loading}
-            className="px-5 py-2.5 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-md "
+            className="px-5 py-2.5 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-md "
           >
             <Sparkles className="w-4 h-4" />
             <span>Generar Ahora con Gemini 3.8 Flash</span>

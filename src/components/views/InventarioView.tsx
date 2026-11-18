@@ -145,7 +145,7 @@ export const InventarioView: React.FC = () => {
 
           <button
             onClick={() => setShowLoteModal(true)}
-            className="px-3.5 py-2 rounded-xl bg-[#0284C7] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
+            className="px-3.5 py-2 rounded-xl bg-[#0D9488] hover:opacity-90 text-[#ffffff] text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
           >
             <Plus className="w-4 h-4 text-[#0369A1]" />
             <span>Nuevo Lote</span>
@@ -153,7 +153,7 @@ export const InventarioView: React.FC = () => {
 
           <button
             onClick={() => setShowProductModal(true)}
-            className="px-4 py-2 rounded-xl bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
+            className="px-4 py-2 rounded-xl bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
           >
             <Plus className="w-4 h-4" />
             <span>Nuevo Producto</span>
@@ -183,7 +183,7 @@ export const InventarioView: React.FC = () => {
         <button
           onClick={() => setActiveSubTab('lotes')}
           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-            activeSubTab === 'lotes' ? 'bg-[#0284C7] text-[#ffffff] shadow-xs' : 'text-[#475569] hover:bg-[#F1F5F9]'
+            activeSubTab === 'lotes' ? 'bg-[#0D9488] text-[#ffffff] shadow-xs' : 'text-[#475569] hover:bg-[#F1F5F9]'
           }`}
         >
           Lotes y Catálogo
@@ -193,7 +193,7 @@ export const InventarioView: React.FC = () => {
           onClick={() => setActiveSubTab('existencias')}
           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
             activeSubTab === 'existencias'
-              ? 'bg-[#0284C7] text-[#ffffff] shadow-xs'
+              ? 'bg-[#0D9488] text-[#ffffff] shadow-xs'
               : 'text-[#475569] hover:bg-[#F1F5F9]'
           }`}
         >
@@ -455,7 +455,7 @@ export const InventarioView: React.FC = () => {
             </div>
             <button
               onClick={() => setShowAjusteModal(true)}
-              className="px-3 py-1.5 bg-[#0284C7] hover:opacity-90 text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-[#0D9488] hover:opacity-90 text-[#ffffff] rounded-lg text-xs font-bold flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Registrar Movimiento</span>
@@ -600,7 +600,7 @@ export const InventarioView: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg font-bold"
+                  className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg font-bold"
                 >
                   Guardar Producto
                 </button>
@@ -687,7 +687,7 @@ export const InventarioView: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg font-bold"
+                  className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg font-bold"
                 >
                   Crear Lote
                 </button>

@@ -10,21 +10,21 @@ export const LANDING_3D_CONFIG = {
   shapeCount: 16,
   /** Cantidad de partículas ambientales flotantes */
   particleCount: 45,
-  /** Colores armónicos combinando Azul Cerúleo/Cielo y Verde Esmeralda Clínico */
+  /** Colores sobrios: Azul Petróleo/Pizarra dominante con acento sutil Verde Esmeralda */
   palette: {
-    primaryTint: '#0284C7', // Azul Cerúleo Clínico
-    deepCoffee: '#0D9488', // Verde Esmeralda Clínico
-    softCoffee: '#34D399', // Verde Menta Suave
-    softBlue: '#38BDF8', // Azul Cielo Luminoso
-    wireframe: '#0F172A', // Wireframe Pizarra Oscuro para contraste sutil
-    particle: '#0F172A', // Partículas Pizarra Oscuro
+    primaryTint: '#1E293B', // Azul Petróleo / Pizarra Oscuro
+    deepCoffee: '#0284C7', // Azul Médico Suave
+    softCoffee: '#0D9488', // Verde Esmeralda Equilibrado (sutil)
+    softBlue: '#64748B', // Gris Pizarra Medio
+    wireframe: '#0F172A', // Wireframe Azul Petróleo Profundo
+    particle: '#1E293B', // Partículas Pizarra Oscuro
   },
   /** Transparencia sutil para no interferir con la lectura del contenido */
   opacity: {
-    solid: 0.22,
-    accent: 0.25,
-    wireframe: 0.16,
-    particle: 0.18,
+    solid: 0.14,
+    accent: 0.16,
+    wireframe: 0.12,
+    particle: 0.14,
   },
   /** Velocidades base de animación */
   rotationSpeed: 0.002,
@@ -580,7 +580,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
     return (
       <div
         aria-hidden="true"
-        className="fixed inset-0 pointer-events-none z-0 bg-linear-to-br from-[#f0f9ff] via-[#ffffff] to-[#ecfdf5]/60"
+        className="fixed inset-0 pointer-events-none z-0 bg-[#F8FAFC]"
       />
     );
   }
@@ -589,7 +589,7 @@ export const BackgroundThreeCanvas: React.FC = () => {
     <div
       ref={containerRef}
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-linear-to-br from-[#f0f9ff] via-[#ffffff] to-[#ecfdf5]/60"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#F8FAFC]"
     />
   );
 };

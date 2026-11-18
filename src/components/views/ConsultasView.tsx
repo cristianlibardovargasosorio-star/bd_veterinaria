@@ -128,7 +128,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
             setFormFeedback(null);
             setShowModal(true);
           }}
-          className="px-4 py-2 rounded-xl bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
+          className="px-4 py-2 rounded-xl bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Registrar Consulta Médica</span>
@@ -448,7 +448,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg text-xs font-bold"
+                      className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg text-xs font-bold"
                     >
                       Guardar Consulta
                     </button>
@@ -488,7 +488,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     </button>
                     <button
                       onClick={() => handleProceedToAI(createdConsultaId)}
-                      className="px-5 py-2.5 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] text-xs font-bold rounded-xl flex items-center gap-2 shadow-md "
+                      className="px-5 py-2.5 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] text-xs font-bold rounded-xl flex items-center gap-2 shadow-md "
                     >
                       <Sparkles className="w-4 h-4" />
                       <span>Generar Ficha con Gemini 3.8 Flash</span>

@@ -183,7 +183,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
 
             <button
               onClick={() => setShowNewPetModal(true)}
-              className="px-4 py-2 rounded-xl bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
+              className="px-4 py-2 rounded-xl bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
             >
               <Plus className="w-4 h-4" />
               <span>Nuevo Paciente (RF05)</span>
@@ -213,7 +213,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
               onClick={() => setFilterEspecie(esp)}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 filterEspecie === esp
-                  ? 'bg-[#0284C7] text-[#ffffff]'
+                  ? 'bg-[#0D9488] text-[#ffffff]'
                   : 'bg-[#F1F5F9] text-[#475569] hover:bg-[#F1F5F9]'
               }`}
             >
@@ -442,7 +442,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     onClick={() => {
                       onNavigateTab('consultas');
                     }}
-                    className="px-3.5 py-1.5 bg-[#0284C7] hover:bg-[#0369A1] text-[#ffffff] rounded-full text-xs font-medium transition-colors"
+                    className="px-3.5 py-1.5 bg-[#0D9488] hover:bg-[#0F766E] text-[#ffffff] rounded-full text-xs font-medium transition-colors"
                   >
                     Iniciar Consulta
                   </button>
@@ -612,7 +612,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg text-xs font-bold"
+                  className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg text-xs font-bold"
                 >
                   Guardar Paciente
                 </button>
@@ -732,7 +732,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-[#0284C7] text-[#ffffff] hover:bg-[#0284C7] text-[#ffffff] rounded-lg text-xs font-bold"
+                  className="px-4 py-2 bg-[#0D9488] text-[#ffffff] hover:bg-[#0D9488] text-[#ffffff] rounded-lg text-xs font-bold"
                 >
                   Guardar Propietario
                 </button>
