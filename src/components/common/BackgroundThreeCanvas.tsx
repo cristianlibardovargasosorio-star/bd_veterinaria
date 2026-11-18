@@ -10,21 +10,21 @@ export const LANDING_3D_CONFIG = {
   shapeCount: 16,
   /** Cantidad de partículas ambientales flotantes */
   particleCount: 45,
-  /** Colores discretos en azul petróleo y gris pizarra sobre fondo #F8FAFC */
+  /** Colores discretos en azul petróleo, pizarra, azul médico y esmeralda sobre fondo #CBD5E1 */
   palette: {
-    primaryTint: '#1E293B', // Azul Petróleo / Pizarra Oscuro
-    deepCoffee: '#475569', // Gris Pizarra Medio
-    softCoffee: '#64748B', // Gris Pizarra Suave
-    softBlue: '#94A3B8', // Gris Acero
-    wireframe: '#0F172A', // Wireframe Azul Petróleo
+    primaryTint: '#0F172A', // Azul Petróleo Profundo
+    deepCoffee: '#1E293B', // Gris Carbón
+    softCoffee: '#0D9488', // Esmeralda Clínico
+    softBlue: '#0284C7', // Azul Médico
+    wireframe: '#334155', // Wireframe Pizarra
     particle: '#1E293B', // Partículas Pizarra
   },
   /** Transparencia sutil para no interferir con la lectura del contenido */
   opacity: {
-    solid: 0.1,
-    accent: 0.12,
-    wireframe: 0.09,
-    particle: 0.11,
+    solid: 0.12,
+    accent: 0.14,
+    wireframe: 0.1,
+    particle: 0.13,
   },
   /** Velocidades base de animación */
   rotationSpeed: 0.002,

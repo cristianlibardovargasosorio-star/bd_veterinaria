@@ -8,20 +8,20 @@
   --color-vet-emerald: #0D9488;
   --color-vet-emerald-hover: #0F766E;
   --color-vet-mint: #10B981;
-  --color-vet-ice: #E2E8F0;
-  --color-vet-surface: #F1F5F9;
-  --color-vet-border: #B8C5D6;
-  --color-vet-muted: #475569;
+  --color-vet-ice: #CBD5E1;
+  --color-vet-surface: #E2E8F0;
+  --color-vet-border: #94A3B8;
+  --color-vet-muted: #334155;
   --color-vet-amber: #F59E0B;
   --color-vet-amber-ink: #92400E;
   --color-vet-amber-soft: #FEF3C7;
 
   /* Base Aliases */
   --color-ink-black: #0F172A;
-  --color-paper-white: #F1F5F9;
-  --color-mist-gray: #E2E8F0;
-  --color-fog-white: #E2E8F0;
-  --color-slate-gray: #475569;
+  --color-paper-white: #E2E8F0;
+  --color-mist-gray: #CBD5E1;
+  --color-fog-white: #CBD5E1;
+  --color-slate-gray: #334155;
   --color-ash-gray: #64748B;
   --color-smoke-gray: #94A3B8;
   --color-blush-peach: #F1F5F9;
@@ -89,27 +89,27 @@
   --vet-emerald-600: #0D9488;
   --vet-emerald-700: #0F766E;
   --vet-blue-600: #0284C7;
-  --vet-bg-ice: #E2E8F0;
-  --vet-bg-ice-alt: #DCE4EE;
-  --vet-surface-card: #F1F5F9;
-  --vet-border-subtle: #B8C5D6;
+  --vet-bg-ice: #CBD5E1;
+  --vet-bg-ice-alt: #B8C5D6;
+  --vet-surface-card: #E2E8F0;
+  --vet-border-subtle: #94A3B8;
   --vet-amber-500: #F59E0B;
 
   --color-ink-black: #0F172A;
-  --color-paper-white: #F1F5F9;
-  --color-mist-gray: #DCE4EE;
-  --color-fog-white: #E2E8F0;
-  --color-slate-gray: #475569;
-  --color-ash-gray: #64748B;
-  --color-smoke-gray: #94A3B8;
-  --color-blush-peach: #E2E8F0;
+  --color-paper-white: #E2E8F0;
+  --color-mist-gray: #CBD5E1;
+  --color-fog-white: #CBD5E1;
+  --color-slate-gray: #334155;
+  --color-ash-gray: #475569;
+  --color-smoke-gray: #64748B;
+  --color-blush-peach: #CBD5E1;
   --color-sienna-brown: #0F172A;
 
-  --surface-canvas: #E2E8F0;
-  --surface-card-mist: #DCE4EE;
-  --surface-section-fog: #E2E8F0;
-  --surface-accent-blush: #E2E8F0;
-  --surface-elevated-white: #F1F5F9;
+  --surface-canvas: #CBD5E1;
+  --surface-card-mist: #B8C5D6;
+  --surface-section-fog: #CBD5E1;
+  --surface-accent-blush: #CBD5E1;
+  --surface-elevated-white: #E2E8F0;
 
   --radius-cards: 24px;
   --radius-images: 12px;

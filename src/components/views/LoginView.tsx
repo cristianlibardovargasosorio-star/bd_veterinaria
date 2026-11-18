@@ -139,7 +139,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
   };
 
   return (
-    <div className="min-h-screen relative z-10 bg-vet-ice text-vet-navy flex flex-col justify-between selection:bg-vet-emerald/15 selection:text-vet-navy">
+    <div className="min-h-screen relative z-10 bg-transparent text-vet-navy flex flex-col justify-between selection:bg-vet-emerald/15 selection:text-vet-navy">
       {/* Whisper-quiet Editorial Top Navigation */}
       <div className="max-w-[1200px] w-full mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-3">

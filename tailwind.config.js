@@ -9,13 +9,13 @@ export default {
           DEFAULT: '#0F172A', // Azul petróleo profundo: Sidebar, logotipos y títulos principales
           elevated: '#1E293B', // Gris carbón: contenedores internos e ítem activo del Sidebar
           ink: '#0F172A', // Texto principal antracita/marino de alto contraste
-          muted: '#475569', // Neutro añadido: texto secundario legible (> 7:1 sobre #F8FAFC)
+          muted: '#334155', // Neutro oscuro suave: texto secundario de alto descanso visual (> 7:1)
         },
         surface: {
-          canvas: '#E2E8F0', // Fondo general gris pizarra suave (anti-fatiga visual, sin deslumbramiento)
-          card: '#F1F5F9', // Tarjetas y contenedores gris perlado suave (sin blanco puro agresivo)
-          border: '#B8C5D6', // Bordes finos y serenos para separar tarjetas y tablas
-          hover: '#DCE4EE', // Realce sutil de filas e ítems secundarios
+          canvas: '#CBD5E1', // Fondo general pizarra medio mate (anti-fatiga visual, sin brillo excesivo)
+          card: '#E2E8F0', // Tarjetas y contenedores gris pizarra claro mate (cero deslumbramiento)
+          border: '#94A3B8', // Bordes nítidos y serenos para separar tarjetas y tablas
+          hover: '#CBD5E1', // Realce sutil de filas e ítems secundarios
         },
         action: {
           DEFAULT: '#0D9488', // Verde esmeralda equilibrado: botones clave de acción
@@ -37,19 +37,19 @@ export default {
         'vet-sidebar': '#0F172A',
         'vet-sidebar-surface': '#1E293B',
         'vet-ink': '#0F172A',
-        'vet-ink-muted': '#475569',
-        'vet-canvas': '#E2E8F0',
-        'vet-surface': '#F1F5F9',
-        'vet-border': '#B8C5D6',
+        'vet-ink-muted': '#334155',
+        'vet-canvas': '#CBD5E1',
+        'vet-surface': '#E2E8F0',
+        'vet-border': '#94A3B8',
         'vet-action': '#0D9488',
         'vet-action-hover': '#0F766E',
         'vet-action-mint': '#10B981',
         'vet-warning': '#F59E0B',
         'vet-warning-ink': '#92400E',
         'vet-warning-soft': '#FEF3C7',
-        'vet-divider': '#B8C5D6',
-        'vet-hover': '#DCE4EE',
-        'vet-placeholder': '#64748B',
+        'vet-divider': '#94A3B8',
+        'vet-hover': '#CBD5E1',
+        'vet-placeholder': '#475569',
         'vet-danger': '#DC2626',
         'vet-danger-ink': '#B91C1C',
         'vet-danger-soft': '#FEE2E2',
@@ -58,8 +58,8 @@ export default {
         'vet-emerald': '#0D9488',
         'vet-emerald-hover': '#0F766E',
         'vet-mint': '#10B981',
-        'vet-ice': '#E2E8F0',
-        'vet-muted': '#475569',
+        'vet-ice': '#CBD5E1',
+        'vet-muted': '#334155',
         'vet-amber': '#F59E0B',
         'vet-amber-ink': '#92400E',
         'vet-amber-soft': '#FEF3C7',
