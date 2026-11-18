@@ -385,7 +385,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
         <div className="max-w-[1200px] mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2.5">
             <span className="inline-flex items-center gap-1.5 font-semibold text-vet-navy bg-vet-surface px-2.5 py-0.5 rounded-full text-[11px] border border-vet-border">
-              <span className="w-1.5 h-1.5 rounded-full bg-vet-mint" />
+              <span className="w-1.5 h-1.5 rounded-full bg-vet-navy" />
               Urgencias 24 Horas
             </span>
             <span className="text-vet-muted hidden sm:inline">·</span>
@@ -398,7 +398,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             href="tel:+573009123456"
             className="flex items-center gap-1.5 text-vet-navy font-semibold hover:text-vet-emerald transition-colors text-[12px] whitespace-nowrap"
           >
-            <Phone className="w-3.5 h-3.5 text-vet-emerald" />
+            <Phone className="w-3.5 h-3.5 text-vet-navy" />
             <span>+57 (300) 912-3456</span>
           </a>
         </div>
@@ -570,19 +570,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 </a>
               </div>
 
-              {/* Floating Stat Artifact Row — Blanco, Azul Cielo, Verde Esmeralda y Ámbar */}
+              {/* Floating Stat Artifact Row — Tarjetas blancas #FFFFFF con bordes finos #E2E8F0 */}
               <div className="pt-6 grid grid-cols-3 gap-4 max-w-lg">
-                <div className="p-4 rounded-[20px] bg-vet-surface border border-[#e2e8f0] shadow-xs">
+                <div className="p-4 rounded-[20px] bg-vet-surface border border-vet-border shadow-xs">
                   <div className="text-xl font-semibold text-vet-navy">2,540+</div>
-                  <div className="text-xs text-vet-emerald font-medium mt-0.5">↑ 18% pacientes activos</div>
+                  <div className="text-xs text-vet-muted font-medium mt-0.5">↑ 18% pacientes activos</div>
                 </div>
-                <div className="p-4 rounded-[20px] bg-vet-ice border border-vet-border shadow-xs">
+                <div className="p-4 rounded-[20px] bg-vet-surface border border-vet-border shadow-xs">
                   <div className="text-xl font-semibold text-vet-navy">99.4%</div>
-                  <div className="text-xs text-vet-slate mt-0.5">Trazabilidad vacunal</div>
+                  <div className="text-xs text-vet-muted mt-0.5">Trazabilidad vacunal</div>
                 </div>
-                <div className="p-4 rounded-[20px] bg-[#F59E0B] border border-[#D97706] text-white shadow-xs">
-                  <div className="text-xl font-semibold text-white">24 / 7</div>
-                  <div className="text-xs text-[#FEF3C7] mt-0.5">Unidad crítica</div>
+                <div className="p-4 rounded-[20px] bg-vet-surface border border-vet-border shadow-xs">
+                  <div className="text-xl font-semibold text-vet-navy">24 / 7</div>
+                  <div className="text-xs text-vet-muted mt-0.5">Unidad crítica</div>
                 </div>
               </div>
             </LazyScrollSection>
@@ -606,7 +606,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 </div>
                 <div className="p-5 flex items-center justify-between gap-4 bg-vet-surface border-t border-vet-border">
                   <div className="min-w-0">
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-vet-emerald">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-vet-muted">
                       Quirófano &amp; Diagnóstico por Imagen
                     </div>
                     <div className="text-sm font-semibold text-vet-navy truncate mt-0.5">
@@ -625,7 +625,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
             </LazyScrollSection>
           </div>
 
-          {/* KEY PROOF STATS BAR — Tarjetas blancas #FFFFFF con bordes finos #E2E8F0 y toque ámbar moderado */}
+          {/* KEY PROOF STATS BAR — Tarjetas blancas #FFFFFF con bordes finos #E2E8F0 */}
           <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-6 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs text-center">
               <span className="text-3xl font-black text-vet-navy font-mono tabular-nums">+14,200</span>
@@ -633,9 +633,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                 Pacientes Atendidos con Éxito
               </span>
             </div>
-            <div className="p-6 bg-vet-amber-soft rounded-[20px] border border-vet-amber/35 shadow-xs text-center">
-              <span className="text-3xl font-black text-vet-amber-ink font-mono tabular-nums">24 / 7</span>
-              <span className="block text-xs font-semibold text-vet-amber-ink mt-1.5">
+            <div className="p-6 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs text-center">
+              <span className="text-3xl font-black text-vet-navy font-mono tabular-nums">24 / 7</span>
+              <span className="block text-xs font-semibold text-vet-muted mt-1.5">
                 Urgencias &amp; Cuidados Críticos
               </span>
             </div>

@@ -208,7 +208,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
                 const statusColors: Record<string, string> = {
                   PENDIENTE: 'bg-vet-amber-soft text-vet-amber-ink border-vet-amber/35',
-                  CONFIRMADA: 'bg-vet-ice text-vet-emerald-hover border-vet-emerald/30',
+                  CONFIRMADA: 'bg-vet-ice text-vet-navy border-vet-border',
                   ATENDIDA: 'bg-vet-ice text-vet-navy border-vet-border',
                   CANCELADA: 'bg-[#FEF2F2] text-[#B91C1C] border-[#DC2626]/25',
                 };
@@ -260,14 +260,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             </div>
           </div>
 
-          {/* Quick AI Spotlight — Tarjeta blanca limpia con acento puntual #0D9488 */}
+          {/* Quick AI Spotlight — Tarjeta blanca limpia con acento puntual #0D9488 en CTA */}
           <div className="p-5 rounded-[20px] bg-vet-surface border border-vet-border space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-vet-emerald" />
+                <Sparkles className="w-5 h-5 text-vet-navy" />
                 <h3 className="font-bold text-sm text-vet-navy">Motor de Inteligencia Artificial (Gemini 3.8 Flash)</h3>
               </div>
-              <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-vet-ice text-vet-emerald border border-vet-border whitespace-nowrap">
+              <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-vet-ice text-vet-navy border border-vet-border whitespace-nowrap">
                 RF10 &amp; RF11 Activos
               </span>
             </div>
@@ -289,7 +289,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                   onClick={() => onNavigateTab('reportes-ia')}
                   className="px-3.5 py-1.5 bg-vet-surface hover:bg-vet-ice text-vet-navy text-xs font-semibold rounded-full border border-vet-border transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
-                  <TrendingUp className="w-3.5 h-3.5 text-vet-emerald" />
+                  <TrendingUp className="w-3.5 h-3.5 text-vet-navy" />
                   <span>Reporte Ejecutivo IA (RF11)</span>
                 </button>
               )}
@@ -313,7 +313,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
 
             {vwAlertasStock.length === 0 ? (
               <div className="text-center py-6 text-xs text-vet-muted">
-                <CheckCircle2 className="w-8 h-8 text-vet-emerald mx-auto mb-1 opacity-70" />
+                <CheckCircle2 className="w-8 h-8 text-vet-muted mx-auto mb-1 opacity-70" />
                 <span>Todos los insumos sobre el stock mínimo.</span>
               </div>
             ) : (
