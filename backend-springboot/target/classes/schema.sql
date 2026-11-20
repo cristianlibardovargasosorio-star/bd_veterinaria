@@ -28,12 +28,12 @@ CREATE INDEX IF NOT EXISTS idx_auditoria_accesos_usuario ON auditoria_accesos (i
 
 -- =============================================================================
 -- DATOS SEMILLA DE PRUEBA (Contraseñas cifradas con BCrypt strength 12)
--- Contraseña original para todos los usuarios de prueba: "VetSoft2026*"
+-- Contraseña de prueba para los tres roles: "vetsoft123"
 -- =============================================================================
 INSERT INTO usuarios (nombre_completo, correo, contrasena, rol, activo)
 VALUES
     ('Administrador Principal', 'admin@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'ADMINISTRADOR', TRUE),
     ('Dr. Camilo Andrés', 'camilo.vet@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'VETERINARIO', TRUE),
-    ('Carlos Mendoza', 'carlos.mendoza@email.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'PROPIETARIO', TRUE)
+    ('Carlos Mendoza', 'carlos.mendoza@vetsoft.com', '$2a$12$R9h/cIPz0gi.URNNX3kh2OPST9/PgBkqquzi.Ss7KIUgO2t0jWMUW', 'PROPIETARIO', TRUE)
 ON CONFLICT (correo) DO NOTHING;
 

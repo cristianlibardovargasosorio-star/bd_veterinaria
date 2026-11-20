@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../db/store';
+import { isTabAllowedForRole } from '../utils/rbac';
 import {
   LayoutDashboard,
   PawPrint,
@@ -140,7 +141,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
     },
   ];
 
-  const visibleItems = navigationItems.filter((item) => item.roles.includes(currentRole));
+  const visibleItems = navigationItems.filter((item) => isTabAllowedForRole(currentRole, item.id));
 
   return (
     <aside className="w-full md:w-64 md:min-w-[256px] bg-vet-navy text-vet-ice flex flex-col shrink-0 md:min-h-[calc(100vh-4.5rem)] p-4 border-b md:border-b-0 md:border-r border-vet-slate">

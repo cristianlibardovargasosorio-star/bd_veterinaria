@@ -425,6 +425,20 @@ runCase('TC-22', 'CSE-Seguridad', 'VET-RNF-06: Dockerfiles multi-stage no-root, 
   return 'VET-RNF-06 (Docker multi-stage, red interna, .env.example y desacoplamiento DTO) verificado';
 });
 
+runCase('TC-23', 'CSE-Seguridad', 'RBAC 3 roles (admin/camilo.vet/carlos.mendoza@vetsoft.com), redirectTo seguro y bloqueo Open Redirect', () => {
+  const rbacSrc = fs.readFileSync(path.resolve('src/utils/rbac.ts'), 'utf8');
+  const initData = fs.readFileSync(path.resolve('src/db/initialData.ts'), 'utf8');
+  const loginView = fs.readFileSync(path.resolve('src/components/views/LoginView.tsx'), 'utf8');
+  const secCfg = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/security/SecurityConfig.java'), 'utf8');
+  const portalCtrl = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/controller/PortalPropietarioController.java'), 'utf8');
+
+  assert.ok(initData.includes('camilo.vet@vetsoft.com') && initData.includes('carlos.mendoza@vetsoft.com'), 'Correos de prueba alineados en initialData.ts');
+  assert.ok(loginView.includes('carlos.mendoza@vetsoft.com') && loginView.includes('resolvePostLoginDestination'), 'LoginView alineado con carlos.mendoza@vetsoft.com y redirectTo');
+  assert.ok(secCfg.includes('"/erp/**"') && portalCtrl.includes('authentication.getName()'), 'Spring Security protege /erp/** y PortalPropietarioController filtra por propietario autenticado');
+  assert.ok(rbacSrc.includes("startsWith('//')") && rbacSrc.includes("includes('://')"), 'Protección anti-Open Redirect presente en rbac.ts');
+  return 'RBAC 3 roles, carlos.mendoza@vetsoft.com, redirectTo y anti-Open Redirect verificados';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');

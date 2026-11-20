@@ -75,7 +75,7 @@ public class OperacionClinicaController {
 
     @PostMapping("/facturas")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA')")
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'RECEPCIONISTA')")
     public FacturaResponseDto emitirFactura(@Valid @RequestBody EmitirFacturaRequest req) {
         Factura factura = facturacionService.emitirFacturaConDescuento(req.lineas(), req.pagoConfirmado());
         return new FacturaResponseDto(

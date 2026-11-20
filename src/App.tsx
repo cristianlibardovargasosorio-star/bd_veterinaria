@@ -1,9 +1,17 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { StoreProvider } from './db/store';
+import { StoreProvider, useStore } from './db/store';
 import { UserRole } from './types';
 import { Navbar } from './components/Navbar';
 import { Sidebar, ActiveTab } from './components/Sidebar';
 import { SkeletonKPI, SkeletonCard, SkeletonTable } from './components/common/Skeleton';
+import {
+  ProtectedRoutePath,
+  getDefaultTabForRole,
+  isRouteAllowedForRole,
+  isTabAllowedForRole,
+  routeToTab,
+  sanitizeRedirectTo,
+} from './utils/rbac';
 
 // Carga diferida (Code Splitting) bajo demanda para mantener respuesta < 1s
 const LandingPage = lazy(() =>
@@ -59,9 +67,20 @@ const BackgroundThreeCanvas = lazy(() =>
 );
 
 export default function App() {
+  return (
+    <StoreProvider>
+      <AppShell />
+    </StoreProvider>
+  );
+}
+
+function AppShell() {
+  const { currentRole, jwtToken, logout } = useStore();
   // Navigation mode: Landing Page first, with dedicated /login and seamless access to ERP
   const [appMode, setAppMode] = useState<'landing' | 'erp' | 'login'>('landing');
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
+  const [accessNotice, setAccessNotice] = useState<string | null>(null);
   const [showTraceability, setShowTraceability] = useState(false);
   const [showSecurityModal, setShowSecurityModal] = useState(false);
 
@@ -73,49 +92,105 @@ export default function App() {
   const [selectedCitaForConsulta, setSelectedCitaForConsulta] = useState<number | null>(null);
   const [selectedConsultaForAI, setSelectedConsultaForAI] = useState<number | null>(null);
 
-  useEffect(() => {
-    const handleHash = () => {
-      if (window.location.pathname === '/admin/usuarios' || window.location.hash === '#admin/usuarios') {
-        setAppMode('erp');
-        setActiveTab('usuarios');
-      } else if (window.location.hash === '#login') {
-        setAppMode('login');
-      } else if (window.location.hash === '#erp') {
-        setAppMode('erp');
-      }
-    };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
-  }, []);
+  const navigateToLoginWithRedirect = (targetRoute: ProtectedRoutePath) => {
+    const encoded = encodeURIComponent(targetRoute);
+    setRedirectTo(targetRoute);
+    setAppMode('login');
+    window.history.replaceState(null, '', `/login?redirectTo=${encoded}#login`);
+  };
 
-  const handleEnterERP = () => {
-    setIsSkeletonLoading(true);
+  const handleProtectedAction = (route: ProtectedRoutePath) => {
+    if (!jwtToken) {
+      navigateToLoginWithRedirect(route);
+      return;
+    }
+
+    if (isRouteAllowedForRole(currentRole, route)) {
+      setAccessNotice(null);
+      setActiveTab(routeToTab(route));
+    } else {
+      setAccessNotice(
+        `Acceso restringido: tu rol (${currentRole}) no tiene permiso para ingresar a ${route}.`
+      );
+      setActiveTab(getDefaultTabForRole(currentRole));
+    }
     setAppMode('erp');
     window.location.hash = '#erp';
-    setTimeout(() => {
-      setIsSkeletonLoading(false);
-    }, 120);
+  };
+
+  useEffect(() => {
+    const syncFromUrl = () => {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      const params = new URLSearchParams(window.location.search);
+      const queryRedirect = sanitizeRedirectTo(params.get('redirectTo'));
+
+      if (path === '/login' || hash.startsWith('#login')) {
+        if (queryRedirect) setRedirectTo(queryRedirect);
+        setAppMode('login');
+        return;
+      }
+
+      const routeFromPath = sanitizeRedirectTo(path);
+      if (routeFromPath) {
+        if (!jwtToken) {
+          navigateToLoginWithRedirect(routeFromPath);
+        } else {
+          handleProtectedAction(routeFromPath);
+        }
+        return;
+      }
+
+      if (hash === '#erp') {
+        if (!jwtToken) {
+          navigateToLoginWithRedirect('/erp');
+        } else {
+          setAppMode('erp');
+        }
+      }
+    };
+    syncFromUrl();
+    window.addEventListener('hashchange', syncFromUrl);
+    return () => window.removeEventListener('hashchange', syncFromUrl);
+  }, [jwtToken, currentRole]);
+
+  // Guard RBAC: si el rol actual cambia o intenta abrir un tab fuera de su rol, redirige a su vista principal
+  useEffect(() => {
+    if (appMode === 'erp' && !isTabAllowedForRole(currentRole, activeTab)) {
+      setAccessNotice(
+        `Acceso restringido: el módulo "${activeTab}" no está habilitado para el rol ${currentRole}.`
+      );
+      setActiveTab(getDefaultTabForRole(currentRole));
+    }
+  }, [appMode, activeTab, currentRole]);
+
+  const handleEnterERP = () => {
+    handleProtectedAction('/erp');
   };
 
   const handleOpenLogin = () => {
+    setRedirectTo(null);
+    setAccessNotice(null);
     setAppMode('login');
-    window.location.hash = '#login';
+    window.history.replaceState(null, '', '/login#login');
   };
 
-  const handleLoginSuccess = (role: UserRole, targetTab: ActiveTab) => {
+  const handleLogout = () => {
+    logout();
+    handleOpenLogin();
+  };
+
+  const handleLoginSuccess = (_role: UserRole, targetTab: ActiveTab, notice?: string | null) => {
+    setAccessNotice(notice ?? null);
+    setRedirectTo(null);
     setActiveTab(targetTab);
-    setIsSkeletonLoading(true);
     setAppMode('erp');
-    window.location.hash = '#erp';
-    setTimeout(() => {
-      setIsSkeletonLoading(false);
-    }, 120);
+    window.history.replaceState(null, '', '/#erp');
   };
 
   const handleReturnToLanding = () => {
     setAppMode('landing');
-    window.location.hash = '';
+    window.history.replaceState(null, '', '/');
   };
 
   const erpFallback = (
@@ -139,7 +214,7 @@ export default function App() {
   );
 
   return (
-    <StoreProvider>
+    <>
       <Suspense fallback={null}>
         <BackgroundThreeCanvas />
       </Suspense>
@@ -148,6 +223,7 @@ export default function App() {
           <LoginView
             onLoginSuccess={handleLoginSuccess}
             onReturnToLanding={handleReturnToLanding}
+            redirectTo={redirectTo}
           />
         </Suspense>
       ) : appMode === 'landing' ? (
@@ -155,6 +231,7 @@ export default function App() {
           <LandingPage
             onEnterERP={handleEnterERP}
             onOpenLogin={handleOpenLogin}
+            onProtectedAction={handleProtectedAction}
           />
         </Suspense>
       ) : (
@@ -165,7 +242,7 @@ export default function App() {
             onOpenSecurityModal={() => setShowSecurityModal(true)}
             onReturnToLanding={handleReturnToLanding}
             onOpenLogin={handleOpenLogin}
-            onLogout={handleOpenLogin}
+            onLogout={handleLogout}
             isSkeletonLoading={isSkeletonLoading}
             onToggleSkeleton={() => setIsSkeletonLoading(!isSkeletonLoading)}
           />
@@ -177,6 +254,21 @@ export default function App() {
 
             {/* Main View Area */}
             <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+              {accessNotice && (
+                <div
+                  role="alert"
+                  className="mb-4 p-3.5 rounded-2xl bg-warning-soft border border-warning/35 text-warning-ink text-xs font-semibold flex items-center justify-between gap-3"
+                >
+                  <span>{accessNotice}</span>
+                  <button
+                    type="button"
+                    onClick={() => setAccessNotice(null)}
+                    className="px-2.5 py-1 rounded-lg bg-surface-card border border-surface-border text-brand-ink hover:bg-surface-hover cursor-pointer shrink-0"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              )}
               {isSkeletonLoading ? (
                 erpFallback
               ) : (
@@ -256,6 +348,6 @@ export default function App() {
           </Suspense>
         </div>
       )}
-    </StoreProvider>
+    </>
   );
 }

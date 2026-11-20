@@ -57,7 +57,7 @@ class AuthIntegrationTest {
     @MockBean
     private UsuarioRepository usuarioRepository;
 
-    private static final String CLAVE_VALIDA = "VetSoft2026*";
+    private static final String CLAVE_VALIDA = "vetsoft123";
     private String hashValido;
 
     @BeforeEach
@@ -66,14 +66,14 @@ class AuthIntegrationTest {
 
         Usuario admin = new Usuario(1L, "admin@vetsoft.com", hashValido, RolUsuario.ADMINISTRADOR, true);
         Usuario vet = new Usuario(2L, "camilo.vet@vetsoft.com", hashValido, RolUsuario.VETERINARIO, true);
-        Usuario prop = new Usuario(3L, "carlos.mendoza@email.com", hashValido, RolUsuario.PROPIETARIO, true);
+        Usuario prop = new Usuario(3L, "carlos.mendoza@vetsoft.com", hashValido, RolUsuario.PROPIETARIO, true);
         Usuario inactivo = new Usuario(4L, "inactivo@vetsoft.com", hashValido, RolUsuario.VETERINARIO, false);
 
         when(usuarioRepository.findByCorreoIgnoreCase("admin@vetsoft.com"))
                 .thenReturn(Optional.of(admin));
         when(usuarioRepository.findByCorreoIgnoreCase("camilo.vet@vetsoft.com"))
                 .thenReturn(Optional.of(vet));
-        when(usuarioRepository.findByCorreoIgnoreCase("carlos.mendoza@email.com"))
+        when(usuarioRepository.findByCorreoIgnoreCase("carlos.mendoza@vetsoft.com"))
                 .thenReturn(Optional.of(prop));
         when(usuarioRepository.findByCorreoIgnoreCase("inactivo@vetsoft.com"))
                 .thenReturn(Optional.of(inactivo));
@@ -107,7 +107,7 @@ class AuthIntegrationTest {
     @DisplayName("RF-01: Login exitoso de PROPIETARIO redirige a /propietario/portal")
     void loginExitosoPropietarioRedirigeAPortalPropietario() throws Exception {
         mockMvc.perform(post("/login")
-                        .param("correo", "carlos.mendoza@email.com")
+                        .param("correo", "carlos.mendoza@vetsoft.com")
                         .param("contrasena", CLAVE_VALIDA)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())

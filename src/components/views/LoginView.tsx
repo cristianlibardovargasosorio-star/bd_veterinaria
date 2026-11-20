@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStore } from '../../db/store';
 import { UserRole } from '../../types';
 import { ActiveTab } from '../Sidebar';
+import { resolvePostLoginDestination } from '../../utils/rbac';
 import confetti from 'canvas-confetti';
 import {
   Lock,
@@ -20,11 +21,16 @@ import {
 } from 'lucide-react';
 
 interface LoginViewProps {
-  onLoginSuccess: (role: UserRole, targetTab: ActiveTab) => void;
+  onLoginSuccess: (role: UserRole, targetTab: ActiveTab, accessNotice?: string | null) => void;
   onReturnToLanding: () => void;
+  redirectTo?: string | null;
 }
 
-export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnToLanding }) => {
+export const LoginView: React.FC<LoginViewProps> = ({
+  onLoginSuccess,
+  onReturnToLanding,
+  redirectTo = null,
+}) => {
   const { usuarios, login } = useStore();
 
   const [email, setEmail] = useState('');
@@ -92,26 +98,20 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
         return;
       }
 
-      // Criterio 3: Redirigir según el rol ENUM
+      // Criterio 3: Redirigir según el rol ENUM y validar redirectTo (anti-Open Redirect)
       const targetUser = usuarios.find((u) => u.correo.toLowerCase() === email.trim().toLowerCase());
       const role: UserRole = targetUser?.rol_nombre || 'ADMINISTRADOR';
+      const queryRedirect =
+        redirectTo || new URLSearchParams(window.location.search).get('redirectTo');
+      const { targetTab, accessDeniedNotice } = resolvePostLoginDestination(role, queryRedirect);
 
-      let targetTab: ActiveTab = 'dashboard';
-      let panelName = 'Panel General de Control (/admin/dashboard)';
-
-      if (role === 'ADMINISTRADOR') {
-        targetTab = 'dashboard';
-        panelName = 'Panel de Administración (/admin/dashboard)';
-      } else if (role === 'VETERINARIO') {
-        targetTab = 'consultas';
-        panelName = 'Panel Clínico Veterinario (/veterinario/panel)';
-      } else if (role === 'PROPIETARIO') {
-        targetTab = 'vacunacion';
-        panelName = 'Portal de Propietario (/propietario/portal)';
-      } else if (role === 'RECEPCIONISTA') {
-        targetTab = 'citas';
-        panelName = 'Recepción y Agenda de Citas';
-      }
+      const panelNames: Record<UserRole, string> = {
+        ADMINISTRADOR: 'Panel de Administración (/admin/dashboard)',
+        VETERINARIO: 'Panel Clínico Veterinario (/veterinario/panel)',
+        PROPIETARIO: 'Portal de Propietario (/propietario/portal)',
+        RECEPCIONISTA: 'Recepción y Agenda de Citas',
+      };
+      const panelName = panelNames[role];
 
       setSuccessInfo({
         role,
@@ -133,9 +133,9 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
       setTimeout(() => {
         setIsSubmitting(false);
-        onLoginSuccess(role, targetTab);
-      }, 1400);
-    }, 500);
+        onLoginSuccess(role, targetTab, accessDeniedNotice);
+      }, 350);
+    }, 250);
   };
 
   return (
@@ -265,14 +265,14 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onReturnTo
 
                   <button
                     type="button"
-                    onClick={() => handleSelectDemoAccount('carlos.mendoza@email.com', 'vetsoft123')}
+                    onClick={() => handleSelectDemoAccount('carlos.mendoza@vetsoft.com', 'vetsoft123')}
                     className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-info transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between text-vet-navy">
                       <span className="text-[11px] font-semibold text-info-ink">PROPIETARIO</span>
                       <Sparkles className="w-3.5 h-3.5 text-info" />
                     </div>
-                    <div className="text-xs text-vet-muted truncate mt-1">carlos.mendoza...</div>
+                    <div className="text-xs text-vet-muted truncate mt-1">carlos.mendoza@vetsoft.com</div>
                   </button>
                 </div>
               </div>

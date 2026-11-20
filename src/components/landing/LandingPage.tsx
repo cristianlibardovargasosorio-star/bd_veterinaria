@@ -42,13 +42,26 @@ import {
   X,
 } from 'lucide-react';
 import { TipoCita } from '../../types';
+import { ProtectedRoutePath } from '../../utils/rbac';
 
 interface LandingPageProps {
   onEnterERP: () => void;
   onOpenLogin: () => void;
+  onProtectedAction?: (route: ProtectedRoutePath) => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogin }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({
+  onEnterERP,
+  onOpenLogin,
+  onProtectedAction,
+}) => {
+  const triggerProtected = (route: ProtectedRoutePath, fallback: () => void) => {
+    if (onProtectedAction) {
+      onProtectedAction(route);
+    } else {
+      fallback();
+    }
+  };
   const {
     mascotas,
     propietarios,
@@ -454,15 +467,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
               Iniciar sesión
             </button>
 
-            <a
-              href="#agendar"
+            <button
+              type="button"
+              onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
               className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal bg-vet-emerald hover:bg-vet-emerald-hover text-white transition-opacity cursor-pointer whitespace-nowrap"
             >
               Reservar cita
-            </a>
+            </button>
 
             <button
-              onClick={onEnterERP}
+              type="button"
+              onClick={() => triggerProtected('/erp', onEnterERP)}
               className="inline-flex items-center justify-center h-9 px-3.5 rounded-full text-[13px] font-normal bg-vet-ice hover:bg-[#e5e5e7] text-vet-navy transition-colors gap-1 cursor-pointer whitespace-nowrap"
               title="Abrir el software integral de gestión clínica"
             >
@@ -547,12 +562,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
 
               {/* Matched Pill Button Pair (Filled #0f172a + Ghost #0f172a border) */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
-                <a
-                  href="#agendar"
+                <button
+                  type="button"
+                  onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
                   className="px-6 py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white font-normal text-[16px] rounded-full flex items-center gap-2 transition-opacity cursor-pointer"
                 >
                   <span>Agendar cita en línea</span>
-                </a>
+                </button>
 
                 <button
                   onClick={onOpenLogin}
@@ -562,12 +578,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnterERP, onOpenLogi
                   <span>Iniciar sesión (/login)</span>
                 </button>
 
-                <a
-                  href="#carne"
-                  className="px-4 py-3 text-vet-navy hover:underline font-normal text-[16px] flex items-center gap-1.5 transition-all"
+                <button
+                  type="button"
+                  onClick={() => triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; })}
+                  className="px-4 py-3 text-vet-navy hover:underline font-normal text-[16px] flex items-center gap-1.5 transition-all cursor-pointer"
                 >
                   <span>Consultar carné digital →</span>
-                </a>
+                </button>
               </div>
 
               {/* Floating Stat Artifact Row — Contraste suave en esmeralda, azul médico y ámbar */}

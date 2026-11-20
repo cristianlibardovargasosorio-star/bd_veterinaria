@@ -32,7 +32,7 @@ export const INITIAL_USUARIOS: Usuario[] = [
   },
   {
     id_usuario: 2,
-    correo: 'camilo.restrepo@vetsoft.com',
+    correo: 'camilo.vet@vetsoft.com',
     contrasena: '$2a$12$k8xL4sQY1dCZbK0HqFmB8uV9mK6G7vJ5xW2nP3rT8uY9zB4xC7vA1',
     rol_id: 2,
     rol_nombre: 'VETERINARIO',
@@ -68,7 +68,7 @@ export const INITIAL_USUARIOS: Usuario[] = [
   },
   {
     id_usuario: 5,
-    correo: 'carlos.mendoza@gmail.com',
+    correo: 'carlos.mendoza@vetsoft.com',
     contrasena: '$2a$12$p8xL4sQY1dCZbK0HqFmB8uV9mK6G7vJ5xW2nP3rT8uY9zB4xC7vE5',
     rol_id: 4,
     rol_nombre: 'PROPIETARIO',
