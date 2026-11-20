@@ -440,12 +440,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <a href="#servicios" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
               Servicios
             </a>
-            <a href="#agendar" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
+            <button
+              type="button"
+              onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+              className="whitespace-nowrap hover:text-vet-muted transition-colors py-1 cursor-pointer"
+            >
               Agendar cita
-            </a>
-            <a href="#carne" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
+            </button>
+            <button
+              type="button"
+              onClick={() => triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; })}
+              className="whitespace-nowrap hover:text-vet-muted transition-colors py-1 cursor-pointer"
+            >
               Carné digital
-            </a>
+            </button>
             <a href="#equipo" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
               Especialistas
             </a>

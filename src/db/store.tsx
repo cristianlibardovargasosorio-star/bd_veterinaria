@@ -157,7 +157,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [currentRole, setCurrentRoleState] = useState<UserRole>(currentUser.rol_nombre);
   const [jwtToken, setJwtToken] = useState<string | null>(() => {
     try {
-      return localStorage.getItem('vetsoft_jwt_token');
+      localStorage.removeItem('vetsoft_jwt_token');
+      return sessionStorage.getItem('vetsoft_jwt_token');
     } catch {
       return null;
     }
@@ -284,7 +285,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     setJwtToken(issuedJwt);
     try {
-      localStorage.setItem('vetsoft_jwt_token', issuedJwt);
+      sessionStorage.setItem('vetsoft_jwt_token', issuedJwt);
     } catch {
       // Ignore storage errors
     }
@@ -323,6 +324,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const logout = () => {
     setJwtToken(null);
     try {
+      sessionStorage.removeItem('vetsoft_jwt_token');
       localStorage.removeItem('vetsoft_jwt_token');
     } catch {
       // Ignore storage errors
