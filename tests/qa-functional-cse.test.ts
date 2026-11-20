@@ -374,6 +374,22 @@ runCase('TC-19', 'CSE-Seguridad', 'VET-RNF-03: Tokens #F8FAFC/#FFFFFF/#0F172A/#0
   return 'VET-RNF-03 (tokens centralizados y Sidebar colapsable accesible) verificado';
 });
 
+runCase('TC-20', 'CSE-Seguridad', 'VET-RNF-04: @Transactional(rollbackFor), @Version, PESSIMISTIC_WRITE, 409 Conflict y esquema ACID', () => {
+  const schemaRnf04 = fs.readFileSync(path.resolve('backend-springboot/src/main/resources/schema_rnf04.sql'), 'utf8');
+  const loteJava = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/model/LoteInventario.java'), 'utf8');
+  const loteRepo = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/repository/LoteInventarioRepository.java'), 'utf8');
+  const factSvc = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/service/FacturacionTransaccionalService.java'), 'utf8');
+  const exHandler = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/exception/GlobalConcurrencyExceptionHandler.java'), 'utf8');
+  const rnf04Test = fs.readFileSync(path.resolve('backend-springboot/src/test/java/com/vetsoft/clinic/TransactionalConcurrencyRnf04Test.java'), 'utf8');
+
+  assert.ok(schemaRnf04.includes('uq_cita_vet_horario_activo') && schemaRnf04.includes('version BIGINT NOT NULL DEFAULT 0'), 'Migración SQL con @Version e índice único anti-doble reserva');
+  assert.ok(loteJava.includes('@Version') && loteRepo.includes('LockModeType.PESSIMISTIC_WRITE'), '@Version y PESSIMISTIC_WRITE en lotes');
+  assert.ok(factSvc.includes('@Transactional(rollbackFor = Exception.class)'), 'Rollback explícito para checked/unchecked exceptions');
+  assert.ok(exHandler.includes('OptimisticLockException') && exHandler.includes('HttpStatus.CONFLICT'), 'OptimisticLockException mapeado a 409 Conflict');
+  assert.ok(rnf04Test.includes('falloEnFacturacionRevierteTodoSinSaldosInconsistentes') && rnf04Test.includes('dobleReservaConcurrenteSoloPermiteUnaCita'), 'Pruebas de rollback y concurrencia presentes');
+  return 'VET-RNF-04 (ACID, @Version, PESSIMISTIC_WRITE, 409 Conflict y schema_rnf04.sql) verificado';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');
