@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vetsoft-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - vetsoft_pg_data:/var/lib/postgresql/data
+      - ./backend-springboot/src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./backend-springboot/src/main/resources/schema_rnf04.sql:/docker-entrypoint-initdb.d/02-schema-rnf04.sql:ro
+    networks:
+      - vetsoft_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  backend:
+    build:
+      context: ./backend-springboot
+      dockerfile: Dockerfile
+    container_name: vetsoft-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    networks:
+      - vetsoft_internal
+      - vetsoft_edge
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vetsoft-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    ports:
+      - "${FRONTEND_PORT:-3000}:8080"
+    networks:
+      - vetsoft_edge
+
+volumes:
+  vetsoft_pg_data:
+    driver: local
+
+networks:
+  vetsoft_internal:
+    driver: bridge
+    internal: true
+  vetsoft_edge:
+    driver: bridge

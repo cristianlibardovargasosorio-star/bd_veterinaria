@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
+import { registrarUsuarioInternoApi } from '../../services/usuarioApiService';
 import {
   UserPlus,
   Mail,
@@ -84,19 +85,15 @@ export const AdminUsuariosView: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Intentar envío al endpoint Spring Boot /admin/usuarios si está disponible
-      try {
-        const response = await fetch('/admin/usuarios', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            nombreCompleto: nombreCompleto.trim(),
-            correo: correo.trim(),
-            contrasena,
-            rol,
-          }),
-        });
+      // Delegar llamada HTTP al servicio dedicado (VET-RNF-06)
+      const response = await registrarUsuarioInternoApi({
+        nombreCompleto: nombreCompleto.trim(),
+        correo: correo.trim(),
+        contrasena,
+        rol,
+      });
 
+      if (response) {
         const contentType = response.headers.get('content-type') || '';
         if (contentType.includes('application/json')) {
           const data = await response.json();
@@ -111,8 +108,6 @@ export const AdminUsuariosView: React.FC = () => {
             return;
           }
         }
-      } catch {
-        // Sin servidor Spring Boot activo en el mismo origen: continúa con el store local validado
       }
 
       const result = registerInternalUser({

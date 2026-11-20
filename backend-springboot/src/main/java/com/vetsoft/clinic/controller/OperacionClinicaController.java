@@ -12,9 +12,13 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+/**
+ * Controlador clínico desacoplado (VET-RNF-06): expone exclusivamente DTOs, nunca entidades JPA.
+ */
 @RestController
 @RequestMapping("/api/clinica")
 public class OperacionClinicaController {
@@ -36,22 +40,48 @@ public class OperacionClinicaController {
             @NotBlank String tipoCita,
             @NotBlank String motivoGeneral) {}
 
+    public record CitaResponseDto(
+            Long idCita,
+            Long idPaciente,
+            Long idVeterinario,
+            OffsetDateTime fechaHora,
+            String tipoCita,
+            String estado) {}
+
     public record EmitirFacturaRequest(
             @NotEmpty List<LineaFacturaInput> lineas,
             boolean pagoConfirmado) {}
 
+    public record FacturaResponseDto(
+            Long idFactura,
+            BigDecimal total,
+            String estado,
+            int cantidadLineas) {}
+
     @PostMapping("/citas")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA')")
-    public Cita agendarCita(@Valid @RequestBody AgendarCitaRequest req) {
-        return agendaService.agendarCita(
+    public CitaResponseDto agendarCita(@Valid @RequestBody AgendarCitaRequest req) {
+        Cita cita = agendaService.agendarCita(
                 req.idPaciente(), req.idVeterinario(), req.fechaHora(), req.tipoCita(), req.motivoGeneral());
+        return new CitaResponseDto(
+                cita.getIdCita(),
+                cita.getIdPaciente(),
+                cita.getVeterinario().getIdUsuario(),
+                cita.getFechaHora(),
+                cita.getTipoCita(),
+                cita.getEstado());
     }
 
     @PostMapping("/facturas")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA')")
-    public Factura emitirFactura(@Valid @RequestBody EmitirFacturaRequest req) {
-        return facturacionService.emitirFacturaConDescuento(req.lineas(), req.pagoConfirmado());
+    public FacturaResponseDto emitirFactura(@Valid @RequestBody EmitirFacturaRequest req) {
+        Factura factura = facturacionService.emitirFacturaConDescuento(req.lineas(), req.pagoConfirmado());
+        return new FacturaResponseDto(
+                factura.getIdFactura(),
+                factura.getTotal(),
+                factura.getEstado(),
+                factura.getDetalles().size());
     }
 }

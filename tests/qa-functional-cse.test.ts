@@ -408,6 +408,23 @@ runCase('TC-21', 'CSE-Seguridad', 'VET-RNF-05: Script pg_dump con retención sin
   return 'VET-RNF-05 (pg_dump MVCC + rotación y GlobalResilienceExceptionHandler) verificado';
 });
 
+runCase('TC-22', 'CSE-Seguridad', 'VET-RNF-06: Dockerfiles multi-stage no-root, docker-compose aislado, .env.example y DTOs en controlador', () => {
+  const backDocker = fs.readFileSync(path.resolve('backend-springboot/Dockerfile'), 'utf8');
+  const frontDocker = fs.readFileSync(path.resolve('Dockerfile'), 'utf8');
+  const nextDocker = fs.readFileSync(path.resolve('Dockerfile.nextjs'), 'utf8');
+  const compose = fs.readFileSync(path.resolve('docker-compose.yml'), 'utf8');
+  const envExample = fs.readFileSync(path.resolve('.env.example'), 'utf8');
+  const opCtrl = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/controller/OperacionClinicaController.java'), 'utf8');
+
+  assert.ok(backDocker.includes('AS builder') && backDocker.includes('USER vetsoft'), 'Dockerfile backend multi-stage y no-root');
+  assert.ok(frontDocker.includes('AS builder') && frontDocker.includes('nginx-unprivileged'), 'Dockerfile frontend multi-stage y no-root');
+  assert.ok(nextDocker.includes('.next/standalone') && nextDocker.includes('USER nextjs'), 'Dockerfile Next.js standalone y no-root');
+  assert.ok(compose.includes('internal: true') && compose.includes('condition: service_healthy') && compose.includes('vetsoft_pg_data:'), 'docker-compose con red interna, healthcheck y volumen persistente');
+  assert.ok(envExample.includes('POSTGRES_PASSWORD') && envExample.includes('JWT_SECRET'), '.env.example documenta variables sin secretos reales');
+  assert.ok(opCtrl.includes('CitaResponseDto') && opCtrl.includes('FacturaResponseDto'), 'OperacionClinicaController expone DTOs y no entidades JPA');
+  return 'VET-RNF-06 (Docker multi-stage, red interna, .env.example y desacoplamiento DTO) verificado';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');
