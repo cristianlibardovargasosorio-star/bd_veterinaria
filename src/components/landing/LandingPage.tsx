@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useStore } from '../../db/store';
 import { LazyScrollSection } from '../common/LazyScrollSection';
 import { SkeletonCard, SkeletonKPI, SkeletonTable } from '../common/Skeleton';
 import {
@@ -60,7 +59,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       fallback();
     }
   };
-  const { mascotas } = useStore();
 
   const [showSkeletonMode, setShowSkeletonMode] = useState(false);
   const [activeDemoTab, setActiveDemoTab] = useState<'ia' | 'carne' | 'lotes' | 'pos'>('ia');
@@ -72,90 +70,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const heroImgAvif = '/src/assets/images/landing_vet_hero_1794425108227.avif';
   const heroImgJpg = '/src/assets/images/landing_vet_hero_1794425108227.jpg';
 
-  const aiTabletImg = '/src/assets/images/landing_ai_diagnostics_1794425109106.webp';
-  const aiTabletImgAvif = '/src/assets/images/landing_ai_diagnostics_1794425109106.avif';
-  const aiTabletImgJpg = '/src/assets/images/landing_ai_diagnostics_1794425109106.jpg';
-
   const petCareImg = '/src/assets/images/landing_pet_care_1794425109279.webp';
   const petCareImgAvif = '/src/assets/images/landing_pet_care_1794425109279.avif';
   const petCareImgJpg = '/src/assets/images/landing_pet_care_1794425109279.jpg';
-
-  const selectedPet = mascotas[0];
-
-  // --- AI HEALTH ASSISTANT INTERACTIVE STATE ---
-  const [aiQuestion, setAiQuestion] = useState('');
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiResponse, setAiResponse] = useState<string | null>(
-    '¡Hola! Soy el Asistente Clínico Inteligente de la Clínica Veterinaria VetSoft. Puedes consultarme dudas sobre el cuidado de tu mascota, síntomas habituales, calendario de vacunación o nutrición preventiva.'
-  );
-
-  const handleAskAI = async (customQ?: string) => {
-    const questionToAsk = customQ || aiQuestion;
-    if (!questionToAsk.trim()) return;
-
-    // OPTIMISTIC UI: Instantly clear and prepare state without blocking UI
-    setAiLoading(true);
-    setAiResponse('');
-
-    // Stream token-a-token Simulation or Server-Sent Events (SSE)
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout prevention
-
-      const response = await fetch('/api/ai/asistente-clinico/stream', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-        body: JSON.stringify({
-          pregunta: questionToAsk,
-          contexto_paciente: {
-            mascota: selectedPet?.nombre || 'Mascota',
-            especie: selectedPet?.especie || 'Canino',
-            peso_kg: selectedPet?.peso_kg || 15,
-          },
-        }),
-      });
-
-      clearTimeout(timeoutId);
-
-      if (response.ok && response.body) {
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder('utf-8');
-        let accumulated = '';
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          accumulated += chunk;
-          setAiResponse(accumulated);
-        }
-      } else {
-        throw new Error('Fallback streaming');
-      }
-    } catch {
-      // Stream tokens locally with realistic typewriter effect (token-a-token)
-      const fullText = `Orientación Veterinaria Especializada para "${questionToAsk}": Para ${selectedPet?.nombre} (${selectedPet?.especie}, ${selectedPet?.peso_kg}kg), es fundamental priorizar el bienestar y la observación continua. Si detectas temperatura superior a 39.2°C, letargo acentuado o signos gastrointestinales por más de 12 horas, acude a nuestra unidad de urgencias 24/7 (+57 300 912 3456). Nunca administres analgésicos de uso humano.`;
-      
-      const words = fullText.split(' ');
-      let currentIdx = 0;
-      let streamed = '';
-
-      const timer = setInterval(() => {
-        if (currentIdx < words.length) {
-          streamed += (currentIdx === 0 ? '' : ' ') + words[currentIdx];
-          setAiResponse(streamed);
-          currentIdx++;
-        } else {
-          clearInterval(timer);
-          setAiLoading(false);
-        }
-      }, 35);
-      return;
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   const faqs = [
     {
@@ -306,9 +223,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <a href="#equipo" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
               Especialistas
             </a>
-            <a href="#asistente-ia" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
-              Asistente IA
-            </a>
             <a href="#planes" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
               Planes
             </a>
@@ -391,13 +305,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
               >
                 Especialistas
-              </a>
-              <a
-                href="#asistente-ia"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
-              >
-                Asistente IA
               </a>
               <a
                 href="#planes"
@@ -619,134 +526,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               );
             })}
           </div>
-        </div>
-      </section>
-
-      {/* AI VIRTUAL HEALTH ASSISTANT FOR PET PARENTS — Steep Light Editorial Section */}
-      <section id="asistente-ia" className="py-20 bg-vet-hover/90 border-b border-vet-border text-vet-navy">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          <LazyScrollSection className="text-center space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-vet-ice text-vet-navy text-xs font-medium">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Tecnología Gemini 3.8 Flash para Familias</span>
-            </div>
-            <h2 className="font-serif-editorial text-3xl sm:text-[44px] font-normal tracking-[-0.66px] text-vet-navy leading-[1.2]">
-              Asistente Clínico Inteligente para Dudas de Salud
-            </h2>
-            <p className="text-[17px] text-vet-muted max-w-2xl mx-auto">
-              ¿Notas un comportamiento inusual o tienes dudas sobre la nutrición o calendario preventivo de tu
-              mascota? Consulta a nuestro asistente entrenado en medicina veterinaria.
-            </p>
-          </LazyScrollSection>
-
-          {/* Interactive AI Widget */}
-          <LazyScrollSection delay={80} className="bg-vet-ice rounded-[24px] border border-vet-border p-6 sm:p-8 space-y-6">
-            {/* Visual showcase with AI tablet image */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center border-b border-vet-border pb-6">
-              <div className="md:col-span-8 space-y-2">
-                <span className="text-[11px] font-mono text-vet-navy uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-vet-ice">
-                  Gemini 3.8 Streaming Token a Token
-                </span>
-                <h3 className="text-lg font-medium text-vet-navy">Diagnóstico Clínico Asistido por Inteligencia Artificial</h3>
-                <p className="text-xs text-vet-muted leading-relaxed">
-                  Algoritmos clínicos entrenados para orientación médica inmediata, cálculo posológico seguro y triaje preventivo 24/7 sin latencia.
-                </p>
-              </div>
-              <div className="md:col-span-4 rounded-[12px] overflow-hidden border border-vet-border h-32 relative">
-                <picture>
-                  <source srcSet={aiTabletImgAvif} type="image/avif" />
-                  <source srcSet={aiTabletImg} type="image/webp" />
-                  <img
-                    src={aiTabletImgJpg}
-                    alt="Tableta médica con telemetría veterinaria e IA diagnóstica"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover object-center"
-                  />
-                </picture>
-              </div>
-            </div>
-
-            {/* Quick question prompt pills */}
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="text-vet-muted font-medium">Consultas frecuentes:</span>
-              {[
-                '¿A qué edad se aplica la primera vacuna a un cachorro?',
-                '¿Qué alimentos son estrictamente tóxicos para un gato?',
-                'Mi perro vomitó una vez, ¿cuándo es una urgencia médica?',
-                '¿Cómo saber si mi mascota tiene fiebre en casa?',
-              ].map((pill, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setAiQuestion(pill);
-                    handleAskAI(pill);
-                  }}
-                  className="px-3.5 py-1.5 rounded-full bg-vet-surface hover:bg-vet-ice border border-vet-border text-vet-navy hover:text-vet-navy text-xs font-normal transition-colors text-left cursor-pointer"
-                >
-                  {pill}
-                </button>
-              ))}
-            </div>
-
-            {/* AI Response Display */}
-            <div className="p-5 rounded-[20px] bg-vet-surface border border-vet-border space-y-3">
-              <div className="flex items-center justify-between text-xs border-b border-vet-border pb-2">
-                <div className="flex items-center gap-2 text-vet-navy font-medium">
-                  <Sparkles className="w-4 h-4" />
-                  <span>Respuesta del Asistente Clínico VETSOFT</span>
-                </div>
-                <span className="text-vet-ink-muted font-mono text-[11px]">Motor Gemini 3.8 Flash</span>
-              </div>
-
-              {aiLoading ? (
-                <div className="py-6 flex items-center justify-center gap-3 text-vet-muted text-xs animate-pulse">
-                  <div className="w-4 h-4 rounded-full border-2 border-brand border-t-transparent animate-spin" />
-                  <span>Analizando consulta y literatura veterinaria...</span>
-                </div>
-              ) : (
-                <p className="text-sm text-vet-navy leading-relaxed whitespace-pre-line">
-                  {aiResponse}
-                </p>
-              )}
-
-              <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-vet-muted">
-                <span className="flex items-center gap-1 text-vet-muted">
-                  <Info className="w-3.5 h-3.5 shrink-0 text-vet-navy" />
-                  La orientación virtual complementa, pero no sustituye el examen clínico presencial.
-                </span>
-                <button
-                  type="button"
-                  onClick={() => triggerProtected('/citas', onOpenLogin)}
-                  className="text-vet-navy hover:underline cursor-pointer"
-                >
-                  Agendar consulta médica →
-                </button>
-              </div>
-            </div>
-
-            {/* Custom input bar */}
-            <div className="flex items-center gap-2">
-              <input
-                type="text"
-                value={aiQuestion}
-                onChange={(e) => setAiQuestion(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') handleAskAI();
-                }}
-                placeholder="Escribe tu consulta sobre síntomas, alimentación o prevención..."
-                className="flex-1 px-4 py-3 bg-surface-card rounded-[16px] border border-surface-border text-brand-ink placeholder:text-vet-placeholder text-sm focus:border-brand focus:outline-none"
-              />
-              <button
-                onClick={() => handleAskAI()}
-                disabled={aiLoading}
-                className="px-6 py-3 bg-vet-emerald text-white hover:bg-vet-emerald-hover disabled:opacity-50 font-normal text-sm rounded-full transition-colors flex items-center gap-1.5 shrink-0 cursor-pointer"
-              >
-                <Send className="w-3.5 h-3.5" />
-                <span>Consultar</span>
-              </button>
-            </div>
-          </LazyScrollSection>
         </div>
       </section>
 
