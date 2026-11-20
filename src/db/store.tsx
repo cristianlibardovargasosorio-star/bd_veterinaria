@@ -109,7 +109,7 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | null>(null);
 
-const STORAGE_PREFIX = 'vetsoft_db_v2_';
+const STORAGE_PREFIX = 'vetsoft_db_v3_';
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
