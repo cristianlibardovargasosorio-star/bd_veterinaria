@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useStore } from '../../db/store';
 import { LazyScrollSection } from '../common/LazyScrollSection';
 import { SkeletonCard, SkeletonKPI, SkeletonTable } from '../common/Skeleton';
-import confetti from 'canvas-confetti';
 import {
   Stethoscope,
   Sparkles,
@@ -41,7 +40,6 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { TipoCita } from '../../types';
 import { ProtectedRoutePath } from '../../utils/rbac';
 
 interface LandingPageProps {
@@ -62,18 +60,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       fallback();
     }
   };
-  const {
-    jwtToken,
-    mascotas,
-    propietarios,
-    veterinarios,
-    historiaVacunas,
-    vacunas,
-    citas,
-    agendarCita,
-    registrarMascota,
-    registrarPropietario,
-  } = useStore();
+  const { mascotas } = useStore();
 
   const [showSkeletonMode, setShowSkeletonMode] = useState(false);
   const [activeDemoTab, setActiveDemoTab] = useState<'ia' | 'carne' | 'lotes' | 'pos'>('ia');
@@ -93,66 +80,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const petCareImgAvif = '/src/assets/images/landing_pet_care_1794425109279.avif';
   const petCareImgJpg = '/src/assets/images/landing_pet_care_1794425109279.jpg';
 
-  // --- ONLINE APPOINTMENT BOOKING STATE ---
-  const [bookingPetName, setBookingPetName] = useState('');
-  const [bookingOwnerName, setBookingOwnerName] = useState('');
-  const [bookingPhone, setBookingPhone] = useState('');
-  const [bookingEspecie, setBookingEspecie] = useState('Canino');
-  const [bookingType, setBookingType] = useState<TipoCita>('CONSULTA');
-  const [bookingVetId, setBookingVetId] = useState<number>(veterinarios[0]?.id_veterinario || 1);
-  const [bookingDate, setBookingDate] = useState('2026-11-15');
-  const [bookingTime, setBookingTime] = useState('10:00');
-  const [bookingReason, setBookingReason] = useState('Chequeo general preventivo y desparasitación');
-  const [bookingSuccess, setBookingSuccess] = useState<{
-    idCita: number;
-    pet: string;
-    owner: string;
-    vet: string;
-    dateTime: string;
-  } | null>(null);
-
-  // --- PET PORTAL & VACCINE SEARCH STATE (With Debounce & Autocomplete) ---
-  const [searchPetQuery, setSearchPetQuery] = useState('Lucas');
-  const [debouncedSearchPetQuery, setDebouncedSearchPetQuery] = useState('Lucas');
-  const [searchedPetId, setSearchedPetId] = useState<number>(1);
-  const [isSearching, setIsSearching] = useState(false);
-
-  // Debounce effect (300ms) to prevent duplicated calls / unneeded calculations
-  React.useEffect(() => {
-    setIsSearching(true);
-    const handler = setTimeout(() => {
-      setDebouncedSearchPetQuery(searchPetQuery);
-      setIsSearching(false);
-    }, 300);
-    return () => clearTimeout(handler);
-  }, [searchPetQuery]);
-
-  // Autocomplete matching list
-  const matchingPets = React.useMemo(() => {
-    if (!searchPetQuery.trim()) return mascotas.slice(0, 5);
-    const q = searchPetQuery.toLowerCase();
-    return mascotas.filter(
-      (m) =>
-        m.nombre.toLowerCase().includes(q) ||
-        (m.microchip_id && m.microchip_id.includes(q)) ||
-        m.especie.toLowerCase().includes(q)
-    );
-  }, [mascotas, searchPetQuery]);
-
-  // Selected pet for vaccine passport
-  const selectedPet = React.useMemo(() => {
-    return (
-      mascotas.find(
-        (m) =>
-          m.id_mascota === searchedPetId ||
-          m.nombre.toLowerCase().includes(debouncedSearchPetQuery.toLowerCase()) ||
-          (m.microchip_id && m.microchip_id.includes(debouncedSearchPetQuery))
-      ) || mascotas[0]
-    );
-  }, [mascotas, searchedPetId, debouncedSearchPetQuery]);
-
-  const petOwner = propietarios.find((p) => p.id_propietario === selectedPet?.id_propietario);
-  const petVaccines = historiaVacunas.filter((h) => h.id_mascota === selectedPet?.id_mascota);
+  const selectedPet = mascotas[0];
 
   // --- AI HEALTH ASSISTANT INTERACTIVE STATE ---
   const [aiQuestion, setAiQuestion] = useState('');
@@ -226,91 +154,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       return;
     } finally {
       setAiLoading(false);
-    }
-  };
-
-  const handleBookAppointment = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!jwtToken) {
-      triggerProtected('/citas', onOpenLogin);
-      return;
-    }
-
-    // Check if pet exists or register new
-    let targetPet = mascotas.find(
-      (m) => m.nombre.toLowerCase() === bookingPetName.trim().toLowerCase()
-    );
-
-    let targetOwnerId = targetPet ? targetPet.id_propietario : 1;
-
-    if (!targetPet && bookingPetName.trim()) {
-      // Auto-register owner and pet smoothly
-      const newOwnerRes = registrarPropietario({
-        id_usuario: null,
-        cedula_documento: `CC-${Math.floor(10000000 + Math.random() * 90000000)}`,
-        nombres: bookingOwnerName || 'Tutor Familiar',
-        apellidos: 'Registrado Online',
-        telefono: bookingPhone || '+57 300 000 0000',
-        direccion: 'Sede Principal Bogotá',
-      });
-
-      if (newOwnerRes.data) {
-        targetOwnerId = newOwnerRes.data.id_propietario;
-      }
-
-      const newPetRes = registrarMascota({
-        id_propietario: targetOwnerId,
-        codigo_expediente: `EXP-2026-${Math.floor(100 + Math.random() * 900)}`,
-        nombre: bookingPetName.trim(),
-        especie: bookingEspecie,
-        raza: 'Mestizo / Compañía',
-        fecha_nacimiento: '2024-01-01',
-        genero: 'MACHO',
-        peso_kg: 10,
-        microchip_id: `9410000${Math.floor(100000 + Math.random() * 900000)}`,
-        estado_salud: 'ESTABLE',
-        activo: true,
-      });
-
-      if (newPetRes.data) {
-        targetPet = newPetRes.data;
-      }
-    }
-
-    const assignedPetId = targetPet ? targetPet.id_mascota : 1;
-    const assignedVet = veterinarios.find((v) => v.id_veterinario === bookingVetId) || veterinarios[0];
-
-    const result = agendarCita({
-      id_mascota: assignedPetId,
-      id_propietario: targetOwnerId,
-      id_veterinario: assignedVet.id_veterinario,
-      fecha_hora: `${bookingDate}T${bookingTime}:00`,
-      motivo_general: bookingReason,
-      tipo_cita: bookingType,
-      estado: 'PENDIENTE',
-    });
-
-    if (result.success && result.data) {
-      // Confetti celebration!
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#059669', '#10b981', '#34d399', '#0d9488', '#f59e0b'],
-        });
-      } catch (err) {
-        // ignore if confetti canvas fails
-      }
-
-      setBookingSuccess({
-        idCita: result.data.id_cita,
-        pet: targetPet?.nombre || bookingPetName || 'Mascota',
-        owner: bookingOwnerName || 'Tutor',
-        vet: `${assignedVet.nombres} ${assignedVet.apellidos}`,
-        dateTime: `${bookingDate} a las ${bookingTime} hrs`,
-      });
     }
   };
 
@@ -448,14 +291,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </a>
             <button
               type="button"
-              onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+              onClick={() => triggerProtected('/citas', onOpenLogin)}
               className="whitespace-nowrap hover:text-vet-muted transition-colors py-1 cursor-pointer"
             >
               Agendar cita
             </button>
             <button
               type="button"
-              onClick={() => triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; })}
+              onClick={() => triggerProtected('/carne-vacunacion', onOpenLogin)}
               className="whitespace-nowrap hover:text-vet-muted transition-colors py-1 cursor-pointer"
             >
               Carné digital
@@ -483,7 +326,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <button
               type="button"
-              onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+              onClick={() => triggerProtected('/citas', onOpenLogin)}
               className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal bg-vet-emerald hover:bg-vet-emerald-hover text-white transition-opacity cursor-pointer whitespace-nowrap"
             >
               Reservar cita
@@ -526,7 +369,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  triggerProtected('/citas', () => { window.location.hash = '#agendar'; });
+                  triggerProtected('/citas', onOpenLogin);
                 }}
                 className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors text-left cursor-pointer"
               >
@@ -536,7 +379,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; });
+                  triggerProtected('/carne-vacunacion', onOpenLogin);
                 }}
                 className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors text-left cursor-pointer"
               >
@@ -579,7 +422,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  triggerProtected('/citas', () => { window.location.hash = '#agendar'; });
+                  triggerProtected('/citas', onOpenLogin);
                 }}
                 className="w-full py-2.5 px-5 rounded-full text-sm bg-vet-emerald text-white text-center cursor-pointer"
               >
@@ -612,7 +455,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                  onClick={() => triggerProtected('/citas', onOpenLogin)}
                   className="px-6 py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white font-normal text-[16px] rounded-full flex items-center gap-2 transition-opacity cursor-pointer"
                 >
                   <span>Agendar cita en línea</span>
@@ -628,7 +471,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
                 <button
                   type="button"
-                  onClick={() => triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; })}
+                  onClick={() => triggerProtected('/carne-vacunacion', onOpenLogin)}
                   className="px-4 py-3 text-vet-navy hover:underline font-normal text-[16px] flex items-center gap-1.5 transition-all cursor-pointer"
                 >
                   <span>Consultar carné digital →</span>
@@ -766,7 +609,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                    onClick={() => triggerProtected('/citas', onOpenLogin)}
                     className="inline-flex items-center gap-1 text-xs font-bold text-vet-navy hover:text-vet-navy transition-colors pt-2 border-t border-slate-100 cursor-pointer"
                   >
                     <span>Agendar este servicio</span>
@@ -776,494 +619,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               );
             })}
           </div>
-        </div>
-      </section>
-
-      {/* INTERACTIVE APPOINTMENT BOOKING FORM */}
-      <section id="agendar" className="py-20 bg-vet-ice/75 backdrop-blur-[1px] border-b border-vet-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            {/* Left Context Column */}
-            <LazyScrollSection className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-                Agendamiento Online Inmediato
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-black text-vet-navy tracking-tight">
-                Reserva la Cita Médica de tu Mascota en Minutos
-              </h2>
-              <p className="text-sm text-vet-muted leading-relaxed">
-                Selecciona la especialidad médica, el veterinario tratante, la fecha y la hora de tu
-                preferencia. Tu cita quedará registrada automáticamente en el sistema clínico del hospital.
-              </p>
-
-              <div className="p-5 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs space-y-3">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-vet-ice text-vet-navy flex items-center justify-center shrink-0">
-                    <Check className="w-4 h-4 font-bold" />
-                  </div>
-                  <div className="text-xs">
-                    <strong className="text-vet-navy block">Confirmación en Tiempo Real</strong>
-                    <span className="text-vet-muted">
-                      Sin tiempos de espera telefónicos. Recibes tu número de radicado al instante.
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-vet-ice text-vet-navy flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-4 h-4 font-bold" />
-                  </div>
-                  <div className="text-xs">
-                    <strong className="text-vet-navy block">Historial Clínico Digital</strong>
-                    <span className="text-vet-muted">
-                      Todos los datos de la consulta se asocian de por vida al expediente de tu mascota.
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-vet-ice text-vet-navy flex items-center justify-center shrink-0">
-                    <Phone className="w-4 h-4 font-bold" />
-                  </div>
-                  <div className="text-xs">
-                    <strong className="text-vet-navy block">¿Es una Emergencia Grave?</strong>
-                    <span className="text-vet-muted">
-                      Si tu mascota está inconsciente o convulsionando, tráela de inmediato sin cita previa a
-                      Urgencias 24h.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </LazyScrollSection>
-
-            {/* Right Booking Form */}
-            <LazyScrollSection delay={100} className="lg:col-span-7">
-              <div className="bg-vet-surface rounded-[24px] border-2 border-vet-border p-6 sm:p-8 shadow-xl">
-                {bookingSuccess ? (
-                  <div className="text-center py-8 space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-vet-ice text-vet-navy mx-auto flex items-center justify-center shadow-inner">
-                      <CheckCircle2 className="w-10 h-10" />
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-xs font-mono font-bold text-vet-navy bg-vet-ice text-vet-navy px-3 py-1 rounded-full">
-                        CITA AGENDADA CON ÉXITO #RAD-{bookingSuccess.idCita}
-                      </span>
-                      <h3 className="text-2xl font-black text-vet-navy pt-2">
-                        ¡Cita Confirmada para {bookingSuccess.pet}!
-                      </h3>
-                      <p className="text-sm text-vet-muted max-w-md mx-auto">
-                        Hemos registrado tu cita con el <strong>{bookingSuccess.vet}</strong> para el día{' '}
-                        <strong>{bookingSuccess.dateTime}</strong>.
-                      </p>
-                    </div>
-
-                    <div className="p-4 bg-vet-surface rounded-[20px] border border-vet-border max-w-md mx-auto text-xs text-left space-y-2 font-mono">
-                      <div className="flex justify-between">
-                        <span className="text-vet-muted">Paciente:</span>
-                        <span className="font-bold text-vet-navy">{bookingSuccess.pet}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-vet-muted">Tutor:</span>
-                        <span className="font-bold text-vet-navy">{bookingSuccess.owner}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-vet-muted">Veterinario Asignado:</span>
-                        <span className="font-bold text-vet-navy">{bookingSuccess.vet}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-vet-muted">Fecha y Hora:</span>
-                        <span className="font-bold text-vet-navy">{bookingSuccess.dateTime}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-vet-muted">Sede:</span>
-                        <span className="font-bold text-vet-navy">Hospital VetSoft Bogotá</span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                      <button
-                        onClick={() => setBookingSuccess(null)}
-                        className="px-5 py-2.5 bg-vet-ice hover:bg-vet-ice text-vet-navy text-xs font-bold rounded-xl transition-colors cursor-pointer"
-                      >
-                        Agendar otra cita
-                      </button>
-
-                      <button
-                        onClick={onEnterERP}
-                        className="px-5 py-2.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold rounded-xl shadow-md transition-colors cursor-pointer"
-                      >
-                        Ver cita en el Sistema ERP →
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <form onSubmit={handleBookAppointment} className="space-y-4 text-xs">
-                    <div className="border-b border-slate-100 pb-3">
-                      <h3 className="text-base font-bold text-vet-navy">Formulario de Reserva Médica</h3>
-                      <p className="text-vet-muted text-[11px]">
-                        Ingresa los datos para apartar el turno médico de tu mascota.
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">
-                          Nombre del Tutor / Propietario *
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={bookingOwnerName}
-                          onChange={(e) => setBookingOwnerName(e.target.value)}
-                          placeholder="Ej. Juan Pérez"
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">
-                          Teléfono de Contacto (WhatsApp) *
-                        </label>
-                        <input
-                          type="tel"
-                          required
-                          value={bookingPhone}
-                          onChange={(e) => setBookingPhone(e.target.value)}
-                          placeholder="+57 310 123 4567"
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">
-                          Nombre de la Mascota *
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={bookingPetName}
-                          onChange={(e) => setBookingPetName(e.target.value)}
-                          placeholder="Ej. Lucas, Max, Luna"
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">Especie</label>
-                        <select
-                          value={bookingEspecie}
-                          onChange={(e) => setBookingEspecie(e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface"
-                        >
-                          <option value="Canino">Canino (Perro)</option>
-                          <option value="Felino">Felino (Gato)</option>
-                          <option value="Conejo">Lagomorfo (Conejo)</option>
-                          <option value="Ave">Ave de Compañía</option>
-                          <option value="Otro">Otra Especie</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">
-                          Tipo de Servicio / Cita
-                        </label>
-                        <select
-                          value={bookingType}
-                          onChange={(e) => setBookingType(e.target.value as TipoCita)}
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface font-medium"
-                        >
-                          <option value="CONSULTA">Consulta General Preventiva</option>
-                          <option value="VACUNACION">Vacunación & Desparasitación</option>
-                          <option value="CONTROL">Control Postoperatorio</option>
-                          <option value="URGENCIA">Urgencia Médica Prioritaria</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">
-                          Médico Veterinario Especialista
-                        </label>
-                        <select
-                          value={bookingVetId}
-                          onChange={(e) => setBookingVetId(Number(e.target.value))}
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface font-medium"
-                        >
-                          {veterinarios.map((v) => (
-                            <option key={v.id_veterinario} value={v.id_veterinario}>
-                              {v.nombres} {v.apellidos} ({v.especialidad})
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">Fecha Deseada</label>
-                        <input
-                          type="date"
-                          required
-                          value={bookingDate}
-                          onChange={(e) => setBookingDate(e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="font-bold text-vet-muted block mb-1">Hora Estimada</label>
-                        <select
-                          value={bookingTime}
-                          onChange={(e) => setBookingTime(e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface"
-                        >
-                          <option value="08:30">08:30 AM</option>
-                          <option value="09:30">09:30 AM</option>
-                          <option value="10:00">10:00 AM</option>
-                          <option value="11:30">11:30 AM</option>
-                          <option value="14:00">02:00 PM</option>
-                          <option value="15:30">03:30 PM</option>
-                          <option value="17:00">05:00 PM</option>
-                          <option value="18:30">06:30 PM</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="font-bold text-vet-muted block mb-1">
-                        Motivo de la Consulta o Síntomas Notados
-                      </label>
-                      <textarea
-                        rows={2}
-                        value={bookingReason}
-                        onChange={(e) => setBookingReason(e.target.value)}
-                        placeholder="Ej. Chequeo semestral, decaimiento leve, vacunas anuales pendientes..."
-                        className="w-full px-3 py-2.5 rounded-xl border border-vet-border focus:ring-2 focus:ring-vet-emerald/40 focus:outline-none bg-vet-surface text-xs"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full py-3.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white font-black text-sm rounded-xl shadow-lg  transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
-                    >
-                      <Calendar className="w-4 h-4" />
-                      <span>Confirmar y Agendar Cita Ahora</span>
-                    </button>
-                  </form>
-                )}
-              </div>
-            </LazyScrollSection>
-          </div>
-        </div>
-      </section>
-
-      {/* PATIENT PORTAL & DIGITAL VACCINE CARD LOOKUP */}
-      <section id="carne" className="py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <LazyScrollSection className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-              Portal del Paciente
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-vet-navy tracking-tight">
-              Carné Digital de Vacunación & Historial Médico
-            </h2>
-            <p className="text-sm text-vet-muted">
-              ¿Tu mascota ya es paciente de la Clínica VetSoft? Consulta al instante su estado vacunal,
-              próximos refuerzos y pasaporte oficial con código QR.
-            </p>
-
-            {/* Debounced Search Input with Autocomplete Dropdown */}
-            <div className="max-w-md mx-auto relative pt-2">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchPetQuery}
-                  onChange={(e) => setSearchPetQuery(e.target.value)}
-                  placeholder="Buscar por nombre, especie o microchip..."
-                  className="w-full pl-10 pr-24 py-2.5 rounded-full bg-vet-ice border border-vet-border focus:border-vet-navy text-xs text-vet-navy placeholder-[#898989] outline-none transition-colors"
-                />
-                <Search className="w-4 h-4 text-vet-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-[10px] text-vet-muted font-mono">
-                  {isSearching ? (
-                    <span className="text-vet-navy animate-pulse">Buscando...</span>
-                  ) : (
-                    <span>Debounce 300ms</span>
-                  )}
-                </div>
-              </div>
-
-              {/* Autocomplete suggestions pill preview */}
-              {matchingPets.length > 0 && searchPetQuery.trim() !== '' && (
-                <div className="absolute left-0 right-0 mt-1 bg-vet-ice border border-vet-border rounded-[12px] p-2 z-30 shadow-2xl space-y-1">
-                  <div className="text-[10px] uppercase font-mono text-vet-muted px-2 py-1">
-                    Resultados de Autocompletado:
-                  </div>
-                  {matchingPets.slice(0, 4).map((pet) => (
-                    <button
-                      key={pet.id_mascota}
-                      type="button"
-                      onClick={() => {
-                        setSearchedPetId(pet.id_mascota);
-                        setSearchPetQuery(pet.nombre);
-                      }}
-                      className="w-full text-left px-3 py-1.5 rounded-[8px] hover:bg-vet-ice text-xs flex items-center justify-between text-vet-navy transition-colors cursor-pointer"
-                    >
-                      <span className="font-medium">🐾 {pet.nombre} ({pet.especie} - {pet.raza})</span>
-                      <span className="text-[10px] font-mono text-vet-navy">ID: #{pet.id_mascota}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Quick pet search chips */}
-            <div className="pt-3 flex flex-wrap items-center justify-center gap-2 text-xs">
-              <span className="text-vet-muted font-semibold">Pacientes de demostración:</span>
-              {mascotas.slice(0, 5).map((m) => (
-                <button
-                  key={m.id_mascota}
-                  onClick={() => {
-                    setSearchedPetId(m.id_mascota);
-                    setSearchPetQuery(m.nombre);
-                  }}
-                  className={`px-3 py-1 rounded-full font-bold border transition-all cursor-pointer ${
-                    selectedPet?.id_mascota === m.id_mascota
-                      ? 'bg-vet-emerald text-white border-vet-border shadow-sm'
-                      : 'bg-vet-ice text-vet-muted border-vet-border hover:bg-vet-ice'
-                  }`}
-                >
-                  🐾 {m.nombre} ({m.especie})
-                </button>
-              ))}
-            </div>
-          </LazyScrollSection>
-
-          {/* Digital Vaccine Card Display */}
-          <LazyScrollSection className="max-w-4xl mx-auto">
-            <div className="bg-linear-to-br from-white to-slate-50 rounded-[24px] border-2 border-vet-border shadow-xl overflow-hidden p-6 sm:p-8 space-y-6">
-              {/* Header card */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-vet-border pb-5">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-[20px] bg-linear-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-white text-3xl shadow-md">
-                    {selectedPet?.especie.toLowerCase().includes('fel') ? '🐱' : '🐶'}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-2xl font-black text-vet-navy">{selectedPet?.nombre}</h3>
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-vet-ice text-vet-navy">
-                        {selectedPet?.estado_salud}
-                      </span>
-                    </div>
-                    <p className="text-xs text-vet-muted font-mono">
-                      Expediente: {selectedPet?.codigo_expediente} · Microchip:{' '}
-                      {selectedPet?.microchip_id || '941000028192'}
-                    </p>
-                    <p className="text-xs text-vet-muted mt-0.5">
-                      Raza: <strong>{selectedPet?.raza}</strong> · Peso: <strong>{selectedPet?.peso_kg} kg</strong> ·
-                      Tutor:{' '}
-                      <strong>
-                        {petOwner?.nombres} {petOwner?.apellidos}
-                      </strong>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-3 bg-vet-surface rounded-[20px] border border-vet-border text-center shrink-0 self-start sm:self-auto shadow-xs">
-                  <QrCode className="w-16 h-16 mx-auto text-vet-navy" />
-                  <span className="text-[10px] font-mono text-vet-muted block mt-1 font-bold">
-                    VALIDACIÓN QR OFICIAL
-                  </span>
-                </div>
-              </div>
-
-              {/* Vaccine records table */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-bold text-vet-navy flex items-center gap-2">
-                    <Syringe className="w-4 h-4 text-vet-navy" />
-                    <span>Inmunizaciones Registradas en la Clínica</span>
-                  </h4>
-                  <span className="text-xs text-vet-muted font-mono">
-                    {petVaccines.length} Dosis Aplicadas
-                  </span>
-                </div>
-
-                {petVaccines.length === 0 ? (
-                  <div className="p-6 bg-vet-surface rounded-[20px] text-center text-xs text-vet-muted border border-vet-border">
-                    No hay dosis registradas en este expediente clínico.
-                  </div>
-                ) : (
-                  <div className="overflow-x-auto text-xs">
-                    <table className="w-full text-left">
-                      <thead>
-                        <tr className="border-b border-vet-border text-vet-muted font-mono">
-                          <th className="py-2.5 font-bold">Biológico / Vacuna</th>
-                          <th className="py-2.5">Lote Oficial</th>
-                          <th className="py-2.5">Fecha Aplicación</th>
-                          <th className="py-2.5 font-bold text-vet-navy">Próximo Refuerzo</th>
-                          <th className="py-2.5 text-center">Estado</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {petVaccines.map((v, i) => {
-                          const catVac = vacunas.find((vac) => vac.id_vacuna === v.id_vacuna);
-                          return (
-                            <tr key={i} className="hover:bg-vet-ice text-vet-navy/40 transition-colors">
-                              <td className="py-3 font-bold text-vet-navy">
-                                {catVac?.nombre || 'Vacuna Inmunizante'}
-                                <span className="block text-[10px] font-normal text-vet-muted font-mono">
-                                  {catVac?.marca || 'Marca Certificada'}
-                                </span>
-                              </td>
-                              <td className="py-3 font-mono text-vet-muted">{v.lote}</td>
-                              <td className="py-3 font-mono text-vet-muted">{v.fecha_aplicacion}</td>
-                              <td className="py-3 font-mono font-bold text-vet-navy">
-                                {v.fecha_refuerzo || 'Anual'}
-                              </td>
-                              <td className="py-3 text-center">
-                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-vet-ice text-vet-navy">
-                                  <Check className="w-3 h-3" />
-                                  <span>Al Día</span>
-                                </span>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </div>
-
-              {/* Footer card action */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-vet-border text-xs">
-                <span className="text-vet-muted text-center sm:text-left">
-                  Certificado bajo estándar médico veterinario nacional y normas de sanidad animal.
-                </span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => {
-                      alert(
-                        `Descargando pasaporte sanitario oficial de ${selectedPet?.nombre} en formato PDF.`
-                      );
-                    }}
-                    className="px-4 py-2 bg-vet-ice hover:bg-vet-ice text-vet-navy font-bold rounded-xl transition-colors cursor-pointer"
-                  >
-                    Descargar Certificado PDF
-                  </button>
-                  <button
-                    onClick={() => triggerProtected('/carne-vacunacion', onEnterERP)}
-                    className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
-                  >
-                    Abrir Carné en el ERP →
-                  </button>
-                </div>
-              </div>
-            </div>
-          </LazyScrollSection>
         </div>
       </section>
 
@@ -1362,7 +717,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </span>
                 <button
                   type="button"
-                  onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                  onClick={() => triggerProtected('/citas', onOpenLogin)}
                   className="text-vet-navy hover:underline cursor-pointer"
                 >
                   Agendar consulta médica →
@@ -1445,7 +800,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                onClick={() => triggerProtected('/citas', onOpenLogin)}
                 className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con el Dr. Camilo</span>
@@ -1486,7 +841,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                onClick={() => triggerProtected('/citas', onOpenLogin)}
                 className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con la Dra. Andrea</span>
@@ -1527,7 +882,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                onClick={() => triggerProtected('/citas', onOpenLogin)}
                 className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con la Dra. Mariana</span>
@@ -1590,7 +945,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                onClick={() => triggerProtected('/citas', onOpenLogin)}
                 className="w-full py-3 bg-vet-ice hover:bg-vet-ice text-vet-navy rounded-xl text-xs font-bold text-center transition-colors block cursor-pointer"
               >
                 Suscribir Plan Cachorro
@@ -1637,7 +992,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                onClick={() => triggerProtected('/citas', onOpenLogin)}
                 className="w-full py-3.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center shadow-md  transition-all block cursor-pointer"
               >
                 Suscribir Salud Total
@@ -1680,7 +1035,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                onClick={() => triggerProtected('/citas', onOpenLogin)}
                 className="w-full py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center transition-colors block cursor-pointer"
               >
                 Suscribir Plan Senior
@@ -1908,7 +1263,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </a>
                     <button
                       type="button"
-                      onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                      onClick={() => triggerProtected('/citas', onOpenLogin)}
                       className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                     >
                       <span>Pedir Cita</span>
@@ -1970,14 +1325,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </a>
             <button
               type="button"
-              onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+              onClick={() => triggerProtected('/citas', onOpenLogin)}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Agendar Cita
             </button>
             <button
               type="button"
-              onClick={() => triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; })}
+              onClick={() => triggerProtected('/carne-vacunacion', onOpenLogin)}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Carné Digital
