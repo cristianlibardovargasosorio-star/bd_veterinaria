@@ -100,7 +100,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
       // Criterio 3: Redirigir según el rol ENUM y validar redirectTo (anti-Open Redirect)
       const targetUser = usuarios.find((u) => u.correo.toLowerCase() === email.trim().toLowerCase());
-      const role: UserRole = targetUser?.rol_nombre || 'ADMINISTRADOR';
+      const role: UserRole = result.role || targetUser?.rol_nombre || 'PROPIETARIO';
       const queryRedirect =
         redirectTo || new URLSearchParams(window.location.search).get('redirectTo');
       const { targetTab, accessDeniedNotice } = resolvePostLoginDestination(role, queryRedirect);

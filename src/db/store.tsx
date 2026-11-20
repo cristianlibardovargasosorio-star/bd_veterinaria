@@ -47,7 +47,7 @@ interface StoreContextType {
   login: (
     correo: string,
     contrasena: string
-  ) => { success: boolean; message: string; token?: string; requiresOtp?: boolean; otp?: string };
+  ) => { success: boolean; message: string; role?: UserRole; token?: string; requiresOtp?: boolean; otp?: string };
   logout: () => void;
   jwtToken: string | null;
   verificarOtp: (otp: string) => boolean;
@@ -109,7 +109,30 @@ interface StoreContextType {
 
 const StoreContext = createContext<StoreContextType | null>(null);
 
-const STORAGE_PREFIX = 'vetsoft_db_v3_';
+const STORAGE_PREFIX = 'vetsoft_db_v4_';
+
+const DEMO_EMAILS = new Set([
+  'admin@vetsoft.com',
+  'camilo.vet@vetsoft.com',
+  'carlos.mendoza@vetsoft.com',
+]);
+
+function mergeInitialUsers(storedUsers: Usuario[]): Usuario[] {
+  const byEmail = new Map<string, Usuario>();
+  for (const u of storedUsers) {
+    byEmail.set(u.correo.toLowerCase(), u);
+  }
+  for (const initial of INITIAL_USUARIOS) {
+    const key = initial.correo.toLowerCase();
+    const existing = byEmail.get(key);
+    if (!existing) {
+      byEmail.set(key, initial);
+    } else if (DEMO_EMAILS.has(key) && existing.estado !== 'ACTIVO') {
+      byEmail.set(key, { ...existing, estado: 'ACTIVO', intentos_fallidos: 0 });
+    }
+  }
+  return Array.from(byEmail.values());
+}
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {
@@ -130,7 +153,9 @@ function saveToStorage<T>(key: string, value: T) {
 }
 
 export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [usuarios, setUsuarios] = useState<Usuario[]>(() => loadFromStorage('usuarios', INITIAL_USUARIOS));
+  const [usuarios, setUsuarios] = useState<Usuario[]>(() =>
+    mergeInitialUsers(loadFromStorage('usuarios', INITIAL_USUARIOS))
+  );
   const [propietarios, setPropietarios] = useState<Propietario[]>(() => loadFromStorage('propietarios', INITIAL_PROPIETARIOS));
   const [veterinarios] = useState<Veterinario[]>(() => loadFromStorage('veterinarios', INITIAL_VETERINARIOS));
   const [mascotas, setMascotas] = useState<Mascota[]>(() => loadFromStorage('mascotas', INITIAL_MASCOTAS));
@@ -232,7 +257,18 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       };
     }
 
-    const userIndex = usuarios.findIndex((u) => u.correo.toLowerCase() === correo.trim().toLowerCase());
+    const normalizedEmail = correo.trim().toLowerCase();
+    let effectiveUsuarios = usuarios;
+    let userIndex = effectiveUsuarios.findIndex((u) => u.correo.toLowerCase() === normalizedEmail);
+    // Fallback por si Vite HMR o caché antigua no incluyó una cuenta inicial
+    if (userIndex === -1) {
+      const initialMatch = INITIAL_USUARIOS.find((u) => u.correo.toLowerCase() === normalizedEmail);
+      if (initialMatch) {
+        effectiveUsuarios = [...effectiveUsuarios, initialMatch];
+        userIndex = effectiveUsuarios.length - 1;
+        setUsuarios(effectiveUsuarios);
+      }
+    }
     // Criterio 2 VET-RF-02: Mensaje exacto sin revelar si falló correo, contraseña o cuenta inactiva
     const EXACT_AUTH_ERROR = 'Correo o contraseña incorrectos';
 
@@ -240,7 +276,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       return { success: false, message: EXACT_AUTH_ERROR };
     }
 
-    const user = usuarios[userIndex];
+    const user = effectiveUsuarios[userIndex];
 
     // Verificar que la cuenta esté activa (INACTIVO o BLOQUEADO devuelven el mismo mensaje exacto)
     if (user.estado !== 'ACTIVO') {
@@ -314,6 +350,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return {
       success: true,
       message: 'Autenticación exitosa con token JWT.',
+      role: updatedUser.rol_nombre,
       token: issuedJwt,
       requiresOtp: true,
       otp: generatedOtp,
