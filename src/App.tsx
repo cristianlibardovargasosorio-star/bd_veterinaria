@@ -7,9 +7,8 @@ import { SkeletonKPI, SkeletonCard, SkeletonTable } from './components/common/Sk
 import {
   ProtectedRoutePath,
   getDefaultTabForRole,
-  isRouteAllowedForRole,
   isTabAllowedForRole,
-  routeToTab,
+  resolvePostLoginDestination,
   sanitizeRedirectTo,
 } from './utils/rbac';
 
@@ -75,10 +74,10 @@ export default function App() {
 }
 
 function AppShell() {
-  const { currentRole, jwtToken, logout } = useStore();
+  const { currentRole, currentUser, jwtToken, logout } = useStore();
   // Navigation mode: Landing Page first, with dedicated /login and seamless access to ERP
   const [appMode, setAppMode] = useState<'landing' | 'erp' | 'login'>('landing');
-  const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() => getDefaultTabForRole(currentRole));
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
   const [accessNotice, setAccessNotice] = useState<string | null>(null);
   const [showTraceability, setShowTraceability] = useState(false);
@@ -94,6 +93,7 @@ function AppShell() {
 
   const navigateToLoginWithRedirect = (targetRoute: ProtectedRoutePath) => {
     const encoded = encodeURIComponent(targetRoute);
+    setAccessNotice(null);
     setRedirectTo(targetRoute);
     setAppMode('login');
     window.history.replaceState(null, '', `/login?redirectTo=${encoded}#login`);
@@ -105,15 +105,9 @@ function AppShell() {
       return;
     }
 
-    if (isRouteAllowedForRole(currentRole, route)) {
-      setAccessNotice(null);
-      setActiveTab(routeToTab(route));
-    } else {
-      setAccessNotice(
-        `Acceso restringido: tu rol (${currentRole}) no tiene permiso para ingresar a ${route}.`
-      );
-      setActiveTab(getDefaultTabForRole(currentRole));
-    }
+    const destination = resolvePostLoginDestination(currentRole, route);
+    setAccessNotice(destination.accessDeniedNotice);
+    setActiveTab(destination.targetTab);
     setAppMode('erp');
     window.location.hash = '#erp';
   };
@@ -145,6 +139,7 @@ function AppShell() {
         if (!jwtToken) {
           navigateToLoginWithRedirect('/erp');
         } else {
+          setActiveTab((tab) => isTabAllowedForRole(currentRole, tab) ? tab : getDefaultTabForRole(currentRole));
           setAppMode('erp');
         }
       }
@@ -164,10 +159,6 @@ function AppShell() {
     }
   }, [appMode, activeTab, currentRole]);
 
-  const handleEnterERP = () => {
-    handleProtectedAction('/erp');
-  };
-
   const handleOpenLogin = () => {
     setRedirectTo(null);
     setAccessNotice(null);
@@ -178,6 +169,14 @@ function AppShell() {
   const handleLogout = () => {
     logout();
     handleOpenLogin();
+  };
+
+  const handleOwnerAccountChanged = () => {
+    setAccessNotice(null);
+    setSelectedPetForCard(null);
+    setSelectedCitaForConsulta(null);
+    setSelectedConsultaForAI(null);
+    setActiveTab('pacientes');
   };
 
   const handleLoginSuccess = (_role: UserRole, targetTab: ActiveTab, notice?: string | null) => {
@@ -229,9 +228,8 @@ function AppShell() {
       ) : appMode === 'landing' ? (
         <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-[#475569]">Cargando VetSoft...</div>}>
           <LandingPage
-            onEnterERP={handleEnterERP}
             onOpenLogin={handleOpenLogin}
-            onProtectedAction={handleProtectedAction}
+            onOpenLoginFor={navigateToLoginWithRedirect}
           />
         </Suspense>
       ) : (
@@ -250,10 +248,10 @@ function AppShell() {
           {/* App Body */}
           <div className="flex-1 flex flex-col md:flex-row max-w-[1360px] w-full mx-auto">
             {/* Left Sidebar */}
-            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            <Sidebar key={currentUser.id_usuario} activeTab={activeTab} setActiveTab={setActiveTab} onOwnerAccountChanged={handleOwnerAccountChanged} />
 
             {/* Main View Area */}
-            <main className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+            <main key={currentUser.id_usuario} className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 overflow-y-auto">
               {accessNotice && (
                 <div
                   role="alert"

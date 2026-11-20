@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
-import { GoogleGenAI, Type } from '@google/genai';
+import { GoogleGenAI, Type, type Content } from '@google/genai';
 
 dotenv.config();
 
@@ -73,8 +73,8 @@ const setCached = (key: string, data: any, ttlSecs = 60) => {
 
 // Initialize GoogleGenAI
 const getAIClient = () => {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  if (!apiKey || apiKey === 'REEMPLAZAR_API_KEY_GEMINI') {
     return null;
   }
   return new GoogleGenAI({
@@ -249,60 +249,6 @@ Produce un objeto JSON con:
 });
 
 // Asistente Clínico Veterinario Interactivo - Streaming Token a Token (SSE / Chunked)
-app.post('/api/ai/asistente-clinico/stream', async (req: Request, res: Response) => {
-  const { pregunta, contexto_paciente } = req.body;
-  const cacheKey = `ai_stream_${pregunta}_${contexto_paciente?.especie}`;
-  const cached = getCached(cacheKey);
-
-  res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  res.setHeader('Transfer-Encoding', 'chunked');
-  res.setHeader('Cache-Control', 'no-cache');
-
-  if (cached) {
-    res.write(cached);
-    res.end();
-    return;
-  }
-
-  const ai = getAIClient();
-
-  if (!ai) {
-    const fallbackText = `Orientación Veterinaria Especializada para "${pregunta}": Para ${contexto_paciente?.mascota || 'la mascota'} (${contexto_paciente?.especie || 'Canino'}, ${contexto_paciente?.peso_kg || 10}kg), la recomendación principal es evaluar signos de alarma: fiebre mayor a 39.2°C, deshidratación de mucosas o vómitos persistentes por más de 12 horas. Nuestro servicio de urgencias 24/7 está a disposición (+57 300 912 3456).`;
-    const words = fallbackText.split(' ');
-    
-    for (let i = 0; i < words.length; i++) {
-      res.write((i === 0 ? '' : ' ') + words[i]);
-      await new Promise((r) => setTimeout(r, 25));
-    }
-    setCached(cacheKey, fallbackText, 120);
-    res.end();
-    return;
-  }
-
-  try {
-    const responseStream = await ai.models.generateContentStream({
-      model: 'gemini-3.8-flash',
-      contents: `Pregunta médica: ${pregunta}\nContexto: ${JSON.stringify(contexto_paciente || {})}`,
-      config: {
-        systemInstruction:
-          'Eres un médico veterinario experto en VETSOFT. Brinda orientación clínica concisa, precisa, con rangos de dosis y precauciones.',
-      },
-    });
-
-    let fullAnswer = '';
-    for await (const chunk of responseStream) {
-      const text = chunk.text || '';
-      fullAnswer += text;
-      res.write(text);
-    }
-    setCached(cacheKey, fullAnswer, 120);
-    res.end();
-  } catch (err: any) {
-    res.write(`Error en procesamiento de streaming: ${err.message || 'Fallo temporal'}`);
-    res.end();
-  }
-});
-
 // Endpoint paginado con proyección de columnas (Anti N+1 y reducción de carga)
 app.get('/api/pacientes', (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string, 10) || 1;
@@ -345,36 +291,68 @@ app.get('/api/pacientes', (req: Request, res: Response) => {
   return res.json(responseData);
 });
 
-// Asistente Clínico Veterinario Interactivo (Cálculo de dosis, interacciones farmacológicas, triaje)
-app.post('/api/ai/asistente-clinico', async (req: Request, res: Response) => {
-  try {
-    const { pregunta, contexto_paciente } = req.body;
-    const ai = getAIClient();
+const instruccionAsistenteClinico =
+  'Eres un asistente de referencia para profesionales veterinarios. Responde específicamente a la pregunta en español. ' +
+  'Explica los fundamentos, distingue evidencia de incertidumbre y sugiere referencias comprobables si las conoces. ' +
+  'No inventes citas, enlaces ni resultados de búsquedas. Si faltan datos, pide aclaraciones. ' +
+  'Evita prescribir o calcular dosis para un paciente concreto y remite al protocolo, ficha técnica y criterio clínico para decisiones de tratamiento.';
 
-    if (!ai) {
-      return res.json({
-        success: true,
-        respuesta: `Asistente VETSOFT Clínico: Basado en el paciente (${contexto_paciente?.especie || 'Canino'}, ${contexto_paciente?.peso_kg || 10} kg), asegúrate de calcular la dosis en mg/kg según la literatura veterinaria y verificar la función renal y hepática antes de administrar fármacos combinados.`,
-      });
+async function responderConsultaVeterinaria(req: Request, res: Response, streaming = false) {
+  const { pregunta, especie, historial } = req.body ?? {};
+  if (typeof pregunta !== 'string' || !pregunta.trim() || pregunta.length > 2000) {
+    return res.status(400).json({ error: 'Escribe una pregunta de hasta 2.000 caracteres.' });
+  }
+
+  const ai = getAIClient();
+  if (!ai) {
+    return res.status(503).json({ error: 'El asistente requiere una clave de Gemini configurada en el servidor.' });
+  }
+
+  const contents: Content[] = [];
+  if (Array.isArray(historial)) {
+    for (const mensaje of historial.slice(-8)) {
+      if ((mensaje?.role === 'user' || mensaje?.role === 'model') && typeof mensaje.text === 'string' && mensaje.text.trim()) {
+        contents.push({ role: mensaje.role, parts: [{ text: mensaje.text.slice(0, 4000) }] });
+      }
+    }
+  }
+  const especieReferencia = typeof especie === 'string' ? especie.trim().slice(0, 60) : '';
+  contents.push({
+    role: 'user',
+    parts: [{ text: especieReferencia ? `Especie de referencia: ${especieReferencia}\n\n${pregunta.trim()}` : pregunta.trim() }],
+  });
+
+  const request = {
+    model: process.env.GEMINI_CLINICAL_MODEL?.trim() || 'gemini-3.8-flash',
+    contents,
+    config: { systemInstruction: instruccionAsistenteClinico },
+  };
+
+  try {
+    if (streaming) {
+      const chunks = await ai.models.generateContentStream(request);
+      res.type('text/plain').set('Cache-Control', 'no-store');
+      for await (const chunk of chunks) {
+        if (chunk.text) res.write(chunk.text);
+      }
+      if (!res.headersSent) return res.status(502).end('El modelo no devolvió una respuesta.');
+      return res.end();
     }
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
-      contents: `Pregunta médica: ${pregunta}\nContexto del paciente: ${JSON.stringify(contexto_paciente || {})}`,
-      config: {
-        systemInstruction:
-          'Eres un especialista en farmacología y medicina interna veterinaria para el sistema VETSOFT. Brinda orientación clínica concisa, precisa, con rangos de dosis habituales (mg/kg), precauciones por especie (especialmente felinos vs caninos) y advertencias de interacciones.',
-      },
-    });
-
-    return res.json({
-      success: true,
-      respuesta: response.text || 'Sin respuesta generada.',
-    });
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message || 'Error en asistente clínico' });
+    const response = await ai.models.generateContent(request);
+    const respuesta = response.text?.trim();
+    if (!respuesta) return res.status(502).json({ error: 'El modelo no devolvió una respuesta. Prueba a reformular la pregunta.' });
+    return res.json({ success: true, respuesta });
+  } catch (error) {
+    if (res.headersSent) return res.destroy();
+    const status = typeof error === 'object' && error !== null && 'status' in error ? error.status : undefined;
+    if (status === 429) return res.status(429).json({ error: 'El servicio alcanzó su límite de solicitudes. Intenta más tarde.' });
+    return res.status(502).json({ error: 'No se pudo consultar Gemini. Revisa la clave y el modelo configurados en el servidor.' });
   }
-});
+}
+
+app.post('/api/ai/asistente-clinico', (req, res) => responderConsultaVeterinaria(req, res));
+app.post('/api/ai/asistente-clinico/stream', (req, res) => responderConsultaVeterinaria(req, res, true));
 
 // Setup Vite in Dev or Static in Production
 async function startServer() {

@@ -6,6 +6,9 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
+    optimizeDeps: {
+      include: ['jspdf'],
+    },
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, '.'),
@@ -32,6 +35,9 @@ export default defineConfig(() => {
               }
               if (id.includes('canvas-confetti')) {
                 return 'vendor-confetti';
+              }
+              if (/node_modules\/(jspdf|fflate|fast-png|canvg|html2canvas|dompurify|core-js)\//.test(id)) {
+                return 'vendor-pdf';
               }
               if (id.includes('@google/genai')) {
                 return 'vendor-genai';

@@ -6,7 +6,7 @@
 
 export type UserRole = 'ADMINISTRADOR' | 'VETERINARIO' | 'RECEPCIONISTA' | 'PROPIETARIO';
 
-export type UserState = 'ACTIVO' | 'INACTIVO' | 'BLOQUEADO';
+export type UserState = 'ACTIVO' | 'INACTIVO' | 'BLOQUEADO' | 'ELIMINADO';
 
 export interface Usuario {
   id_usuario: number;
@@ -123,6 +123,7 @@ export type TipoReporteIA = 'EPIDEMIOLOGICO' | 'FINANCIERO' | 'OPERATIVO' | 'GEN
 
 export interface ReporteEjecutivoIA {
   id_reporte: number;
+  titulo?: string;
   periodo_inicio: string;
   periodo_fin: string;
   tipo_reporte: TipoReporteIA;

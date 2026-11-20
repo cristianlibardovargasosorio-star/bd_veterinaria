@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useStore } from '../../db/store';
-import { FichaIA } from '../../types';
+import { DiagnosticoDocumento } from './DiagnosticoDocumento';
 import confetti from 'canvas-confetti';
 import {
   Sparkles,
@@ -10,6 +10,7 @@ import {
   FileText,
   Copy,
   Printer,
+  Download,
   ShieldCheck,
   RotateCw,
   AlertCircle,
@@ -31,26 +32,32 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
     guardarFichaIA,
     toggleAprobacionFichaIA,
     currentRole,
+    currentUser,
   } = useStore();
 
-  const [selectedConsultaId, setSelectedConsultaId] = useState<number>(() => {
-    if (initialConsultaId) return initialConsultaId;
-    return consultas[0]?.id_consulta || 105;
-  });
+  const isOwner = currentRole === 'PROPIETARIO';
+  const owner = propietarios.find((record) => record.id_usuario === currentUser.id_usuario);
+  const visibleConsultas = isOwner
+    ? consultas.filter((consulta) => owner && mascotas.some((pet) =>
+        pet.id_mascota === consulta.id_mascota && pet.id_propietario === owner.id_propietario
+      ))
+    : consultas;
+  const [selectedConsultaId, setSelectedConsultaId] = useState(initialConsultaId);
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [downloadPreview, setDownloadPreview] = useState<{ content: string; filename: string } | null>(null);
+  const downloadDialogRef = useRef<HTMLDialogElement>(null);
 
   // Active consultation
-  const activeConsulta = consultas.find((c) => c.id_consulta === selectedConsultaId) || consultas[0];
+  const activeConsulta = visibleConsultas.find((c) => c.id_consulta === selectedConsultaId) || visibleConsultas[0];
   const activePet = activeConsulta ? mascotas.find((m) => m.id_mascota === activeConsulta.id_mascota) : null;
   const activeVet = activeConsulta ? veterinarios.find((v) => v.id_veterinario === activeConsulta.id_veterinario) : null;
-  const activeOwner = activePet ? propietarios.find((p) => p.id_propietario === activePet.id_propietario) : null;
-  const existingFicha = fichasIA.find((f) => f.id_consulta === selectedConsultaId);
+  const existingFicha = isOwner ? undefined : fichasIA.find((f) => f.id_consulta === activeConsulta?.id_consulta);
 
   const handleGenerateAI = async () => {
-    if (!activeConsulta || !activePet) return;
+    if (isOwner || !activeConsulta || !activePet) return;
     setLoading(true);
     setErrorMsg(null);
 
@@ -97,8 +104,8 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
       } else {
         setErrorMsg('No se pudo generar la ficha médica.');
       }
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Error conectando con el motor Gemini.');
+    } catch {
+      setErrorMsg('No se pudo conectar con el servicio de fichas médicas.');
     } finally {
       setLoading(false);
     }
@@ -114,62 +121,160 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
     window.print();
   };
 
+  const handlePreviewDownload = () => {
+    if (!activeConsulta || !activePet) return;
+    const fecha = new Date(activeConsulta.fecha_consulta).toLocaleString('es-CO');
+    const lines = [
+      'VetSoft · Ficha médica clínica',
+      `Mascota: ${activePet.nombre}`,
+      `Fecha de consulta: ${fecha}`,
+      '',
+      'Diagnóstico',
+      activeConsulta.diagnostico,
+    ];
+    if (existingFicha) {
+      lines.push(
+        '', 'Expediente', activePet.codigo_expediente,
+        '', 'Tratamiento prescrito', activeConsulta.tratamiento_recetado,
+        '', 'Resumen para el propietario', existingFicha.resumen_propietario,
+        '', 'Síntesis técnica médica', existingFicha.sintesis_tecnica,
+      );
+    }
+    setDownloadPreview({
+      content: lines.join('\n'),
+      filename: `ficha-medica-${activeConsulta.id_consulta}.txt`,
+    });
+    downloadDialogRef.current?.showModal();
+  };
+
+  const handleDownload = () => {
+    if (!downloadPreview) return;
+    const url = URL.createObjectURL(new Blob([downloadPreview.content], { type: 'text/plain;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = downloadPreview.filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    downloadDialogRef.current?.close();
+  };
+
+  const previewDialog = (
+    <dialog
+      ref={downloadDialogRef}
+      aria-labelledby="ficha-download-title"
+      onClose={() => setDownloadPreview(null)}
+      className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-xl rounded-[20px] border border-vet-border bg-vet-surface text-vet-navy shadow-xl backdrop:bg-vet-navy/40"
+    >
+      <div className="flex max-h-[85dvh] flex-col">
+        <header className="border-b border-vet-border px-5 py-4">
+          <h3 id="ficha-download-title" className="font-bold">
+            Vista previa de la ficha
+          </h3>
+        </header>
+        <div className="overflow-auto whitespace-pre-wrap break-words px-5 py-4 text-sm leading-relaxed">
+          {downloadPreview?.content}
+        </div>
+        <form method="dialog" className="flex justify-end gap-3 border-t border-vet-border px-5 py-4">
+          <button type="submit" className="rounded-lg border border-vet-border px-4 py-2 text-sm">Cerrar</button>
+          <button
+            type="button"
+            onClick={handleDownload}
+            className="rounded-lg bg-vet-emerald px-4 py-2 text-sm font-semibold text-white hover:bg-vet-emerald-hover"
+          >
+            Descargar
+          </button>
+        </form>
+      </div>
+    </dialog>
+  );
+
+  const consultationSelector = (
+    <label className="p-4 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3 print:hidden">
+      <span className="flex items-center gap-2 text-xs font-bold text-vet-muted">
+        <Stethoscope className="w-4 h-4 text-vet-navy" aria-hidden="true" />
+        Selecciona una consulta
+      </span>
+      <select
+        value={activeConsulta?.id_consulta ?? ''}
+        onChange={(e) => setSelectedConsultaId(Number(e.target.value))}
+        className="w-full md:w-96 text-xs p-2 rounded-xl border border-vet-border bg-vet-surface font-medium"
+      >
+        {visibleConsultas.map((consulta) => {
+          const pet = mascotas.find((m) => m.id_mascota === consulta.id_mascota);
+          const details = isOwner
+            ? new Date(consulta.fecha_consulta).toLocaleDateString('es-CO')
+            : fichasIA.some((f) => f.id_consulta === consulta.id_consulta) ? 'Ficha lista' : 'Pendiente';
+          return (
+            <option key={consulta.id_consulta} value={consulta.id_consulta}>
+              {pet?.nombre ?? 'Mascota'} · Consulta #{consulta.id_consulta} · {details}
+            </option>
+          );
+        })}
+      </select>
+    </label>
+  );
+
+  if (isOwner) {
+    return (
+      <div className="space-y-6">
+        <h2 className="text-xl font-black text-vet-navy tracking-tight">Fichas Médicas Clínicas</h2>
+        {activeConsulta && activePet ? (
+          <>
+            {consultationSelector}
+            {activeConsulta.diagnostico?.trim() ? (
+              <DiagnosticoDocumento
+                key={activeConsulta.id_consulta}
+                consultaId={activeConsulta.id_consulta}
+                mascota={activePet.nombre}
+                fecha={new Date(activeConsulta.fecha_consulta).toLocaleString('es-CO')}
+                diagnostico={activeConsulta.diagnostico}
+              />
+            ) : (
+              <p className="text-sm text-vet-muted">Aún no hay un diagnóstico registrado para esta consulta.</p>
+            )}
+          </>
+        ) : (
+          <p className="text-sm text-vet-muted">Aún no hay consultas registradas para tus mascotas.</p>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {previewDialog}
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-vet-navy" />
-            <span>Fichas Médicas Clínicas con IA (RF10)</span>
+            <span>Fichas Médicas Clínicas</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
-            Generación dual con Gemini 3.8 Flash: Explicación empática para el tutor y síntesis técnica para el expediente.
+            Consulta el resumen de la atención de tu mascota y las indicaciones para su cuidado.
           </p>
         </div>
 
         <button
           onClick={handleGenerateAI}
           disabled={loading || !activeConsulta}
-          className="px-5 py-2.5 rounded-xl bg-linear-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs font-bold flex items-center gap-2 shadow-md  disabled:opacity-50 transition-all self-start sm:self-auto cursor-pointer"
+          className="px-5 py-2.5 rounded-xl bg-linear-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white text-xs font-bold flex items-center gap-2 shadow-md disabled:opacity-50 transition-all self-start sm:self-auto cursor-pointer print:hidden"
         >
           {loading ? (
             <>
               <RotateCw className="w-4 h-4 animate-spin" />
-              <span>Procesando con Gemini 3.8...</span>
+              <span>Preparando ficha...</span>
             </>
           ) : (
             <>
               <Sparkles className="w-4 h-4" />
-              <span>{existingFicha ? 'Regenerar con IA' : 'Generar Ficha con Gemini'}</span>
+              <span>{existingFicha ? 'Regenerar ficha' : 'Generar ficha'}</span>
             </>
           )}
         </button>
       </div>
 
-      {/* Select Consultation */}
-      <div className="p-4 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <Stethoscope className="w-4 h-4 text-vet-navy" />
-          <span className="text-xs font-bold text-vet-muted">Consulta Clínica Seleccionada:</span>
-        </div>
-
-        <select
-          value={selectedConsultaId}
-          onChange={(e) => setSelectedConsultaId(Number(e.target.value))}
-          className="w-full md:w-96 text-xs p-2 rounded-xl border border-vet-border bg-vet-surface font-medium"
-        >
-          {consultas.map((c) => {
-            const pet = mascotas.find((m) => m.id_mascota === c.id_mascota);
-            const hasFicha = fichasIA.some((f) => f.id_consulta === c.id_consulta);
-            return (
-              <option key={c.id_consulta} value={c.id_consulta}>
-                Consulta #{c.id_consulta} - {pet?.nombre} ({pet?.especie}) - {hasFicha ? '★ Ficha Lista' : '○ Pendiente'}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+      {visibleConsultas.length > 0 && consultationSelector}
 
       {errorMsg && (
         <div className="p-3 bg-red-50 text-red-800 border border-red-200 rounded-xl text-xs font-semibold flex items-center gap-2">
@@ -240,7 +345,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2 print:hidden">
                 <button
                   onClick={() => handleCopy(existingFicha.resumen_propietario)}
                   className="px-3 py-1.5 rounded-lg border border-vet-border hover:bg-vet-surface text-vet-muted text-xs font-semibold flex items-center gap-1.5 transition-colors"
@@ -254,7 +359,17 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                   className="px-3 py-1.5 rounded-lg bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-semibold flex items-center gap-1.5 transition-colors"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Imprimir para el Cliente</span>
+                  <span>Imprimir ficha</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handlePreviewDownload}
+                  aria-haspopup="dialog"
+                  className="px-3 py-1.5 rounded-lg border border-vet-border hover:bg-vet-ice text-vet-navy text-xs font-semibold flex items-center gap-1.5"
+                >
+                  <Download className="w-3.5 h-3.5" aria-hidden="true" />
+                  <span>Descargar ficha</span>
                 </button>
               </div>
             </div>
@@ -287,9 +402,6 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
                   <Clock className="w-3.5 h-3.5 text-vet-muted" />
                   <span>{new Date(existingFicha.fecha_generacion).toLocaleString()}</span>
                 </div>
-                <span className="font-mono text-[10px] text-vet-navy bg-vet-ice text-vet-navy px-2 py-0.5 rounded">
-                  {existingFicha.modelo_utilizado}
-                </span>
               </div>
             </div>
           </div>
@@ -330,23 +442,21 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
               </div>
             </div>
 
-            {currentRole !== 'PROPIETARIO' && (
-              <button
-                onClick={() => {
-                  toggleAprobacionFichaIA(existingFicha.id_ficha);
-                  confetti({ particleCount: 30, spread: 50 });
-                }}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs ${
-                  existingFicha.aprobado_por_veterinario
-                    ? 'bg-vet-ice hover:bg-vet-ice text-vet-muted border border-vet-border'
-                    : 'bg-vet-emerald hover:bg-vet-emerald-hover text-white '
-                }`}
-              >
-                {existingFicha.aprobado_por_veterinario
-                  ? 'Revocar Aprobación'
-                  : 'Firmar y Aprobar Ficha Oficial'}
-              </button>
-            )}
+            <button
+              onClick={() => {
+                toggleAprobacionFichaIA(existingFicha.id_ficha);
+                confetti({ particleCount: 30, spread: 50 });
+              }}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-xs print:hidden ${
+                existingFicha.aprobado_por_veterinario
+                  ? 'bg-vet-ice hover:bg-vet-ice text-vet-muted border border-vet-border'
+                  : 'bg-vet-emerald hover:bg-vet-emerald-hover text-white '
+              }`}
+            >
+              {existingFicha.aprobado_por_veterinario
+                ? 'Revocar Aprobación'
+                : 'Firmar y Aprobar Ficha Oficial'}
+            </button>
           </div>
         </div>
       ) : (
@@ -360,8 +470,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
               Esta consulta aún no cuenta con Ficha Médica generada
             </h3>
             <p className="text-xs text-vet-muted max-w-md mx-auto mt-1">
-              Haz clic en "Generar Ficha con Gemini" para obtener la explicación comprensible para el dueño de{' '}
-              <strong>{activePet?.nombre || 'la mascota'}</strong> y la síntesis técnica interna.
+              Genera la ficha de <strong>{activePet?.nombre || 'la mascota'}</strong> para obtener el resumen para el tutor y la síntesis clínica.
             </p>
           </div>
           <button
@@ -370,7 +479,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
             className="px-5 py-2.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-md "
           >
             <Sparkles className="w-4 h-4" />
-            <span>Generar Ahora con Gemini 3.8 Flash</span>
+            <span>Generar ficha</span>
           </button>
         </div>
       )}

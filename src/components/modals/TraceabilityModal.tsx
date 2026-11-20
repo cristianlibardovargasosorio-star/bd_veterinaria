@@ -76,7 +76,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
     },
     {
       id: 'RF10',
-      titulo: 'IA Fichas Médicas (Gemini 3.8 Flash)',
+      titulo: 'Fichas Médicas',
       tabla: 'fichas_ia',
       regla: 'Generación dual: Resumen empático para propietario + Síntesis técnica médica con aprobación de veterinario.',
       status: 'Implementado & Operativo',
@@ -92,7 +92,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
     },
     {
       id: 'FACT-01',
-      titulo: 'Facturación POS Controlada (Script 02)',
+      titulo: 'Facturación POS Controlada',
       tabla: 'facturas, detalle_factura, movimientos_inventario',
       regla: 'Procedimientos almacenados sp_crear_factura, sp_agregar_detalle y sp_confirmar_factura con deducción atómica de lote.',
       status: 'Implementado & Operativo',
@@ -190,7 +190,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
               <FileCheck2 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-base">Matriz de Trazabilidad y Cumplimiento SRS (VETSOFT)</h3>
+              <h3 className="font-bold text-base">Matriz de Trazabilidad y Cumplimiento SRS</h3>
               <p className="text-xs text-vet-muted">
                 Mapeo 1:1 de Requisitos Funcionales, Historias de Usuario y RNF
               </p>
@@ -215,7 +215,7 @@ export const TraceabilityModal: React.FC<TraceabilityModalProps> = ({
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            Requisitos Funcionales (RF01 - RF11)
+            Requisitos Funcionales
           </button>
           <button
             onClick={() => setActiveSection('hu')}

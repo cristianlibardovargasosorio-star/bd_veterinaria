@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useStore } from '../../db/store';
 import { registrarUsuarioInternoApi } from '../../services/usuarioApiService';
 import {
@@ -32,7 +32,7 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 export const AdminUsuariosView: React.FC = () => {
-  const { usuarios, currentRole, registerInternalUser } = useStore();
+  const { usuarios, currentRole, currentUser, registerInternalUser, updateInternalUserAccess } = useStore();
 
   const [nombreCompleto, setNombreCompleto] = useState('');
   const [correo, setCorreo] = useState('');
@@ -49,11 +49,23 @@ export const AdminUsuariosView: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pendingAccess, setPendingAccess] = useState<{ id: number; action: 'suspender' | 'eliminar' } | null>(null);
+  const [accessFeedback, setAccessFeedback] = useState<{ success: boolean; message: string } | null>(null);
+  const accessDialog = useRef<HTMLDialogElement>(null);
   const pageSize = 6;
 
-  const internalUsers = usuarios.filter((u) => u.rol_nombre !== 'PROPIETARIO');
+  const internalUsers = usuarios.filter((u) => u.rol_nombre !== 'PROPIETARIO' && u.estado !== 'ELIMINADO');
+  const pendingUser = internalUsers.find((user) => user.id_usuario === pendingAccess?.id);
+  const eliminating = pendingAccess?.action === 'eliminar';
   const totalPages = Math.max(1, Math.ceil(internalUsers.length / pageSize));
-  const paginatedUsers = internalUsers.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const visiblePage = Math.min(currentPage, totalPages);
+  const paginatedUsers = internalUsers.slice((visiblePage - 1) * pageSize, visiblePage * pageSize);
+
+  const confirmAccessChange = (id: number, action: 'suspender' | 'eliminar') => {
+    setAccessFeedback(null);
+    setPendingAccess({ id, action });
+    accessDialog.current?.showModal();
+  };
 
   const validateBeforeSubmit = () => {
     const errors: { nombreCompleto?: string; correo?: string; contrasena?: string } = {};
@@ -153,7 +165,7 @@ export const AdminUsuariosView: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs text-vet-muted mb-1">
             <span className="px-2.5 py-0.5 rounded-full bg-vet-ice text-vet-navy font-semibold border border-vet-border">
-              VET-RF-01
+              Administración
             </span>
             <span className="font-mono">/admin/usuarios</span>
           </div>
@@ -171,9 +183,9 @@ export const AdminUsuariosView: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
         {/* Formulario de Registro */}
-        <div className="lg:col-span-5 bg-vet-surface rounded-[24px] border border-vet-border p-6 shadow-xs">
+        <div className="min-w-0 bg-vet-surface rounded-[24px] border border-vet-border p-6 shadow-xs xl:col-span-4">
           <div className="flex items-center gap-2 mb-5">
             <div className="w-9 h-9 rounded-xl bg-vet-ice border border-vet-border text-vet-emerald flex items-center justify-center">
               <UserPlus className="w-4 h-4" />
@@ -318,43 +330,76 @@ export const AdminUsuariosView: React.FC = () => {
         </div>
 
         {/* Listado de Personal Registrado */}
-        <div className="lg:col-span-7 bg-vet-surface rounded-[24px] border border-vet-border p-6 shadow-xs">
-          <div className="flex items-center justify-between mb-4">
+        <div className="min-w-0 bg-vet-surface rounded-[24px] border border-vet-border p-4 shadow-xs sm:p-6 xl:col-span-8">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-base font-bold text-vet-navy">Personal Interno Registrado</h2>
             <span className="text-xs text-vet-muted">Tabla PostgreSQL: usuarios (UNIQUE correo)</span>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full table-fixed border-collapse text-left text-xs">
+              <colgroup>
+                <col className="w-[31%]" />
+                <col className="w-[18%]" />
+                <col className="w-[19%]" />
+                <col className="w-[32%]" />
+              </colgroup>
               <thead>
                 <tr className="border-b border-vet-border text-vet-muted">
                   <th className="py-2.5 px-3">Nombre / Correo</th>
                   <th className="py-2.5 px-3">Rol</th>
                   <th className="py-2.5 px-3">Estado</th>
-                  <th className="py-2.5 px-3">Cifrado</th>
+                  <th className="py-2.5 px-3">Acceso</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-vet-divider">
                 {paginatedUsers.map((u) => (
                   <tr key={u.id_usuario} className="hover:bg-vet-hover">
                     <td className="py-3 px-3">
-                      <div className="font-semibold text-vet-navy">
+                      <div className="font-semibold text-vet-navy [overflow-wrap:anywhere]">
                         {u.nombre_completo || ROLE_LABELS[u.rol_nombre] || 'Personal VetSoft'}
                       </div>
-                      <div className="text-[11px] text-vet-muted font-mono">{u.correo}</div>
+                      <div className="font-mono text-[11px] text-vet-muted [overflow-wrap:anywhere]">{u.correo}</div>
                     </td>
-                    <td className="py-3 px-3 whitespace-nowrap">
-                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-vet-ice text-vet-navy">
+                    <td className="px-2 py-3">
+                      <span className="inline-block max-w-full rounded-full bg-vet-ice px-2 py-0.5 text-[11px] font-semibold text-vet-navy [overflow-wrap:anywhere]">
                         {ROLE_LABELS[u.rol_nombre] || u.rol_nombre}
                       </span>
                     </td>
-                    <td className="py-3 px-3 whitespace-nowrap">
-                      <span className="inline-flex items-center whitespace-nowrap px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-vet-ice text-vet-emerald-hover border border-vet-emerald/30">
-                        {u.estado}
+                    <td className="px-2 py-3">
+                      <span className={`inline-block max-w-full rounded-full border px-2 py-0.5 text-[11px] font-semibold [overflow-wrap:anywhere] ${u.estado === 'ACTIVO' ? 'bg-vet-ice text-vet-emerald-hover border-vet-emerald/30' : 'bg-vet-ice text-vet-muted border-vet-border'}`}>
+                        {u.estado === 'INACTIVO' ? 'SUSPENDIDO' : u.estado}
                       </span>
                     </td>
-                    <td className="py-3 px-3 font-mono text-[11px] text-vet-muted whitespace-nowrap">
-                      BCrypt ($2a$)
+                    <td className="px-2 py-3 text-[11px] text-vet-muted">
+                      {u.id_usuario === currentUser.id_usuario ? 'Tu cuenta' : u.estado === 'INACTIVO' ? (
+                        <div className="flex flex-wrap items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setAccessFeedback(updateInternalUserAccess(u.id_usuario, 'reactivar'))}
+                            className="rounded-lg border border-vet-emerald/30 px-2.5 py-1.5 font-semibold text-vet-emerald-hover hover:bg-vet-ice"
+                          >
+                            Reactivar
+                          </button>
+                          <button
+                            type="button"
+                            aria-haspopup="dialog"
+                            onClick={() => confirmAccessChange(u.id_usuario, 'eliminar')}
+                            className="rounded-lg border border-vet-danger/30 px-2.5 py-1.5 font-semibold text-vet-danger-ink hover:bg-vet-danger-soft"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          aria-haspopup="dialog"
+                          onClick={() => confirmAccessChange(u.id_usuario, 'suspender')}
+                          className="rounded-lg border border-vet-danger/30 px-2.5 py-1.5 font-semibold text-vet-danger-ink hover:bg-vet-danger-soft"
+                        >
+                          Suspender
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -362,24 +407,63 @@ export const AdminUsuariosView: React.FC = () => {
             </table>
           </div>
 
+          {accessFeedback && (
+            <p role="status" className={`mt-3 text-sm ${accessFeedback.success ? 'text-vet-emerald-hover' : 'text-vet-danger-ink'}`}>
+              {accessFeedback.message}
+            </p>
+          )}
+
+          <dialog
+            ref={accessDialog}
+            aria-labelledby="gestionar-acceso-titulo"
+            onClose={() => setPendingAccess(null)}
+            className="fixed inset-0 m-auto w-[calc(100%-2rem)] max-w-md rounded-[20px] border border-vet-border bg-vet-surface p-[24px] text-vet-navy shadow-xl backdrop:bg-vet-navy/50"
+          >
+            <h3 id="gestionar-acceso-titulo" className="text-base font-bold">{eliminating ? 'Eliminar cuenta' : 'Suspender acceso'}</h3>
+            {pendingUser && (
+              <p className="mt-3 break-words text-sm text-vet-muted">
+                La cuenta <strong>{pendingUser.correo}</strong> {eliminating ? 'se retirará del listado y ya no podrá reactivarse.' : 'quedará suspendida hasta que la reactives o la elimines.'} Sus registros seguirán en el historial.
+              </p>
+            )}
+            <form method="dialog" className="mt-5 flex flex-wrap justify-end gap-2">
+              <button type="submit" className="rounded-lg border border-vet-border px-3 py-2 text-sm">Cancelar</button>
+              <button
+                type="button"
+                disabled={!pendingUser}
+                onClick={() => {
+                  if (!pendingUser || !pendingAccess) return;
+                  const result = updateInternalUserAccess(pendingUser.id_usuario, pendingAccess.action);
+                  setAccessFeedback(result);
+                  if (result.success && eliminating && paginatedUsers.length === 1) {
+                    setCurrentPage(Math.max(1, visiblePage - 1));
+                  }
+                  accessDialog.current?.close();
+                }}
+                className="rounded-lg bg-vet-danger-soft px-3 py-2 text-sm font-semibold text-vet-danger-ink"
+              >
+                {eliminating ? 'Confirmar eliminación' : 'Confirmar suspensión'}
+              </button>
+            </form>
+          </dialog>
+
           {totalPages > 1 && (
             <div className="mt-4 pt-3 border-t border-vet-border flex items-center justify-between text-xs text-vet-muted">
               <span>
-                Página {currentPage} de {totalPages} ({internalUsers.length} registros)
+                Página {visiblePage} de {totalPages} ({internalUsers.length} registros)
               </span>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={visiblePage === 1}
+                  onClick={() => setCurrentPage(visiblePage - 1)}
                   className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-vet-hover cursor-pointer"
                 >
                   Anterior
                 </button>
                 <button
                   type="button"
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={visiblePage === totalPages}
+                  onClick={() => setCurrentPage(visiblePage + 1)}
                   className="px-3 py-1 rounded-full border border-vet-border disabled:opacity-40 hover:bg-vet-hover cursor-pointer"
                 >
                   Siguiente

@@ -41,25 +41,24 @@ import {
 } from 'lucide-react';
 import { ProtectedRoutePath } from '../../utils/rbac';
 
+const landingSections = {
+  servicios: 'Servicios',
+  equipo: 'Especialistas',
+  planes: 'Planes de salud',
+  testimonios: 'Testimonios',
+  faq: 'Preguntas frecuentes',
+  contacto: 'Contacto',
+};
+
 interface LandingPageProps {
-  onEnterERP: () => void;
   onOpenLogin: () => void;
-  onProtectedAction?: (route: ProtectedRoutePath) => void;
+  onOpenLoginFor: (route: ProtectedRoutePath) => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
-  onEnterERP,
   onOpenLogin,
-  onProtectedAction,
+  onOpenLoginFor,
 }) => {
-  const triggerProtected = (route: ProtectedRoutePath, fallback: () => void) => {
-    if (onProtectedAction) {
-      onProtectedAction(route);
-    } else {
-      fallback();
-    }
-  };
-
   const [showSkeletonMode, setShowSkeletonMode] = useState(false);
   const [activeDemoTab, setActiveDemoTab] = useState<'ia' | 'carne' | 'lotes' | 'pos'>('ia');
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -76,24 +75,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   const faqs = [
     {
-      q: '¿Qué servicios atiende la clínica en horario de urgencias 24/7?',
-      a: 'Nuestra unidad de cuidados críticos y urgencias opera ininterrumpidamente las 24 horas del día, los 365 días del año. Atendemos politraumatismos, intoxicaciones, torsión gástrica, dificultades respiratorias, cesáreas de emergencia y soporte intensivo con monitores multiparamétricos.',
+      q: '¿Qué debo llevar a la primera consulta de mi mascota?',
+      a: 'Si tienes su carné de vacunación, resultados de exámenes anteriores o una lista de los medicamentos que toma, llévalos a la consulta. Si has notado algún cambio en su alimentación, comportamiento o actividad, cuéntale al veterinario cuándo empezó.',
     },
     {
-      q: '¿Cómo funciona el Carné Digital de Vacunación con Código QR?',
-      a: 'Cada dosis aplicada en la clínica se asocia a su biológico y lote verificado. El sistema genera un pasaporte digital que los tutores pueden consultar en línea desde cualquier dispositivo y descargar o validar mediante código QR para viajes y requisitos legales.',
+      q: '¿Cómo sé qué vacunas necesita mi perro o gato?',
+      a: 'En consulta, el veterinario revisa la edad de tu mascota, su estilo de vida y su historial de vacunación para recomendar un plan y explicarte cuándo volver para los refuerzos. Si tienes su carné, tráelo a la cita.',
     },
     {
-      q: '¿Qué es la tecnología de Fichas Médicas con IA Gemini 3.8 Flash?',
-      a: 'Al culminar cada consulta, el equipo médico procesa los datos clínicos con Gemini 3.8 Flash para generar un informe comprensible, cálido y educativo para la familia, garantizando que el tutor entienda con total claridad el diagnóstico y el tratamiento de su mascota.',
+      q: '¿Puedo llevar a mi mascota a un chequeo si se ve sana?',
+      a: 'Sí. En un chequeo preventivo, el veterinario puede revisar su peso, su salud dental y su estado general. También puedes consultar sobre alimentación, vacunas y desparasitación.',
     },
     {
-      q: '¿Cómo se agendan las cirugías y qué exámenes prequirúrgicos se requieren?',
-      a: 'Toda cirugía requiere valoración previa con perfil sanguíneo completo (hemograma, química renal y hepática) y valoración cardiorrespiratoria para minimizar cualquier riesgo anestésico.',
+      q: '¿Cómo puedo programar la esterilización de mi mascota?',
+      a: 'Agenda una consulta de valoración. El veterinario revisará el estado de salud de tu mascota y te explicará qué exámenes necesita, cómo prepararla y qué cuidados tendrá después de la cirugía.',
     },
     {
-      q: '¿Tienen servicio de peluquería, spa y medicina preventiva?',
-      a: 'Sí, disponemos de servicio de peluquería canina y felina estética y medicada, baño dermatológico con ozonoterapia, limpieza de oídos y corte de uñas, todo bajo supervisión médico-veterinaria.',
+      q: '¿La clínica atiende urgencias veterinarias de noche?',
+      a: 'Sí. La clínica atiende urgencias veterinarias las 24 horas, todos los días. En la sección Contacto puedes encontrar la línea directa de urgencias.',
     },
   ];
 
@@ -202,30 +201,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-[14px] font-normal text-vet-navy">
-            <a href="#servicios" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
-              Servicios
-            </a>
-            <button
-              type="button"
-              onClick={() => triggerProtected('/citas', onOpenLogin)}
-              className="whitespace-nowrap hover:text-vet-muted transition-colors py-1 cursor-pointer"
-            >
-              Agendar cita
-            </button>
-            <button
-              type="button"
-              onClick={() => triggerProtected('/carne-vacunacion', onOpenLogin)}
-              className="whitespace-nowrap hover:text-vet-muted transition-colors py-1 cursor-pointer"
-            >
-              Carné digital
-            </button>
-            <a href="#equipo" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
-              Especialistas
-            </a>
-            <a href="#planes" className="whitespace-nowrap hover:text-vet-muted transition-colors py-1">
-              Planes
-            </a>
+          <nav aria-label="Secciones de la página" className="hidden xl:flex shrink-0 items-center divide-x divide-vet-border text-[14px] font-medium text-vet-navy">
+            {Object.entries(landingSections).map(([id, label]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                aria-label={label}
+                className="whitespace-nowrap px-3.5 py-2 hover:bg-vet-ice transition-colors"
+              >
+                {id === 'planes' ? 'Planes' : id === 'faq' ? 'Preguntas' : label}
+              </a>
+            ))}
           </nav>
 
           {/* Primary Action Buttons: Compact Proportional Pill Controls */}
@@ -233,14 +219,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               onClick={onOpenLogin}
               className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal text-vet-navy bg-transparent hover:bg-vet-ice border border-vet-navy transition-colors cursor-pointer whitespace-nowrap"
-              title="Ir al Módulo 1: Login de Usuarios (/login)"
+              title="Iniciar sesión en VetSoft"
             >
               Iniciar sesión
             </button>
 
             <button
               type="button"
-              onClick={() => triggerProtected('/citas', onOpenLogin)}
+              onClick={() => onOpenLoginFor('/citas')}
               className="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full text-[13px] font-normal bg-vet-emerald hover:bg-vet-emerald-hover text-white transition-opacity cursor-pointer whitespace-nowrap"
             >
               Reservar cita
@@ -248,7 +234,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <button
               type="button"
-              onClick={() => triggerProtected('/erp', onEnterERP)}
+              onClick={() => onOpenLoginFor('/erp')}
               className="inline-flex items-center justify-center h-9 px-3.5 rounded-full text-[13px] font-normal bg-vet-ice hover:bg-[#e5e5e7] text-vet-navy transition-colors gap-1 cursor-pointer whitespace-nowrap"
               title="Abrir el software integral de gestión clínica"
             >
@@ -259,7 +245,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-full text-vet-navy hover:bg-vet-ice transition-colors cursor-pointer"
+              className="xl:hidden inline-flex items-center justify-center w-9 h-9 rounded-full text-vet-navy hover:bg-vet-ice transition-colors cursor-pointer"
               aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
               aria-expanded={mobileMenuOpen}
             >
@@ -270,49 +256,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
         {/* Mobile / Tablet Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden px-4 pb-5 pt-2 bg-vet-surface border-t border-vet-border">
-            <nav className="flex flex-col space-y-1 text-[15px] text-vet-navy">
-              <a
-                href="#servicios"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
-              >
-                Servicios
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  triggerProtected('/citas', onOpenLogin);
-                }}
-                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors text-left cursor-pointer"
-              >
-                Agendar cita
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  triggerProtected('/carne-vacunacion', onOpenLogin);
-                }}
-                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors text-left cursor-pointer"
-              >
-                Carné digital
-              </button>
-              <a
-                href="#equipo"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
-              >
-                Especialistas
-              </a>
-              <a
-                href="#planes"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
-              >
-                Planes
-              </a>
+          <div className="xl:hidden absolute inset-x-0 top-full max-h-[calc(100dvh-73px)] overflow-y-auto px-4 pb-5 pt-2 bg-vet-surface border-y border-vet-border">
+            <nav aria-label="Secciones de la página" className="flex flex-col space-y-1 text-[15px] text-vet-navy">
+              {Object.entries(landingSections).map(([id, label]) => (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
+                >
+                  {label}
+                </a>
+              ))}
             </nav>
 
             <div className="mt-4 pt-3 border-t border-vet-border flex flex-col sm:hidden gap-2">
@@ -329,7 +284,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  triggerProtected('/citas', onOpenLogin);
+                  onOpenLoginFor('/citas');
                 }}
                 className="w-full py-2.5 px-5 rounded-full text-sm bg-vet-emerald text-white text-center cursor-pointer"
               >
@@ -362,7 +317,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => triggerProtected('/citas', onOpenLogin)}
+                  onClick={() => onOpenLoginFor('/citas')}
                   className="px-6 py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white font-normal text-[16px] rounded-full flex items-center gap-2 transition-opacity cursor-pointer"
                 >
                   <span>Agendar cita en línea</span>
@@ -371,14 +326,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   onClick={onOpenLogin}
                   className="px-6 py-3 bg-transparent hover:bg-vet-ice text-vet-navy border border-vet-navy font-normal text-[16px] rounded-full flex items-center gap-2 transition-colors cursor-pointer"
-                  title="Acceso RF-01: Login con Spring Security y PostgreSQL"
+                  title="Iniciar sesión en VetSoft"
                 >
-                  <span>Iniciar sesión (/login)</span>
+                  <span>Iniciar sesión</span>
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => triggerProtected('/carne-vacunacion', onOpenLogin)}
+                  onClick={() => onOpenLoginFor('/carne-vacunacion')}
                   className="px-4 py-3 text-vet-navy hover:underline font-normal text-[16px] flex items-center gap-1.5 transition-all cursor-pointer"
                 >
                   <span>Consultar carné digital →</span>
@@ -429,7 +384,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
                   </div>
                   <button
-                    onClick={onEnterERP}
+                    onClick={() => onOpenLoginFor('/erp')}
                     className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-vet-emerald text-white text-xs font-semibold hover:bg-vet-emerald-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vet-emerald/40 transition-colors cursor-pointer"
                   >
                     <span>Abrir ERP</span>
@@ -471,14 +426,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* MEDICAL SERVICES CATALOG */}
-      <section id="servicios" className="py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
+      <section id="servicios" className="scroll-mt-[73px] py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mb-12 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-              Especialidades y Procedimientos
-            </span>
             <h2 className="text-3xl sm:text-4xl font-black text-vet-navy tracking-tight">
-              Servicios Clínicos de Alta Calidad para tu Mascota
+              {landingSections.servicios}
             </h2>
             <p className="text-sm text-vet-muted leading-relaxed">
               Equipamiento hospitalario moderno y médicos veterinarios dedicados a cada etapa del ciclo de vida
@@ -516,7 +468,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => triggerProtected('/citas', onOpenLogin)}
+                    onClick={() => onOpenLoginFor('/citas')}
                     className="inline-flex items-center gap-1 text-xs font-bold text-vet-navy hover:text-vet-navy transition-colors pt-2 border-t border-slate-100 cursor-pointer"
                   >
                     <span>Agendar este servicio</span>
@@ -530,14 +482,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* MEDICAL TEAM / SPECIALISTS */}
-      <section id="equipo" className="py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
+      <section id="equipo" className="scroll-mt-[73px] py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mb-12 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-              Cuerpo Médico Especialista
-            </span>
             <h2 className="text-3xl sm:text-4xl font-black text-vet-navy tracking-tight">
-              Veterinarios con Vocación, Rigor y Experiencia
+              {landingSections.equipo}
             </h2>
             <p className="text-sm text-vet-muted">
               Nuestro equipo cuenta con especializaciones médico-quirúrgicas avaladas y continua formación
@@ -579,7 +528,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', onOpenLogin)}
+                onClick={() => onOpenLoginFor('/citas')}
                 className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con el Dr. Camilo</span>
@@ -620,7 +569,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', onOpenLogin)}
+                onClick={() => onOpenLoginFor('/citas')}
                 className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con la Dra. Andrea</span>
@@ -661,7 +610,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', onOpenLogin)}
+                onClick={() => onOpenLoginFor('/citas')}
                 className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con la Dra. Mariana</span>
@@ -673,14 +622,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* HEALTH PLANS & PREVENTIVE SUBSCRIPTIONS */}
-      <section id="planes" className="py-20 bg-vet-ice/75 backdrop-blur-[1px] border-b border-vet-border">
+      <section id="planes" className="scroll-mt-[73px] py-20 bg-vet-ice/75 backdrop-blur-[1px] border-b border-vet-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mx-auto text-center space-y-3 mb-12">
-            <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-              Planes de Salud Preventiva
-            </span>
             <h2 className="text-3xl sm:text-4xl font-black text-vet-navy tracking-tight">
-              Protección Integral Todo el Año para tu Compañero
+              {landingSections.planes}
             </h2>
             <p className="text-sm text-vet-muted">
               Membresías diseñadas para cuidar su bienestar continuo sin gastos imprevistos.
@@ -724,7 +670,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', onOpenLogin)}
+                onClick={() => onOpenLoginFor('/citas')}
                 className="w-full py-3 bg-vet-ice hover:bg-vet-ice text-vet-navy rounded-xl text-xs font-bold text-center transition-colors block cursor-pointer"
               >
                 Suscribir Plan Cachorro
@@ -771,7 +717,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', onOpenLogin)}
+                onClick={() => onOpenLoginFor('/citas')}
                 className="w-full py-3.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center shadow-md  transition-all block cursor-pointer"
               >
                 Suscribir Salud Total
@@ -814,7 +760,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               <button
                 type="button"
-                onClick={() => triggerProtected('/citas', onOpenLogin)}
+                onClick={() => onOpenLoginFor('/citas')}
                 className="w-full py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center transition-colors block cursor-pointer"
               >
                 Suscribir Plan Senior
@@ -825,14 +771,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* TESTIMONIALS & SUCCESS STORIES */}
-      <section id="testimonios" className="py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
+      <section id="testimonios" className="scroll-mt-[73px] py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="max-w-2xl mb-12 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-              Opiniones de Familias Reales
-            </span>
             <h2 className="text-3xl sm:text-4xl font-black text-vet-navy tracking-tight">
-              Lo que Dicen Quienes Confían en Nosotros
+              {landingSections.testimonios}
             </h2>
             <p className="text-sm text-vet-muted">
               Más de 2,500 tutores confían la vida de sus mascotas a nuestro hospital cada año.
@@ -922,14 +865,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* FREQUENTLY ASKED QUESTIONS */}
-      <section id="faq" className="py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
+      <section id="faq" className="scroll-mt-[73px] py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <LazyScrollSection className="text-center space-y-3 mb-12">
-            <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-              Dudas Resueltas
-            </span>
             <h2 className="text-3xl font-black text-vet-navy tracking-tight">
-              Preguntas Frecuentes de Tutores
+              {landingSections.faq}
             </h2>
           </LazyScrollSection>
 
@@ -961,15 +901,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* LOCATION, MAP & CONTACT SECTION */}
-      <section id="contacto" className="py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
+      <section id="contacto" className="scroll-mt-[73px] py-20 bg-vet-surface/60 backdrop-blur-[1px] border-b border-vet-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <LazyScrollSection className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-vet-navy font-mono">
-                Contacto & Ubicación
-              </span>
               <h2 className="text-3xl font-black text-vet-navy tracking-tight">
-                Estamos Listos para Atenderte Cuando Más lo Necesites
+                {landingSections.contacto}
               </h2>
               <p className="text-sm text-vet-muted leading-relaxed">
                 Nuestra clínica cuenta con estacionamiento privado para clientes, acceso adaptado para camillas
@@ -1042,7 +979,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </a>
                     <button
                       type="button"
-                      onClick={() => triggerProtected('/citas', onOpenLogin)}
+                      onClick={() => onOpenLoginFor('/citas')}
                       className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                     >
                       <span>Pedir Cita</span>
@@ -1072,7 +1009,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <div className="pt-2">
               <button
-                onClick={onEnterERP}
+                onClick={() => onOpenLoginFor('/erp')}
                 className="px-7 py-3.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white font-normal text-[16px] rounded-full inline-flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <span>Ingresar al Sistema de Gestión Médica ERP</span>
@@ -1099,30 +1036,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-5 text-slate-300">
-            <a href="#servicios" className="hover:text-white transition-colors">
-              Servicios
-            </a>
+            {Object.entries(landingSections).map(([id, label]) => (
+              <a key={id} href={`#${id}`} className="hover:text-white transition-colors">
+                {label}
+              </a>
+            ))}
             <button
               type="button"
-              onClick={() => triggerProtected('/citas', onOpenLogin)}
+              onClick={() => onOpenLoginFor('/citas')}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Agendar Cita
             </button>
             <button
               type="button"
-              onClick={() => triggerProtected('/carne-vacunacion', onOpenLogin)}
+              onClick={() => onOpenLoginFor('/carne-vacunacion')}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Carné Digital
             </button>
-            <a href="#equipo" className="hover:text-white transition-colors">
-              Especialistas
-            </a>
-            <a href="#planes" className="hover:text-white transition-colors">
-              Planes
-            </a>
-            <button onClick={onEnterERP} className="text-action-mint font-bold hover:underline cursor-pointer">
+            <button onClick={() => onOpenLoginFor('/erp')} className="text-action-mint font-bold hover:underline cursor-pointer">
               Acceso ERP →
             </button>
           </div>

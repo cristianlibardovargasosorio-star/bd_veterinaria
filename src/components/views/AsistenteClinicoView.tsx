@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../db/store';
 import {
   BotMessageSquare,
@@ -6,34 +6,40 @@ import {
   RotateCw,
   Sparkles,
   Stethoscope,
-  Pill,
-  Scale,
   AlertTriangle,
 } from 'lucide-react';
 
 export const AsistenteClinicoView: React.FC = () => {
   const { mascotas } = useStore();
 
-  const [selectedPetId, setSelectedPetId] = useState<number>(mascotas[0]?.id_mascota || 1);
+  const [selectedPetId, setSelectedPetId] = useState<number>(0);
   const [pregunta, setPregunta] = useState('');
   const [chatLog, setChatLog] = useState<
     { sender: 'user' | 'ia'; text: string; time: string }[]
   >([
     {
       sender: 'ia',
-      text: 'Hola doctor(a). Soy el Asistente Clínico Veterinario de VETSOFT impulsado por Gemini 3.8 Flash. Puedo orientarte en rangos de dosificación en mg/kg, contraindicaciones específicas entre caninos y felinos, o protocolos de fluidoterapia.',
-      time: '10:00',
+      text: 'Escribe una pregunta veterinaria para revisar conceptos o comprobar información clínica. Usa términos generales y omite datos que identifiquen a pacientes o tutores.',
+      time: '',
     },
   ]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
 
-  const activePet = mascotas.find((m) => m.id_mascota === selectedPetId) || mascotas[0];
+  useEffect(() => {
+    const messages = messagesRef.current;
+    if (messages) messages.scrollTop = messages.scrollHeight;
+  }, [chatLog, loading, error]);
+
+  const activePet = mascotas.find((m) => m.id_mascota === selectedPetId);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!pregunta.trim() || loading) return;
 
-    const userText = pregunta;
+    const userText = pregunta.trim();
+    setError(null);
     const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     setChatLog((prev) => [...prev, { sender: 'user', text: userText, time: now }]);
     setPregunta('');
@@ -45,18 +51,22 @@ export const AsistenteClinicoView: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           pregunta: userText,
-          contexto_paciente: {
-            nombre: activePet?.nombre,
-            especie: activePet?.especie,
-            raza: activePet?.raza,
-            peso_kg: activePet?.peso_kg,
-            estado_salud: activePet?.estado_salud,
-          },
+          especie: activePet?.especie,
+          historial: chatLog.slice(1).slice(-8).map(({ sender, text }) => ({
+            role: sender === 'user' ? 'user' : 'model',
+            text: text.slice(0, 4000),
+          })),
         }),
       });
 
       const json = await response.json();
-      const iaText = json.respuesta || 'No se obtuvo respuesta del asistente clínico.';
+      if (!response.ok || !json.success || typeof json.respuesta !== 'string' || !json.respuesta.trim()) {
+        setChatLog((prev) => prev.slice(0, -1));
+        setError(json.error || 'No se obtuvo una respuesta del asistente.');
+        setPregunta(userText);
+        return;
+      }
+      const iaText = json.respuesta;
       setChatLog((prev) => [
         ...prev,
         {
@@ -65,24 +75,19 @@ export const AsistenteClinicoView: React.FC = () => {
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
-    } catch (err: any) {
-      setChatLog((prev) => [
-        ...prev,
-        {
-          sender: 'ia',
-          text: 'Error de comunicación con el motor de IA.',
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        },
-      ]);
+    } catch {
+      setChatLog((prev) => prev.slice(0, -1));
+      setError('No se pudo conectar con el asistente. Intenta nuevamente.');
+      setPregunta(userText);
     } finally {
       setLoading(false);
     }
   };
 
   const quickPrompts = [
-    `¿Dosis recomendada de Amoxicilina para ${activePet?.nombre} (${activePet?.peso_kg} kg, ${activePet?.especie})?`,
-    '¿Qué precauciones tener al combinar Meloxicam con Omeprazol?',
-    `Calcular tasa de fluidoterapia de mantenimiento para ${activePet?.nombre}.`,
+    '¿Cómo comparar guías de vacunación canina?',
+    '¿Qué debo revisar al interpretar un hemograma felino?',
+    '¿Dónde puedo comprobar información sobre nutrición clínica?',
   ];
 
   return (
@@ -92,10 +97,10 @@ export const AsistenteClinicoView: React.FC = () => {
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <BotMessageSquare className="w-6 h-6 text-vet-navy" />
-            <span>Asistente Clínico Veterinario Interactivo (Gemini 3.8 Flash)</span>
+            <span>Asistente Clínico Veterinario Interactivo</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
-            Cálculo de posología en mg/kg, interacciones farmacológicas y triaje médico por especie y peso.
+            Haz preguntas veterinarias y pide referencias para contrastar las respuestas.
           </p>
         </div>
       </div>
@@ -104,15 +109,18 @@ export const AsistenteClinicoView: React.FC = () => {
       <div className="p-4 bg-vet-surface rounded-[20px] border border-vet-border shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
           <Stethoscope className="w-4 h-4 text-vet-navy" />
-          <span className="font-bold text-vet-muted">Contexto de Paciente Activo:</span>
+          <span className="font-bold text-vet-muted">Paciente de referencia opcional</span>
         </div>
 
         <div className="flex items-center gap-3">
           <select
+            aria-label="Paciente de referencia opcional"
+            disabled={loading}
             value={selectedPetId}
             onChange={(e) => setSelectedPetId(Number(e.target.value))}
             className="p-2 border border-vet-border rounded-xl bg-vet-surface font-medium"
           >
+            <option value={0}>Consulta general</option>
             {mascotas.map((m) => (
               <option key={m.id_mascota} value={m.id_mascota}>
                 {m.nombre} ({m.especie} - {m.raza}, {m.peso_kg} kg)
@@ -120,16 +128,14 @@ export const AsistenteClinicoView: React.FC = () => {
             ))}
           </select>
 
-          <span className="px-3 py-1 bg-vet-ice text-vet-navy rounded-lg border border-vet-border font-bold">
-            Peso: {activePet?.peso_kg} kg
-          </span>
+
         </div>
       </div>
 
       {/* Chat Window */}
       <div className="bg-vet-surface rounded-[20px] border border-vet-border shadow-xs overflow-hidden flex flex-col h-[520px]">
         {/* Messages */}
-        <div className="flex-1 p-5 overflow-y-auto space-y-4">
+        <div ref={messagesRef} role="log" aria-label="Conversación clínica" className="flex-1 overflow-y-auto space-y-4 p-[16px]">
           {chatLog.map((msg, i) => (
             <div
               key={i}
@@ -165,17 +171,24 @@ export const AsistenteClinicoView: React.FC = () => {
           {loading && (
             <div className="flex items-center gap-2 text-xs text-vet-muted italic">
               <RotateCw className="w-3.5 h-3.5 animate-spin text-vet-navy" />
-              <span>Gemini 3.8 Flash está consultando la literatura veterinaria...</span>
+              <span>Preparando respuesta...</span>
             </div>
           )}
         </div>
 
+        {error && (
+          <p role="alert" className="flex items-center gap-2 border-t border-vet-border bg-vet-danger-soft px-4 py-2 text-sm text-vet-danger-ink">
+            <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" /> {error}
+          </p>
+        )}
         {/* Quick Prompts */}
         <div className="px-4 py-2 border-t border-slate-100 bg-vet-surface flex items-center gap-2 overflow-x-auto">
           <span className="text-[11px] font-bold text-vet-muted shrink-0">Sugerencias:</span>
           {quickPrompts.map((p, idx) => (
             <button
               key={idx}
+              type="button"
+              disabled={loading}
               onClick={() => setPregunta(p)}
               className="px-2.5 py-1 bg-vet-surface hover:bg-vet-ice text-vet-muted rounded-lg border border-vet-border text-[11px] font-medium shrink-0 transition-colors"
             >
@@ -190,7 +203,10 @@ export const AsistenteClinicoView: React.FC = () => {
             type="text"
             value={pregunta}
             onChange={(e) => setPregunta(e.target.value)}
-            placeholder={`Consulta clínica para ${activePet?.nombre || 'el paciente'} (ej. dosis de Meloxicam, fluidos...)`}
+            aria-label="Pregunta veterinaria"
+            placeholder="Escribe tu pregunta veterinaria"
+            maxLength={2000}
+            disabled={loading}
             className="flex-1 text-xs p-2.5 border border-vet-border rounded-xl focus:outline-hidden focus:border-vet-navy focus:ring-1 focus:ring-vet-emerald/40"
           />
           <button

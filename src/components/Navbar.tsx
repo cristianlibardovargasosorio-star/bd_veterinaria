@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={onOpenLogin}
                 className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-transparent hover:bg-vet-ice text-vet-navy text-xs font-normal border border-vet-navy transition-colors cursor-pointer whitespace-nowrap"
-                title="Ir al Módulo 1: Login de Usuarios (/login)"
+                title="Iniciar sesión en VetSoft"
               >
                 <Lock className="w-3.5 h-3.5 text-vet-navy" />
                 <span className="hidden md:inline">Login</span>
@@ -167,7 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onOpenTraceability}
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-vet-ice hover:bg-[#e5e5e7] text-vet-navy text-xs transition-colors cursor-pointer whitespace-nowrap"
-              title="Matriz SRS (RF01-RF11)"
+              title="Matriz SRS"
             >
               <FileCheck2 className="w-3.5 h-3.5 text-vet-navy" />
               <span className="hidden lg:inline">Matriz SRS</span>
@@ -179,7 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onOpenSecurityModal}
               className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-vet-ice hover:bg-[#e5e5e7] text-vet-muted hover:text-vet-navy text-xs transition-colors cursor-pointer whitespace-nowrap"
-              title="Prueba de Autenticación, BCrypt, 3 Intentos y OTP (RF01)"
+              title="Prueba de autenticación, BCrypt, 3 intentos y OTP"
             >
               <Lock className="w-3.5 h-3.5" />
               <span className="hidden xl:inline">Seguridad</span>

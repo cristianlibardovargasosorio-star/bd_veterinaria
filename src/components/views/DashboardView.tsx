@@ -118,7 +118,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             {currentRole === 'PROPIETARIO' ? userPets.length : activePets}
           </div>
           <div className="text-xs text-vet-ink-muted mt-1 flex items-center gap-1">
-            <span className="text-info-ink font-semibold">RF05</span>
             <span>Expedientes con microchip</span>
           </div>
         </div>
@@ -265,10 +264,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-vet-navy" />
-                <h3 className="font-bold text-sm text-vet-navy">Motor de Inteligencia Artificial (Gemini 3.8 Flash)</h3>
+                <h3 className="font-bold text-sm text-vet-navy">Motor de Inteligencia Artificial</h3>
               </div>
               <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-vet-ice text-vet-navy border border-vet-border whitespace-nowrap">
-                RF10 &amp; RF11 Activos
+                Activo
               </span>
             </div>
             <p className="text-xs text-vet-muted leading-relaxed">
@@ -282,7 +281,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                 className="px-3.5 py-1.5 bg-vet-emerald hover:bg-vet-emerald-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vet-emerald/40 text-white text-xs font-semibold rounded-full transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Generar Ficha Médica IA (RF10)</span>
+                <span>Generar Ficha Médica</span>
               </button>
               {currentRole === 'ADMINISTRADOR' && (
                 <button
@@ -290,7 +289,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({ onNavigateTab }) =
                   className="px-3.5 py-1.5 bg-vet-surface hover:bg-vet-ice text-vet-navy text-xs font-semibold rounded-full border border-vet-border transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <TrendingUp className="w-3.5 h-3.5 text-vet-navy" />
-                  <span>Reporte Ejecutivo IA (RF11)</span>
+                  <span>Reporte Ejecutivo IA</span>
                 </button>
               )}
             </div>

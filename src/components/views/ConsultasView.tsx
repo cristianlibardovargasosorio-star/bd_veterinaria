@@ -85,7 +85,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
 
     if (!form.diagnostico.trim() || !form.tratamiento_recetado.trim()) {
       setFormFeedback({
-        text: 'Diagnóstico y Tratamiento son requeridos según el estándar médico RF08',
+        text: 'El diagnóstico y el tratamiento son obligatorios.',
         isError: true,
       });
       return;
@@ -115,10 +115,10 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <Stethoscope className="w-6 h-6 text-vet-navy" />
-            <span>Consultas Médicas Clínicas (RF08)</span>
+            <span>Consultas Médicas Clínicas</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
-            Registro de constantes vitales, anamnesis, diagnóstico y tratamiento con enlace al motor de IA.
+            Registro de constantes vitales, anamnesis, diagnóstico y tratamiento.
           </p>
         </div>
 
@@ -155,7 +155,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-base text-vet-navy">
-                        {pet?.nombre} ({pet?.especie} - {pet?.raza})
+                        {pet?.nombre} · {pet?.especie} · {pet?.raza}
                       </h3>
                       <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-vet-ice text-vet-muted">
                         {pet?.codigo_expediente}
@@ -241,7 +241,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   <div className="flex items-center gap-2 text-xs">
                     <span className="flex items-center gap-1 text-vet-navy font-bold bg-vet-ice text-vet-navy px-2.5 py-1 rounded-lg border border-vet-border">
                       <Sparkles className="w-3.5 h-3.5 text-vet-navy" />
-                      Ficha IA Generada ({ficha.modelo_utilizado})
+                      Ficha médica disponible
                     </span>
                     {ficha.aprobado_por_veterinario && (
                       <span className="text-[11px] font-bold text-vet-emerald bg-vet-ice px-2 py-0.5 rounded border border-vet-border">
@@ -250,7 +250,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     )}
                   </div>
                 ) : (
-                  <span className="text-xs text-vet-muted">Sin ficha IA generada aún</span>
+                  <span className="text-xs text-vet-muted">Sin ficha médica</span>
                 )}
 
                 <button
@@ -258,7 +258,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   className="px-3.5 py-1.5 bg-linear-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>{ficha ? 'Ver Ficha Médica IA (RF10)' : 'Generar Ficha con IA (RF10)'}</span>
+                  <span>{ficha ? 'Ver ficha médica' : 'Generar ficha médica'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -274,7 +274,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
             <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2">
                 <Stethoscope className="w-5 h-5 text-vet-navy" />
-                <h3 className="font-bold text-base">RF08: Registro de Consulta Médica</h3>
+                <h3 className="font-bold text-base">Registro de Consulta Médica</h3>
               </div>
               <button
                 onClick={() => setShowModal(false)}
@@ -383,7 +383,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   {/* Diagnóstico */}
                   <div>
                     <label className="block font-semibold text-vet-muted mb-1">
-                      Diagnóstico Clínico Definitivo (RF08)
+                      Diagnóstico Clínico Definitivo
                     </label>
                     <input
                       type="text"
@@ -465,17 +465,17 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                       ¡Consulta Médica #{createdConsultaId} Registrada!
                     </h4>
                     <p className="text-xs text-vet-muted max-w-md mx-auto mt-1">
-                      Las constantes vitales y el tratamiento quedaron registrados de manera inmutable en la base de datos (RF08).
+                      Las constantes vitales y el tratamiento quedaron registrados de manera inmutable en la base de datos.
                     </p>
                   </div>
 
                   <div className="p-4 rounded-xl bg-linear-to-r from-emerald-50 to-teal-50 border border-vet-border max-w-md mx-auto text-left space-y-2">
                     <div className="flex items-center gap-2 text-xs font-bold text-vet-navy">
                       <Sparkles className="w-4 h-4 text-vet-navy" />
-                      <span>Siguiente paso: Ficha Médica con IA (RF10)</span>
+                      <span>Ficha médica de la consulta</span>
                     </div>
                     <p className="text-[11px] text-vet-navy/80">
-                      Genera automáticamente el resumen explicativo para el dueño y la síntesis clínica técnica para el expediente con Gemini 3.8 Flash.
+                      Prepara un resumen para el tutor y una síntesis clínica para el expediente.
                     </p>
                   </div>
 
@@ -491,7 +491,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                       className="px-5 py-2.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-md "
                     >
                       <Sparkles className="w-4 h-4" />
-                      <span>Generar Ficha con Gemini 3.8 Flash</span>
+                      <span>Generar ficha médica</span>
                     </button>
                   </div>
                 </div>

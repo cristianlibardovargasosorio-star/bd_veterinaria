@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
-import { Mascota, Propietario } from '../../types';
+import { Mascota } from '../../types';
 import { ActiveTab } from '../Sidebar';
 import {
   PawPrint,
   Search,
   Plus,
-  UserPlus,
   QrCode,
   Calendar,
   FileText,
@@ -38,7 +37,6 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
     currentUser,
     currentRole,
     registrarMascota,
-    registrarPropietario,
   } = useStore();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -47,12 +45,11 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
 
   // Modals state
   const [showNewPetModal, setShowNewPetModal] = useState(false);
-  const [showNewOwnerModal, setShowNewOwnerModal] = useState(false);
   const [modalFeedback, setModalFeedback] = useState<{ text: string; isError: boolean } | null>(null);
 
   // Form New Pet
   const [petForm, setPetForm] = useState({
-    id_propietario: propietarios[0]?.id_propietario || 1,
+    id_propietario: propietarios.length ? 0 : -1,
     codigo_expediente: `EXP-2026-${String(mascotas.length + 1).padStart(3, '0')}`,
     nombre: '',
     especie: 'Canino',
@@ -78,8 +75,8 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
   // Filter for Owner Role
   const ownerRecord = propietarios.find((p) => p.id_usuario === currentUser.id_usuario);
   const displayedPets = (
-    currentRole === 'PROPIETARIO' && ownerRecord
-      ? mascotas.filter((m) => m.id_propietario === ownerRecord.id_propietario)
+    currentRole === 'PROPIETARIO'
+      ? mascotas.filter((m) => m.id_propietario === ownerRecord?.id_propietario)
       : mascotas
   ).filter((m) => {
     const owner = propietarios.find((p) => p.id_propietario === m.id_propietario);
@@ -104,14 +101,36 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       return;
     }
 
-    const res = registrarMascota(petForm);
+    const tutor = petForm.id_propietario === -1 ? {
+      ...ownerForm,
+      cedula_documento: ownerForm.cedula_documento.trim(),
+      nombres: ownerForm.nombres.trim(),
+      apellidos: ownerForm.apellidos.trim(),
+      telefono: ownerForm.telefono.trim(),
+      direccion: ownerForm.direccion.trim(),
+    } : undefined;
+
+    if (tutor && Object.values(tutor).some((value) => value === '')) {
+      setModalFeedback({ text: 'Completa los datos del tutor.', isError: true });
+      return;
+    }
+
+    const res = registrarMascota(petForm, tutor);
     if (res.success) {
       setModalFeedback({ text: res.message, isError: false });
       setTimeout(() => {
         setShowNewPetModal(false);
         setModalFeedback(null);
+        setOwnerForm({
+          cedula_documento: '',
+          nombres: '',
+          apellidos: '',
+          telefono: '',
+          direccion: '',
+          id_usuario: null,
+        });
         setPetForm({
-          id_propietario: propietarios[0]?.id_propietario || 1,
+          id_propietario: 0,
           codigo_expediente: `EXP-2026-${String(mascotas.length + 2).padStart(3, '0')}`,
           nombre: '',
           especie: 'Canino',
@@ -129,34 +148,6 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
     }
   };
 
-  const handleCreateOwner = (e: React.FormEvent) => {
-    e.preventDefault();
-    setModalFeedback(null);
-    if (!ownerForm.nombres || !ownerForm.cedula_documento) {
-      setModalFeedback({ text: 'Cédula y Nombres son requeridos', isError: true });
-      return;
-    }
-
-    const res = registrarPropietario(ownerForm);
-    if (res.success) {
-      setModalFeedback({ text: res.message, isError: false });
-      setTimeout(() => {
-        setShowNewOwnerModal(false);
-        setModalFeedback(null);
-        setOwnerForm({
-          cedula_documento: '',
-          nombres: '',
-          apellidos: '',
-          telefono: '',
-          direccion: '',
-          id_usuario: null,
-        });
-      }, 1000);
-    } else {
-      setModalFeedback({ text: res.message, isError: true });
-    }
-  };
-
   return (
     <div className="space-y-6">
       {/* Header & Controls */}
@@ -164,7 +155,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <PawPrint className="w-6 h-6 text-vet-navy" />
-            <span>Gestión de Pacientes y Expedientes (RF05 & RF06)</span>
+            <span>Gestión de Pacientes y Expedientes</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
             Registro unificado con código único de expediente, microchip y vinculación a tutor legal.
@@ -174,19 +165,11 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
         {currentRole !== 'PROPIETARIO' && (
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setShowNewOwnerModal(true)}
-              className="px-3.5 py-2 rounded-xl border border-vet-border bg-vet-surface hover:bg-vet-surface text-vet-muted text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
-            >
-              <UserPlus className="w-4 h-4 text-vet-muted" />
-              <span>Nuevo Tutor (RF06)</span>
-            </button>
-
-            <button
               onClick={() => setShowNewPetModal(true)}
               className="px-4 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
             >
               <Plus className="w-4 h-4" />
-              <span>Nuevo Paciente (RF05)</span>
+              <span>Nuevo paciente</span>
             </button>
           </div>
         )}
@@ -359,7 +342,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                   <div className="p-4 rounded-xl border border-vet-border bg-vet-surface/50 space-y-2">
                     <div className="text-xs font-bold text-vet-muted uppercase tracking-wider flex items-center gap-1.5">
                       <IdCard className="w-4 h-4 text-vet-navy" />
-                      <span>Datos del Tutor Legal (RF06)</span>
+                      <span>Datos del Tutor Legal</span>
                     </div>
                     {owner ? (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
@@ -425,7 +408,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 className="px-3 py-1.5 bg-vet-surface hover:bg-vet-ice text-vet-navy rounded-lg text-xs font-bold border border-vet-border flex items-center gap-1.5"
               >
                 <Syringe className="w-3.5 h-3.5 text-vet-navy" />
-                <span>Ver Carné de Vacunas (RF09)</span>
+                <span>Ver Carné de Vacunas</span>
               </button>
 
               {currentRole !== 'PROPIETARIO' && (
@@ -456,11 +439,11 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       {/* Modal: Registrar Paciente (RF05) */}
       {showNewPetModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
-          <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-xl w-full border border-vet-border overflow-hidden">
+          <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-xl w-full max-h-[calc(100dvh-2rem)] overflow-y-auto border border-vet-border">
             <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <PawPrint className="w-5 h-5 text-vet-navy" />
-                <h3 className="font-bold text-base">RF05: Registrar Nuevo Paciente</h3>
+                <h3 className="font-bold text-base">Registrar mascota y tutor</h3>
               </div>
               <button
                 onClick={() => setShowNewPetModal(false)}
@@ -483,21 +466,6 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                     onChange={(e) => setPetForm({ ...petForm, codigo_expediente: e.target.value })}
                     className="w-full p-2 border border-vet-border rounded-lg font-mono font-bold uppercase"
                   />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-vet-muted mb-1">Tutor / Propietario (FK)</label>
-                  <select
-                    value={petForm.id_propietario}
-                    onChange={(e) => setPetForm({ ...petForm, id_propietario: Number(e.target.value) })}
-                    className="w-full p-2 border border-vet-border rounded-lg"
-                  >
-                    {propietarios.map((p) => (
-                      <option key={p.id_propietario} value={p.id_propietario}>
-                        {p.nombres} {p.apellidos} (CC: {p.cedula_documento})
-                      </option>
-                    ))}
-                  </select>
                 </div>
 
                 <div>
@@ -585,6 +553,87 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </div>
               </div>
 
+              <fieldset className="space-y-3 rounded-xl border border-vet-border p-3">
+                <legend className="px-1 text-sm font-semibold text-vet-navy">Datos del tutor</legend>
+                <label className="block space-y-1 text-xs font-semibold text-vet-muted">
+                  Tutor de la mascota
+                  <select
+                    required
+                    value={petForm.id_propietario || ''}
+                    onChange={(e) => {
+                      setPetForm({ ...petForm, id_propietario: Number(e.target.value) });
+                      setModalFeedback(null);
+                    }}
+                    className="w-full p-2 border border-vet-border rounded-lg"
+                  >
+                    <option value="">Selecciona un tutor</option>
+                    <option value={-1}>Registrar un tutor nuevo</option>
+                    {propietarios.map((p) => (
+                      <option key={p.id_propietario} value={p.id_propietario}>
+                        {p.nombres} {p.apellidos} (CC: {p.cedula_documento})
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {petForm.id_propietario === -1 && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <label className="block space-y-1 font-semibold text-vet-muted">
+                      Cédula o documento de identidad
+                      <input
+                        type="text"
+                        required
+                        value={ownerForm.cedula_documento}
+                        onChange={(e) => setOwnerForm({ ...ownerForm, cedula_documento: e.target.value })}
+                        className="w-full p-2 border border-vet-border rounded-lg"
+                      />
+                    </label>
+
+                    <label className="block space-y-1 font-semibold text-vet-muted">
+                      Nombres
+                      <input
+                        type="text"
+                        required
+                        value={ownerForm.nombres}
+                        onChange={(e) => setOwnerForm({ ...ownerForm, nombres: e.target.value })}
+                        className="w-full p-2 border border-vet-border rounded-lg"
+                      />
+                    </label>
+                    <label className="block space-y-1 font-semibold text-vet-muted">
+                      Apellidos
+                      <input
+                        type="text"
+                        required
+                        value={ownerForm.apellidos}
+                        onChange={(e) => setOwnerForm({ ...ownerForm, apellidos: e.target.value })}
+                        className="w-full p-2 border border-vet-border rounded-lg"
+                      />
+                    </label>
+
+                    <label className="block space-y-1 font-semibold text-vet-muted">
+                      Teléfono de contacto
+                      <input
+                        type="tel"
+                        required
+                        value={ownerForm.telefono}
+                        onChange={(e) => setOwnerForm({ ...ownerForm, telefono: e.target.value })}
+                        className="w-full p-2 border border-vet-border rounded-lg"
+                      />
+                    </label>
+
+                    <label className="block space-y-1 font-semibold text-vet-muted sm:col-span-2">
+                      Dirección
+                      <input
+                        type="text"
+                        required
+                        value={ownerForm.direccion}
+                        onChange={(e) => setOwnerForm({ ...ownerForm, direccion: e.target.value })}
+                        className="w-full p-2 border border-vet-border rounded-lg"
+                      />
+                    </label>
+                  </div>
+                )}
+              </fieldset>
+
               {modalFeedback && (
                 <div
                   className={`p-3 rounded-lg text-xs font-semibold flex items-center gap-2 ${
@@ -612,6 +661,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </button>
                 <button
                   type="submit"
+                  disabled={modalFeedback?.isError === false}
                   className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold"
                 >
                   Guardar Paciente
@@ -622,125 +672,6 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
         </div>
       )}
 
-      {/* Modal: Registrar Tutor (RF06) */}
-      {showNewOwnerModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
-          <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-lg w-full border border-vet-border overflow-hidden">
-            <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-vet-navy" />
-                <h3 className="font-bold text-base">RF06: Registrar Propietario / Tutor Legal</h3>
-              </div>
-              <button
-                onClick={() => setShowNewOwnerModal(false)}
-                className="text-vet-muted hover:text-white"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleCreateOwner} className="p-6 space-y-4">
-              <div className="space-y-3 text-xs">
-                <div>
-                  <label className="block font-semibold text-vet-muted mb-1">
-                    Cédula / Documento de Identidad (Único)
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={ownerForm.cedula_documento}
-                    onChange={(e) => setOwnerForm({ ...ownerForm, cedula_documento: e.target.value })}
-                    placeholder="ej. 1098472910"
-                    className="w-full p-2 border border-vet-border rounded-lg font-mono font-bold"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block font-semibold text-vet-muted mb-1">Nombres</label>
-                    <input
-                      type="text"
-                      required
-                      value={ownerForm.nombres}
-                      onChange={(e) => setOwnerForm({ ...ownerForm, nombres: e.target.value })}
-                      placeholder="ej. María José"
-                      className="w-full p-2 border border-vet-border rounded-lg"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-semibold text-vet-muted mb-1">Apellidos</label>
-                    <input
-                      type="text"
-                      required
-                      value={ownerForm.apellidos}
-                      onChange={(e) => setOwnerForm({ ...ownerForm, apellidos: e.target.value })}
-                      placeholder="ej. Rojas Gómez"
-                      className="w-full p-2 border border-vet-border rounded-lg"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-vet-muted mb-1">Teléfono de Contacto</label>
-                  <input
-                    type="tel"
-                    required
-                    value={ownerForm.telefono}
-                    onChange={(e) => setOwnerForm({ ...ownerForm, telefono: e.target.value })}
-                    placeholder="ej. +57 312 900 1234"
-                    className="w-full p-2 border border-vet-border rounded-lg"
-                  />
-                </div>
-
-                <div>
-                  <label className="block font-semibold text-vet-muted mb-1">Dirección de Residencia</label>
-                  <input
-                    type="text"
-                    required
-                    value={ownerForm.direccion}
-                    onChange={(e) => setOwnerForm({ ...ownerForm, direccion: e.target.value })}
-                    placeholder="ej. Carrera 15 # 85 - 20"
-                    className="w-full p-2 border border-vet-border rounded-lg"
-                  />
-                </div>
-              </div>
-
-              {modalFeedback && (
-                <div
-                  className={`p-3 rounded-lg text-xs font-semibold flex items-center gap-2 ${
-                    modalFeedback.isError
-                      ? 'bg-red-50 text-red-800 border border-red-200'
-                      : 'bg-vet-ice text-vet-navy border border-vet-border'
-                  }`}
-                >
-                  {modalFeedback.isError ? (
-                    <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
-                  ) : (
-                    <CheckCircle2 className="w-4 h-4 shrink-0 text-vet-navy" />
-                  )}
-                  <span>{modalFeedback.text}</span>
-                </div>
-              )}
-
-              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={() => setShowNewOwnerModal(false)}
-                  className="px-4 py-2 border border-vet-border text-vet-muted rounded-lg text-xs font-bold"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold"
-                >
-                  Guardar Propietario
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

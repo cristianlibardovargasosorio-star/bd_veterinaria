@@ -57,7 +57,7 @@ export const AuditoriaSRSView: React.FC = () => {
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-vet-navy" />
-            <span>Auditoría del Sistema y Garantías ACID (Script 02)</span>
+            <span>Auditoría del Sistema y Garantías ACID</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
             Registro cronológico inmutable de operaciones (INSERT, UPDATE, DELETE) en la tabla <code>auditoria_sistema</code>.

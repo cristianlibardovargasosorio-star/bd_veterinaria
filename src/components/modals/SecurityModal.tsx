@@ -45,7 +45,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
         <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Lock className="w-5 h-5 text-vet-navy" />
-            <h3 className="font-bold text-base">RF01: Demostrador de Autenticación, BCrypt y OTP</h3>
+            <h3 className="font-bold text-base">Demostrador de Autenticación, BCrypt y OTP</h3>
           </div>
           <button
             onClick={onClose}
@@ -60,7 +60,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           <div className="p-3 bg-vet-ice text-vet-navy rounded-xl border border-vet-border text-xs text-vet-navy space-y-1">
             <div className="font-bold flex items-center gap-1.5 text-vet-navy">
               <ShieldCheck className="w-4 h-4 text-vet-navy" />
-              Garantía Tecnológica RF01 & RNF03 (Seguridad):
+              Seguridad de la autenticación:
             </div>
             <p>
               • Hash <strong>BCrypt</strong> almacenado en base de datos (campo <code>contrasena</code>).
@@ -156,7 +156,7 @@ export const SecurityModal: React.FC<SecurityModalProps> = ({ isOpen, onClose })
           {/* User state in DB */}
           <div className="border border-vet-border rounded-xl p-4 bg-vet-surface space-y-3">
             <div className="text-xs font-bold text-vet-muted uppercase tracking-wider flex items-center justify-between">
-              <span>Estado en Base de Datos (Tabla usuarios)</span>
+              <span>Estado de la cuenta</span>
               <span
                 className={`px-2 py-0.5 rounded text-[11px] font-bold ${
                   targetUser.estado === 'ACTIVO'

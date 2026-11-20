@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useStore } from '../../db/store';
-import { Cita, TipoCita, EstadoCita } from '../../types';
+import { TipoCita, EstadoCita } from '../../types';
 import { ActiveTab } from '../Sidebar';
 import {
   CalendarDays,
@@ -12,8 +12,7 @@ import {
   CheckCircle2,
   CalendarCheck,
   XCircle,
-  Filter,
-  PawPrint,
+  X,
 } from 'lucide-react';
 
 interface CitasViewProps {
@@ -38,7 +37,13 @@ export const CitasView: React.FC<CitasViewProps> = ({
 
   const [filterEstado, setFilterEstado] = useState<string>('TODAS');
   const [showModal, setShowModal] = useState(false);
+  const [selectedCitaId, setSelectedCitaId] = useState<number | null>(null);
+  const detailsDialogRef = useRef<HTMLDialogElement>(null);
   const [formFeedback, setFormFeedback] = useState<{ text: string; isError: boolean } | null>(null);
+  const ownerRecord = propietarios.find((p) => p.id_usuario === currentUser.id_usuario);
+  const selectablePets = currentRole === 'PROPIETARIO'
+    ? mascotas.filter((pet) => pet.id_propietario === ownerRecord?.id_propietario)
+    : mascotas;
 
   // Default appointment time: tomorrow at 10:00
   const tomorrow = new Date();
@@ -46,8 +51,8 @@ export const CitasView: React.FC<CitasViewProps> = ({
   const defaultDateStr = tomorrow.toISOString().slice(0, 10) + 'T10:00';
 
   const [citaForm, setCitaForm] = useState({
-    id_mascota: mascotas[0]?.id_mascota || 1,
-    id_propietario: mascotas[0]?.id_propietario || 1,
+    id_mascota: selectablePets[0]?.id_mascota ?? 0,
+    id_propietario: selectablePets[0]?.id_propietario ?? 0,
     id_veterinario: veterinarios[0]?.id_veterinario || 1,
     fecha_hora: defaultDateStr,
     motivo_general: '',
@@ -56,16 +61,20 @@ export const CitasView: React.FC<CitasViewProps> = ({
   });
 
   // Filter for owner role
-  const ownerRecord = propietarios.find((p) => p.id_usuario === currentUser.id_usuario);
   const displayedCitas = (
-    currentRole === 'PROPIETARIO' && ownerRecord
-      ? citas.filter((c) => c.id_propietario === ownerRecord.id_propietario)
+    currentRole === 'PROPIETARIO'
+      ? citas.filter((c) => c.id_propietario === ownerRecord?.id_propietario)
       : citas
   ).filter((c) => filterEstado === 'TODAS' || c.estado === filterEstado);
 
+  const selectedCita = displayedCitas.find((cita) => cita.id_cita === selectedCitaId);
+  const selectedPet = mascotas.find((pet) => pet.id_mascota === selectedCita?.id_mascota);
+  const selectedOwner = propietarios.find((owner) => owner.id_propietario === selectedCita?.id_propietario);
+  const selectedVet = veterinarios.find((vet) => vet.id_veterinario === selectedCita?.id_veterinario);
+
   // Handler for pet change in form -> auto update owner
   const handlePetChange = (id_mascota: number) => {
-    const pet = mascotas.find((m) => m.id_mascota === id_mascota);
+    const pet = selectablePets.find((m) => m.id_mascota === id_mascota);
     setCitaForm((prev) => ({
       ...prev,
       id_mascota,
@@ -76,6 +85,10 @@ export const CitasView: React.FC<CitasViewProps> = ({
   const handleAgendar = (e: React.FormEvent) => {
     e.preventDefault();
     setFormFeedback(null);
+    if (!selectablePets.some((pet) => pet.id_mascota === citaForm.id_mascota)) {
+      setFormFeedback({ text: 'Selecciona una mascota para agendar la cita.', isError: true });
+      return;
+    }
 
     if (!citaForm.motivo_general.trim()) {
       setFormFeedback({ text: 'Por favor indique el motivo de la consulta', isError: true });
@@ -89,8 +102,8 @@ export const CitasView: React.FC<CitasViewProps> = ({
         setShowModal(false);
         setFormFeedback(null);
         setCitaForm({
-          id_mascota: mascotas[0]?.id_mascota || 1,
-          id_propietario: mascotas[0]?.id_propietario || 1,
+          id_mascota: selectablePets[0]?.id_mascota ?? 0,
+          id_propietario: selectablePets[0]?.id_propietario ?? 0,
           id_veterinario: veterinarios[0]?.id_veterinario || 1,
           fecha_hora: defaultDateStr,
           motivo_general: '',
@@ -117,7 +130,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <CalendarDays className="w-6 h-6 text-vet-navy" />
-            <span>Control y Agendamiento de Citas (RF07)</span>
+            <span>Control y Agendamiento de Citas</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
             Detección automática de cruces de agenda por veterinario y gestión de estados clínicos.
@@ -159,24 +172,25 @@ export const CitasView: React.FC<CitasViewProps> = ({
           const badge = statusBadgeConfig[cita.estado];
 
           const dateObj = new Date(cita.fecha_hora);
-          const isPast = dateObj.getTime() < Date.now();
-
           return (
             <div
               key={cita.id_cita}
-              className="p-4 bg-vet-surface rounded-[20px] border border-vet-border hover:border-vet-border transition-all shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4"
+              className="relative flex flex-col justify-between gap-3 rounded-[20px] border border-vet-border bg-vet-surface p-[16px] shadow-xs transition-colors hover:border-vet-emerald/50 md:flex-row md:items-center"
             >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-vet-emerald text-white flex flex-col items-center justify-center shrink-0">
-                  <span className="text-[10px] font-bold uppercase text-vet-navy">
-                    {dateObj.toLocaleDateString([], { month: 'short' })}
+              <div className="flex min-w-0 items-start gap-[12px]">
+                <time
+                  dateTime={cita.fecha_hora}
+                  className="flex size-[46px] shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl border border-vet-emerald/25 bg-vet-ice text-vet-emerald-hover"
+                >
+                  <span className="text-[10px] font-bold uppercase leading-none">
+                    {dateObj.toLocaleDateString('es-CO', { month: 'short' }).replace('.', '')}
                   </span>
                   <span className="text-base font-black leading-none">
                     {dateObj.getDate()}
                   </span>
-                </div>
+                </time>
 
-                <div className="space-y-1">
+                <div className="min-w-0 space-y-1 break-words">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-black text-sm text-vet-navy">
                       {pet?.nombre} ({pet?.especie})
@@ -214,7 +228,20 @@ export const CitasView: React.FC<CitasViewProps> = ({
               </div>
 
               {/* Status Actions */}
-              <div className="flex items-center gap-2 self-end md:self-center shrink-0">
+              <div className="flex flex-wrap items-center justify-end gap-2 self-end md:self-center md:shrink-0 [&>button:not(:first-child)]:relative [&>button:not(:first-child)]:z-10">
+                <button
+                  type="button"
+                  aria-haspopup="dialog"
+                  aria-label={`Ver detalle de la cita de ${pet?.nombre ?? 'la mascota'}`}
+                  onClick={() => {
+                    setSelectedCitaId(cita.id_cita);
+                    detailsDialogRef.current?.showModal();
+                  }}
+                  className="cursor-pointer rounded-lg px-2.5 py-1.5 text-xs font-semibold text-vet-emerald-hover hover:bg-vet-ice"
+                >
+                  <span className="absolute inset-0 rounded-[20px]" aria-hidden="true" />
+                  Ver detalle
+                </button>
                 {cita.estado === 'PENDIENTE' && (
                   <>
                     <button
@@ -247,7 +274,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
                         className="px-3.5 py-1.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
                       >
                         <Stethoscope className="w-3.5 h-3.5" />
-                        <span>Atender (RF08)</span>
+                        <span>Atender</span>
                       </button>
                     )}
                     <button
@@ -280,6 +307,60 @@ export const CitasView: React.FC<CitasViewProps> = ({
         </div>
       )}
 
+      <dialog
+        ref={detailsDialogRef}
+        aria-labelledby="cita-details-title"
+        onClose={() => setSelectedCitaId(null)}
+        className="fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-[20px] border border-vet-border bg-vet-surface text-vet-navy shadow-2xl backdrop:bg-vet-navy/40"
+      >
+        <header className="flex items-center justify-between gap-4 border-b border-vet-border bg-vet-ice px-6 py-4">
+          <h3 id="cita-details-title" className="text-base font-bold">Detalle de la cita</h3>
+          <form method="dialog">
+            <button type="submit" aria-label="Cerrar detalle" className="rounded-lg p-2 hover:bg-vet-surface">
+              <X className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </form>
+        </header>
+        {selectedCita && (
+          <dl className="grid grid-cols-2 gap-4 p-6 text-sm">
+            <div>
+              <dt className="font-semibold">Mascota</dt>
+              <dd className="text-vet-muted">{selectedPet ? `${selectedPet.nombre} (${selectedPet.especie})` : 'Sin datos'}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold">Expediente</dt>
+              <dd className="text-vet-muted">{selectedPet?.codigo_expediente || 'Sin datos'}</dd>
+            </div>
+            <div className="col-span-2">
+              <dt className="font-semibold">Fecha y hora</dt>
+              <dd className="text-vet-muted">
+                {new Date(selectedCita.fecha_hora).toLocaleString('es-CO', { dateStyle: 'long', timeStyle: 'short' })}
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold">Veterinario</dt>
+              <dd className="text-vet-muted">{selectedVet ? `${selectedVet.nombres} ${selectedVet.apellidos}` : 'Sin datos'}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold">Tutor</dt>
+              <dd className="text-vet-muted">{selectedOwner ? `${selectedOwner.nombres} ${selectedOwner.apellidos}` : 'Sin datos'}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold">Tipo de cita</dt>
+              <dd className="text-vet-muted">{selectedCita.tipo_cita === 'VACUNACION' ? 'VACUNACIÓN' : selectedCita.tipo_cita}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold">Estado</dt>
+              <dd className="text-vet-muted">{statusBadgeConfig[selectedCita.estado].label}</dd>
+            </div>
+            <div className="col-span-2">
+              <dt className="font-semibold">Motivo de la cita</dt>
+              <dd className="whitespace-pre-wrap break-words text-vet-muted">{selectedCita.motivo_general || 'Sin datos'}</dd>
+            </div>
+          </dl>
+        )}
+      </dialog>
+
       {/* Modal: Agendar Cita */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
@@ -287,7 +368,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
             <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <CalendarDays className="w-5 h-5 text-vet-navy" />
-                <h3 className="font-bold text-base">RF07: Agendamiento de Cita Médica</h3>
+                <h3 className="font-bold text-base">Agendamiento de Cita Médica</h3>
               </div>
               <button
                 onClick={() => setShowModal(false)}
@@ -306,7 +387,8 @@ export const CitasView: React.FC<CitasViewProps> = ({
                     onChange={(e) => handlePetChange(Number(e.target.value))}
                     className="w-full p-2 border border-vet-border rounded-lg"
                   >
-                    {mascotas.map((m) => (
+                    {!selectablePets.length && <option value={0}>No hay mascotas disponibles</option>}
+                    {selectablePets.map((m) => (
                       <option key={m.id_mascota} value={m.id_mascota}>
                         {m.nombre} ({m.especie} - {m.raza}) [{m.codigo_expediente}]
                       </option>
@@ -372,7 +454,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
 
               {/* Conflict Prevention Note */}
               <div className="p-2.5 bg-blue-50 rounded-lg border border-blue-200 text-[11px] text-blue-900">
-                <strong>Garantía RF07:</strong> El sistema valida en la base de datos que el veterinario no tenga otra cita asignada en el mismo intervalo para evitar traslapes.
+                <strong>Disponibilidad:</strong> El sistema valida en la base de datos que el veterinario no tenga otra cita asignada en el mismo intervalo para evitar traslapes.
               </div>
 
               {formFeedback && (

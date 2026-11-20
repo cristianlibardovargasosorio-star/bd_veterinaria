@@ -101,7 +101,7 @@ export const FacturacionPOSView: React.FC = () => {
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <Receipt className="w-6 h-6 text-vet-navy" />
-            <span>Módulo de Facturación POS e Inventario (Script 02)</span>
+            <span>Módulo de Facturación POS e Inventario</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
             Procedimientos almacenados transaccionales (sp_crear_factura, sp_agregar_detalle, sp_confirmar_factura) con deducción de stock en lotes vigentes.
@@ -173,7 +173,7 @@ export const FacturacionPOSView: React.FC = () => {
                 className="p-4 bg-vet-surface rounded-xl border border-vet-border space-y-3 text-xs"
               >
                 <div className="font-bold text-vet-muted uppercase tracking-wider text-[11px] flex items-center justify-between">
-                  <span>Agregar Producto por Lote Específico (sp_agregar_detalle)</span>
+                  <span>Agregar Producto por Lote Específico</span>
                   <span className="text-vet-muted font-normal">Validación FIFO / Vencimiento</span>
                 </div>
 
@@ -294,7 +294,7 @@ export const FacturacionPOSView: React.FC = () => {
                     className="px-6 py-2.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>Confirmar Venta y Cobrar (sp_confirmar_factura)</span>
+                    <span>Confirmar Venta y Cobrar</span>
                   </button>
                 </div>
               </div>
@@ -332,7 +332,7 @@ export const FacturacionPOSView: React.FC = () => {
                 className="px-6 py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
-                <span>Iniciar Factura POS (sp_crear_factura)</span>
+                <span>Iniciar Factura POS</span>
               </button>
             </div>
           )}

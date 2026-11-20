@@ -29,10 +29,14 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
     currentRole,
     currentUser,
   } = useStore();
+  const owner = propietarios.find((p) => p.id_usuario === currentUser.id_usuario);
+  const visiblePets = currentRole === 'PROPIETARIO'
+    ? mascotas.filter((pet) => pet.id_propietario === owner?.id_propietario)
+    : mascotas;
 
   const [selectedPetId, setSelectedPetId] = useState<number>(() => {
-    if (initialPetId) return initialPetId;
-    return mascotas[0]?.id_mascota || 1;
+    if (visiblePets.some((pet) => pet.id_mascota === initialPetId)) return initialPetId!;
+    return visiblePets[0]?.id_mascota ?? 0;
   });
 
   const [showApplyModal, setShowApplyModal] = useState(false);
@@ -82,7 +86,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
     setFeedback(null);
 
     if (!vacForm.lote.trim()) {
-      setFeedback({ text: 'El número de lote es obligatorio (RF09)', isError: true });
+      setFeedback({ text: 'El número de lote es obligatorio', isError: true });
       return;
     }
 
@@ -109,9 +113,9 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
     }
   };
 
-  const activePet = mascotas.find((m) => m.id_mascota === selectedPetId) || mascotas[0];
+  const activePet = visiblePets.find((m) => m.id_mascota === selectedPetId) || visiblePets[0];
   const activeOwner = activePet ? propietarios.find((p) => p.id_propietario === activePet.id_propietario) : null;
-  const petDoses = historiaVacunas.filter((h) => h.id_mascota === selectedPetId);
+  const petDoses = historiaVacunas.filter((h) => h.id_mascota === activePet?.id_mascota);
 
   const today = new Date();
 
@@ -122,7 +126,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <Syringe className="w-6 h-6 text-vet-navy" />
-            <span>Control de Vacunas y Carné Digital (RF09)</span>
+            <span>Control de Vacunas y Carné Digital</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
             Registro de biológicos con trazabilidad por lote, cálculo automático de refuerzo y carné exportable.
@@ -173,7 +177,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
           onChange={(e) => setSelectedPetId(Number(e.target.value))}
           className="w-full md:w-96 text-xs p-2 rounded-xl border border-vet-border bg-vet-surface font-medium"
         >
-          {mascotas.map((m) => (
+          {visiblePets.map((m) => (
             <option key={m.id_mascota} value={m.id_mascota}>
               {m.nombre} ({m.especie} - {m.raza}) [{m.codigo_expediente}]
             </option>
@@ -315,7 +319,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
             <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Syringe className="w-5 h-5 text-vet-navy" />
-                <h3 className="font-bold text-base">RF09: Aplicación de Vacuna</h3>
+                <h3 className="font-bold text-base">Aplicación de Vacuna</h3>
               </div>
               <button
                 onClick={() => setShowApplyModal(false)}
@@ -350,7 +354,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-vet-muted mb-1">Número de Lote (RF09)</label>
+                  <label className="block font-semibold text-vet-muted mb-1">Número de Lote</label>
                   <input
                     type="text"
                     required

@@ -20,6 +20,8 @@ import {
   UserRole,
 } from '../types';
 import {
+  DEMO_OWNER_EMAIL,
+  DEMO_OWNER_PROFILE,
   INITIAL_USUARIOS,
   INITIAL_PROPIETARIOS,
   INITIAL_VETERINARIOS,
@@ -50,6 +52,8 @@ interface StoreContextType {
   ) => { success: boolean; message: string; role?: UserRole; token?: string; requiresOtp?: boolean; otp?: string };
   logout: () => void;
   jwtToken: string | null;
+  recentAccountIds: number[];
+  switchOwnerAccount: (email: string, password: string) => { success: boolean; message: string };
   verificarOtp: (otp: string) => boolean;
   registerInternalUser: (input: {
     nombreCompleto: string;
@@ -57,6 +61,7 @@ interface StoreContextType {
     contrasena: string;
     rol: 'VETERINARIO' | 'RECEPCIONISTA' | 'ADMINISTRADOR';
   }) => { success: boolean; message: string; user?: Usuario };
+  updateInternalUserAccess: (id: number, action: 'suspender' | 'reactivar' | 'eliminar') => { success: boolean; message: string };
 
   // Entities
   usuarios: Usuario[];
@@ -81,7 +86,10 @@ interface StoreContextType {
   vwAlertasStock: ViewExistencia[];
 
   // Methods (Stored Procedures & Domain Logic)
-  registrarMascota: (mascota: Omit<Mascota, 'id_mascota' | 'fecha_registro'>) => { success: boolean; message: string; data?: Mascota };
+  registrarMascota: (
+    mascota: Omit<Mascota, 'id_mascota' | 'fecha_registro'>,
+    nuevoTutor?: Omit<Propietario, 'id_propietario'>
+  ) => { success: boolean; message: string; data?: Mascota };
   actualizarMascota: (id_mascota: number, datos: Partial<Mascota>) => void;
   registrarPropietario: (prop: Omit<Propietario, 'id_propietario'>) => { success: boolean; message: string; data?: Propietario };
   agendarCita: (cita: Omit<Cita, 'id_cita' | 'fecha_creacion'>) => { success: boolean; message: string; data?: Cita };
@@ -115,6 +123,7 @@ const DEMO_EMAILS = new Set([
   'admin@vetsoft.com',
   'camilo.vet@vetsoft.com',
   'carlos.mendoza@vetsoft.com',
+  DEMO_OWNER_EMAIL,
 ]);
 
 function mergeInitialUsers(storedUsers: Usuario[]): Usuario[] {
@@ -127,7 +136,7 @@ function mergeInitialUsers(storedUsers: Usuario[]): Usuario[] {
     const existing = byEmail.get(key);
     if (!existing) {
       byEmail.set(key, initial);
-    } else if (DEMO_EMAILS.has(key) && existing.estado !== 'ACTIVO') {
+    } else if (DEMO_EMAILS.has(key) && existing.estado === 'BLOQUEADO') {
       byEmail.set(key, { ...existing, estado: 'ACTIVO', intentos_fallidos: 0 });
     }
   }
@@ -156,7 +165,12 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [usuarios, setUsuarios] = useState<Usuario[]>(() =>
     mergeInitialUsers(loadFromStorage('usuarios', INITIAL_USUARIOS))
   );
-  const [propietarios, setPropietarios] = useState<Propietario[]>(() => loadFromStorage('propietarios', INITIAL_PROPIETARIOS));
+  const [propietarios, setPropietarios] = useState<Propietario[]>(() => {
+    const stored = loadFromStorage('propietarios', INITIAL_PROPIETARIOS);
+    return stored.some((owner) => owner.id_propietario === DEMO_OWNER_PROFILE.id_propietario)
+      ? stored
+      : [...stored, DEMO_OWNER_PROFILE];
+  });
   const [veterinarios] = useState<Veterinario[]>(() => loadFromStorage('veterinarios', INITIAL_VETERINARIOS));
   const [mascotas, setMascotas] = useState<Mascota[]>(() => loadFromStorage('mascotas', INITIAL_MASCOTAS));
   const [citas, setCitas] = useState<Cita[]>(() => loadFromStorage('citas', INITIAL_CITAS));
@@ -180,9 +194,14 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   });
 
   const [currentRole, setCurrentRoleState] = useState<UserRole>(currentUser.rol_nombre);
+  const [recentAccountIds, setRecentAccountIds] = useState<number[]>(() => loadFromStorage('recent_account_ids', []));
   const [jwtToken, setJwtToken] = useState<string | null>(() => {
     try {
       localStorage.removeItem('vetsoft_jwt_token');
+      if (currentUser.estado !== 'ACTIVO') {
+        sessionStorage.removeItem('vetsoft_jwt_token');
+        return null;
+      }
       return sessionStorage.getItem('vetsoft_jwt_token');
     } catch {
       return null;
@@ -207,6 +226,23 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   useEffect(() => saveToStorage('movimientos', movimientos), [movimientos]);
   useEffect(() => saveToStorage('auditoria', auditoria), [auditoria]);
   useEffect(() => saveToStorage('current_user_id', currentUser.id_usuario), [currentUser]);
+  useEffect(() => {
+    const syncUsers = (event: StorageEvent) => {
+      if (event.key === STORAGE_PREFIX + 'recent_account_ids') {
+        setRecentAccountIds(loadFromStorage('recent_account_ids', []));
+        return;
+      }
+      if (event.key !== STORAGE_PREFIX + 'usuarios') return;
+      const updated = loadFromStorage('usuarios', INITIAL_USUARIOS);
+      setUsuarios(updated);
+      if (updated.some((user) => user.id_usuario === currentUser.id_usuario && user.estado !== 'ACTIVO')) {
+        setJwtToken(null);
+        sessionStorage.removeItem('vetsoft_jwt_token');
+      }
+    };
+    window.addEventListener('storage', syncUsers);
+    return () => window.removeEventListener('storage', syncUsers);
+  }, [currentUser.id_usuario]);
 
   // Auditor helper
   const addAuditoria = (tabla: string, operacion: 'INSERT' | 'UPDATE' | 'DELETE', detalles: string) => {
@@ -224,16 +260,16 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   // Switch role and user
   const setCurrentRole = (role: UserRole) => {
-    setCurrentRoleState(role);
-    const targetUser = usuarios.find((u) => u.rol_nombre === role);
+    const targetUser = usuarios.find((u) => u.rol_nombre === role && u.estado === 'ACTIVO');
     if (targetUser) {
+      setCurrentRoleState(role);
       setCurrentUser(targetUser);
     }
   };
 
   const switchUser = (id_usuario: number) => {
     const user = usuarios.find((u) => u.id_usuario === id_usuario);
-    if (user) {
+    if (user?.estado === 'ACTIVO') {
       setCurrentUser(user);
       setCurrentRoleState(user.rol_nombre);
       addAuditoria('usuarios', 'UPDATE', `Sesión cambiada a usuario ${user.correo} (${user.rol_nombre})`);
@@ -345,6 +381,10 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     setCurrentUser(updatedUser);
     setCurrentRoleState(updatedUser.rol_nombre);
+    const previousAccounts = loadFromStorage<number[]>('recent_account_ids', []);
+    const recent = [updatedUser.id_usuario, ...previousAccounts.filter((id) => id !== updatedUser.id_usuario)].slice(0, 5);
+    setRecentAccountIds(recent);
+    saveToStorage('recent_account_ids', recent);
     addAuditoria('usuarios', 'UPDATE', `VET-RF-02: Login exitoso con JWT para ${correo}`);
 
     return {
@@ -355,6 +395,20 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       requiresOtp: true,
       otp: generatedOtp,
     };
+  };
+
+  const switchOwnerAccount: StoreContextType['switchOwnerAccount'] = (email, password) => {
+    if (currentRole !== 'PROPIETARIO' || currentUser.rol_nombre !== 'PROPIETARIO' || !jwtToken) {
+      return { success: false, message: 'Esta opción está disponible en el portal de propietarios.' };
+    }
+    const target = usuarios.find((user) =>
+      user.correo.toLowerCase() === email.trim().toLowerCase() &&
+      user.rol_nombre === 'PROPIETARIO' &&
+      user.estado === 'ACTIVO' &&
+      user.id_usuario !== currentUser.id_usuario
+    );
+    if (!target) return { success: false, message: 'Usa el correo de otra cuenta activa de propietario.' };
+    return login(target.correo, password);
   };
 
   // VET-RF-02 Criterio 4: Cierre de sesión e invalidación del token JWT en el cliente
@@ -468,8 +522,46 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return vwExistencias.filter((p) => p.activo && p.stock_vendible <= p.stock_minimo);
   }, [vwExistencias]);
 
+  const updateInternalUserAccess: StoreContextType['updateInternalUserAccess'] = (id, action) => {
+    if (currentRole !== 'ADMINISTRADOR' || currentUser.estado !== 'ACTIVO') {
+      return { success: false, message: 'Solo un administrador activo puede gestionar el acceso del personal.' };
+    }
+    if (id === currentUser.id_usuario) {
+      return { success: false, message: 'No puedes cambiar el acceso de tu propia cuenta.' };
+    }
+    const user = usuarios.find((record) => record.id_usuario === id && record.rol_nombre !== 'PROPIETARIO');
+    if (!user || user.estado === 'ELIMINADO') {
+      return { success: false, message: 'Esta cuenta no está disponible.' };
+    }
+    const isSuspended = user.estado === 'INACTIVO';
+    if (action === 'suspender' ? isSuspended : !isSuspended) {
+      return { success: false, message: 'Esta acción no está disponible para el estado actual de la cuenta.' };
+    }
+    if (action === 'suspender' && user.rol_nombre === 'ADMINISTRADOR' && !usuarios.some((record) =>
+      record.id_usuario !== id && record.rol_nombre === 'ADMINISTRADOR' && record.estado === 'ACTIVO'
+    )) {
+      return { success: false, message: 'Debe quedar al menos un administrador activo.' };
+    }
+    const nextStateByAction = { suspender: 'INACTIVO', reactivar: 'ACTIVO', eliminar: 'ELIMINADO' } as const;
+    const resultByAction = { suspender: 'suspendida', reactivar: 'reactivada', eliminar: 'eliminada del listado' };
+    setUsuarios((prev) => prev.map((record) => record.id_usuario === id ? {
+      ...record,
+      estado: nextStateByAction[action],
+      intentos_fallidos: 0,
+      otp_code: null,
+      otp_expiracion: null,
+      contrasena: action === 'eliminar' ? '' : record.contrasena,
+    } : record));
+    const message = `Cuenta ${resultByAction[action]}: ${user.correo}.`;
+    addAuditoria('usuarios', 'UPDATE', message);
+    return { success: true, message };
+  };
+
   // RF05: Registrar Mascota (con validación de expediente único y propietario)
-  const registrarMascota = (mascotaData: Omit<Mascota, 'id_mascota' | 'fecha_registro'>) => {
+  const registrarMascota = (
+    mascotaData: Omit<Mascota, 'id_mascota' | 'fecha_registro'>,
+    nuevoTutor?: Omit<Propietario, 'id_propietario'>
+  ) => {
     // Check unique codigo_expediente
     const existing = mascotas.find(
       (m) => m.codigo_expediente.trim().toUpperCase() === mascotaData.codigo_expediente.trim().toUpperCase()
@@ -478,8 +570,18 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       return { success: false, message: `El código de expediente ${mascotaData.codigo_expediente} ya existe en el sistema.` };
     }
 
+    let idPropietario = mascotaData.id_propietario;
+    if (nuevoTutor) {
+      const result = registrarPropietario(nuevoTutor);
+      if (!result.data) return { success: false, message: result.message };
+      idPropietario = result.data.id_propietario;
+    } else if (!propietarios.some((propietario) => propietario.id_propietario === idPropietario)) {
+      return { success: false, message: 'Selecciona un tutor registrado o añade uno nuevo.' };
+    }
+
     const nuevaMascota: Mascota = {
       ...mascotaData,
+      id_propietario: idPropietario,
       id_mascota: Date.now(),
       fecha_registro: new Date().toISOString(),
     };
@@ -1008,6 +1110,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setAuditoria(INITIAL_AUDITORIA);
     setCurrentUser(INITIAL_USUARIOS[0]);
     setCurrentRoleState('ADMINISTRADOR');
+    setRecentAccountIds([]);
   };
 
   return (
@@ -1020,8 +1123,11 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         login,
         logout,
         jwtToken,
+        recentAccountIds,
+        switchOwnerAccount,
         verificarOtp,
         registerInternalUser,
+        updateInternalUserAccess,
         usuarios,
         propietarios,
         veterinarios,

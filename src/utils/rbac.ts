@@ -31,7 +31,6 @@ export const ROLE_ALLOWED_TABS: Record<UserRole, ActiveTab[]> = {
     'facturacion',
     'inventario',
     'reportes-ia',
-    'asistente-ia',
     'usuarios',
     'auditoria',
   ],
@@ -99,7 +98,7 @@ export function resolvePostLoginDestination(
   rawRedirectTo?: string | null
 ): { targetTab: ActiveTab; accessDeniedNotice: string | null } {
   const safeRoute = sanitizeRedirectTo(rawRedirectTo);
-  if (!safeRoute) {
+  if (!safeRoute || safeRoute === '/erp') {
     return { targetTab: getDefaultTabForRole(role), accessDeniedNotice: null };
   }
   const requestedTab = ROUTE_TO_TAB[safeRoute];

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../db/store';
+import { INITIAL_USUARIOS } from '../db/initialData';
 import { isTabAllowedForRole } from '../utils/rbac';
 import {
   LayoutDashboard,
@@ -16,6 +17,8 @@ import {
   ShieldCheck,
   UserPlus,
   Menu,
+  ChevronDown,
+  UsersRound,
   X,
 } from 'lucide-react';
 
@@ -33,13 +36,36 @@ export type ActiveTab =
   | 'usuarios'
   | 'auditoria';
 
+const demoOwnerIds = INITIAL_USUARIOS.filter((user) => user.rol_nombre === 'PROPIETARIO').map((user) => user.id_usuario);
+
 interface SidebarProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
+  onOwnerAccountChanged: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
-  const { currentRole, vwAlertasStock } = useStore();
+export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, onOwnerAccountChanged }) => {
+  const { currentRole, currentUser, recentAccountIds, usuarios, vwAlertasStock, switchOwnerAccount } = useStore();
+  const [accountEmail, setAccountEmail] = useState<string | null>(null);
+  const [accountPassword, setAccountPassword] = useState('');
+  const [accountError, setAccountError] = useState('');
+  const otherAccounts = [...new Set([...recentAccountIds, ...demoOwnerIds])].flatMap((id) => {
+    const account = usuarios.find((user) => user.id_usuario === id && user.estado === 'ACTIVO' && user.rol_nombre === 'PROPIETARIO');
+    return account && account.id_usuario !== currentUser.id_usuario ? [account] : [];
+  });
+  const chooseAccount = (email: string) => {
+    setAccountEmail(email);
+    setAccountPassword('');
+    setAccountError('');
+  };
+  const changeAccount = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!accountEmail?.trim() || !accountPassword) return;
+    const result = switchOwnerAccount(accountEmail, accountPassword);
+    setAccountPassword('');
+    if (result.success) onOwnerAccountChanged();
+    else setAccountError(result.message);
+  };
   // En móvil (< md) la barra lateral colapsa en un menú desplegable accesible para preservar la jerarquía del contenido
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -62,35 +88,35 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
     {
       id: 'pacientes',
       label: currentRole === 'PROPIETARIO' ? 'Mis Mascotas' : 'Pacientes y Tutores',
-      sublabel: 'RF05 / RF06 Expedientes',
+      sublabel: 'Expedientes',
       icon: PawPrint,
       roles: ['ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA', 'PROPIETARIO'],
     },
     {
       id: 'citas',
       label: currentRole === 'PROPIETARIO' ? 'Mis Citas' : 'Agenda de Citas',
-      sublabel: 'RF07 Control de Agenda',
+      sublabel: 'Control de agenda',
       icon: CalendarDays,
       roles: ['ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA', 'PROPIETARIO'],
     },
     {
       id: 'consultas',
       label: 'Consultas Médicas',
-      sublabel: 'RF08 Diagnósticos y Vitals',
+      sublabel: 'Diagnósticos y signos vitales',
       icon: Stethoscope,
       roles: ['ADMINISTRADOR', 'VETERINARIO'],
     },
     {
       id: 'vacunacion',
       label: 'Carné de Vacunas',
-      sublabel: 'RF09 Historia y Refuerzos',
+      sublabel: 'Historial y refuerzos',
       icon: Syringe,
       roles: ['ADMINISTRADOR', 'VETERINARIO', 'RECEPCIONISTA', 'PROPIETARIO'],
     },
     {
       id: 'fichas-ia',
-      label: 'Fichas Médicas IA',
-      sublabel: 'RF10 Gemini 3.8 Flash',
+      label: 'Fichas Médicas',
+      sublabel: 'Resumen de consultas',
       icon: Sparkles,
       roles: ['ADMINISTRADOR', 'VETERINARIO', 'PROPIETARIO'],
       highlight: true,
@@ -113,22 +139,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
     {
       id: 'reportes-ia',
       label: 'Reportes Ejecutivos IA',
-      sublabel: 'RF11 Inteligencia de Negocio',
+      sublabel: 'Indicadores de gestión',
       icon: TrendingUp,
       roles: ['ADMINISTRADOR'],
       highlight: true,
     },
     {
       id: 'asistente-ia',
-      label: 'Asistente Clínico IA',
-      sublabel: 'Dosis e Interacciones',
+      label: 'Asistente Clínico',
+      sublabel: 'Referencias veterinarias',
       icon: BotMessageSquare,
-      roles: ['ADMINISTRADOR', 'VETERINARIO'],
+      roles: ['VETERINARIO'],
     },
     {
       id: 'usuarios',
       label: 'Usuarios Internos',
-      sublabel: 'VET-RF-01 /admin/usuarios',
+      sublabel: 'Personal de la clínica',
       icon: UserPlus,
       roles: ['ADMINISTRADOR'],
     },
@@ -225,10 +251,65 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       <div className="hidden md:flex mt-4 px-4 py-3 rounded-[20px] bg-vet-slate border border-slate-700 text-[11px] text-slate-200 font-medium items-center justify-between">
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-slate-300"></span>
-          <span>Motor IA · BD Activa</span>
+          <span>Sistema clínico</span>
         </div>
         <span className="text-[10px] text-slate-400">Activo</span>
       </div>
+      {currentRole === 'PROPIETARIO' && (
+        <details className="group mt-2 rounded-[16px] border border-slate-700 bg-vet-slate text-slate-200">
+          <summary className="flex cursor-pointer list-none items-center gap-2 rounded-[16px] px-[12px] py-[10px] text-xs font-semibold focus-visible:outline-2 focus-visible:outline-slate-400 [&::-webkit-details-marker]:hidden">
+            <UsersRound className="h-4 w-4 shrink-0" aria-hidden="true" />
+            Cuentas
+            <ChevronDown className="ml-auto h-4 w-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+          </summary>
+          <div className="space-y-2 border-t border-slate-700 p-[8px]">
+            <div className="px-2 text-xs">
+              <p className="text-slate-400">Cuenta actual</p>
+              <p className="break-all font-medium text-white">{currentUser.correo}</p>
+            </div>
+            {otherAccounts.length > 0 && (
+              <ul aria-label="Cuentas recientes de este equipo" className="max-h-48 space-y-1 overflow-y-auto">
+                {otherAccounts.map((account) => (
+                  <li key={account.id_usuario}>
+                    <button
+                      type="button"
+                      onClick={() => chooseAccount(account.correo)}
+                      className="w-full break-all rounded-lg px-2 py-2 text-left text-xs hover:bg-vet-navy focus-visible:outline-2 focus-visible:outline-slate-400"
+                    >
+                      {account.correo}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {accountEmail === null ? (
+              <button
+                type="button"
+                onClick={() => chooseAccount('')}
+                className="w-full rounded-lg border border-slate-600 px-2 py-2 text-left text-xs font-semibold text-white hover:bg-vet-navy focus-visible:outline-2 focus-visible:outline-slate-400"
+              >
+                Cambiar a otra cuenta
+              </button>
+            ) : (
+              <form onSubmit={changeAccount} className="space-y-2 border-t border-slate-700 pt-2 text-xs">
+                <label className="block space-y-1">
+                  Correo del propietario
+                  <input type="email" autoComplete="username" required value={accountEmail} onChange={(event) => setAccountEmail(event.target.value)} className="w-full rounded-lg border border-slate-600 bg-vet-navy px-2 py-2 text-white" />
+                </label>
+                <label className="block space-y-1">
+                  Contraseña
+                  <input type="password" autoComplete="current-password" required value={accountPassword} onChange={(event) => setAccountPassword(event.target.value)} className="w-full rounded-lg border border-slate-600 bg-vet-navy px-2 py-2 text-white" />
+                </label>
+                {accountError && <p role="alert" className="text-red-200">{accountError}</p>}
+                <div className="flex flex-wrap gap-2">
+                  <button type="submit" className="rounded-lg bg-vet-emerald px-2.5 py-2 font-semibold text-white">Cambiar cuenta</button>
+                  <button type="button" onClick={() => { setAccountEmail(null); setAccountPassword(''); setAccountError(''); }} className="rounded-lg border border-slate-600 px-2.5 py-2">Cancelar</button>
+                </div>
+              </form>
+            )}
+          </div>
+        </details>
+      )}
     </aside>
   );
 };

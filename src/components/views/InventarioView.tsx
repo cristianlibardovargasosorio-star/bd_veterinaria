@@ -127,7 +127,7 @@ export const InventarioView: React.FC = () => {
         <div>
           <h2 className="text-xl font-black text-vet-navy tracking-tight flex items-center gap-2">
             <Boxes className="w-6 h-6 text-vet-navy" />
-            <span>Inventario por Lotes y Vencimientos (Script 02)</span>
+            <span>Inventario por Lotes y Vencimientos</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
             Triggers de vencimiento (trg_lote_vencimiento_bi), vistas SQL automáticas (vw_existencias, vw_alertas_stock) y kárdex.
@@ -210,7 +210,7 @@ export const InventarioView: React.FC = () => {
           }`}
         >
           <ShieldAlert className="w-3.5 h-3.5" />
-          <span>Alertas de Stock ({vwAlertasStock.length})</span>
+          <span>Alertas de Stock · {vwAlertasStock.length}</span>
         </button>
 
         <button
@@ -222,7 +222,7 @@ export const InventarioView: React.FC = () => {
           }`}
         >
           <History className="w-3.5 h-3.5" />
-          <span>Kárdex Movimientos ({movimientos.length})</span>
+          <span>Kárdex de Movimientos · {movimientos.length}</span>
         </button>
       </div>
 
@@ -292,7 +292,7 @@ export const InventarioView: React.FC = () => {
           {/* Products Sidebar Catalog */}
           <div className="space-y-4">
             <div className="bg-vet-surface rounded-[20px] border border-vet-border p-5 shadow-xs">
-              <h3 className="font-bold text-sm text-vet-navy mb-3">Catálogo de Productos ({productos.length})</h3>
+              <h3 className="font-bold text-sm text-vet-navy mb-3">Catálogo de Productos · {productos.length}</h3>
               <div className="space-y-2 max-h-[440px] overflow-y-auto">
                 {productos.map((p) => (
                   <div key={p.id_producto} className="p-3 rounded-xl border border-vet-border text-xs space-y-1">
@@ -447,7 +447,7 @@ export const InventarioView: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-base text-vet-navy">
-                Kárdex de Movimientos (movimientos_inventario)
+                Kárdex de Movimientos
               </h3>
               <p className="text-xs text-vet-muted">
                 Auditoría inmutable de ingresos de lote (APERTURA), deducciones POS (VENTA) y conteos físicos (AJUSTE).
@@ -523,7 +523,7 @@ export const InventarioView: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
           <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-md w-full border border-vet-border overflow-hidden">
             <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
-              <h3 className="font-bold text-base">Crear Producto (Catálogo)</h3>
+              <h3 className="font-bold text-base">Crear Producto</h3>
               <button onClick={() => setShowProductModal(false)} className="text-vet-muted hover:text-white">
                 ✕
               </button>
@@ -615,7 +615,7 @@ export const InventarioView: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
           <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-md w-full border border-vet-border overflow-hidden">
             <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
-              <h3 className="font-bold text-base">Crear Lote (Validación de Triggers)</h3>
+              <h3 className="font-bold text-base">Crear Lote</h3>
               <button onClick={() => setShowLoteModal(false)} className="text-vet-muted hover:text-white">
                 ✕
               </button>
@@ -702,7 +702,7 @@ export const InventarioView: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-vet-surface/60 backdrop-blur-xs p-4">
           <div className="bg-vet-surface rounded-[20px] shadow-2xl max-w-md w-full border border-vet-border overflow-hidden">
             <div className="px-6 py-4 bg-vet-ice text-vet-navy border-b border-vet-border flex items-center justify-between">
-              <h3 className="font-bold text-base">Ajuste de Kárdex Manual (Auditoría)</h3>
+              <h3 className="font-bold text-base">Ajuste de Kárdex Manual</h3>
               <button onClick={() => setShowAjusteModal(false)} className="text-vet-muted hover:text-white">
                 ✕
               </button>
@@ -753,7 +753,7 @@ export const InventarioView: React.FC = () => {
               </div>
 
               <div>
-                <label className="block font-semibold text-vet-muted mb-1">Motivo Justificado (Auditoría)</label>
+                <label className="block font-semibold text-vet-muted mb-1">Motivo del ajuste</label>
                 <input
                   type="text"
                   required

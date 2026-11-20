@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
+import { DEMO_OWNER_EMAIL } from '../../db/initialData';
 import { UserRole } from '../../types';
 import { ActiveTab } from '../Sidebar';
 import { resolvePostLoginDestination } from '../../utils/rbac';
@@ -14,7 +15,6 @@ import {
   AlertCircle,
   ArrowRight,
   ArrowLeft,
-  ShieldCheck,
   Stethoscope,
   Shield,
   Sparkles,
@@ -150,7 +150,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
             <div className="flex items-center gap-2.5">
               <span className="font-serif-editorial text-xl tracking-tight text-vet-navy">VetSoft</span>
               <span className="text-[13px] text-vet-muted font-normal">
-                Módulo 1 · Autenticación RF-01
+                Clínica Veterinaria
               </span>
             </div>
           </div>
@@ -168,30 +168,24 @@ export const LoginView: React.FC<LoginViewProps> = ({
       {/* Main Editorial Spread Container */}
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="max-w-[1100px] w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Editorial Headline + Peach Callout */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="text-[14px] text-vet-muted font-normal">
-              Seguridad & Control RBAC · Spring Security 6
-            </div>
-
             <h1 className="font-serif-editorial text-4xl sm:text-5xl text-vet-navy tracking-tight leading-[1.18]">
               Acceso clínico con <span className="italic">integridad</span> criptográfica.
             </h1>
 
             <p className="text-[16px] text-vet-muted leading-relaxed">
-              Autenticación respaldada por PostgreSQL y comparación de hash BCrypt mediante Spring Security, con redirección automática según el rol.
+              Inicia sesión para hacer seguimiento al cuidado de tus mascotas. Si eres parte de la clínica, usa tu cuenta para gestionar la atención de tus pacientes.
             </p>
 
-            {/* Criterios de Aceptación — Azul médico sereno de alto contraste */}
             <div className="p-6 rounded-[24px] bg-info-soft border border-info/25 text-info-ink space-y-3 shadow-xs">
-              <div className="flex items-center gap-2 text-sm font-semibold text-info-ink">
-                <ShieldCheck className="w-4 h-4 text-info" />
-                <span>Criterios de Aceptación RF-01 &amp; VET-RF-02</span>
-              </div>
-              <ul className="text-xs text-info-ink/90 space-y-1.5 leading-relaxed">
-                <li>1. Validación previa de formato de correo electrónico (RFC 5322).</li>
-                <li>2. Verificación de hash BCrypt en PostgreSQL sin exponer contraseñas.</li>
-                <li>3. Emisión de token JWT y redirección automática según rol ENUM.</li>
+              <h2 className="flex items-center gap-2 text-sm font-semibold text-info-ink">
+                <Stethoscope className="w-4 h-4 text-info" aria-hidden="true" />
+                Servicios para tutores
+              </h2>
+              <ul className="list-disc pl-5 text-sm text-info-ink/90 space-y-1.5 leading-relaxed">
+                <li>Agenda y consulta citas veterinarias.</li>
+                <li>Revisa el carné digital de vacunación.</li>
+                <li>Consulta la información de tus mascotas.</li>
               </ul>
             </div>
           </div>
@@ -238,7 +232,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 <span className="text-[12px] text-vet-muted">
                   Cuentas de prueba rápida (Contraseña: vetsoft123):
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                   <button
                     type="button"
                     onClick={() => handleSelectDemoAccount('admin@vetsoft.com', 'vetsoft123')}
@@ -274,6 +268,17 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     </div>
                     <div className="text-xs text-vet-muted truncate mt-1">carlos.mendoza@vetsoft.com</div>
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectDemoAccount(DEMO_OWNER_EMAIL, 'vetsoft123')}
+                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-info transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between text-vet-navy">
+                      <span className="text-[11px] font-semibold text-info-ink">PROPIETARIO · CAMILO</span>
+                      <Sparkles className="w-3.5 h-3.5 text-info" />
+                    </div>
+                    <div className="mt-1 break-all text-xs text-vet-muted">{DEMO_OWNER_EMAIL}</div>
+                  </button>
                 </div>
               </div>
 
@@ -282,7 +287,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 {/* Email Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-medium text-vet-navy flex items-center gap-1.5">
+                    <label htmlFor="login-email" className="text-xs font-medium text-vet-navy flex items-center gap-1.5">
                       <Mail className="w-3.5 h-3.5 text-vet-muted" />
                       <span>Correo Electrónico</span>
                     </label>
@@ -290,7 +295,9 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   </div>
 
                   <input
+                    id="login-email"
                     type="text"
+                    autoComplete="username"
                     value={email}
                     onChange={(e) => handleEmailChange(e.target.value)}
                     placeholder="nombre@clinica.com"
@@ -312,7 +319,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 {/* Password Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-medium text-vet-navy flex items-center gap-1.5">
+                    <label htmlFor="login-password" className="text-xs font-medium text-vet-navy flex items-center gap-1.5">
                       <KeyRound className="w-3.5 h-3.5 text-vet-muted" />
                       <span>Contraseña</span>
                     </label>
@@ -321,6 +328,8 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
                   <div className="relative">
                     <input
+                      id="login-password"
+                      autoComplete="current-password"
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => {
@@ -394,7 +403,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
 
       {/* Footer */}
       <div className="px-6 py-6 text-center text-xs text-vet-muted">
-        <span>VetSoft · Especificación IEEE 830 RF-01</span>
+        <span>VetSoft · Clínica Veterinaria</span>
       </div>
     </div>
   );
