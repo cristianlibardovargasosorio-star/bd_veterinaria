@@ -63,6 +63,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
     }
   };
   const {
+    jwtToken,
     mascotas,
     propietarios,
     veterinarios,
@@ -230,6 +231,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
   const handleBookAppointment = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!jwtToken) {
+      triggerProtected('/citas', onOpenLogin);
+      return;
+    }
 
     // Check if pet exists or register new
     let targetPet = mascotas.find(
@@ -509,23 +515,54 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {mobileMenuOpen && (
           <div className="lg:hidden px-4 pb-5 pt-2 bg-vet-surface border-t border-vet-border">
             <nav className="flex flex-col space-y-1 text-[15px] text-vet-navy">
-              {[
-                { href: '#servicios', label: 'Servicios' },
-                { href: '#agendar', label: 'Agendar cita' },
-                { href: '#carne', label: 'Carné digital' },
-                { href: '#equipo', label: 'Especialistas' },
-                { href: '#asistente-ia', label: 'Asistente IA' },
-                { href: '#planes', label: 'Planes' },
-              ].map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
+              <a
+                href="#servicios"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
+              >
+                Servicios
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  triggerProtected('/citas', () => { window.location.hash = '#agendar'; });
+                }}
+                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors text-left cursor-pointer"
+              >
+                Agendar cita
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; });
+                }}
+                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors text-left cursor-pointer"
+              >
+                Carné digital
+              </button>
+              <a
+                href="#equipo"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
+              >
+                Especialistas
+              </a>
+              <a
+                href="#asistente-ia"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
+              >
+                Asistente IA
+              </a>
+              <a
+                href="#planes"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-[16px] hover:bg-vet-ice transition-colors"
+              >
+                Planes
+              </a>
             </nav>
 
             <div className="mt-4 pt-3 border-t border-vet-border flex flex-col sm:hidden gap-2">
@@ -538,13 +575,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               >
                 Iniciar sesión
               </button>
-              <a
-                href="#agendar"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-2.5 px-5 rounded-full text-sm bg-vet-emerald text-white text-center"
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  triggerProtected('/citas', () => { window.location.hash = '#agendar'; });
+                }}
+                className="w-full py-2.5 px-5 rounded-full text-sm bg-vet-emerald text-white text-center cursor-pointer"
               >
                 Reservar cita
-              </a>
+              </button>
             </div>
           </div>
         )}
@@ -724,13 +764,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <p className="text-xs text-vet-muted leading-relaxed">{svc.desc}</p>
                   </div>
 
-                  <a
-                    href="#agendar"
-                    className="inline-flex items-center gap-1 text-xs font-bold text-vet-navy hover:text-vet-navy transition-colors pt-2 border-t border-slate-100"
+                  <button
+                    type="button"
+                    onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-vet-navy hover:text-vet-navy transition-colors pt-2 border-t border-slate-100 cursor-pointer"
                   >
                     <span>Agendar este servicio</span>
                     <ChevronRight className="w-3.5 h-3.5" />
-                  </a>
+                  </button>
                 </LazyScrollSection>
               );
             })}
@@ -1214,7 +1255,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     Descargar Certificado PDF
                   </button>
                   <button
-                    onClick={onEnterERP}
+                    onClick={() => triggerProtected('/carne-vacunacion', onEnterERP)}
                     className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
                   >
                     Abrir Carné en el ERP →
@@ -1319,9 +1360,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <Info className="w-3.5 h-3.5 shrink-0 text-vet-navy" />
                   La orientación virtual complementa, pero no sustituye el examen clínico presencial.
                 </span>
-                <a href="#agendar" className="text-vet-navy hover:underline">
+                <button
+                  type="button"
+                  onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                  className="text-vet-navy hover:underline cursor-pointer"
+                >
                   Agendar consulta médica →
-                </a>
+                </button>
               </div>
             </div>
 
@@ -1398,13 +1443,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
 
-              <a
-                href="#agendar"
-                className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+              <button
+                type="button"
+                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con el Dr. Camilo</span>
                 <ChevronRight className="w-3.5 h-3.5" />
-              </a>
+              </button>
             </LazyScrollSection>
 
             {/* Vet 2: Dra. Andrea */}
@@ -1438,13 +1484,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
 
-              <a
-                href="#agendar"
-                className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+              <button
+                type="button"
+                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con la Dra. Andrea</span>
                 <ChevronRight className="w-3.5 h-3.5" />
-              </a>
+              </button>
             </LazyScrollSection>
 
             {/* Vet 3: Dra. Mariana */}
@@ -1478,13 +1525,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
 
-              <a
-                href="#agendar"
-                className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+              <button
+                type="button"
+                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                className="w-full py-2.5 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Agendar con la Dra. Mariana</span>
                 <ChevronRight className="w-3.5 h-3.5" />
-              </a>
+              </button>
             </LazyScrollSection>
           </div>
         </div>
@@ -1540,12 +1588,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
 
-              <a
-                href="#agendar"
-                className="w-full py-3 bg-vet-ice hover:bg-vet-ice text-vet-navy rounded-xl text-xs font-bold text-center transition-colors block"
+              <button
+                type="button"
+                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                className="w-full py-3 bg-vet-ice hover:bg-vet-ice text-vet-navy rounded-xl text-xs font-bold text-center transition-colors block cursor-pointer"
               >
                 Suscribir Plan Cachorro
-              </a>
+              </button>
             </LazyScrollSection>
 
             {/* Plan 2: Adulto Total (Featured) */}
@@ -1586,12 +1635,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
 
-              <a
-                href="#agendar"
-                className="w-full py-3.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center shadow-md  transition-all block"
+              <button
+                type="button"
+                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                className="w-full py-3.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center shadow-md  transition-all block cursor-pointer"
               >
                 Suscribir Salud Total
-              </a>
+              </button>
             </LazyScrollSection>
 
             {/* Plan 3: Senior Care */}
@@ -1628,12 +1678,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
 
-              <a
-                href="#agendar"
-                className="w-full py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center transition-colors block"
+              <button
+                type="button"
+                onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                className="w-full py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold text-center transition-colors block cursor-pointer"
               >
                 Suscribir Plan Senior
-              </a>
+              </button>
             </LazyScrollSection>
           </div>
         </div>
@@ -1855,12 +1906,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       <span>Abrir en Google Maps</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
-                    <a
-                      href="#agendar"
-                      className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+                    <button
+                      type="button"
+                      onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+                      className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-xl text-xs font-bold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                     >
                       <span>Pedir Cita</span>
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1916,12 +1968,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <a href="#servicios" className="hover:text-white transition-colors">
               Servicios
             </a>
-            <a href="#agendar" className="hover:text-white transition-colors">
+            <button
+              type="button"
+              onClick={() => triggerProtected('/citas', () => { window.location.hash = '#agendar'; })}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
               Agendar Cita
-            </a>
-            <a href="#carne" className="hover:text-white transition-colors">
+            </button>
+            <button
+              type="button"
+              onClick={() => triggerProtected('/carne-vacunacion', () => { window.location.hash = '#carne'; })}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
               Carné Digital
-            </a>
+            </button>
             <a href="#equipo" className="hover:text-white transition-colors">
               Especialistas
             </a>
