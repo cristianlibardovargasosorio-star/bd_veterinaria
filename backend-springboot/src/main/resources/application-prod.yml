@@ -1,0 +1,22 @@
+# Perfil de Producción (RNF-Seguridad y Portabilidad)
+# Activar con: --spring.profiles.active=prod
+spring:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+        same-site: strict
+
+vetsoft:
+  jwt:
+    # Obligatorio definir JWT_SECRET en producción (sin fallback embebido)
+    secret: ${JWT_SECRET}
+    expiration-ms: 3600000

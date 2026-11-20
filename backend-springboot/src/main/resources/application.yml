@@ -2,7 +2,7 @@ spring:
   application:
     name: vetsoft-auth-rf01
   datasource:
-    url: jdbc:postgresql://localhost:5432/vetsoft_db
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/vetsoft_db}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver

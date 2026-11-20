@@ -203,15 +203,25 @@ h1, h2, .font-serif-editorial {
 }
 
 .steep-peach-card {
-  background-color: #E0F2FE;
-  color: #0369A1;
+  background-color: var(--color-vet-ice);
+  color: var(--color-vet-navy);
   border-radius: 24px;
-  border: none;
+  border: 1px solid var(--color-vet-border);
   box-shadow: none;
 }
 
 .steep-floating-artifact {
-  background-color: #ffffff;
+  background-color: var(--color-vet-surface);
   border-radius: 20px;
   box-shadow: rgba(4, 23, 43, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
+}
+
+/* RNF-Accesibilidad (WCAG 2.1): reduce animaciones si el usuario lo solicita en el SO */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -331,6 +331,26 @@ runCase('TC-15', 'CSE-Seguridad', 'Auditoría estática de JWT (JwtService, JwtA
   return 'Filtro JWT, firma HS256, verificación de cuenta activa y mensaje exacto verificados';
 });
 
+runCase('TC-16', 'CSE-Seguridad', 'RNF-Seguridad-Prod: Cabeceras HTTP seguras, @EnableMethodSecurity y perfil prod sin secreto embebido', () => {
+  const secCfg = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/security/SecurityConfig.java'), 'utf8');
+  const appYml = fs.readFileSync(path.resolve('backend-springboot/src/main/resources/application.yml'), 'utf8');
+  const prodYml = fs.readFileSync(path.resolve('backend-springboot/src/main/resources/application-prod.yml'), 'utf8');
+
+  assert.ok(secCfg.includes('@EnableMethodSecurity') && secCfg.includes('frameOptions'), 'Seguridad de métodos y cabeceras HTTP activas');
+  assert.ok(appYml.includes('${DB_URL:'), 'URL de PostgreSQL parametrizada para portabilidad');
+  assert.ok(prodYml.includes('secure: true') && prodYml.includes('secret: ${JWT_SECRET}'), 'Perfil prod exige cookie segura y JWT_SECRET por entorno');
+  return 'Cabeceras HTTP, @EnableMethodSecurity, DB_URL y application-prod.yml verificados';
+});
+
+runCase('TC-17', 'CSE-Seguridad', 'RNF-Accesibilidad: Soporte prefers-reduced-motion, idioma lang="es" y viewport responsive', () => {
+  const indexHtml = fs.readFileSync(path.resolve('index.html'), 'utf8');
+  const indexCss = fs.readFileSync(path.resolve('src/index.css'), 'utf8');
+
+  assert.ok(indexHtml.includes('lang="es"') && indexHtml.includes('width=device-width'), 'Idioma español y meta viewport responsive');
+  assert.ok(indexCss.includes('prefers-reduced-motion: reduce'), 'Accesibilidad de movimiento reducido activa en CSS');
+  return 'WCAG prefers-reduced-motion, lang="es" y viewport responsive verificados';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');
