@@ -1,8 +1,8 @@
 # Dockerfile multi-stage para el frontend Vite + React actual del repositorio (usuario no-root)
-FROM node:22-alpine AS builder
+FROM node:22-slim AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json ./
+RUN npm install --legacy-peer-deps --no-audit --no-fund
 COPY . .
 RUN npm run build
 
