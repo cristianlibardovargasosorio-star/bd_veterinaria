@@ -390,6 +390,24 @@ runCase('TC-20', 'CSE-Seguridad', 'VET-RNF-04: @Transactional(rollbackFor), @Ver
   return 'VET-RNF-04 (ACID, @Version, PESSIMISTIC_WRITE, 409 Conflict y schema_rnf04.sql) verificado';
 });
 
+runCase('TC-21', 'CSE-Seguridad', 'VET-RNF-05: Script pg_dump con retención sin claves planas y @RestControllerAdvice global', () => {
+  const backupSh = fs.readFileSync(path.resolve('backend-springboot/scripts/backup_vetsoft.sh'), 'utf8');
+  const errDto = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/common/exception/ApiErrorResponse.java'), 'utf8');
+  const resHandler = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/common/exception/GlobalResilienceExceptionHandler.java'), 'utf8');
+
+  assert.ok(backupSh.includes('--format=custom') && backupSh.includes('PGPASSFILE') && backupSh.includes('RETENTION_DAYS'), 'Script pg_dump custom con PGPASSFILE y retención');
+  assert.ok(errDto.includes('erroresCampo') && errDto.includes('timestamp'), 'DTO ApiErrorResponse estandarizado');
+  assert.ok(
+    resHandler.includes('MethodArgumentNotValidException') &&
+    resHandler.includes('ConstraintViolationException') &&
+    resHandler.includes('AuthenticationException') &&
+    resHandler.includes('AccessDeniedException') &&
+    resHandler.includes('DataAccessException'),
+    'Manejador global cubre validación, negocio, seguridad y base de datos'
+  );
+  return 'VET-RNF-05 (pg_dump MVCC + rotación y GlobalResilienceExceptionHandler) verificado';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');
