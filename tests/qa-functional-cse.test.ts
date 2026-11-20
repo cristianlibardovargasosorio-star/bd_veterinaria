@@ -351,6 +351,17 @@ runCase('TC-17', 'CSE-Seguridad', 'RNF-Accesibilidad: Soporte prefers-reduced-mo
   return 'WCAG prefers-reduced-motion, lang="es" y viewport responsive verificados';
 });
 
+runCase('TC-18', 'CSE-Seguridad', 'VET-RNF-02: BCrypt(12), @JsonIgnore en Usuario, RBAC 403 y pruebas RbacSecurityRnf02Test', () => {
+  const secCfg = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/security/SecurityConfig.java'), 'utf8');
+  const usuarioJava = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/model/Usuario.java'), 'utf8');
+  const rnf02Test = fs.readFileSync(path.resolve('backend-springboot/src/test/java/com/vetsoft/auth/RbacSecurityRnf02Test.java'), 'utf8');
+
+  assert.ok(secCfg.includes('BCryptPasswordEncoder(12)') && secCfg.includes('.anyRequest().authenticated()'), 'BCrypt fuerza 12 y denegación por defecto activos');
+  assert.ok(usuarioJava.includes('@JsonIgnore') && usuarioJava.includes('private String contrasena;'), 'Hash protegido con @JsonIgnore');
+  assert.ok(rnf02Test.includes('isForbidden()') && rnf02Test.includes('$2a$12$'), 'Pruebas VET-RNF-02 de 403 y BCrypt(12) presentes');
+  return 'VET-RNF-02 (BCrypt 12, RBAC 403, @JsonIgnore y RbacSecurityRnf02Test) verificado';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');

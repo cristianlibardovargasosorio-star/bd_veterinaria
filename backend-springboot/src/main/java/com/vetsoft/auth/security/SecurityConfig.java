@@ -82,10 +82,10 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/login", "/api/auth/login", "/api/auth/logout", "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
-                .requestMatchers("/veterinario/**").hasRole("VETERINARIO")
-                .requestMatchers("/recepcion/**").hasRole("RECEPCIONISTA")
-                .requestMatchers("/propietario/**").hasRole("PROPIETARIO")
+                .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMINISTRADOR")
+                .requestMatchers("/veterinario/**", "/api/clinica/**").hasAnyRole("ADMINISTRADOR", "VETERINARIO")
+                .requestMatchers("/recepcion/**").hasAnyRole("ADMINISTRADOR", "RECEPCIONISTA")
+                .requestMatchers("/propietario/**", "/api/propietario/**").hasAnyRole("ADMINISTRADOR", "PROPIETARIO")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

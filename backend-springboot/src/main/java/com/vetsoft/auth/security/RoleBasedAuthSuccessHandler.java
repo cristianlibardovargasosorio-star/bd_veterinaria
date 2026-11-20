@@ -39,6 +39,9 @@ public class RoleBasedAuthSuccessHandler implements AuthenticationSuccessHandler
             } else if ("ROLE_VETERINARIO".equals(role)) {
                 targetUrl = RolUsuario.VETERINARIO.getTargetPanelUrl();
                 break;
+            } else if ("ROLE_RECEPCIONISTA".equals(role)) {
+                targetUrl = RolUsuario.RECEPCIONISTA.getTargetPanelUrl();
+                break;
             } else if ("ROLE_PROPIETARIO".equals(role)) {
                 targetUrl = RolUsuario.PROPIETARIO.getTargetPanelUrl();
                 break;
