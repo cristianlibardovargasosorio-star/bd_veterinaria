@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../db/store';
 import {
   LayoutDashboard,
@@ -14,6 +14,8 @@ import {
   BotMessageSquare,
   ShieldCheck,
   UserPlus,
+  Menu,
+  X,
 } from 'lucide-react';
 
 export type ActiveTab =
@@ -37,6 +39,8 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const { currentRole, vwAlertasStock } = useStore();
+  // En móvil (< md) la barra lateral colapsa en un menú desplegable accesible para preservar la jerarquía del contenido
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navigationItems: {
     id: ActiveTab;
@@ -140,17 +144,35 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
 
   return (
     <aside className="w-full md:w-64 md:min-w-[256px] bg-vet-navy text-vet-ice flex flex-col shrink-0 md:min-h-[calc(100vh-4.5rem)] p-4 border-b md:border-b-0 md:border-r border-vet-slate">
-      <div className="px-4 py-3 mb-3 rounded-[20px] bg-vet-slate border border-slate-700">
-        <p className="text-[11px] uppercase tracking-wider text-slate-300">Navegación Clínica</p>
-        <div className="mt-1.5 flex items-center justify-between gap-2 text-xs text-vet-ice">
-          <span className="text-slate-300 shrink-0">Vista:</span>
-          <span className="font-semibold text-white bg-vet-navy border border-slate-600 px-2.5 py-0.5 rounded-full text-[11px] truncate">
-            {currentRole}
-          </span>
+      <div className="px-4 py-3 mb-3 rounded-[20px] bg-vet-slate border border-slate-700 flex items-center justify-between gap-2">
+        <div className="min-w-0">
+          <p className="text-[11px] uppercase tracking-wider text-slate-300">Navegación Clínica</p>
+          <div className="mt-1 flex items-center gap-2 text-xs text-vet-ice">
+            <span className="text-slate-300 shrink-0">Vista:</span>
+            <span className="font-semibold text-white bg-vet-navy border border-slate-600 px-2.5 py-0.5 rounded-full text-[11px] truncate">
+              {currentRole}
+            </span>
+          </div>
         </div>
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="vetsoft-sidebar-nav"
+          aria-label={mobileMenuOpen ? 'Cerrar menú clínico' : 'Abrir menú clínico'}
+          className="md:hidden shrink-0 p-2 rounded-xl bg-vet-navy border border-slate-600 text-white hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 cursor-pointer"
+        >
+          {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+        </button>
       </div>
 
-      <nav className="flex md:flex-col gap-1.5 overflow-x-auto md:overflow-x-visible md:overflow-y-auto pb-2 md:pb-0 flex-1">
+      <nav
+        id="vetsoft-sidebar-nav"
+        aria-label="Navegación principal del sistema"
+        className={`${
+          mobileMenuOpen ? 'flex' : 'hidden'
+        } md:flex flex-col gap-1.5 md:overflow-y-auto flex-1`}
+      >
         {visibleItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -158,7 +180,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
           return (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                setActiveTab(item.id);
+                setMobileMenuOpen(false);
+              }}
               className={`shrink-0 md:shrink md:w-full flex items-center justify-between px-3.5 py-2.5 rounded-[16px] text-left transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 ${
                 isActive
                   ? 'bg-vet-sidebar-surface text-white border border-slate-600 shadow-xs'

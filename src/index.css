@@ -8,20 +8,20 @@
   --color-vet-emerald: #0D9488;
   --color-vet-emerald-hover: #0F766E;
   --color-vet-mint: #10B981;
-  --color-vet-ice: #CBD5E1;
-  --color-vet-surface: #E2E8F0;
-  --color-vet-border: #94A3B8;
-  --color-vet-muted: #334155;
+  --color-vet-ice: #F8FAFC;
+  --color-vet-surface: #FFFFFF;
+  --color-vet-border: #E2E8F0;
+  --color-vet-muted: #475569;
   --color-vet-amber: #F59E0B;
   --color-vet-amber-ink: #92400E;
-  --color-vet-amber-soft: #FEF3C7;
+  --color-vet-amber-soft: #FFFBEB;
 
   /* Base Aliases */
   --color-ink-black: #0F172A;
-  --color-paper-white: #E2E8F0;
-  --color-mist-gray: #CBD5E1;
-  --color-fog-white: #CBD5E1;
-  --color-slate-gray: #334155;
+  --color-paper-white: #FFFFFF;
+  --color-mist-gray: #F8FAFC;
+  --color-fog-white: #F8FAFC;
+  --color-slate-gray: #475569;
   --color-ash-gray: #64748B;
   --color-smoke-gray: #94A3B8;
   --color-blush-peach: #F1F5F9;
@@ -89,27 +89,27 @@
   --vet-emerald-600: #0D9488;
   --vet-emerald-700: #0F766E;
   --vet-blue-600: #0284C7;
-  --vet-bg-ice: #CBD5E1;
-  --vet-bg-ice-alt: #B8C5D6;
-  --vet-surface-card: #E2E8F0;
-  --vet-border-subtle: #94A3B8;
+  --vet-bg-ice: #F8FAFC;
+  --vet-bg-ice-alt: #F1F5F9;
+  --vet-surface-card: #FFFFFF;
+  --vet-border-subtle: #E2E8F0;
   --vet-amber-500: #F59E0B;
 
   --color-ink-black: #0F172A;
-  --color-paper-white: #E2E8F0;
-  --color-mist-gray: #CBD5E1;
-  --color-fog-white: #CBD5E1;
-  --color-slate-gray: #334155;
-  --color-ash-gray: #475569;
-  --color-smoke-gray: #64748B;
-  --color-blush-peach: #CBD5E1;
+  --color-paper-white: #FFFFFF;
+  --color-mist-gray: #F1F5F9;
+  --color-fog-white: #F8FAFC;
+  --color-slate-gray: #475569;
+  --color-ash-gray: #64748B;
+  --color-smoke-gray: #94A3B8;
+  --color-blush-peach: #F8FAFC;
   --color-sienna-brown: #0F172A;
 
-  --surface-canvas: #CBD5E1;
-  --surface-card-mist: #B8C5D6;
-  --surface-section-fog: #CBD5E1;
-  --surface-accent-blush: #CBD5E1;
-  --surface-elevated-white: #E2E8F0;
+  --surface-canvas: #F8FAFC;
+  --surface-card-mist: #F1F5F9;
+  --surface-section-fog: #F8FAFC;
+  --surface-accent-blush: #F8FAFC;
+  --surface-elevated-white: #FFFFFF;
 
   --radius-cards: 24px;
   --radius-images: 12px;

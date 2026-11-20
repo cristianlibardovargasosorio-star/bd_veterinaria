@@ -362,6 +362,18 @@ runCase('TC-18', 'CSE-Seguridad', 'VET-RNF-02: BCrypt(12), @JsonIgnore en Usuari
   return 'VET-RNF-02 (BCrypt 12, RBAC 403, @JsonIgnore y RbacSecurityRnf02Test) verificado';
 });
 
+runCase('TC-19', 'CSE-Seguridad', 'VET-RNF-03: Tokens #F8FAFC/#FFFFFF/#0F172A/#0D9488/#F59E0B y Sidebar colapsable accesible', () => {
+  const twConfig = fs.readFileSync(path.resolve('tailwind.config.js'), 'utf8');
+  const sidebarTsx = fs.readFileSync(path.resolve('src/components/Sidebar.tsx'), 'utf8');
+
+  assert.ok(
+    twConfig.includes('#F8FAFC') && twConfig.includes('#FFFFFF') && twConfig.includes('#0F172A') && twConfig.includes('#0D9488') && twConfig.includes('#F59E0B'),
+    'Paleta centralizada VET-RNF-03 presente en tailwind.config.js'
+  );
+  assert.ok(sidebarTsx.includes('aria-expanded={mobileMenuOpen}') && sidebarTsx.includes('aria-controls="vetsoft-sidebar-nav"'), 'Sidebar colapsable accesible en móvil');
+  return 'VET-RNF-03 (tokens centralizados y Sidebar colapsable accesible) verificado';
+});
+
 // Reporte final
 console.log('\n================================================================================');
 console.log(' REPORTE DE PRUEBAS CSE Y FUNCIONALIDAD — RAMA QA (JULES FLEET & VETSOFT)');
