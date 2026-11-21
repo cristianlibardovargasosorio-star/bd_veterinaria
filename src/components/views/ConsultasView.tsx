@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
+import { kilosALibras, librasAKilos, mostrarPesoEnLibras } from '../../utils/peso';
+import { registrarConsultaApi } from '../../services/pacientesApiService';
 import { ConsultaMedica } from '../../types';
 import { ActiveTab } from '../Sidebar';
 import {
@@ -37,11 +39,15 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
     registrarConsulta,
     fichasIA,
     currentUser,
+    sesionReal,
+    jwtToken,
+    recargarPacientes,
   } = useStore();
 
   const [showModal, setShowModal] = useState(!!selectedCitaIdForNewConsulta);
   const [formFeedback, setFormFeedback] = useState<{ text: string; isError: boolean } | null>(null);
   const [createdConsultaId, setCreatedConsultaId] = useState<number | null>(null);
+  const [guardandoConsulta, setGuardandoConsulta] = useState(false);
 
   // Available appointments for consultation
   const pendingCitas = citas.filter((c) => c.estado === 'CONFIRMADA' || c.estado === 'PENDIENTE');
@@ -57,7 +63,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
     id_veterinario: initialCita?.id_veterinario || veterinarios[0]?.id_veterinario || 1,
     frecuencia_cardiaca: 95,
     temperatura_c: 38.8,
-    peso_actual: initialCita ? mascotas.find((m) => m.id_mascota === initialCita.id_mascota)?.peso_kg || 15 : 15,
+    peso_lb: kilosALibras(mascotas.find((m) => m.id_mascota === initialCita?.id_mascota)?.peso_kg || 15),
     anamnesis_sintomas: initialCita?.motivo_general || '',
     diagnostico: '',
     tratamiento_recetado: '',
@@ -73,13 +79,13 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
         id_cita: c.id_cita,
         id_mascota: c.id_mascota,
         id_veterinario: c.id_veterinario,
-        peso_actual: pet?.peso_kg || prev.peso_actual,
+        peso_lb: pet?.peso_kg ? kilosALibras(pet.peso_kg) : prev.peso_lb,
         anamnesis_sintomas: c.motivo_general,
       }));
     }
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormFeedback(null);
 
@@ -91,7 +97,24 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
       return;
     }
 
-    const res = registrarConsulta(form);
+    const { peso_lb, ...datosConsulta } = form;
+    const consulta = { ...datosConsulta, peso_actual: librasAKilos(peso_lb) };
+    if (sesionReal) {
+      if (!jwtToken) return;
+      setGuardandoConsulta(true);
+      try {
+        const respuesta = await registrarConsultaApi(jwtToken, consulta);
+        recargarPacientes();
+        setFormFeedback({ text: 'Consulta guardada en VetSoft.', isError: false });
+        setCreatedConsultaId(respuesta.idConsulta);
+      } catch (error) {
+        setFormFeedback({ text: (error as Error).message, isError: true });
+      } finally {
+        setGuardandoConsulta(false);
+      }
+      return;
+    }
+    const res = registrarConsulta(consulta);
     if (res.success && res.data) {
       setFormFeedback({ text: res.message, isError: false });
       setCreatedConsultaId(res.data.id_consulta);
@@ -124,6 +147,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
 
         <button
           onClick={() => {
+            if (pendingCitas[0]) handleCitaSelect(pendingCitas[0].id_cita);
             setCreatedConsultaId(null);
             setFormFeedback(null);
             setShowModal(true);
@@ -201,7 +225,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                   <Scale className="w-4 h-4 text-vet-emerald" />
                   <div>
                     <span className="text-vet-muted block text-[10px]">Peso Paciente</span>
-                    <strong className="text-vet-navy">{cons.peso_actual} kg</strong>
+                    <strong className="text-vet-navy">{mostrarPesoEnLibras(cons.peso_actual)}</strong>
                   </div>
                 </div>
               </div>
@@ -296,7 +320,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                         onChange={(e) => handleCitaSelect(Number(e.target.value))}
                         className="w-full p-2 border border-vet-border rounded-lg"
                       >
-                        {citas.map((c) => {
+                        {(sesionReal ? pendingCitas : citas).map((c) => {
                           const pet = mascotas.find((m) => m.id_mascota === c.id_mascota);
                           return (
                             <option key={c.id_cita} value={c.id_cita}>
@@ -351,14 +375,17 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                         />
                       </div>
                       <div>
-                        <label className="block text-vet-muted mb-1">Peso Actual (kg)</label>
+                        <label htmlFor="consulta-peso" className="block text-vet-muted mb-1">Peso actual (lb)</label>
                         <input
+                          id="consulta-peso"
                           type="number"
-                          step="0.1"
+                          step="0.01"
+                          min="0.02"
+                          max="2204.60"
                           required
-                          value={form.peso_actual}
-                          onChange={(e) => setForm({ ...form, peso_actual: parseFloat(e.target.value) || 0 })}
-                          placeholder="ej. 28.5"
+                          value={form.peso_lb || ''}
+                          onChange={(e) => setForm({ ...form, peso_lb: e.target.valueAsNumber || 0 })}
+                          placeholder="ej. 62.83"
                           className="w-full p-2 border border-vet-border rounded-lg bg-vet-surface"
                         />
                       </div>
@@ -448,6 +475,7 @@ export const ConsultasView: React.FC<ConsultasViewProps> = ({
                     </button>
                     <button
                       type="submit"
+                      disabled={guardandoConsulta}
                       className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold"
                     >
                       Guardar Consulta

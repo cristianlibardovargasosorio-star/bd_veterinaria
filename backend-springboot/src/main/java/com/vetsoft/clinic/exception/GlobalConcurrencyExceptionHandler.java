@@ -33,7 +33,7 @@ public class GlobalConcurrencyExceptionHandler {
 
     @ExceptionHandler({DataIntegrityViolationException.class, IllegalStateException.class})
     public ProblemDetail handleDomainOrUniqueConflict(RuntimeException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "El cambio entra en conflicto con otro registro.");
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

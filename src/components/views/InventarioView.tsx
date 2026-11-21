@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
+import { ajustarLote, guardarLote, guardarProducto } from '../../services/operacionApiService';
 import { Producto, Lote } from '../../types';
 import {
   Boxes,
@@ -25,6 +26,10 @@ export const InventarioView: React.FC = () => {
     crearLote,
     ajustarStockLote,
     currentUser,
+    sesionReal,
+    jwtToken,
+    recargarOperacion,
+    errorOperacion,
   } = useStore();
 
   const [activeSubTab, setActiveSubTab] = useState<'lotes' | 'existencias' | 'alertas' | 'movimientos'>('lotes');
@@ -35,6 +40,7 @@ export const InventarioView: React.FC = () => {
   const [showLoteModal, setShowLoteModal] = useState(false);
   const [showAjusteModal, setShowAjusteModal] = useState(false);
   const [feedback, setFeedback] = useState<{ text: string; isError: boolean } | null>(null);
+  const [guardando, setGuardando] = useState(false);
 
   // Forms
   const [prodForm, setProdForm] = useState({
@@ -62,11 +68,30 @@ export const InventarioView: React.FC = () => {
 
   const todayStr = new Date().toISOString().split('T')[0];
 
+  const operar = async (
+    remoto: (token: string) => Promise<unknown>,
+    local: () => { success: boolean; message: string },
+    mensaje: string,
+  ) => {
+    if (!sesionReal) return local();
+    if (!jwtToken) return { success: false, message: 'Vuelve a iniciar sesión.' };
+    setGuardando(true);
+    try {
+      await remoto(jwtToken);
+      recargarOperacion();
+      return { success: true, message: mensaje };
+    } catch (error) {
+      return { success: false, message: (error as Error).message };
+    } finally {
+      setGuardando(false);
+    }
+  };
+
   // Handlers
-  const handleCreateProd = (e: React.FormEvent) => {
+  const handleCreateProd = async (e: React.FormEvent) => {
     e.preventDefault();
     setFeedback(null);
-    const res = crearProducto(prodForm);
+    const res = await operar((token) => guardarProducto(token, prodForm), () => crearProducto(prodForm), 'Producto guardado.');
     if (res.success) {
       setFeedback({ text: res.message, isError: false });
       setTimeout(() => {
@@ -78,16 +103,17 @@ export const InventarioView: React.FC = () => {
     }
   };
 
-  const handleCreateLote = (e: React.FormEvent) => {
+  const handleCreateLote = async (e: React.FormEvent) => {
     e.preventDefault();
     setFeedback(null);
     // Emulates trigger trg_lote_vencimiento_bi
-    const res = crearLote({
+    const lote = {
       id_producto: loteForm.id_producto,
       codigo_lote: loteForm.codigo_lote,
       fecha_vencimiento: loteForm.fecha_vencimiento ? loteForm.fecha_vencimiento : null,
       stock_actual: loteForm.stock_actual,
-    });
+    };
+    const res = await operar((token) => guardarLote(token, lote), () => crearLote(lote), 'Lote guardado.');
 
     if (res.success) {
       setFeedback({ text: res.message, isError: false });
@@ -100,14 +126,13 @@ export const InventarioView: React.FC = () => {
     }
   };
 
-  const handleAjuste = (e: React.FormEvent) => {
+  const handleAjuste = async (e: React.FormEvent) => {
     e.preventDefault();
     setFeedback(null);
-    const res = ajustarStockLote(
-      ajusteForm.id_lote,
-      ajusteForm.cantidad_delta,
-      ajusteForm.motivo,
-      ajusteForm.tipo
+    const res = await operar(
+      (token) => ajustarLote(token, ajusteForm.id_lote, ajusteForm.cantidad_delta, ajusteForm.motivo),
+      () => ajustarStockLote(ajusteForm.id_lote, ajusteForm.cantidad_delta, ajusteForm.motivo, ajusteForm.tipo),
+      'Ajuste guardado.',
     );
     if (res.success) {
       setFeedback({ text: res.message, isError: false });
@@ -122,6 +147,7 @@ export const InventarioView: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {errorOperacion && <p role="alert" className="text-sm text-vet-danger-ink">{errorOperacion}</p>}
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -136,7 +162,10 @@ export const InventarioView: React.FC = () => {
 
         <div className="flex flex-wrap items-center gap-2">
           <button
-            onClick={() => setShowAjusteModal(true)}
+            onClick={() => {
+              setAjusteForm((form) => ({ ...form, id_lote: lotes[0]?.id_lote ?? 0 }));
+              setShowAjusteModal(true);
+            }}
             className="px-3.5 py-2 rounded-xl border border-vet-border bg-vet-surface hover:bg-vet-surface text-vet-muted text-xs font-bold flex items-center gap-1.5 shadow-xs transition-colors"
           >
             <ArrowUpDown className="w-4 h-4 text-vet-muted" />
@@ -144,7 +173,10 @@ export const InventarioView: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setShowLoteModal(true)}
+            onClick={() => {
+              setLoteForm((form) => ({ ...form, id_producto: productos[0]?.id_producto ?? 0 }));
+              setShowLoteModal(true);
+            }}
             className="px-3.5 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
           >
             <Plus className="w-4 h-4 text-vet-navy" />
@@ -454,7 +486,10 @@ export const InventarioView: React.FC = () => {
               </p>
             </div>
             <button
-              onClick={() => setShowAjusteModal(true)}
+              onClick={() => {
+                setAjusteForm((form) => ({ ...form, id_lote: lotes[0]?.id_lote ?? 0 }));
+                setShowAjusteModal(true);
+              }}
               className="px-3 py-1.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold flex items-center gap-1.5"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -600,6 +635,7 @@ export const InventarioView: React.FC = () => {
                 </button>
                 <button
                   type="submit"
+                  disabled={guardando || feedback?.isError === false}
                   className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg font-bold"
                 >
                   Guardar Producto
@@ -687,6 +723,7 @@ export const InventarioView: React.FC = () => {
                 </button>
                 <button
                   type="submit"
+                  disabled={guardando || feedback?.isError === false}
                   className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg font-bold"
                 >
                   Crear Lote
@@ -773,6 +810,7 @@ export const InventarioView: React.FC = () => {
                 </button>
                 <button
                   type="submit"
+                  disabled={guardando || feedback?.isError === false}
                   className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-bold"
                 >
                   Aplicar Ajuste

@@ -4,15 +4,18 @@ import com.vetsoft.auth.dto.RegistroUsuarioRequestDto;
 import com.vetsoft.auth.dto.UsuarioResponseDto;
 import com.vetsoft.auth.exception.CorreoDuplicadoException;
 import com.vetsoft.auth.model.Usuario;
+import com.vetsoft.auth.model.RolUsuario;
 import com.vetsoft.auth.repository.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Servicio de administración de usuarios internos (VET-RF-01).
@@ -66,6 +69,29 @@ public class AdminUsuarioService {
     public Page<UsuarioResponseDto> listarUsuariosPaginados(Pageable pageable) {
         return usuarioRepository.findAllByOrderByIdUsuarioDesc(pageable)
                 .map(UsuarioResponseDto::fromEntity);
+    }
+
+    @Transactional
+    public UsuarioResponseDto actualizarAcceso(long id, String administrador, RolUsuario rol, Boolean activo) {
+        boolean autorizado = usuarioRepository.findAllByRolAndActivoTrueOrderByIdUsuario(RolUsuario.ADMINISTRADOR)
+                .stream().anyMatch(usuario -> usuario.getCorreo().equalsIgnoreCase(administrador));
+        if (!autorizado) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Tu cuenta no tiene acceso administrativo.");
+        }
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "La cuenta no existe."));
+        if (usuario.getCorreo().equalsIgnoreCase(administrador)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Otro administrador debe modificar tu cuenta.");
+        }
+        if (rol != null) {
+            usuario.setRol(rol);
+        }
+        if (activo != null) {
+            usuario.setActivo(activo);
+        }
+        usuarioRepository.registrarCambioDeAcceso(administrador,
+                "Cuenta #" + id + ": " + usuario.getRol().name() + (usuario.isActivo() ? " activa" : " suspendida"));
+        return UsuarioResponseDto.fromEntity(usuario);
     }
 }
 

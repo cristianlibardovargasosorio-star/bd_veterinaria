@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStore } from '../../db/store';
-import { OperacionAuditoria } from '../../types';
+import { AuditoriaSistema, OperacionAuditoria } from '../../types';
+import { apiVetSoft } from '../../services/apiVetSoft';
 import {
   ShieldCheck,
   Search,
@@ -14,7 +15,18 @@ import {
 } from 'lucide-react';
 
 export const AuditoriaSRSView: React.FC = () => {
-  const { auditoria } = useStore();
+  const { auditoria: auditoriaLocal, sesionReal, jwtToken } = useStore();
+  const [auditoriaReal, setAuditoriaReal] = useState<AuditoriaSistema[]>([]);
+  const [errorCarga, setErrorCarga] = useState<string | null>(null);
+  const auditoria = sesionReal ? auditoriaReal : auditoriaLocal;
+  useEffect(() => {
+    if (!sesionReal || !jwtToken) return;
+    let vigente = true;
+    apiVetSoft<AuditoriaSistema[]>('/api/auditoria', jwtToken)
+      .then((datos) => { if (vigente) setAuditoriaReal(datos); })
+      .catch((error: Error) => { if (vigente) setErrorCarga(error.message); });
+    return () => { vigente = false; };
+  }, [sesionReal, jwtToken]);
 
   const [filterTabla, setFilterTabla] = useState<string>('TODAS');
   const [filterOp, setFilterOp] = useState<string>('TODAS');
@@ -52,6 +64,7 @@ export const AuditoriaSRSView: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {errorCarga && <p role="alert" className="text-sm text-vet-danger-ink">{errorCarga}</p>}
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -60,7 +73,7 @@ export const AuditoriaSRSView: React.FC = () => {
             <span>Auditoría del Sistema y Garantías ACID</span>
           </h2>
           <p className="text-xs text-vet-muted mt-0.5">
-            Registro cronológico inmutable de operaciones (INSERT, UPDATE, DELETE) en la tabla <code>auditoria_sistema</code>.
+            {sesionReal ? 'Últimos eventos de cuentas registrados en PostgreSQL.' : 'Registro cronológico de operaciones de la clínica.'}
           </p>
         </div>
 

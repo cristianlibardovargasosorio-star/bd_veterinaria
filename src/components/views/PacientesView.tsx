@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
+import { kilosALibras, librasAKilos, mostrarPesoEnLibras } from '../../utils/peso';
+import { guardarPaciente } from '../../services/pacientesApiService';
 import { Mascota } from '../../types';
 import { ActiveTab } from '../Sidebar';
 import {
@@ -37,6 +39,11 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
     currentUser,
     currentRole,
     registrarMascota,
+    sesionReal,
+    jwtToken,
+    cargandoPacientes,
+    errorPacientes,
+    recargarPacientes,
   } = useStore();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,6 +52,8 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
 
   // Modals state
   const [showNewPetModal, setShowNewPetModal] = useState(false);
+  const [guardandoPaciente, setGuardandoPaciente] = useState(false);
+  const [correoTutor, setCorreoTutor] = useState('');
   const [modalFeedback, setModalFeedback] = useState<{ text: string; isError: boolean } | null>(null);
 
   // Form New Pet
@@ -56,7 +65,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
     raza: '',
     fecha_nacimiento: '2024-01-01',
     genero: 'MACHO' as Mascota['genero'],
-    peso_kg: 10,
+    peso_lb: kilosALibras(10),
     microchip_id: '',
     estado_salud: 'SANO',
     activo: true,
@@ -93,7 +102,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
   });
 
   // Handlers
-  const handleCreatePet = (e: React.FormEvent) => {
+  const handleCreatePet = async (e: React.FormEvent) => {
     e.preventDefault();
     setModalFeedback(null);
     if (!petForm.nombre.trim()) {
@@ -110,17 +119,35 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
       direccion: ownerForm.direccion.trim(),
     } : undefined;
 
-    if (tutor && Object.values(tutor).some((value) => value === '')) {
+    if (!sesionReal && tutor && Object.values(tutor).some((value) => value === '')) {
       setModalFeedback({ text: 'Completa los datos del tutor.', isError: true });
       return;
     }
 
-    const res = registrarMascota(petForm, tutor);
+    let res: { success: boolean; message: string };
+    const { peso_lb, ...datosMascota } = petForm;
+    const mascota = { ...datosMascota, peso_kg: librasAKilos(peso_lb) };
+    if (sesionReal) {
+      if (!jwtToken) return;
+      setGuardandoPaciente(true);
+      try {
+        await guardarPaciente(jwtToken, mascota, tutor && { ...tutor, correo: correoTutor.trim() });
+        recargarPacientes();
+        res = { success: true, message: 'Paciente guardado en VetSoft.' };
+      } catch (error) {
+        res = { success: false, message: (error as Error).message };
+      } finally {
+        setGuardandoPaciente(false);
+      }
+    } else {
+      res = registrarMascota(mascota, tutor);
+    }
     if (res.success) {
       setModalFeedback({ text: res.message, isError: false });
       setTimeout(() => {
         setShowNewPetModal(false);
         setModalFeedback(null);
+        setCorreoTutor('');
         setOwnerForm({
           cedula_documento: '',
           nombres: '',
@@ -137,7 +164,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
           raza: '',
           fecha_nacimiento: '2024-01-01',
           genero: 'MACHO',
-          peso_kg: 10,
+          peso_lb: kilosALibras(10),
           microchip_id: '',
           estado_salud: 'SANO',
           activo: true,
@@ -165,7 +192,15 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
         {currentRole !== 'PROPIETARIO' && (
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setShowNewPetModal(true)}
+              onClick={() => {
+                if (sesionReal) {
+                  setPetForm((form) => ({
+                    ...form, codigo_expediente: `EXP-${crypto.randomUUID().toUpperCase()}`,
+                    id_propietario: propietarios.length ? 0 : -1,
+                  }));
+                }
+                setShowNewPetModal(true);
+              }}
               className="px-4 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all"
             >
               <Plus className="w-4 h-4" />
@@ -257,7 +292,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-vet-muted">Peso actual:</span>
-                    <span className="font-bold text-vet-navy">{pet.peso_kg} kg</span>
+                    <span className="font-bold text-vet-navy">{mostrarPesoEnLibras(pet.peso_kg)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-vet-muted">Estado de salud:</span>
@@ -282,11 +317,22 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
         })}
       </div>
 
-      {displayedPets.length === 0 && (
+      {cargandoPacientes && <p role="status" className="p-4">Cargando pacientes…</p>}
+      {errorPacientes && (
+        <div role="alert" className="p-4">
+          <p>{errorPacientes}</p>
+          <button type="button" className="underline" onClick={recargarPacientes}>Volver a cargar</button>
+        </div>
+      )}
+      {!cargandoPacientes && !errorPacientes && displayedPets.length === 0 && (
         <div className="p-12 text-center bg-vet-surface rounded-[20px] border border-vet-border">
           <PawPrint className="w-12 h-12 text-vet-muted mx-auto mb-2" />
           <h3 className="font-bold text-vet-muted">No se encontraron pacientes</h3>
-          <p className="text-xs text-vet-muted mt-1">Prueba con otro término de búsqueda o registra uno nuevo.</p>
+          <p className="text-xs text-vet-muted mt-1">
+            {currentRole === 'PROPIETARIO' && !mascotas.length
+              ? 'La clínica puede vincular una mascota a tu cuenta usando tu correo.'
+              : 'Prueba con otro término de búsqueda.'}
+          </p>
         </div>
       )}
 
@@ -327,7 +373,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </div>
                 <div className="p-3 bg-vet-surface rounded-xl border border-vet-border">
                   <span className="text-vet-muted block text-[10px]">Peso Actual</span>
-                  <span className="font-bold text-vet-navy">{selectedPet.peso_kg} kg</span>
+                  <span className="font-bold text-vet-navy">{mostrarPesoEnLibras(selectedPet.peso_kg)}</span>
                 </div>
                 <div className="p-3 bg-vet-surface rounded-xl border border-vet-border">
                   <span className="text-vet-muted block text-[10px]">Nacimiento</span>
@@ -519,13 +565,16 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-vet-muted mb-1">Peso (kg)</label>
+                  <label htmlFor="paciente-peso" className="block font-semibold text-vet-muted mb-1">Peso (lb)</label>
                   <input
+                    id="paciente-peso"
                     type="number"
-                    step="0.1"
+                    step="0.01"
+                    min="0.02"
+                    max="2204.60"
                     required
-                    value={petForm.peso_kg}
-                    onChange={(e) => setPetForm({ ...petForm, peso_kg: parseFloat(e.target.value) || 0 })}
+                    value={petForm.peso_lb || ''}
+                    onChange={(e) => setPetForm({ ...petForm, peso_lb: e.target.valueAsNumber || 0 })}
                     className="w-full p-2 border border-vet-border rounded-lg"
                   />
                 </div>
@@ -577,6 +626,14 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </label>
                 {petForm.id_propietario === -1 && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    {sesionReal && (
+                      <label className="block space-y-1 font-semibold text-vet-muted sm:col-span-2">
+                        Correo de la cuenta del tutor
+                        <input type="email" required value={correoTutor}
+                          onChange={(e) => setCorreoTutor(e.target.value)}
+                          className="w-full p-2 border border-vet-border rounded-lg" />
+                      </label>
+                    )}
                     <label className="block space-y-1 font-semibold text-vet-muted">
                       Cédula o documento de identidad
                       <input
@@ -588,7 +645,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                       />
                     </label>
 
-                    <label className="block space-y-1 font-semibold text-vet-muted">
+                    {!sesionReal && <label className="block space-y-1 font-semibold text-vet-muted">
                       Nombres
                       <input
                         type="text"
@@ -597,8 +654,8 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                         onChange={(e) => setOwnerForm({ ...ownerForm, nombres: e.target.value })}
                         className="w-full p-2 border border-vet-border rounded-lg"
                       />
-                    </label>
-                    <label className="block space-y-1 font-semibold text-vet-muted">
+                    </label>}
+                    {!sesionReal && <label className="block space-y-1 font-semibold text-vet-muted">
                       Apellidos
                       <input
                         type="text"
@@ -607,7 +664,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                         onChange={(e) => setOwnerForm({ ...ownerForm, apellidos: e.target.value })}
                         className="w-full p-2 border border-vet-border rounded-lg"
                       />
-                    </label>
+                    </label>}
 
                     <label className="block space-y-1 font-semibold text-vet-muted">
                       Teléfono de contacto
@@ -624,7 +681,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                       Dirección
                       <input
                         type="text"
-                        required
+                        required={!sesionReal}
                         value={ownerForm.direccion}
                         onChange={(e) => setOwnerForm({ ...ownerForm, direccion: e.target.value })}
                         className="w-full p-2 border border-vet-border rounded-lg"
@@ -661,7 +718,7 @@ export const PacientesView: React.FC<PacientesViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  disabled={modalFeedback?.isError === false}
+                  disabled={guardandoPaciente || modalFeedback?.isError === false}
                   className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold"
                 >
                   Guardar Paciente

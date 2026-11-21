@@ -1,6 +1,10 @@
 # Perfil de Producción (RNF-Seguridad y Portabilidad)
 # Activar con: --spring.profiles.active=prod
 spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema_operacion.sql
   jpa:
     open-in-view: false
     hibernate:

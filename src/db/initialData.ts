@@ -17,19 +17,6 @@ import {
   AuditoriaSistema,
 } from '../types';
 
-export const DEMO_OWNER_EMAIL = 'camilo.propietario@vetsoft.com';
-export const DEMO_OWNER_ID = 600_000;
-
-export const DEMO_OWNER_PROFILE: Propietario = {
-  id_propietario: DEMO_OWNER_ID,
-  id_usuario: DEMO_OWNER_ID,
-  cedula_documento: 'DEMO-CAMILO',
-  nombres: 'Camilo',
-  apellidos: 'Herrera',
-  telefono: '',
-  direccion: '',
-};
-
 export const INITIAL_USUARIOS: Usuario[] = [
   {
     id_usuario: 1,
@@ -91,19 +78,6 @@ export const INITIAL_USUARIOS: Usuario[] = [
     otp_expiracion: null,
     fecha_creacion: '2026-03-01T14:20:00Z',
   },
-  {
-    id_usuario: DEMO_OWNER_ID,
-    nombre_completo: 'Camilo Herrera',
-    correo: DEMO_OWNER_EMAIL,
-    contrasena: '$2a$12$demoPropietarioCamilo',
-    rol_id: 4,
-    rol_nombre: 'PROPIETARIO',
-    estado: 'ACTIVO',
-    intentos_fallidos: 0,
-    otp_code: null,
-    otp_expiracion: null,
-    fecha_creacion: '2026-11-20T00:00:00-05:00',
-  },
 ];
 
 export const INITIAL_PROPIETARIOS: Propietario[] = [
@@ -143,7 +117,6 @@ export const INITIAL_PROPIETARIOS: Propietario[] = [
     telefono: '+57 315 902 4410',
     direccion: 'Transversal 23 # 94 - 11, Bogotá',
   },
-  DEMO_OWNER_PROFILE,
 ];
 
 export const INITIAL_VETERINARIOS: Veterinario[] = [

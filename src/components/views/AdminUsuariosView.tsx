@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../db/store';
-import { registrarUsuarioInternoApi } from '../../services/usuarioApiService';
+import { actualizarUsuarioApi, crearUsuarioApi, listarUsuariosApi, registrarUsuarioInternoApi } from '../../services/usuarioApiService';
+import { Usuario, UserRole } from '../../types';
 import {
   UserPlus,
   Mail,
@@ -32,7 +33,23 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 export const AdminUsuariosView: React.FC = () => {
-  const { usuarios, currentRole, currentUser, registerInternalUser, updateInternalUserAccess } = useStore();
+  const { usuarios, currentRole, currentUser, registerInternalUser, updateInternalUserAccess, sesionReal, jwtToken } = useStore();
+  const [usuariosDb, setUsuariosDb] = useState<Usuario[]>([]);
+  const [errorLista, setErrorLista] = useState<string | null>(null);
+  const [cargandoLista, setCargandoLista] = useState(false);
+  const [guardandoCuenta, setGuardandoCuenta] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!sesionReal || !jwtToken || currentRole !== 'ADMINISTRADOR') return;
+    let vigente = true;
+    setCargandoLista(true);
+    setErrorLista(null);
+    listarUsuariosApi(jwtToken)
+      .then((datos) => { if (vigente) setUsuariosDb(datos); })
+      .catch((error: Error) => { if (vigente) setErrorLista(error.message); })
+      .finally(() => { if (vigente) setCargandoLista(false); });
+    return () => { vigente = false; };
+  }, [sesionReal, jwtToken, currentRole]);
 
   const [nombreCompleto, setNombreCompleto] = useState('');
   const [correo, setCorreo] = useState('');
@@ -54,12 +71,27 @@ export const AdminUsuariosView: React.FC = () => {
   const accessDialog = useRef<HTMLDialogElement>(null);
   const pageSize = 6;
 
-  const internalUsers = usuarios.filter((u) => u.rol_nombre !== 'PROPIETARIO' && u.estado !== 'ELIMINADO');
+  const internalUsers = sesionReal ? usuariosDb : usuarios.filter((u) => u.rol_nombre !== 'PROPIETARIO' && u.estado !== 'ELIMINADO');
   const pendingUser = internalUsers.find((user) => user.id_usuario === pendingAccess?.id);
   const eliminating = pendingAccess?.action === 'eliminar';
   const totalPages = Math.max(1, Math.ceil(internalUsers.length / pageSize));
   const visiblePage = Math.min(currentPage, totalPages);
   const paginatedUsers = internalUsers.slice((visiblePage - 1) * pageSize, visiblePage * pageSize);
+
+  const actualizarCuenta = async (usuario: Usuario, cambio: { rol?: UserRole; activo?: boolean }) => {
+    if (!jwtToken) return;
+    setGuardandoCuenta(usuario.id_usuario);
+    setAccessFeedback(null);
+    try {
+      const actualizada = await actualizarUsuarioApi(jwtToken, usuario.id_usuario, cambio);
+      setUsuariosDb((actuales) => actuales.map((actual) => actual.id_usuario === actualizada.id_usuario ? actualizada : actual));
+      setAccessFeedback({ success: true, message: 'Cambios guardados.' });
+    } catch (error) {
+      setAccessFeedback({ success: false, message: (error as Error).message });
+    } finally {
+      setGuardandoCuenta(null);
+    }
+  };
 
   const confirmAccessChange = (id: number, action: 'suspender' | 'eliminar') => {
     setAccessFeedback(null);
@@ -97,7 +129,22 @@ export const AdminUsuariosView: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Delegar llamada HTTP al servicio dedicado (VET-RNF-06)
+      if (sesionReal) {
+        if (!jwtToken) throw new Error('Vuelve a iniciar sesión.');
+        const creado = await crearUsuarioApi(jwtToken, {
+          nombreCompleto: nombreCompleto.trim(), correo: correo.trim(), contrasena, rol: ROLE_TO_STORE[rol],
+        });
+        setUsuariosDb((actuales) => [creado, ...actuales]);
+        setCurrentPage(1);
+        setSuccessMessage('Usuario registrado en VetSoft.');
+        setNombreCompleto('');
+        setCorreo('');
+        setContrasena('');
+        setRol('Veterinario');
+        setFieldErrors({});
+        return;
+      }
+
       const response = await registrarUsuarioInternoApi({
         nombreCompleto: nombreCompleto.trim(),
         correo: correo.trim(),
@@ -141,6 +188,8 @@ export const AdminUsuariosView: React.FC = () => {
       setContrasena('');
       setRol('Veterinario');
       setFieldErrors({});
+    } catch (error) {
+      setServerError((error as Error).message);
     } finally {
       setIsSubmitting(false);
     }
@@ -332,9 +381,11 @@ export const AdminUsuariosView: React.FC = () => {
         {/* Listado de Personal Registrado */}
         <div className="min-w-0 bg-vet-surface rounded-[24px] border border-vet-border p-4 shadow-xs sm:p-6 xl:col-span-8">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-base font-bold text-vet-navy">Personal Interno Registrado</h2>
+            <h2 className="text-base font-bold text-vet-navy">{sesionReal ? 'Cuentas registradas' : 'Personal Interno Registrado'}</h2>
             <span className="text-xs text-vet-muted">Tabla PostgreSQL: usuarios (UNIQUE correo)</span>
           </div>
+          {cargandoLista && <p role="status" className="py-2 text-sm">Cargando cuentas…</p>}
+          {errorLista && <p role="alert" className="py-2 text-sm text-vet-danger-ink">{errorLista}</p>}
 
           <div className="overflow-x-auto">
             <table className="w-full table-fixed border-collapse text-left text-xs">
@@ -362,9 +413,19 @@ export const AdminUsuariosView: React.FC = () => {
                       <div className="font-mono text-[11px] text-vet-muted [overflow-wrap:anywhere]">{u.correo}</div>
                     </td>
                     <td className="px-2 py-3">
-                      <span className="inline-block max-w-full rounded-full bg-vet-ice px-2 py-0.5 text-[11px] font-semibold text-vet-navy [overflow-wrap:anywhere]">
+                      {sesionReal && u.id_usuario !== currentUser.id_usuario ? (
+                        <select
+                          aria-label={`Rol de ${u.correo}`}
+                          value={u.rol_nombre}
+                          disabled={guardandoCuenta !== null}
+                          onChange={(event) => void actualizarCuenta(u, { rol: event.target.value as UserRole })}
+                          className="w-full rounded-lg border border-vet-border bg-vet-surface p-1"
+                        >
+                          {Object.entries(ROLE_LABELS).map(([valor, etiqueta]) => <option key={valor} value={valor}>{etiqueta}</option>)}
+                        </select>
+                      ) : <span className="inline-block max-w-full rounded-full bg-vet-ice px-2 py-0.5 text-[11px] font-semibold text-vet-navy [overflow-wrap:anywhere]">
                         {ROLE_LABELS[u.rol_nombre] || u.rol_nombre}
-                      </span>
+                      </span>}
                     </td>
                     <td className="px-2 py-3">
                       <span className={`inline-block max-w-full rounded-full border px-2 py-0.5 text-[11px] font-semibold [overflow-wrap:anywhere] ${u.estado === 'ACTIVO' ? 'bg-vet-ice text-vet-emerald-hover border-vet-emerald/30' : 'bg-vet-ice text-vet-muted border-vet-border'}`}>
@@ -372,7 +433,20 @@ export const AdminUsuariosView: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-2 py-3 text-[11px] text-vet-muted">
-                      {u.id_usuario === currentUser.id_usuario ? 'Tu cuenta' : u.estado === 'INACTIVO' ? (
+                      {u.id_usuario === currentUser.id_usuario ? 'Tu cuenta' : sesionReal ? (
+                        <button
+                          type="button"
+                          disabled={guardandoCuenta !== null}
+                          onClick={() => {
+                            const activo = u.estado !== 'ACTIVO';
+                            if (activo) void actualizarCuenta(u, { activo });
+                            else confirmAccessChange(u.id_usuario, 'suspender');
+                          }}
+                          className="rounded-lg border border-vet-border px-2.5 py-1.5"
+                        >
+                          {u.estado === 'ACTIVO' ? 'Suspender' : 'Reactivar'}
+                        </button>
+                      ) : u.estado === 'INACTIVO' ? (
                         <div className="flex flex-wrap items-center gap-2">
                           <button
                             type="button"
@@ -432,6 +506,11 @@ export const AdminUsuariosView: React.FC = () => {
                 disabled={!pendingUser}
                 onClick={() => {
                   if (!pendingUser || !pendingAccess) return;
+                  if (sesionReal) {
+                    void actualizarCuenta(pendingUser, { activo: false });
+                    accessDialog.current?.close();
+                    return;
+                  }
                   const result = updateInternalUserAccess(pendingUser.id_usuario, pendingAccess.action);
                   setAccessFeedback(result);
                   if (result.success && eliminating && paginatedUsers.length === 1) {

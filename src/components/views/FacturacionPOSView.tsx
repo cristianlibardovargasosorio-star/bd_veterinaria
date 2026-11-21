@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
+import { actualizarFactura, agregarDetalle, crearFactura } from '../../services/operacionApiService';
 import { Factura, DetalleFactura, Lote, Producto } from '../../types';
 import confetti from 'canvas-confetti';
 import {
@@ -30,6 +31,10 @@ export const FacturacionPOSView: React.FC = () => {
     spAgregarDetalle,
     spConfirmarFactura,
     anularFactura,
+    sesionReal,
+    jwtToken,
+    recargarOperacion,
+    errorOperacion,
   } = useStore();
 
   const [activeFacturaId, setActiveFacturaId] = useState<number | null>(() => {
@@ -43,6 +48,7 @@ export const FacturacionPOSView: React.FC = () => {
   const [selectedCantidad, setSelectedCantidad] = useState<number>(1);
   const [feedback, setFeedback] = useState<{ text: string; isError: boolean } | null>(null);
   const [showReceiptModal, setShowReceiptModal] = useState<Factura | null>(null);
+  const [procesando, setProcesando] = useState(false);
 
   // Active Invoice
   const activeFactura = facturas.find((f) => f.id_factura === activeFacturaId);
@@ -57,7 +63,31 @@ export const FacturacionPOSView: React.FC = () => {
   const todayStr = new Date().toISOString().split('T')[0];
 
   // Actions
+  const operarFactura = async (operacion: (token: string) => Promise<void>) => {
+    if (!jwtToken) return;
+    setProcesando(true);
+    setFeedback(null);
+    try {
+      await operacion(jwtToken);
+      recargarOperacion();
+    } catch (error) {
+      setFeedback({ text: (error as Error).message, isError: true });
+    } finally {
+      setProcesando(false);
+    }
+  };
+
   const handleNuevaFactura = () => {
+    if (sesionReal) {
+      void operarFactura(async (token) => {
+        const idCliente = propietarios.find((p) => p.id_propietario === selectedClienteId)?.id_propietario
+          ?? propietarios[0]?.id_propietario ?? 0;
+        const { idFactura } = await crearFactura(token, idCliente);
+        setActiveFacturaId(idFactura);
+        setFeedback({ text: 'Factura iniciada en borrador.', isError: false });
+      });
+      return;
+    }
     const newId = spCrearFactura(selectedClienteId);
     setActiveFacturaId(newId);
     setFeedback({ text: `Factura #${newId} iniciada en BORRADOR (sp_crear_factura)`, isError: false });
@@ -68,6 +98,15 @@ export const FacturacionPOSView: React.FC = () => {
     if (!activeFacturaId) return;
     setFeedback(null);
 
+    if (sesionReal) {
+      void operarFactura(async (token) => {
+        const idLote = lotes.find((l) => l.id_lote === selectedLoteId)?.id_lote ?? lotes[0]?.id_lote ?? 0;
+        const { mensaje } = await agregarDetalle(token, activeFacturaId, idLote, selectedCantidad);
+        setFeedback({ text: mensaje, isError: false });
+        setSelectedCantidad(1);
+      });
+      return;
+    }
     const res = spAgregarDetalle(activeFacturaId, selectedLoteId, selectedCantidad);
     if (res.success) {
       setFeedback({ text: res.message, isError: false });
@@ -81,6 +120,14 @@ export const FacturacionPOSView: React.FC = () => {
     if (!activeFacturaId) return;
     setFeedback(null);
 
+    if (sesionReal) {
+      void operarFactura(async (token) => {
+        await actualizarFactura(token, activeFacturaId, 'confirmar');
+        if (activeFactura) setShowReceiptModal({ ...activeFactura, estado: 'PAGADA' });
+        setActiveFacturaId(null);
+      });
+      return;
+    }
     const res = spConfirmarFactura(activeFacturaId);
     if (res.success) {
       confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
@@ -96,6 +143,7 @@ export const FacturacionPOSView: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {errorOperacion && <p role="alert" className="text-sm text-vet-danger-ink">{errorOperacion}</p>}
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -111,6 +159,7 @@ export const FacturacionPOSView: React.FC = () => {
         {!activeFactura && (
           <button
             onClick={handleNuevaFactura}
+            disabled={procesando}
             className="px-4 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 shadow-md "
           >
             <Plus className="w-4 h-4" />
@@ -214,6 +263,7 @@ export const FacturacionPOSView: React.FC = () => {
                       />
                       <button
                         type="submit"
+                        disabled={procesando}
                         className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg font-bold shrink-0 transition-colors"
                       >
                         + Agregar
@@ -248,7 +298,7 @@ export const FacturacionPOSView: React.FC = () => {
                       <tbody className="divide-y divide-slate-100">
                         {activeDetalles.map((det) => {
                           const lote = lotes.find((l) => l.id_lote === det.id_lote);
-                          const prod = lote ? productos.find((p) => p.id_producto === lote.id_producto) : null;
+                          const prod = productos.find((p) => p.id_producto === (lote?.id_producto ?? det.id_producto));
 
                           return (
                             <tr key={det.id_detalle}>
@@ -282,7 +332,18 @@ export const FacturacionPOSView: React.FC = () => {
 
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => anularFactura(activeFactura.id_factura)}
+                    onClick={() => {
+                      if (!sesionReal) {
+                        anularFactura(activeFactura.id_factura);
+                        return;
+                      }
+                      void operarFactura(async (token) => {
+                        const { mensaje } = await actualizarFactura(token, activeFactura.id_factura, 'anular');
+                        setFeedback({ text: mensaje, isError: false });
+                        setActiveFacturaId(null);
+                      });
+                    }}
+                    disabled={procesando}
                     className="px-4 py-2.5 border border-red-300 text-red-700 hover:bg-red-50 rounded-xl text-xs font-bold transition-colors"
                   >
                     Anular Factura
@@ -290,7 +351,7 @@ export const FacturacionPOSView: React.FC = () => {
 
                   <button
                     onClick={handleConfirmarVenta}
-                    disabled={activeDetalles.length === 0}
+                    disabled={procesando || activeDetalles.length === 0}
                     className="px-6 py-2.5 bg-vet-emerald hover:bg-vet-emerald-hover text-white disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-lg  transition-all cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
@@ -329,6 +390,7 @@ export const FacturacionPOSView: React.FC = () => {
 
               <button
                 onClick={handleNuevaFactura}
+                disabled={procesando}
                 className="px-6 py-3 bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold rounded-xl shadow-md  inline-flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" />
@@ -437,7 +499,7 @@ export const FacturacionPOSView: React.FC = () => {
                   .filter((d) => d.id_factura === showReceiptModal.id_factura)
                   .map((det) => {
                     const lote = lotes.find((l) => l.id_lote === det.id_lote);
-                    const prod = lote ? productos.find((p) => p.id_producto === lote.id_producto) : null;
+                    const prod = productos.find((p) => p.id_producto === (lote?.id_producto ?? det.id_producto));
                     return (
                       <div key={det.id_detalle} className="flex justify-between text-[11px]">
                         <div>

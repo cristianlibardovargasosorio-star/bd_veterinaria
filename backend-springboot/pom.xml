@@ -21,6 +21,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <!-- Spring Boot Web & Validation (JSR-380) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

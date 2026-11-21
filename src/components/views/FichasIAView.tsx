@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useStore } from '../../db/store';
+import { aprobarFichaApi, generarFichaApi } from '../../services/pacientesApiService';
+import { mostrarPesoEnLibras } from '../../utils/peso';
 import { DiagnosticoDocumento } from './DiagnosticoDocumento';
 import confetti from 'canvas-confetti';
 import {
@@ -33,6 +35,9 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
     toggleAprobacionFichaIA,
     currentRole,
     currentUser,
+    sesionReal,
+    jwtToken,
+    recargarPacientes,
   } = useStore();
 
   const isOwner = currentRole === 'PROPIETARIO';
@@ -54,12 +59,24 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
   const activeConsulta = visibleConsultas.find((c) => c.id_consulta === selectedConsultaId) || visibleConsultas[0];
   const activePet = activeConsulta ? mascotas.find((m) => m.id_mascota === activeConsulta.id_mascota) : null;
   const activeVet = activeConsulta ? veterinarios.find((v) => v.id_veterinario === activeConsulta.id_veterinario) : null;
-  const existingFicha = isOwner ? undefined : fichasIA.find((f) => f.id_consulta === activeConsulta?.id_consulta);
+  const existingFicha = fichasIA.find((f) => f.id_consulta === activeConsulta?.id_consulta);
 
   const handleGenerateAI = async () => {
     if (isOwner || !activeConsulta || !activePet) return;
     setLoading(true);
     setErrorMsg(null);
+
+    if (sesionReal && jwtToken) {
+      try {
+        await generarFichaApi(jwtToken, activeConsulta.id_consulta);
+        recargarPacientes();
+      } catch (error) {
+        setErrorMsg((error as Error).message);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
 
     // Exact payload from 04_manual_integracion_ia_api_md_c49966e2.md
     const payload = {
@@ -221,6 +238,11 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
         {activeConsulta && activePet ? (
           <>
             {consultationSelector}
+            {existingFicha?.aprobado_por_veterinario && (
+              <p className="rounded-xl border border-vet-border bg-vet-ice p-4 text-sm">
+                {existingFicha.resumen_propietario}
+              </p>
+            )}
             {activeConsulta.diagnostico?.trim() ? (
               <DiagnosticoDocumento
                 key={activeConsulta.id_consulta}
@@ -299,7 +321,7 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
             <div className="text-xs text-vet-muted">
               FC: <strong className="text-vet-navy">{activeConsulta.frecuencia_cardiaca || '--'} lpm</strong> • Temp:{' '}
               <strong className="text-vet-navy">{activeConsulta.temperatura_c || '--'} °C</strong> • Peso:{' '}
-              <strong className="text-vet-navy">{activeConsulta.peso_actual} kg</strong>
+              <strong className="text-vet-navy">{mostrarPesoEnLibras(activeConsulta.peso_actual)}</strong>
             </div>
           </div>
 
@@ -443,7 +465,17 @@ export const FichasIAView: React.FC<FichasIAViewProps> = ({ initialConsultaId })
             </div>
 
             <button
-              onClick={() => {
+              onClick={async () => {
+                if (sesionReal && jwtToken) {
+                  setErrorMsg(null);
+                  try {
+                    await aprobarFichaApi(jwtToken, existingFicha.id_ficha, !existingFicha.aprobado_por_veterinario);
+                    recargarPacientes();
+                  } catch (error) {
+                    setErrorMsg((error as Error).message);
+                  }
+                  return;
+                }
                 toggleAprobacionFichaIA(existingFicha.id_ficha);
                 confetti({ particleCount: 30, spread: 50 });
               }}

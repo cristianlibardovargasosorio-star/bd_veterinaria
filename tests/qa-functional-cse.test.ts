@@ -194,7 +194,7 @@ runCase('TC-06', 'CSE-Seguridad', 'Verificación estática de artefactos Spring 
   const dtoCode = fs.readFileSync(dtoPath, 'utf8');
   const exCode = fs.readFileSync(exPath, 'utf8');
 
-  assert.ok(controllerCode.includes('@RequestMapping("/admin/usuarios")'), 'Endpoint /admin/usuarios presente');
+  assert.ok(controllerCode.includes('@RequestMapping({"/admin/usuarios", "/api/admin/usuarios"})'), 'Rutas de administración existentes y de API presentes');
   assert.ok(serviceCode.includes('passwordEncoder.encode('), 'Cifrado BCrypt activo en servicio');
   assert.ok(dtoCode.includes('@Size(min = 6'), 'Validación @Size(min = 6) activa en DTO');
   assert.ok(exCode.includes('"Este correo ya está registrado"'), 'Mensaje exacto de correo duplicado presente');
@@ -430,11 +430,11 @@ runCase('TC-23', 'CSE-Seguridad', 'RBAC 3 roles (admin/camilo.vet/carlos.mendoza
   const initData = fs.readFileSync(path.resolve('src/db/initialData.ts'), 'utf8');
   const loginView = fs.readFileSync(path.resolve('src/components/views/LoginView.tsx'), 'utf8');
   const secCfg = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/auth/security/SecurityConfig.java'), 'utf8');
-  const portalCtrl = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/controller/PortalPropietarioController.java'), 'utf8');
+  const pacientesCtrl = fs.readFileSync(path.resolve('backend-springboot/src/main/java/com/vetsoft/clinic/controller/PacientesController.java'), 'utf8');
 
   assert.ok(initData.includes('camilo.vet@vetsoft.com') && initData.includes('carlos.mendoza@vetsoft.com'), 'Correos de prueba alineados en initialData.ts');
-  assert.ok(loginView.includes('carlos.mendoza@vetsoft.com') && loginView.includes('resolvePostLoginDestination'), 'LoginView alineado con carlos.mendoza@vetsoft.com y redirectTo');
-  assert.ok(secCfg.includes('"/erp/**"') && portalCtrl.includes('authentication.getName()'), 'Spring Security protege /erp/** y PortalPropietarioController filtra por propietario autenticado');
+  assert.ok(loginView.includes('await iniciarSesion(') && loginView.includes('resolvePostLoginDestination'), 'LoginView autentica mediante el backend y valida redirectTo');
+  assert.ok(secCfg.includes('"/erp/**"') && pacientesCtrl.includes('cargar(" WHERE u.correo = ?", new Object[] { usuario.getName() }'), 'Spring Security protege /erp/** y los pacientes se filtran por propietario autenticado');
   assert.ok(rbacSrc.includes("startsWith('//')") && rbacSrc.includes("includes('://')"), 'Protección anti-Open Redirect presente en rbac.ts');
   return 'RBAC 3 roles, carlos.mendoza@vetsoft.com, redirectTo y anti-Open Redirect verificados';
 });

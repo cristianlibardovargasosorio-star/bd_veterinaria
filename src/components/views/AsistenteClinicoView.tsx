@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useStore } from '../../db/store';
+import { mostrarPesoEnLibras } from '../../utils/peso';
 import {
   BotMessageSquare,
   Send,
@@ -123,7 +124,7 @@ export const AsistenteClinicoView: React.FC = () => {
             <option value={0}>Consulta general</option>
             {mascotas.map((m) => (
               <option key={m.id_mascota} value={m.id_mascota}>
-                {m.nombre} ({m.especie} - {m.raza}, {m.peso_kg} kg)
+                {m.nombre} ({m.especie} - {m.raza}, {mostrarPesoEnLibras(m.peso_kg)})
               </option>
             ))}
           </select>

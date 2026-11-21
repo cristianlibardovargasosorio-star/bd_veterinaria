@@ -219,6 +219,19 @@ class AuthIntegrationTest {
     }
 
     @Test
+    void apiJsonCorreoSinCuentaInvitaARegistrarse() throws Exception {
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"correo":"sin-cuenta@example.com","contrasena":"ClaveDePrueba"}
+                                """)
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.mensaje").value(
+                        "No tienes una cuenta con este correo. Pulsa Crear una cuenta para registrarte."));
+    }
+
+    @Test
     @DisplayName("VET-RF-02: Cuenta inactiva es rechazada con exactamente 'Correo o contraseña incorrectos'")
     void apiJsonCuentaInactivaRetornaMensajeExacto() throws Exception {
         String payload = """

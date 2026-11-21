@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
-import { DEMO_OWNER_EMAIL } from '../../db/initialData';
 import { UserRole } from '../../types';
 import { ActiveTab } from '../Sidebar';
 import { resolvePostLoginDestination } from '../../utils/rbac';
-import confetti from 'canvas-confetti';
+import { crearCuenta, iniciarSesion } from '../../services/authApiService';
 import {
   Lock,
   Mail,
   KeyRound,
   Eye,
   EyeOff,
-  CheckCircle2,
   AlertCircle,
   ArrowRight,
   ArrowLeft,
@@ -31,7 +29,10 @@ export const LoginView: React.FC<LoginViewProps> = ({
   onReturnToLanding,
   redirectTo = null,
 }) => {
-  const { usuarios, login } = useStore();
+  const { iniciarSesionReal } = useStore();
+  const [registro, setRegistro] = useState(false);
+  const [nombre, setNombre] = useState('');
+  const [aviso, setAviso] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,13 +40,6 @@ export const LoginView: React.FC<LoginViewProps> = ({
   const [emailError, setEmailError] = useState<string | null>(null);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successInfo, setSuccessInfo] = useState<{
-    role: UserRole;
-    email: string;
-    targetTab: ActiveTab;
-    panelName: string;
-  } | null>(null);
-
   // Email format RFC 5322 validation
   const validateEmailFormat = (val: string): boolean => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -64,80 +58,48 @@ export const LoginView: React.FC<LoginViewProps> = ({
     }
   };
 
-  const handleSelectDemoAccount = (demoEmail: string, demoPass: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPass);
-    setEmailError(null);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setLoginError(null);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoginError(null);
-
-    // Criterio 1: Validar que el formato del correo sea válido antes de enviar
-    if (!validateEmailFormat(email)) {
-      setEmailError('El formato del correo electrónico no es válido.');
-      return;
-    }
-
-    if (!password.trim()) {
-      setLoginError('Por favor ingrese su contraseña.');
-      return;
-    }
-
+    setAviso('');
     setIsSubmitting(true);
-
-    // Criterio 2: Verificar en la BD PostgreSQL que las credenciales coincidan (hash Spring Security)
-    setTimeout(() => {
-      const result = login(email.trim(), password);
-
-      if (!result.success) {
-        setIsSubmitting(false);
-        setLoginError(result.message);
+    try {
+      if (registro) {
+        const respuesta = await crearCuenta(nombre.trim(), email.trim(), password);
+        setRegistro(false);
+        setPassword('');
+        setShowPassword(false);
+        setAviso(respuesta.mensaje);
         return;
       }
-
-      // Criterio 3: Redirigir según el rol ENUM y validar redirectTo (anti-Open Redirect)
-      const targetUser = usuarios.find((u) => u.correo.toLowerCase() === email.trim().toLowerCase());
-      const role: UserRole = result.role || targetUser?.rol_nombre || 'PROPIETARIO';
-      const queryRedirect =
-        redirectTo || new URLSearchParams(window.location.search).get('redirectTo');
-      const { targetTab, accessDeniedNotice } = resolvePostLoginDestination(role, queryRedirect);
-
-      const panelNames: Record<UserRole, string> = {
-        ADMINISTRADOR: 'Panel de Administración (/admin/dashboard)',
-        VETERINARIO: 'Panel Clínico Veterinario (/veterinario/panel)',
-        PROPIETARIO: 'Portal de Propietario (/propietario/portal)',
-        RECEPCIONISTA: 'Recepción y Agenda de Citas',
+      const { cuenta, token } = await iniciarSesion(email.trim(), password);
+      const roleIds: Record<UserRole, number> = {
+        ADMINISTRADOR: 1, VETERINARIO: 2, PROPIETARIO: 3, RECEPCIONISTA: 4,
       };
-      const panelName = panelNames[role];
-
-      setSuccessInfo({
-        role,
-        email: email.trim(),
-        targetTab,
-        panelName,
-      });
-
-      try {
-        confetti({
-          particleCount: 45,
-          spread: 55,
-          origin: { y: 0.6 },
-          colors: ['#0f172a', '#E0F2FE', '#0369A1'],
-        });
-      } catch (e) {
-        // ignore confetti errors
-      }
-
-      setTimeout(() => {
-        setIsSubmitting(false);
-        onLoginSuccess(role, targetTab, accessDeniedNotice);
-      }, 350);
-    }, 250);
+      iniciarSesionReal({
+        id_usuario: cuenta.idUsuario,
+        nombre_completo: cuenta.nombreCompleto,
+        correo: cuenta.correo,
+        contrasena: '',
+        rol_id: roleIds[cuenta.rol],
+        rol_nombre: cuenta.rol,
+        estado: 'ACTIVO',
+        intentos_fallidos: 0,
+        otp_code: null,
+        otp_expiracion: null,
+        fecha_creacion: cuenta.fechaCreacion,
+      }, token);
+      const destino = redirectTo || new URLSearchParams(window.location.search).get('redirectTo');
+      const { targetTab, accessDeniedNotice } = resolvePostLoginDestination(cuenta.rol, destino);
+      onLoginSuccess(cuenta.rol, targetTab, accessDeniedNotice);
+    } catch (error) {
+      setLoginError(error instanceof TypeError
+        ? 'No se pudo conectar al servidor. Intenta de nuevo.'
+        : error instanceof Error ? error.message : 'No se pudo completar la solicitud.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-
   return (
     <div className="min-h-screen relative z-10 bg-transparent text-vet-navy flex flex-col justify-between selection:bg-vet-emerald/15 selection:text-vet-navy">
       {/* Whisper-quiet Editorial Top Navigation */}
@@ -194,96 +156,33 @@ export const LoginView: React.FC<LoginViewProps> = ({
           <div className="lg:col-span-7">
             <div className="bg-vet-surface border border-vet-border rounded-[20px] p-8 sm:p-10 relative overflow-hidden steep-floating-artifact">
               {/* SUCCESS OVERLAY */}
-              {successInfo && (
-                <div className="absolute inset-0 z-20 bg-vet-surface/98 flex flex-col items-center justify-center p-6 text-center space-y-4 animate-in fade-in duration-200">
-                  <div className="w-12 h-12 rounded-full bg-vet-ice border border-vet-border text-vet-emerald flex items-center justify-center">
-                    <CheckCircle2 className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[12px] text-vet-muted">
-                      Sesión verificada en PostgreSQL
-                    </span>
-                    <h3 className="font-serif-editorial text-2xl text-vet-navy pt-1">
-                      Bienvenido, {successInfo.email}
-                    </h3>
-                    <p className="text-xs text-vet-muted">
-                      Rol autenticado: <strong className="text-vet-navy">{successInfo.role}</strong>
-                    </p>
-                  </div>
-                  <div className="p-4 rounded-[16px] bg-vet-ice border border-vet-border text-xs text-vet-muted w-full max-w-sm">
-                    <span>Redirigiendo al panel asignado:</span>
-                    <strong className="block text-vet-navy mt-1">{successInfo.panelName}</strong>
-                  </div>
-                </div>
-              )}
-
               <div className="flex items-center justify-between pb-5 mb-6 border-b border-vet-border">
                 <div>
-                  <h2 className="font-serif-editorial text-2xl text-vet-navy">Iniciar Sesión</h2>
-                  <p className="text-xs text-vet-muted mt-1">Ingrese su correo electrónico y contraseña</p>
+                  <h2 className="font-serif-editorial text-2xl text-vet-navy">{registro ? 'Crear cuenta' : 'Iniciar sesión'}</h2>
+                  <p className="text-xs text-vet-muted mt-1">{registro ? 'Regístrate como propietario de mascotas.' : 'Ingresa tu correo y contraseña.'}</p>
                 </div>
                 <span className="text-xs text-vet-muted font-mono">
                   /login
                 </span>
               </div>
 
-              {/* Demo Account Neutral Cards */}
-              <div className="mb-6 space-y-2">
-                <span className="text-[12px] text-vet-muted">
-                  Cuentas de prueba rápida (Contraseña: vetsoft123):
-                </span>
-                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDemoAccount('admin@vetsoft.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-brand transition-colors cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between text-vet-navy">
-                      <span className="text-[11px] font-semibold text-vet-navy">ADMINISTRADOR</span>
-                      <Shield className="w-3.5 h-3.5 text-brand" />
-                    </div>
-                    <div className="text-xs text-vet-muted truncate mt-1">admin@vetsoft.com</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDemoAccount('camilo.vet@vetsoft.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-action transition-colors cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between text-vet-navy">
-                      <span className="text-[11px] font-semibold text-action-hover">VETERINARIO</span>
-                      <Stethoscope className="w-3.5 h-3.5 text-action" />
-                    </div>
-                    <div className="text-xs text-vet-muted truncate mt-1">camilo.vet@vetsoft.com</div>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDemoAccount('carlos.mendoza@vetsoft.com', 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-info transition-colors cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between text-vet-navy">
-                      <span className="text-[11px] font-semibold text-info-ink">PROPIETARIO</span>
-                      <Sparkles className="w-3.5 h-3.5 text-info" />
-                    </div>
-                    <div className="text-xs text-vet-muted truncate mt-1">carlos.mendoza@vetsoft.com</div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleSelectDemoAccount(DEMO_OWNER_EMAIL, 'vetsoft123')}
-                    className="p-3 rounded-[16px] text-left bg-vet-ice hover:bg-vet-surface border border-vet-border border-l-4 border-l-info transition-colors cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between text-vet-navy">
-                      <span className="text-[11px] font-semibold text-info-ink">PROPIETARIO · CAMILO</span>
-                      <Sparkles className="w-3.5 h-3.5 text-info" />
-                    </div>
-                    <div className="mt-1 break-all text-xs text-vet-muted">{DEMO_OWNER_EMAIL}</div>
-                  </button>
-                </div>
-              </div>
-
               {/* Login Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
+                {aviso && <p role="status" className="text-sm text-vet-navy">{aviso}</p>}
+                {registro && (
+                  <div>
+                    <label htmlFor="registro-nombre" className="block mb-1.5 text-xs font-medium">Nombre completo</label>
+                    <input
+                      id="registro-nombre"
+                      autoComplete="name"
+                      required
+                      maxLength={150}
+                      value={nombre}
+                      onChange={(event) => setNombre(event.target.value)}
+                      className="w-full px-4 py-3 rounded-[16px] bg-vet-surface border border-vet-border text-sm"
+                    />
+                  </div>
+                )}
                 {/* Email Field */}
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
@@ -329,14 +228,14 @@ export const LoginView: React.FC<LoginViewProps> = ({
                   <div className="relative">
                     <input
                       id="login-password"
-                      autoComplete="current-password"
+                      autoComplete={registro ? 'new-password' : 'current-password'}
+                      minLength={registro ? 8 : undefined}
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => {
                         setPassword(e.target.value);
                         setLoginError(null);
                       }}
-                      placeholder="••••••••••••"
                       className="w-full pl-4 pr-10 py-3 rounded-[16px] bg-vet-surface border border-vet-border focus:border-vet-navy text-vet-navy placeholder-vet-placeholder outline-none text-sm transition-colors"
                     />
 
@@ -371,11 +270,11 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     {isSubmitting ? (
                       <>
                         <div className="w-3.5 h-3.5 border-2 border-[#ffffff] border-t-transparent rounded-full animate-spin" />
-                        <span>Verificando en PostgreSQL...</span>
+                        <span>{registro ? 'Creando cuenta...' : 'Iniciando sesión...'}</span>
                       </>
                     ) : (
                       <>
-                        <span>Iniciar sesión</span>
+                        <span>{registro ? 'Crear cuenta' : 'Iniciar sesión'}</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -389,6 +288,20 @@ export const LoginView: React.FC<LoginViewProps> = ({
                     Cancelar
                   </button>
                 </div>
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    setRegistro(!registro);
+                    setPassword('');
+                    setShowPassword(false);
+                    setLoginError(null);
+                    setAviso('');
+                  }}
+                  className="text-sm font-semibold underline text-vet-navy"
+                >
+                  {registro ? 'Ya tengo una cuenta' : 'Crear una cuenta'}
+                </button>
               </form>
 
               {/* Tech Architecture Footnote */}

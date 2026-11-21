@@ -1,8 +1,10 @@
 package com.vetsoft.auth.security;
 
 import com.vetsoft.auth.service.CustomUserDetailsService;
+import jakarta.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -13,7 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Configuración central de Spring Security para el Módulo 1: Autenticación y Acceso (RF-01).
@@ -74,6 +78,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .exceptionHandling(ex -> ex.defaultAuthenticationEntryPointFor(
+                    new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new AntPathRequestMatcher("/api/**")))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/login", "/api/auth/registro", "/api/admin/usuarios/**", "/api/pacientes/**", "/api/inventario/**", "/api/facturacion/**"))
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .headers(headers -> headers
@@ -81,8 +88,16 @@ public class SecurityConfig {
                 .contentTypeOptions(Customizer.withDefaults())
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/api/auth/login", "/api/auth/logout", "/css/**", "/js/**", "/images/**").permitAll()
+                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                .requestMatchers("/actuator/health", "/login", "/api/auth/login", "/api/auth/registro", "/api/auth/logout", "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMINISTRADOR")
+                .requestMatchers("/api/pacientes/mis-mascotas").hasRole("PROPIETARIO")
+                .requestMatchers("/api/pacientes/citas", "/api/pacientes/citas/*").hasAnyRole("ADMINISTRADOR", "VETERINARIO", "RECEPCIONISTA", "PROPIETARIO")
+                .requestMatchers("/api/pacientes/consultas", "/api/pacientes/vacunas", "/api/pacientes/fichas/**").hasAnyRole("ADMINISTRADOR", "VETERINARIO")
+                .requestMatchers("/api/pacientes/**").hasAnyRole("ADMINISTRADOR", "VETERINARIO", "RECEPCIONISTA")
+                .requestMatchers("/api/inventario/**").hasAnyRole("ADMINISTRADOR", "VETERINARIO", "RECEPCIONISTA")
+                .requestMatchers("/api/facturacion/**").hasAnyRole("ADMINISTRADOR", "RECEPCIONISTA")
+                .requestMatchers("/api/auditoria").hasAnyRole("ADMINISTRADOR", "RECEPCIONISTA")
                 .requestMatchers("/erp/**").hasAnyRole("ADMINISTRADOR", "VETERINARIO", "RECEPCIONISTA")
                 .requestMatchers("/veterinario/**", "/api/clinica/**").hasAnyRole("ADMINISTRADOR", "VETERINARIO")
                 .requestMatchers("/recepcion/**").hasAnyRole("ADMINISTRADOR", "RECEPCIONISTA")

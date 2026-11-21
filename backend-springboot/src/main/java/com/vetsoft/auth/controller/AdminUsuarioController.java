@@ -3,8 +3,10 @@ package com.vetsoft.auth.controller;
 import com.vetsoft.auth.dto.RegistroUsuarioRequestDto;
 import com.vetsoft.auth.dto.UsuarioResponseDto;
 import com.vetsoft.auth.exception.CorreoDuplicadoException;
+import com.vetsoft.auth.model.RolUsuario;
 import com.vetsoft.auth.service.AdminUsuarioService;
 import jakarta.validation.Valid;
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springframework.data.domain.Page;
@@ -16,18 +18,22 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Endpoint de administración para registro y consulta de personal interno (VET-RF-01).
  * Ruta protegida por Spring Security (.requestMatchers("/admin/**").hasRole("ADMINISTRADOR")).
  */
 @RestController
-@RequestMapping("/admin/usuarios")
+@RequestMapping({"/admin/usuarios", "/api/admin/usuarios"})
 public class AdminUsuarioController {
 
     private final AdminUsuarioService adminUsuarioService;
@@ -49,6 +55,26 @@ public class AdminUsuarioController {
             @PageableDefault(size = 10, sort = "idUsuario") Pageable pageable
     ) {
         return ResponseEntity.ok(adminUsuarioService.listarUsuariosPaginados(pageable));
+    }
+
+    @PatchMapping("/{id}")
+    public UsuarioResponseDto actualizar(@PathVariable long id, @RequestBody CambioAcceso cambio, Principal actor) {
+        if (cambio.rol() == null && cambio.activo() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Selecciona un rol o un estado.");
+        }
+        return adminUsuarioService.actualizarAcceso(id, actor.getName(), cambio.rol(), cambio.activo());
+    }
+
+    public record CambioAcceso(RolUsuario rol, Boolean activo) {}
+
+    @DeleteMapping("/{id}")
+    public UsuarioResponseDto desactivar(@PathVariable long id, Principal actor) {
+        return adminUsuarioService.actualizarAcceso(id, actor.getName(), null, false);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, Object>> manejarEstado(ResponseStatusException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(Map.of("mensaje", ex.getReason()));
     }
 
     @ExceptionHandler(CorreoDuplicadoException.class)

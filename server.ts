@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import compression from 'compression';
+import { mostrarPesoEnLibras } from './src/utils/peso';
 import { GoogleGenAI, Type, type Content } from '@google/genai';
 
 dotenv.config();
@@ -96,7 +97,7 @@ app.post('/api/ai/ficha-medica', async (req: Request, res: Response) => {
     if (!ai) {
       // Fallback simulating expert AI synthesis if API key is pending
       const mockResumen = `Estimado tutor de ${mascota?.nombre || 'su mascota'}: Durante la consulta médica evaluamos integralmente su estado de salud. Encontramos signos clínicos compatibles con ${datos_clinicos?.diagnostico || 'el diagnóstico evaluado'}. Para asegurar su pronta recuperación, es fundamental cumplir estrictamente el plan terapéutico: ${datos_clinicos?.tratamiento || 'indicado por su médico tratante'}. Por favor manténgalo hidratado y en reposo, y acuda de inmediato si nota decaimiento persistente.`;
-      const mockSintesis = `Paciente ${mascota?.especie || 'especie'} (${mascota?.raza || 'raza'}), peso ${mascota?.peso_kg || 'N/A'} kg. Presenta FC: ${datos_clinicos?.frecuencia_cardiaca || '--'} lpm, Temp: ${datos_clinicos?.temperatura_c || '--'}°C. Anamnesis: ${datos_clinicos?.anamnesis || 'Sin datos'}. Diagnóstico definitivo: ${datos_clinicos?.diagnostico || 'Evaluación médica'}. Plan terapéutico instaurado con monitoreo de respuesta clínica a las 48-72h.`;
+      const mockSintesis = `Paciente ${mascota?.especie || 'especie'} (${mascota?.raza || 'raza'}). Peso: ${mostrarPesoEnLibras(mascota?.peso_kg)}. Presenta FC: ${datos_clinicos?.frecuencia_cardiaca || '--'} lpm, Temp: ${datos_clinicos?.temperatura_c || '--'}°C. Anamnesis: ${datos_clinicos?.anamnesis || 'Sin datos'}. Diagnóstico definitivo: ${datos_clinicos?.diagnostico || 'Evaluación médica'}. Plan terapéutico instaurado con monitoreo de respuesta clínica a las 48-72h.`;
 
       return res.json({
         success: true,
@@ -114,6 +115,7 @@ Procesa la siguiente consulta veterinaria:
 ID Consulta: ${id_consulta}
 Mascota: ${JSON.stringify(mascota, null, 2)}
 Datos Clínicos y Diagnóstico: ${JSON.stringify(datos_clinicos, null, 2)}
+Peso para mostrar en la ficha: ${mostrarPesoEnLibras(mascota?.peso_kg)}. Conserva las unidades de las dosis prescritas.
 
 Genera la respuesta estrictamente con los dos campos solicitados:
 1. resumen_propietario: Lenguaje empático, cálido, educativo y claro para el dueño, explicando qué le pasa y cómo suministrar el tratamiento.

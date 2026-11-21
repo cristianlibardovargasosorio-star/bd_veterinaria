@@ -39,6 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     currentUser,
     currentRole,
     setCurrentRole,
+    sesionReal,
     vwAlertasStock,
     resetDatabase,
   } = useStore();
@@ -188,7 +189,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Badge de Rol Autenticado (Switcher solo disponible para Administrador) */}
           <div className="relative">
-            {currentRole === 'ADMINISTRADOR' ? (
+            {currentRole === 'ADMINISTRADOR' && !sesionReal ? (
               <button
                 onClick={() => setShowRoleMenu(!showRoleMenu)}
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-vet-navy text-white text-xs font-medium hover:opacity-95 transition-all cursor-pointer whitespace-nowrap"
@@ -207,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             )}
 
-            {showRoleMenu && currentRole === 'ADMINISTRADOR' && (
+            {showRoleMenu && currentRole === 'ADMINISTRADOR' && !sesionReal && (
               <div className="absolute right-0 mt-2 w-72 bg-vet-surface rounded-[20px] p-3 z-50 steep-floating-artifact">
                 <div className="px-3 py-2 border-b border-vet-border mb-2">
                   <p className="text-[11px] uppercase tracking-wider text-vet-muted">

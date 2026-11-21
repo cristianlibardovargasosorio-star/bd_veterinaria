@@ -2,6 +2,7 @@ package com.vetsoft.auth.controller;
 
 import com.vetsoft.auth.dto.LoginRequestDto;
 import com.vetsoft.auth.model.RolUsuario;
+import com.vetsoft.auth.repository.UsuarioRepository;
 import com.vetsoft.auth.security.CustomAuthFailureHandler;
 import com.vetsoft.auth.security.JwtService;
 import jakarta.validation.Valid;
@@ -30,10 +31,12 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UsuarioRepository usuarios;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UsuarioRepository usuarios) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.usuarios = usuarios;
     }
 
     /**
@@ -91,10 +94,12 @@ public class AuthController {
             ));
 
         } catch (AuthenticationException ex) {
-            // Criterio 2: Mensaje exacto sin revelar cuál campo falló ni si la cuenta está inactiva
+            boolean cuentaExiste = usuarios.findByCorreoIgnoreCase(loginRequest.getCorreo().trim()).isPresent();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
                     "autenticado", false,
-                    "mensaje", CustomAuthFailureHandler.GENERIC_CREDENTIALS_ERROR
+                    "mensaje", cuentaExiste
+                            ? CustomAuthFailureHandler.GENERIC_CREDENTIALS_ERROR
+                            : "No tienes una cuenta con este correo. Pulsa Crear una cuenta para registrarte."
             ));
         }
     }

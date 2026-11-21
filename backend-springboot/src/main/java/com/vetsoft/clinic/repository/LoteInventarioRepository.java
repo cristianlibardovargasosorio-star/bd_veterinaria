@@ -21,7 +21,7 @@ public interface LoteInventarioRepository extends JpaRepository<LoteInventario, 
             JOIN FETCH l.producto p
             WHERE p.idProducto = :idProducto
               AND l.cantidadDisponible > 0
-              AND l.fechaVencimiento > :hoy
+              AND (l.fechaVencimiento IS NULL OR l.fechaVencimiento > :hoy)
             ORDER BY l.fechaVencimiento ASC, l.fechaIngreso ASC, l.idLote ASC
             """)
     List<LoteInventario> findLotesConsumiblesParaDescuento(

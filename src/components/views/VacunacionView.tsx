@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useStore } from '../../db/store';
+import { registrarVacunaApi } from '../../services/pacientesApiService';
 import { ActiveTab } from '../Sidebar';
 import {
   Syringe,
@@ -28,6 +29,9 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
     aplicarVacuna,
     currentRole,
     currentUser,
+    sesionReal,
+    jwtToken,
+    recargarPacientes,
   } = useStore();
   const owner = propietarios.find((p) => p.id_usuario === currentUser.id_usuario);
   const visiblePets = currentRole === 'PROPIETARIO'
@@ -40,6 +44,8 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
   });
 
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [nombreVacuna, setNombreVacuna] = useState('');
+  const [guardandoDosis, setGuardandoDosis] = useState(false);
   const [feedback, setFeedback] = useState<{ text: string; isError: boolean } | null>(null);
 
   // Form
@@ -81,7 +87,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
     }));
   };
 
-  const handleApply = (e: React.FormEvent) => {
+  const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
     setFeedback(null);
 
@@ -90,17 +96,33 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
       return;
     }
 
-    const boosterDate = vacForm.fecha_refuerzo || calculateBooster(vacForm.id_vacuna, vacForm.fecha_aplicacion);
+    const boosterDate = vacForm.fecha_refuerzo || (!sesionReal ? calculateBooster(vacForm.id_vacuna, vacForm.fecha_aplicacion) : '');
 
-    const res = aplicarVacuna({
-      id_mascota: selectedPetId,
+    const dosis = {
+      id_mascota: activePet?.id_mascota ?? 0,
       id_vacuna: vacForm.id_vacuna,
       id_veterinario: vacForm.id_veterinario,
       lote: vacForm.lote,
       fecha_aplicacion: vacForm.fecha_aplicacion,
       fecha_refuerzo: boosterDate,
       observaciones: vacForm.observaciones,
-    });
+    };
+    let res: { success: boolean; message: string };
+    if (sesionReal) {
+      if (!jwtToken) return;
+      setGuardandoDosis(true);
+      try {
+        await registrarVacunaApi(jwtToken, dosis, nombreVacuna.trim());
+        recargarPacientes();
+        res = { success: true, message: 'Vacuna registrada en el carné.' };
+      } catch (error) {
+        res = { success: false, message: (error as Error).message };
+      } finally {
+        setGuardandoDosis(false);
+      }
+    } else {
+      res = aplicarVacuna(dosis);
+    }
 
     if (res.success) {
       setFeedback({ text: res.message, isError: false });
@@ -142,16 +164,17 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
             <span>Imprimir Carné</span>
           </button>
 
-          {currentRole !== 'PROPIETARIO' && (
+          {currentRole !== 'PROPIETARIO' && (!sesionReal || currentRole !== 'RECEPCIONISTA') && (
             <button
               onClick={() => {
+                setNombreVacuna('');
                 setVacForm({
                   id_mascota: selectedPetId,
                   id_vacuna: vacunas[0]?.id_vacuna || 1,
                   id_veterinario: veterinarios[0]?.id_veterinario || 1,
-                  lote: `BIO-2026-${Math.floor(100 + Math.random() * 900)}`,
+                  lote: sesionReal ? '' : `BIO-2026-${Math.floor(100 + Math.random() * 900)}`,
                   fecha_aplicacion: todayStr,
-                  fecha_refuerzo: calculateBooster(vacunas[0]?.id_vacuna || 1, todayStr),
+                  fecha_refuerzo: sesionReal ? '' : calculateBooster(vacunas[0]?.id_vacuna || 1, todayStr),
                   observaciones: 'Buena tolerancia al biológico.',
                 });
                 setShowApplyModal(true);
@@ -339,7 +362,11 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
 
               <div>
                 <label className="block font-semibold text-vet-muted mb-1">Biológico / Vacuna</label>
-                <select
+                {sesionReal ? <input
+                  aria-label="Nombre de la vacuna" required maxLength={100} value={nombreVacuna}
+                  onChange={(e) => setNombreVacuna(e.target.value)}
+                  className="w-full p-2 border border-vet-border rounded-lg"
+                /> : <select
                   value={vacForm.id_vacuna}
                   onChange={(e) => handleVacunaSelect(Number(e.target.value))}
                   className="w-full p-2 border border-vet-border rounded-lg"
@@ -349,7 +376,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                       {v.nombre} ({v.marca}) - Refuerzo sugerido cada {v.dias_refuerzo_sugeridos} días
                     </option>
                   ))}
-                </select>
+                </select>}
               </div>
 
               <div className="grid grid-cols-2 gap-2">
@@ -444,6 +471,7 @@ export const VacunacionView: React.FC<VacunacionViewProps> = ({ initialPetId }) 
                 </button>
                 <button
                   type="submit"
+                  disabled={guardandoDosis || feedback?.isError === false}
                   className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg font-bold"
                 >
                   Registrar en Carné

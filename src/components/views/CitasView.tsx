@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useStore } from '../../db/store';
+import { agendarCitaApi, cambiarEstadoCitaApi } from '../../services/pacientesApiService';
 import { TipoCita, EstadoCita } from '../../types';
 import { ActiveTab } from '../Sidebar';
 import {
@@ -33,6 +34,9 @@ export const CitasView: React.FC<CitasViewProps> = ({
     cambiarEstadoCita,
     currentRole,
     currentUser,
+    sesionReal,
+    jwtToken,
+    recargarPacientes,
   } = useStore();
 
   const [filterEstado, setFilterEstado] = useState<string>('TODAS');
@@ -40,6 +44,8 @@ export const CitasView: React.FC<CitasViewProps> = ({
   const [selectedCitaId, setSelectedCitaId] = useState<number | null>(null);
   const detailsDialogRef = useRef<HTMLDialogElement>(null);
   const [formFeedback, setFormFeedback] = useState<{ text: string; isError: boolean } | null>(null);
+  const [guardandoCita, setGuardandoCita] = useState(false);
+  const [errorEstado, setErrorEstado] = useState<string | null>(null);
   const ownerRecord = propietarios.find((p) => p.id_usuario === currentUser.id_usuario);
   const selectablePets = currentRole === 'PROPIETARIO'
     ? mascotas.filter((pet) => pet.id_propietario === ownerRecord?.id_propietario)
@@ -82,7 +88,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
     }));
   };
 
-  const handleAgendar = (e: React.FormEvent) => {
+  const handleAgendar = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormFeedback(null);
     if (!selectablePets.some((pet) => pet.id_mascota === citaForm.id_mascota)) {
@@ -95,7 +101,22 @@ export const CitasView: React.FC<CitasViewProps> = ({
       return;
     }
 
-    const res = agendarCita(citaForm);
+    let res: { success: boolean; message: string };
+    if (sesionReal) {
+      if (!jwtToken) return;
+      setGuardandoCita(true);
+      try {
+        await agendarCitaApi(jwtToken, citaForm);
+        recargarPacientes();
+        res = { success: true, message: 'Cita guardada en VetSoft.' };
+      } catch (error) {
+        res = { success: false, message: (error as Error).message };
+      } finally {
+        setGuardandoCita(false);
+      }
+    } else {
+      res = agendarCita(citaForm);
+    }
     if (res.success) {
       setFormFeedback({ text: res.message, isError: false });
       setTimeout(() => {
@@ -113,6 +134,21 @@ export const CitasView: React.FC<CitasViewProps> = ({
       }, 1000);
     } else {
       setFormFeedback({ text: res.message, isError: true });
+    }
+  };
+
+  const actualizarEstado = async (id: number, estado: EstadoCita) => {
+    if (!sesionReal) {
+      cambiarEstadoCita(id, estado);
+      return;
+    }
+    if (!jwtToken) return;
+    setErrorEstado(null);
+    try {
+      await cambiarEstadoCitaApi(jwtToken, id, estado);
+      recargarPacientes();
+    } catch (error) {
+      setErrorEstado((error as Error).message);
     }
   };
 
@@ -138,7 +174,14 @@ export const CitasView: React.FC<CitasViewProps> = ({
         </div>
 
         <button
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setCitaForm((form) => ({
+              ...form, id_mascota: selectablePets[0]?.id_mascota ?? 0,
+              id_propietario: selectablePets[0]?.id_propietario ?? 0,
+              id_veterinario: veterinarios[0]?.id_veterinario ?? 0,
+            }));
+            setShowModal(true);
+          }}
           className="px-4 py-2 rounded-xl bg-vet-emerald hover:bg-vet-emerald-hover text-white text-xs font-bold flex items-center gap-1.5 shadow-md  transition-all self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
@@ -147,6 +190,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
       </div>
 
       {/* Filter Tabs */}
+      {errorEstado && <p role="alert" className="text-sm text-vet-danger-ink">{errorEstado}</p>}
       <div className="flex items-center gap-2 overflow-x-auto pb-1">
         {['TODAS', 'PENDIENTE', 'CONFIRMADA', 'ATENDIDA', 'CANCELADA'].map((st) => (
           <button
@@ -245,14 +289,14 @@ export const CitasView: React.FC<CitasViewProps> = ({
                 {cita.estado === 'PENDIENTE' && (
                   <>
                     <button
-                      onClick={() => cambiarEstadoCita(cita.id_cita, 'CONFIRMADA')}
+                      onClick={() => void actualizarEstado(cita.id_cita, 'CONFIRMADA')}
                       className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors"
                     >
                       <CalendarCheck className="w-3.5 h-3.5" />
                       <span>Confirmar</span>
                     </button>
                     <button
-                      onClick={() => cambiarEstadoCita(cita.id_cita, 'CANCELADA')}
+                      onClick={() => void actualizarEstado(cita.id_cita, 'CANCELADA')}
                       className="px-2.5 py-1.5 bg-vet-ice hover:bg-vet-ice text-vet-muted rounded-lg text-xs transition-colors"
                       title="Cancelar Cita"
                     >
@@ -278,7 +322,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
                       </button>
                     )}
                     <button
-                      onClick={() => cambiarEstadoCita(cita.id_cita, 'CANCELADA')}
+                      onClick={() => void actualizarEstado(cita.id_cita, 'CANCELADA')}
                       className="px-2.5 py-1.5 text-vet-muted hover:text-red-600 rounded-lg text-xs"
                       title="Cancelar"
                     >
@@ -484,6 +528,7 @@ export const CitasView: React.FC<CitasViewProps> = ({
                 </button>
                 <button
                   type="submit"
+                  disabled={guardandoCita || formFeedback?.isError === false}
                   className="px-4 py-2 bg-vet-emerald hover:bg-vet-emerald-hover text-white rounded-lg text-xs font-bold"
                 >
                   Programar Cita

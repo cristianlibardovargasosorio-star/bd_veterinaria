@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
+import { listarPacientes } from '../services/pacientesApiService';
+import { listarFacturas, listarInventario } from '../services/operacionApiService';
 import {
   Usuario,
   Propietario,
@@ -20,8 +22,6 @@ import {
   UserRole,
 } from '../types';
 import {
-  DEMO_OWNER_EMAIL,
-  DEMO_OWNER_PROFILE,
   INITIAL_USUARIOS,
   INITIAL_PROPIETARIOS,
   INITIAL_VETERINARIOS,
@@ -44,6 +44,13 @@ interface StoreContextType {
   // Current session & auth
   currentUser: Usuario;
   currentRole: UserRole;
+  sesionReal: boolean;
+  errorPacientes: string | null;
+  cargandoPacientes: boolean;
+  recargarPacientes: () => void;
+  errorOperacion: string | null;
+  recargarOperacion: () => void;
+  iniciarSesionReal: (usuario: Usuario, token: string) => void;
   setCurrentRole: (role: UserRole) => void;
   switchUser: (id_usuario: number) => void;
   login: (
@@ -123,13 +130,15 @@ const DEMO_EMAILS = new Set([
   'admin@vetsoft.com',
   'camilo.vet@vetsoft.com',
   'carlos.mendoza@vetsoft.com',
-  DEMO_OWNER_EMAIL,
 ]);
 
 function mergeInitialUsers(storedUsers: Usuario[]): Usuario[] {
   const byEmail = new Map<string, Usuario>();
   for (const u of storedUsers) {
-    byEmail.set(u.correo.toLowerCase(), u);
+    const email = u.correo.toLowerCase();
+    byEmail.set(email, email === 'camilo.propietario@vetsoft.com' && u.rol_nombre === 'PROPIETARIO'
+      ? { ...u, estado: 'ELIMINADO', contrasena: '', otp_code: null, otp_expiracion: null }
+      : u);
   }
   for (const initial of INITIAL_USUARIOS) {
     const key = initial.correo.toLowerCase();
@@ -165,12 +174,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [usuarios, setUsuarios] = useState<Usuario[]>(() =>
     mergeInitialUsers(loadFromStorage('usuarios', INITIAL_USUARIOS))
   );
-  const [propietarios, setPropietarios] = useState<Propietario[]>(() => {
-    const stored = loadFromStorage('propietarios', INITIAL_PROPIETARIOS);
-    return stored.some((owner) => owner.id_propietario === DEMO_OWNER_PROFILE.id_propietario)
-      ? stored
-      : [...stored, DEMO_OWNER_PROFILE];
-  });
+  const [propietarios, setPropietarios] = useState<Propietario[]>(() => loadFromStorage('propietarios', INITIAL_PROPIETARIOS));
   const [veterinarios] = useState<Veterinario[]>(() => loadFromStorage('veterinarios', INITIAL_VETERINARIOS));
   const [mascotas, setMascotas] = useState<Mascota[]>(() => loadFromStorage('mascotas', INITIAL_MASCOTAS));
   const [citas, setCitas] = useState<Cita[]>(() => loadFromStorage('citas', INITIAL_CITAS));
@@ -187,7 +191,17 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [auditoria, setAuditoria] = useState<AuditoriaSistema[]>(() => loadFromStorage('auditoria', INITIAL_AUDITORIA));
 
   // Current session
+  const [sesionReal, setSesionReal] = useState<boolean>(() =>
+    Boolean(sessionStorage.getItem('vetsoft_cuenta') && sessionStorage.getItem('vetsoft_jwt_token'))
+  );
   const [currentUser, setCurrentUser] = useState<Usuario>(() => {
+    if (sesionReal) {
+      try {
+        return JSON.parse(sessionStorage.getItem('vetsoft_cuenta')!) as Usuario;
+      } catch {
+        sessionStorage.removeItem('vetsoft_jwt_token');
+      }
+    }
     const savedId = loadFromStorage('current_user_id', 1);
     const found = usuarios.find((u) => u.id_usuario === savedId);
     return found || usuarios[0];
@@ -208,6 +222,63 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   });
 
+  const [datosPacientes, setDatosPacientes] = useState<{
+    token: string;
+  } & Awaited<ReturnType<typeof listarPacientes>> | null>(null);
+  const [errorPacientes, setErrorPacientes] = useState<string | null>(null);
+  const [revisionPacientes, setRevisionPacientes] = useState(0);
+  const recargarPacientes = () => setRevisionPacientes((revision) => revision + 1);
+
+  useEffect(() => {
+    if (!sesionReal || !jwtToken) {
+      setDatosPacientes(null);
+      setErrorPacientes(null);
+      return;
+    }
+    let vigente = true;
+    setErrorPacientes(null);
+    listarPacientes(jwtToken, currentRole === 'PROPIETARIO')
+      .then((datos) => {
+        if (vigente) setDatosPacientes({ token: jwtToken, ...datos });
+      })
+      .catch((error: Error) => {
+        if (vigente) setErrorPacientes(error.message);
+      });
+    return () => { vigente = false; };
+  }, [jwtToken, currentRole, sesionReal, revisionPacientes]);
+  const pacientesSesion = datosPacientes?.token === jwtToken ? datosPacientes : null;
+
+  const [inventarioDb, setInventarioDb] = useState<({ token: string } & Awaited<ReturnType<typeof listarInventario>>) | null>(null);
+  const [facturasDb, setFacturasDb] = useState<({ token: string } & Awaited<ReturnType<typeof listarFacturas>>) | null>(null);
+  const [errorOperacion, setErrorOperacion] = useState<string | null>(null);
+  const [revisionOperacion, setRevisionOperacion] = useState(0);
+  const recargarOperacion = () => setRevisionOperacion((revision) => revision + 1);
+
+  useEffect(() => {
+    if (!sesionReal || !jwtToken || currentRole === 'PROPIETARIO') {
+      setInventarioDb(null);
+      setFacturasDb(null);
+      setErrorOperacion(null);
+      return;
+    }
+    let vigente = true;
+    setErrorOperacion(null);
+    const registrarError = (error: Error) => {
+      if (vigente) setErrorOperacion(error.message);
+    };
+    listarInventario(jwtToken)
+      .then((datos) => { if (vigente) setInventarioDb({ token: jwtToken, ...datos }); })
+      .catch(registrarError);
+    if (currentRole === 'ADMINISTRADOR' || currentRole === 'RECEPCIONISTA') {
+      listarFacturas(jwtToken)
+        .then((datos) => { if (vigente) setFacturasDb({ token: jwtToken, ...datos }); })
+        .catch(registrarError);
+    }
+    return () => { vigente = false; };
+  }, [jwtToken, currentRole, sesionReal, revisionOperacion]);
+  const inventarioSesion = inventarioDb?.token === jwtToken ? inventarioDb : null;
+  const facturasSesion = facturasDb?.token === jwtToken ? facturasDb : null;
+
   // Sync state to localStorage
   useEffect(() => saveToStorage('usuarios', usuarios), [usuarios]);
   useEffect(() => saveToStorage('propietarios', propietarios), [propietarios]);
@@ -225,7 +296,9 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   useEffect(() => saveToStorage('detalles_factura', detallesFactura), [detallesFactura]);
   useEffect(() => saveToStorage('movimientos', movimientos), [movimientos]);
   useEffect(() => saveToStorage('auditoria', auditoria), [auditoria]);
-  useEffect(() => saveToStorage('current_user_id', currentUser.id_usuario), [currentUser]);
+  useEffect(() => {
+    if (!sesionReal) saveToStorage('current_user_id', currentUser.id_usuario);
+  }, [currentUser, sesionReal]);
   useEffect(() => {
     const syncUsers = (event: StorageEvent) => {
       if (event.key === STORAGE_PREFIX + 'recent_account_ids') {
@@ -235,14 +308,23 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       if (event.key !== STORAGE_PREFIX + 'usuarios') return;
       const updated = loadFromStorage('usuarios', INITIAL_USUARIOS);
       setUsuarios(updated);
-      if (updated.some((user) => user.id_usuario === currentUser.id_usuario && user.estado !== 'ACTIVO')) {
+      if (!sesionReal && updated.some((user) => user.id_usuario === currentUser.id_usuario && user.estado !== 'ACTIVO')) {
         setJwtToken(null);
         sessionStorage.removeItem('vetsoft_jwt_token');
       }
     };
     window.addEventListener('storage', syncUsers);
     return () => window.removeEventListener('storage', syncUsers);
-  }, [currentUser.id_usuario]);
+  }, [currentUser.id_usuario, sesionReal]);
+
+  const iniciarSesionReal = (usuario: Usuario, token: string) => {
+    sessionStorage.setItem('vetsoft_cuenta', JSON.stringify(usuario));
+    sessionStorage.setItem('vetsoft_jwt_token', token);
+    setSesionReal(true);
+    setCurrentUser(usuario);
+    setCurrentRoleState(usuario.rol_nombre);
+    setJwtToken(token);
+  };
 
   // Auditor helper
   const addAuditoria = (tabla: string, operacion: 'INSERT' | 'UPDATE' | 'DELETE', detalles: string) => {
@@ -260,6 +342,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   // Switch role and user
   const setCurrentRole = (role: UserRole) => {
+    if (sesionReal) return;
     const targetUser = usuarios.find((u) => u.rol_nombre === role && u.estado === 'ACTIVO');
     if (targetUser) {
       setCurrentRoleState(role);
@@ -268,6 +351,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   const switchUser = (id_usuario: number) => {
+    if (sesionReal) return;
     const user = usuarios.find((u) => u.id_usuario === id_usuario);
     if (user?.estado === 'ACTIVO') {
       setCurrentUser(user);
@@ -278,6 +362,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   // VET-RF-02: Autenticación con validación de entrada, cuenta activa, hash BCrypt y emisión de token JWT
   const login = (correo: string, contrasena: string) => {
+    if (sesionReal) return { success: false, message: 'Cierra la sesión antes de cambiar de cuenta.' };
     if (!correo || !correo.trim() || !contrasena) {
       return {
         success: false,
@@ -414,7 +499,9 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   // VET-RF-02 Criterio 4: Cierre de sesión e invalidación del token JWT en el cliente
   const logout = () => {
     setJwtToken(null);
+    setSesionReal(false);
     try {
+      sessionStorage.removeItem('vetsoft_cuenta');
       sessionStorage.removeItem('vetsoft_jwt_token');
       localStorage.removeItem('vetsoft_jwt_token');
     } catch {
@@ -493,8 +580,10 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   // Vistas Calculadas (vw_existencias y vw_alertas_stock)
   const vwExistencias: ViewExistencia[] = useMemo(() => {
     const today = new Date().toISOString().split('T')[0];
-    return productos.map((prod) => {
-      const prodLotes = lotes.filter((l) => l.id_producto === prod.id_producto);
+    const productosVisibles = sesionReal ? inventarioSesion?.productos ?? [] : productos;
+    const lotesVisibles = sesionReal ? inventarioSesion?.lotes ?? [] : lotes;
+    return productosVisibles.map((prod) => {
+      const prodLotes = lotesVisibles.filter((l) => l.id_producto === prod.id_producto);
       const stock_fisico = prodLotes.reduce((sum, l) => sum + l.stock_actual, 0);
 
       const stock_vendible = prodLotes
@@ -516,7 +605,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         stock_vencido,
       };
     });
-  }, [productos, lotes]);
+  }, [productos, lotes, sesionReal, inventarioSesion]);
 
   const vwAlertasStock: ViewExistencia[] = useMemo(() => {
     return vwExistencias.filter((p) => p.activo && p.stock_vendible <= p.stock_minimo);
@@ -1118,31 +1207,38 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       value={{
         currentUser,
         currentRole,
+        sesionReal,
+        errorPacientes,
+        cargandoPacientes: sesionReal && !pacientesSesion && !errorPacientes,
+        recargarPacientes,
+        iniciarSesionReal,
         setCurrentRole,
         switchUser,
         login,
         logout,
         jwtToken,
-        recentAccountIds,
+        recentAccountIds: sesionReal ? [] : recentAccountIds,
         switchOwnerAccount,
         verificarOtp,
         registerInternalUser,
         updateInternalUserAccess,
         usuarios,
-        propietarios,
-        veterinarios,
-        mascotas,
-        citas,
-        consultas,
-        vacunas,
-        historiaVacunas,
-        fichasIA,
+        propietarios: sesionReal ? pacientesSesion?.propietarios ?? [] : propietarios,
+        veterinarios: sesionReal ? pacientesSesion?.veterinarios ?? [] : veterinarios,
+        mascotas: sesionReal ? pacientesSesion?.mascotas ?? [] : mascotas,
+        citas: sesionReal ? pacientesSesion?.citas ?? [] : citas,
+        consultas: sesionReal ? pacientesSesion?.consultas ?? [] : consultas,
+        vacunas: sesionReal ? pacientesSesion?.vacunas ?? [] : vacunas,
+        historiaVacunas: sesionReal ? pacientesSesion?.historiaVacunas ?? [] : historiaVacunas,
+        fichasIA: sesionReal ? pacientesSesion?.fichas ?? [] : fichasIA,
         reportesIA,
-        productos,
-        lotes,
-        facturas,
-        detallesFactura,
-        movimientos,
+        productos: sesionReal ? inventarioSesion?.productos ?? [] : productos,
+        lotes: sesionReal ? inventarioSesion?.lotes ?? [] : lotes,
+        facturas: sesionReal ? facturasSesion?.facturas ?? [] : facturas,
+        detallesFactura: sesionReal ? facturasSesion?.detallesFactura ?? [] : detallesFactura,
+        movimientos: sesionReal ? inventarioSesion?.movimientos ?? [] : movimientos,
+        errorOperacion,
+        recargarOperacion,
         auditoria,
         vwExistencias,
         vwAlertasStock,
